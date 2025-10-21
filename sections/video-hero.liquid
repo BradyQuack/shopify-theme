@@ -1,0 +1,389 @@
+<!-- sections/video-hero.liquid -->
+<section class="video-hero">
+  <div class="video-hero__container">
+    <!-- Video Background -->
+    <div class="video-hero__video-wrapper">
+      {% if section.settings.video_url != blank %}
+        <video 
+          class="video-hero__video" 
+          autoplay 
+          muted 
+          loop 
+          playsinline
+          {% if section.settings.video_mobile_url != blank %}
+            data-mobile-src="{{ section.settings.video_mobile_url }}"
+          {% endif %}
+          data-playback-rate="{{ section.settings.video_speed | default: 4 }}"
+        >
+          <source src="{{ section.settings.video_url }}" type="video/mp4">
+          {% if section.settings.fallback_image != blank %}
+            <img src="{{ section.settings.fallback_image | image_url }}" alt="{{ section.settings.fallback_image.alt | default: 'Video fallback' }}">
+          {% endif %}
+        </video>
+      {% elsif section.settings.fallback_image != blank %}
+        <img 
+          class="video-hero__fallback" 
+          src="{{ section.settings.fallback_image | image_url }}" 
+          alt="{{ section.settings.fallback_image.alt | default: 'Hero background' }}"
+        >
+      {% endif %}
+    </div>
+
+    <!-- Content Overlay -->
+    <div class="video-hero__content">
+      <div class="video-hero__text-block">
+        {% if section.settings.brand_text != blank %}
+          <div class="video-hero__brand">{{ section.settings.brand_text }}</div>
+        {% endif %}
+        
+        {% if section.settings.headline != blank %}
+          <h1 class="video-hero__headline">{{ section.settings.headline }}</h1>
+        {% endif %}
+        
+        {% if section.settings.body_text != blank %}
+          <p class="video-hero__body">{{ section.settings.body_text }}</p>
+        {% endif %}
+        
+        <div class="video-hero__buttons">
+          {% if section.settings.button1_text != blank and section.settings.button1_url != blank %}
+            <a href="{{ section.settings.button1_url }}" class="video-hero__btn video-hero__btn--primary">
+              {{ section.settings.button1_text }}
+            </a>
+          {% endif %}
+          
+          {% if section.settings.button2_text != blank and section.settings.button2_url != blank %}
+            <a href="{{ section.settings.button2_url }}" class="video-hero__btn video-hero__btn--secondary">
+              {{ section.settings.button2_text }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.video-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  overflow: hidden;
+}
+
+.video-hero__container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.video-hero__video-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.video-hero__video,
+.video-hero__fallback {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.video-hero__content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 40%, transparent 70%);
+  display: flex;
+  align-items: flex-start;
+  padding: 80px 0;
+}
+
+.video-hero__text-block {
+  max-width: 500px;
+  padding: 0 60px;
+  color: {{ section.settings.text_color | default: '#ffffff' }};
+}
+
+.video-hero__brand {
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.video-hero__headline {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  font-family: inherit;
+  color: {{ section.settings.headline_color | default: '#ffffff' }};
+}
+
+.video-hero__body {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 32px;
+  opacity: 0.95;
+  max-width: 420px;
+}
+
+.video-hero__buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.video-hero__btn {
+  display: inline-block;
+  padding: 14px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.video-hero__btn--primary {
+  background-color: #84cc16;
+  color: #000;
+}
+
+.video-hero__btn--primary:hover {
+  background-color: #65a30d;
+  transform: translateY(-1px);
+}
+
+.video-hero__btn--secondary {
+  background-color: transparent;
+  color: {{ section.settings.text_color | default: '#ffffff' }};
+  border-color: {{ section.settings.text_color | default: '#ffffff' | color_modify: 'alpha', 0.3 }};
+}
+
+.video-hero__btn--secondary:hover {
+  background-color: {{ section.settings.text_color | default: '#ffffff' | color_modify: 'alpha', 0.1 }};
+  border-color: {{ section.settings.text_color | default: '#ffffff' | color_modify: 'alpha', 0.5 }};
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .video-hero {
+    height: 80vh;
+    min-height: 500px;
+  }
+  
+  .video-hero__content {
+    padding: 40px 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%);
+  }
+  
+  .video-hero__text-block {
+    padding: 0 20px;
+    max-width: 100%;
+  }
+  
+  .video-hero__headline {
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+  
+  .video-hero__body {
+    font-size: 15px;
+    margin-bottom: 28px;
+  }
+  
+  .video-hero__buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .video-hero__btn {
+    text-align: center;
+    padding: 16px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-hero__headline {
+    font-size: 28px;
+  }
+  
+  .video-hero__text-block {
+    padding: 0 16px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .video-hero__video {
+    animation: none;
+  }
+  
+  .video-hero__btn {
+    transition: none;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const video = document.querySelector('.video-hero__video');
+  
+  if (video) {
+    // Handle mobile video optimization
+    if (window.innerWidth <= 768 && video.dataset.mobileSrc) {
+      video.src = video.dataset.mobileSrc;
+    }
+    
+    // Set video playback speed
+    const speedSetting = parseInt(video.dataset.playbackRate) || 4;
+    // Convert range value (1-8) to actual speed (0.25-2.0)
+    const speedMap = {
+      1: 0.25,
+      2: 0.5,
+      3: 0.75,
+      4: 1.0,
+      5: 1.25,
+      6: 1.5,
+      7: 1.75,
+      8: 2.0
+    };
+    const playbackRate = speedMap[speedSetting] || 1.0;
+    
+    // Ensure video plays on mobile devices
+    video.addEventListener('loadedmetadata', function() {
+      video.playbackRate = playbackRate;
+      video.play().catch(function(error) {
+        console.log('Video autoplay failed:', error);
+      });
+    });
+    
+    // Set playback rate when video is ready
+    video.addEventListener('canplay', function() {
+      video.playbackRate = playbackRate;
+    });
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Video Hero",
+  "tag": "section",
+  "class": "section-video-hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brand_text",
+      "label": "Brand Text",
+      "default": "Irrigation Solutions"
+    },
+    {
+      "type": "textarea",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Parts You Need, Service You Trust"
+    },
+    {
+      "type": "textarea",
+      "id": "body_text",
+      "label": "Body Text",
+      "default": "Supplying contractors, farms, and municipalities with proven irrigation solutions at wholesale prices. Built for performance and backed by expertise."
+    },
+    {
+      "type": "text",
+      "id": "button1_text",
+      "label": "Primary Button Text",
+      "default": "Discover Our Products"
+    },
+    {
+      "type": "url",
+      "id": "button1_url",
+      "label": "Primary Button URL"
+    },
+    {
+      "type": "text",
+      "id": "button2_text",
+      "label": "Secondary Button Text",
+      "default": "Wholesale Pricing"
+    },
+    {
+      "type": "url",
+      "id": "button2_url",
+      "label": "Secondary Button URL"
+    },
+    {
+      "type": "url",
+      "id": "video_url",
+      "label": "Video URL (MP4)",
+      "info": "Upload your video file to Shopify Files and paste the URL here"
+    },
+    {
+      "type": "url",
+      "id": "video_mobile_url",
+      "label": "Mobile Video URL (Optional)",
+      "info": "Smaller video file optimized for mobile devices"
+    },
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "Fallback Image",
+      "info": "Image shown if video fails to load"
+    },
+    {
+      "type": "header",
+      "content": "Video Settings"
+    },
+    {
+      "type": "range",
+      "id": "video_speed",
+      "label": "Video Speed",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 4,
+      "info": "Control video playback speed (0.25x to 2.0x)"
+    },
+    {
+      "type": "header",
+      "content": "Text Settings"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff",
+      "info": "Color for brand text, body text, and secondary button"
+    },
+    {
+      "type": "color",
+      "id": "headline_color",
+      "label": "Headline Color",
+      "default": "#ffffff",
+      "info": "Color for the main headline"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video Hero",
+      "settings": {
+        "brand_text": "Irrigation Solutions",
+        "headline": "Parts You Need, Service You Trust",
+        "body_text": "Supplying contractors, farms, and municipalities with proven irrigation solutions at wholesale prices. Built for performance and backed by expertise.",
+        "button1_text": "Discover Our Products",
+        "button2_text": "Wholesale Pricing"
+      }
+    }
+  ]
+}
+{% endschema %}

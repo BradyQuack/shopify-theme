@@ -1,0 +1,728 @@
+{{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  /* Rounded Container for Contact Form */
+  .contact-form-container {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e5e5;
+  }
+
+  @media screen and (min-width: 750px) {
+    .contact-form-container {
+      padding: 40px;
+      border-radius: 20px;
+    }
+  }
+
+  /* Product Quote Display Styles */
+  .quote-product-info {
+    background: {{ section.settings.product_container_bg_color }};
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+
+  .quote-product-info h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+    color: #0f1111;
+  }
+
+  .quote-product-details {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .quote-product-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .quote-product-text {
+    flex: 1;
+  }
+
+  .quote-product-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #0f1111;
+    margin: 0 0 8px 0;
+    line-height: 1.4;
+  }
+
+  .quote-product-link {
+    color: #007185;
+    text-decoration: none;
+    font-size: 13px;
+    display: inline-block;
+    margin-top: 5px;
+  }
+
+  .quote-product-link:hover {
+    color: #c7511f;
+    text-decoration: underline;
+  }
+
+  /* Product Search Styles */
+  .quote-product-search {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+  }
+
+  .quote-search-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0f1111;
+    margin-bottom: 15px;
+    display: block;
+  }
+
+  .quote-search-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .quote-search-input:focus {
+    outline: none;
+    border-color: #007185;
+    box-shadow: 0 0 0 3px rgba(0, 113, 133, 0.1);
+  }
+
+  .quote-search-results {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    display: none;
+  }
+
+  .quote-search-results.active {
+    display: block;
+  }
+
+  .quote-search-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+  }
+
+  .quote-search-item:hover {
+    background: #f7f7f7;
+  }
+
+  .quote-search-item:last-child {
+    border-bottom: none;
+  }
+
+  .quote-search-item-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .quote-search-item-info {
+    flex: 1;
+  }
+
+  .quote-search-item-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #0f1111;
+    line-height: 1.4;
+  }
+
+  /* Force hide any price elements */
+  .quote-search-item-price,
+  .quote-search-results .price {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .quote-search-loading {
+    padding: 20px;
+    text-align: center;
+    color: #565959;
+    font-size: 14px;
+  }
+
+  .quote-search-no-results {
+    padding: 20px;
+    text-align: center;
+    color: #565959;
+    font-size: 14px;
+  }
+
+  /* Rounded Input Fields */
+  .field__input,
+  .text-area.field__input {
+    border-radius: 8px !important;
+  }
+
+  /* Round the ::before and ::after pseudo-elements on field containers */
+  .section-{{ section.id }} .field::before,
+  .section-{{ section.id }} .field::after {
+    border-radius: 8px !important;
+  }
+
+  /* Heading Alignment */
+  .contact-heading-{{ section.settings.heading_alignment }} {
+    text-align: {{ section.settings.heading_alignment }};
+  }
+
+  /* Input Box Styling */
+  .section-{{ section.id }} .field__input,
+  .section-{{ section.id }} .text-area.field__input {
+    background-color: {{ section.settings.input_bg_color }};
+    color: {{ section.settings.input_text_color }};
+    border-color: {{ section.settings.input_outline_color }};
+  }
+
+  .section-{{ section.id }} .field__input::placeholder,
+  .section-{{ section.id }} .text-area.field__input::placeholder {
+    color: {{ section.settings.input_text_color | color_modify: 'alpha', 0.6 }};
+  }
+
+  .section-{{ section.id }} .field__input:focus,
+  .section-{{ section.id }} .text-area.field__input:focus {
+    border-color: {{ section.settings.input_outline_color }};
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}">
+  <div class="contact page-width page-width--narrow section-{{ section.id }}-padding">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }} contact-heading-{{ section.settings.heading_alignment }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        {{ section.settings.heading }}
+      </h2>
+    {%- else -%}
+      <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
+    {%- endif -%}
+
+    <!-- Rounded Container Wrapper -->
+    <div class="contact-form-container">
+      <!-- Product Quote Information Display -->
+      <div id="quoteProductInfo" class="quote-product-info">
+        <!-- Product Search Section -->
+        <div class="quote-product-search" style="margin-top: 0; padding-top: 0; border-top: none; margin-bottom: 20px;">
+          <label class="quote-search-label" for="productSearchInput" id="productSearchLabel">
+            Choose Product
+          </label>
+          <input 
+            type="text" 
+            id="productSearchInput" 
+            class="quote-search-input" 
+            placeholder="Search for a product..."
+            autocomplete="off"
+          />
+          <div id="productSearchResults" class="quote-search-results"></div>
+        </div>
+        
+        <div id="selectedProductDisplay" style="display: none;">
+          <h3>Requested Product</h3>
+          <div class="quote-product-details">
+            <img id="quoteProductImage" class="quote-product-image" src="" alt="" />
+            <div class="quote-product-text">
+              <div id="quoteProductTitle" class="quote-product-title"></div>
+              <a id="quoteProductLink" class="quote-product-link" href="" target="_blank">View Product →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {%- liquid
+        assign contact_form_class = 'isolate'
+        if settings.animations_reveal_on_scroll
+          assign contact_form_class = 'isolate scroll-trigger animate--slide-in'
+        endif
+      -%}
+      {%- form 'contact', id: 'ContactForm', class: contact_form_class -%}
+        {%- if form.posted_successfully? -%}
+          <h2 class="form-status form-status-list form__message" tabindex="-1" autofocus>
+            {{- 'icon-success.svg' | inline_asset_content -}}
+            {{ 'templates.contact.form.post_success' | t }}
+          </h2>
+        {%- elsif form.errors -%}
+          <div class="form__message">
+            <h2 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>
+              {{- 'icon-error.svg' | inline_asset_content -}}
+              {{ 'templates.contact.form.error_heading' | t }}
+            </h2>
+          </div>
+          <ul class="form-status-list caption-large" role="list">
+            <li>
+              <a href="#ContactForm-email" class="link">
+                {{ form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email }}
+              </a>
+            </li>
+          </ul>
+        {%- endif -%}
+
+        <!-- Hidden fields to capture product information -->
+        <input type="hidden" id="productInfoField" name="contact[Product]" value="">
+        <input type="hidden" id="productIdField" name="contact[Product ID]" value="">
+        <input type="hidden" id="variantIdField" name="contact[Variant ID]" value="">
+        <input type="hidden" id="productUrlField" name="contact[Product URL]" value="">
+
+        <div class="contact__fields">
+          <div class="field">
+            <input
+              class="field__input"
+              autocomplete="name"
+              type="text"
+              id="ContactForm-name"
+              name="contact[{{ 'templates.contact.form.name' | t }}]"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+              placeholder="{{ 'templates.contact.form.name' | t }}"
+            >
+            <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
+          </div>
+          <div class="field field--with-error">
+            <input
+              autocomplete="email"
+              type="email"
+              id="ContactForm-email"
+              class="field__input"
+              name="contact[email]"
+              spellcheck="false"
+              autocapitalize="off"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              aria-required="true"
+              {% if form.errors contains 'email' %}
+                aria-invalid="true"
+                aria-describedby="ContactForm-email-error"
+              {% endif %}
+              placeholder="{{ 'templates.contact.form.email' | t }}"
+            >
+            <label class="field__label" for="ContactForm-email">
+              {{- 'templates.contact.form.email' | t }}
+              <span aria-hidden="true">*</span></label
+            >
+            {%- if form.errors contains 'email' -%}
+              <small class="contact__field-error" id="ContactForm-email-error">
+                <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+                <span class="form__message">
+                  <span class="svg-wrapper">
+                    {{- 'icon-error.svg' | inline_asset_content -}}
+                  </span>
+                  {{- form.errors.translated_fields.email | capitalize }}
+                  {{ form.errors.messages.email -}}
+                </span>
+              </small>
+            {%- endif -%}
+          </div>
+        </div>
+        <div class="field">
+          <input
+            type="tel"
+            id="ContactForm-phone"
+            class="field__input"
+            autocomplete="tel"
+            name="contact[{{ 'templates.contact.form.phone' | t }}]"
+            pattern="[0-9\-]*"
+            value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+            placeholder="{{ 'templates.contact.form.phone' | t }}"
+          >
+          <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
+        </div>
+        <div class="field">
+          <textarea
+            rows="30"
+            id="ContactForm-body"
+            class="text-area field__input"
+            name="contact[{{ 'templates.contact.form.comment' | t }}]"
+            placeholder="{{ 'templates.contact.form.comment' | t }}"
+            style="min-height: 400px;"
+          >
+            {{- form.body -}}
+          </textarea>
+          <label class="form__label field__label" for="ContactForm-body">
+            {{- 'templates.contact.form.comment' | t -}}
+          </label>
+        </div>
+        <div class="contact__button">
+          <button type="submit" class="button">
+            {{ 'templates.contact.form.send' | t }}
+          </button>
+        </div>
+      {%- endform -%}
+    </div>
+    <!-- End Rounded Container -->
+  </div>
+</div>
+
+<script>
+(function() {
+  let searchTimeout;
+  let currentProduct = {};
+
+  function getUrlParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  }
+
+  function updateProductDisplay(product) {
+    currentProduct = product;
+
+    const selectedProductDisplay = document.getElementById('selectedProductDisplay');
+    if (selectedProductDisplay) {
+      selectedProductDisplay.style.display = 'block';
+    }
+
+    const searchLabel = document.getElementById('productSearchLabel');
+    if (searchLabel) {
+      searchLabel.textContent = 'Change Product';
+    }
+
+    const searchInput = document.getElementById('productSearchInput');
+    if (searchInput) {
+      searchInput.placeholder = 'Search for a product...';
+    }
+
+    const titleElement = document.getElementById('quoteProductTitle');
+    const linkElement = document.getElementById('quoteProductLink');
+    const imageElement = document.getElementById('quoteProductImage');
+
+    if (titleElement) titleElement.textContent = product.title;
+    if (linkElement) linkElement.href = product.url;
+    if (imageElement) {
+      imageElement.src = product.image;
+      imageElement.alt = product.title;
+    }
+
+    const productField = document.getElementById('productInfoField');
+    const productIdField = document.getElementById('productIdField');
+    const variantIdField = document.getElementById('variantIdField');
+    const productUrlField = document.getElementById('productUrlField');
+
+    if (productField) productField.value = product.title;
+    if (productIdField) productIdField.value = product.id;
+    if (variantIdField) variantIdField.value = product.variantId || '';
+    if (productUrlField) productUrlField.value = product.url;
+
+    const commentField = document.getElementById('ContactForm-body');
+    if (commentField) {
+      commentField.value = `I would like to request a quote for:\n\nProduct: ${product.title}\n\nAdditional comments:\n`;
+    }
+  }
+
+  function searchProducts(query) {
+    if (!query || query.length < 1) {
+      document.getElementById('productSearchResults').classList.remove('active');
+      return;
+    }
+
+    const resultsContainer = document.getElementById('productSearchResults');
+    resultsContainer.innerHTML = '<div class="quote-search-loading">Searching...</div>';
+    resultsContainer.classList.add('active');
+
+    fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=8`)
+      .then(response => response.json())
+      .then(data => {
+        const products = data.resources.results.products || [];
+        
+        if (products.length === 0) {
+          resultsContainer.innerHTML = '<div class="quote-search-no-results">No products found</div>';
+          return;
+        }
+
+        // Build HTML with ONLY image and title - NO PRICE
+        let htmlContent = '';
+        products.forEach(product => {
+          htmlContent += '<div class="quote-search-item" data-product-id="' + product.id + '" data-product-url="' + product.url + '" data-product-title="' + product.title.replace(/"/g, '&quot;') + '" data-product-image="' + product.image + '">';
+          htmlContent += '<img src="' + product.image + '" alt="' + product.title.replace(/"/g, '&quot;') + '" class="quote-search-item-image" />';
+          htmlContent += '<div class="quote-search-item-info">';
+          htmlContent += '<div class="quote-search-item-title">' + product.title + '</div>';
+          htmlContent += '</div>';
+          htmlContent += '</div>';
+        });
+
+        resultsContainer.innerHTML = htmlContent;
+
+        // Remove any price elements that might have been injected
+        setTimeout(function() {
+          const allPriceElements = resultsContainer.querySelectorAll('[class*="price"]');
+          allPriceElements.forEach(function(el) {
+            el.remove();
+          });
+        }, 0);
+
+        // Add click handlers
+        resultsContainer.querySelectorAll('.quote-search-item').forEach(function(item) {
+          item.addEventListener('click', function() {
+            const selectedProduct = {
+              id: this.getAttribute('data-product-id'),
+              title: this.getAttribute('data-product-title'),
+              url: this.getAttribute('data-product-url'),
+              image: this.getAttribute('data-product-image')
+            };
+            
+            updateProductDisplay(selectedProduct);
+            resultsContainer.classList.remove('active');
+            document.getElementById('productSearchInput').value = '';
+          });
+        });
+      })
+      .catch(function(error) {
+        console.error('Search error:', error);
+        resultsContainer.innerHTML = '<div class="quote-search-no-results">Search error. Please try again.</div>';
+      });
+  }
+
+  const searchInput = document.getElementById('productSearchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(function() {
+        searchProducts(e.target.value);
+      }, 300);
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.quote-product-search')) {
+        document.getElementById('productSearchResults').classList.remove('active');
+      }
+    });
+  }
+
+  // Check for URL parameters
+  const productTitle = getUrlParameter('product');
+  const productId = getUrlParameter('product_id');
+  const productUrl = getUrlParameter('product_url');
+  const variantId = getUrlParameter('variant_id');
+
+  if (productTitle && productId) {
+    const productInfoBox = document.getElementById('quoteProductInfo');
+    const selectedProductDisplay = document.getElementById('selectedProductDisplay');
+    if (productInfoBox) {
+      productInfoBox.style.display = 'block';
+    }
+    if (selectedProductDisplay) {
+      selectedProductDisplay.style.display = 'block';
+    }
+
+    const titleElement = document.getElementById('quoteProductTitle');
+    if (titleElement) {
+      titleElement.textContent = decodeURIComponent(productTitle);
+    }
+
+    const linkElement = document.getElementById('quoteProductLink');
+    if (linkElement && productUrl) {
+      linkElement.href = productUrl;
+    }
+
+    if (productUrl) {
+      fetch(productUrl + '.js')
+        .then(function(response) { return response.json(); })
+        .then(function(product) {
+          const imageElement = document.getElementById('quoteProductImage');
+          if (imageElement && product.featured_image) {
+            imageElement.src = product.featured_image;
+            imageElement.alt = product.title;
+          }
+
+          currentProduct = {
+            id: productId,
+            title: decodeURIComponent(productTitle),
+            url: productUrl,
+            image: product.featured_image,
+            variantId: variantId
+          };
+        })
+        .catch(function(error) {
+          console.log('Could not load product image:', error);
+        });
+    }
+
+    const productField = document.getElementById('productInfoField');
+    const productIdField = document.getElementById('productIdField');
+    const variantIdField = document.getElementById('variantIdField');
+    const productUrlField = document.getElementById('productUrlField');
+
+    if (productField) productField.value = decodeURIComponent(productTitle);
+    if (productIdField) productIdField.value = productId;
+    if (variantIdField && variantId) variantIdField.value = variantId;
+    if (productUrlField && productUrl) productUrlField.value = productUrl;
+
+    const commentField = document.getElementById('ContactForm-body');
+    if (commentField && !commentField.value) {
+      commentField.value = 'I would like to request a quote for:\n\nProduct: ' + decodeURIComponent(productTitle) + '\n\nAdditional comments:\n';
+    }
+
+    const searchLabel = document.getElementById('productSearchLabel');
+    if (searchLabel) {
+      searchLabel.textContent = 'Change Product';
+    }
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.contact-form.name",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "t:sections.contact-form.settings.title.default",
+      "label": "t:sections.contact-form.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Heading alignment"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Input Field Styling"
+    },
+    {
+      "type": "color",
+      "id": "input_bg_color",
+      "label": "Input background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "input_text_color",
+      "label": "Input text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "input_outline_color",
+      "label": "Input outline color",
+      "default": "#d1d5db"
+    },
+    {
+      "type": "header",
+      "content": "Product Container Styling"
+    },
+    {
+      "type": "color",
+      "id": "product_container_bg_color",
+      "label": "Product container background color",
+      "default": "#f7f7f7"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.contact-form.presets.name"
+    }
+  ]
+}
+{% endschema %}

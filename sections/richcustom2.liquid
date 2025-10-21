@@ -1,0 +1,221 @@
+{{ 'section-reviews.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .reviews-section {
+    background-color: {{ section.settings.background_color }};
+  }
+
+  .reviews-stars {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    margin-bottom: 8px;
+  }
+
+  .reviews-stars svg {
+    width: 24px;
+    height: 24px;
+    fill: {{ section.settings.star_color }};
+  }
+
+  .reviews-rating {
+    font-size: 2rem;
+    font-weight: bold;
+    color: {{ section.settings.rating_color }};
+    margin-left: 12px;
+  }
+
+  .reviews-subtitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: {{ section.settings.subtitle_color }};
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .reviews-description {
+    font-size: 1rem;
+    color: {{ section.settings.text_color }};
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  .reviews-container {
+    text-align: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .reviews-bubble {
+    background: #f5f7fa;
+    border-radius: 16px;
+    padding: 40px 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  @media screen and (max-width: 749px) {
+    .reviews-bubble {
+      padding: 30px 20px;
+      margin: 0 15px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="reviews-section color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width section-{{ section.id }}-padding">
+    <div class="reviews-container">
+      <div class="reviews-bubble">
+        {%- if section.settings.show_stars -%}
+          <div class="reviews-stars">
+            {%- for i in (1..5) -%}
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            {%- endfor -%}
+            {%- if section.settings.rating != blank -%}
+              <span class="reviews-rating">{{ section.settings.rating }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.subtitle != blank -%}
+          <h3 class="reviews-subtitle">{{ section.settings.subtitle }}</h3>
+        {%- endif -%}
+
+        {%- if section.settings.description != blank -%}
+          <p class="reviews-description">{{ section.settings.description }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviews Section",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stars",
+      "default": true,
+      "label": "Show star rating"
+    },
+    {
+      "type": "text",
+      "id": "rating",
+      "default": "5.0",
+      "label": "Rating number",
+      "info": "Display rating number next to stars"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "default": "Average Rating from 500+ Reviews",
+      "label": "Subtitle"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "default": "Join hundreds of satisfied customers who trust CleanDetail Pro for their interior car cleaning needs",
+      "label": "Description"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "default": "#e8eef2",
+      "label": "Background color"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "default": "#ff8c00",
+      "label": "Star color"
+    },
+    {
+      "type": "color",
+      "id": "rating_color",
+      "default": "#2c5282",
+      "label": "Rating number color"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "default": "#2c5282",
+      "label": "Subtitle color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#4a5568",
+      "label": "Description text color"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews Section"
+    }
+  ]
+}
+{% endschema %}

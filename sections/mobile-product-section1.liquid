@@ -1,0 +1,818 @@
+<div class="mobile-section-1" data-section="{{ section.id }}">
+  {{ 'mobile-section-1.css' | asset_url | stylesheet_tag }}
+
+  {%- style -%}
+    /* Hide section on desktop by default */
+    @media screen and (min-width: 750px) {
+      .mobile-section-1 {
+        display: none;
+      }
+    }
+
+    .mobile-section-1 {
+      background: {{ section.settings.section_background_color }};
+      outline: none;
+    }
+
+    .mobile-header-content {
+      padding: 12px 16px;
+      background: {{ section.settings.section_background_color }};
+    }
+
+    /* Logo and Reviews Block */
+    .mobile-logo-reviews {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .mobile-logo-section {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .mobile-vendor-logo {
+      width: {{ section.settings.logo_size }}px;
+      height: {{ section.settings.logo_size }}px;
+      min-width: {{ section.settings.logo_size }}px;
+      min-height: {{ section.settings.logo_size }}px;
+      max-width: {{ section.settings.logo_size }}px;
+      max-height: {{ section.settings.logo_size }}px;
+      border-radius: 50%;
+      object-fit: contain;
+      object-position: center;
+      border: 1px solid #e5e5e5;
+      flex-shrink: 0;
+      display: block;
+      padding: {{ section.settings.logo_padding }}px;
+      background: #fff;
+      box-sizing: border-box;
+    }
+
+    .mobile-brand-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f1111;
+    }
+
+    .mobile-reviews-section {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mobile-second-logo {
+      max-width: 150px;
+      height: auto;
+      flex-shrink: 0;
+    }
+
+    .mobile-reviews-image {
+      max-width: 100px;
+      height: auto;
+    }
+
+    .mobile-rating-number {
+      font-size: 16px;
+      font-weight: 400;
+      color: #0f1111;
+    }
+
+    .mobile-rating-stars {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .mobile-rating-stars .star {
+      color: #ffa41c;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .mobile-rating-stars .star.empty {
+      color: #d5d9d9;
+    }
+
+    .mobile-rating-count {
+      color: #007185;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    /* Product Title */
+    .mobile-product-title {
+      font-size: {{ section.settings.title_font_size }}px;
+      line-height: 1.4;
+      margin-bottom: 8px;
+      font-weight: 400;
+      color: #0f1111;
+    }
+
+    /* Badge */
+    .mobile-badge {
+      display: inline-block;
+      background: #232f3e;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    /* Social Proof */
+    .mobile-social-proof {
+      font-weight: 700;
+      font-size: 14px;
+      margin-top: 8px;
+      color: #0f1111;
+    }
+
+    .mobile-social-proof span {
+      font-weight: 400;
+      color: #565959;
+    }
+
+    /* Media Gallery */
+    .mobile-media-wrapper {
+      position: relative;
+      width: 100%;
+      background: {{ section.settings.gallery_background_color }};
+      overflow: hidden;
+      padding: 0 8px;
+      outline: none;
+    }
+
+    .mobile-media-gallery {
+      position: relative;
+      width: 100%;
+      display: flex;
+      gap: 12px;
+      transition: transform 0.3s ease-in-out;
+      outline: none;
+    }
+
+    .mobile-media-image,
+    .mobile-media-video-wrapper,
+    .mobile-media-model-wrapper {
+      min-width: calc(100% - 40px);
+      width: calc(100% - 40px);
+      height: auto;
+      flex-shrink: 0;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .mobile-media-image {
+      display: block;
+      outline: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .mobile-media-video-wrapper,
+    .mobile-media-model-wrapper {
+      width: 100%;
+    }
+
+    .mobile-media-video-wrapper video,
+    .mobile-media-video-wrapper iframe {
+      width: 100%;
+      height: auto;
+    }
+
+    /* Navigation Arrows */
+    .mobile-nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #d5d9d9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.2s;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .mobile-nav-arrow:hover {
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .mobile-nav-arrow:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+
+    .mobile-nav-arrow.disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .mobile-nav-arrow-left {
+      left: 16px;
+    }
+
+    .mobile-nav-arrow-right {
+      right: 16px;
+    }
+
+    .mobile-nav-arrow svg {
+      width: 24px;
+      height: 24px;
+      fill: #0f1111;
+    }
+
+    /* Media Controls - Dots */
+    .mobile-media-controls {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .mobile-media-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.4);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .mobile-media-dot.active {
+      background: rgba(0, 0, 0, 0.8);
+      width: 10px;
+    }
+
+    /* Action Buttons - Wishlist & Share */
+    .mobile-action-buttons {
+      display: none;
+    }
+
+    .mobile-action-btn {
+      display: none;
+    }
+
+    /* Video Button */
+    .mobile-video-btn {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #007185;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .mobile-video-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: #fff;
+    }
+
+    /* Image Zoom Modal */
+    .mobile-image-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .mobile-image-modal.active {
+      display: flex;
+    }
+
+    .mobile-image-modal img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 0;
+    }
+
+    .mobile-modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10000;
+    }
+
+    .mobile-modal-close svg {
+      width: 24px;
+      height: 24px;
+      fill: #0f1111;
+    }
+
+    .mobile-media-image {
+      cursor: pointer;
+    }
+  {%- endstyle -%}
+
+  <div class="mobile-header-content">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'logo_and_reviews' -%}
+          <div class="mobile-logo-reviews" {{ block.shopify_attributes }}>
+            <div class="mobile-logo-section">
+              {%- if block.settings.logo != blank -%}
+                <img 
+                  src="{{ block.settings.logo | image_url: width: 240 }}" 
+                  alt="{{ product.vendor | default: shop.name }}"
+                  class="mobile-vendor-logo"
+                  loading="eager"
+                  width="{{ section.settings.logo_size }}"
+                  height="{{ section.settings.logo_size }}"
+                >
+              {%- elsif product.vendor != blank -%}
+                <div class="mobile-brand-name">{{ product.vendor }}</div>
+              {%- endif -%}
+            </div>
+            
+            {%- if block.settings.second_logo != blank -%}
+              <div class="mobile-reviews-section">
+                <img 
+                  src="{{ block.settings.second_logo | image_url: width: 300 }}" 
+                  alt="Second logo"
+                  class="mobile-second-logo"
+                  loading="eager"
+                >
+              </div>
+            {%- elsif block.settings.reviews_image != blank -%}
+              <div class="mobile-reviews-section">
+                <img 
+                  src="{{ block.settings.reviews_image | image_url: width: 200 }}" 
+                  alt="Reviews"
+                  class="mobile-reviews-image"
+                  loading="eager"
+                >
+              </div>
+            {%- elsif product.metafields.reviews.rating.value != blank -%}
+              <div class="mobile-reviews-section">
+                <span class="mobile-rating-number">{{ product.metafields.reviews.rating.value.rating | round: 1 }}</span>
+                <div class="mobile-rating-stars">
+                  {%- assign rating = product.metafields.reviews.rating.value.rating -%}
+                  {%- assign full_stars = rating | floor -%}
+                  {%- assign decimal = rating | modulo: 1 -%}
+                  
+                  {%- for i in (1..full_stars) -%}
+                    <span class="star">★</span>
+                  {%- endfor -%}
+                  
+                  {%- if decimal >= 0.25 and decimal < 0.75 -%}
+                    <span class="star">☆</span>
+                  {%- elsif decimal >= 0.75 -%}
+                    {%- assign full_stars = full_stars | plus: 1 -%}
+                    <span class="star">★</span>
+                  {%- endif -%}
+                  
+                  {%- assign total_stars = full_stars -%}
+                  {%- if decimal >= 0.25 and decimal < 0.75 -%}
+                    {%- assign total_stars = total_stars | plus: 1 -%}
+                  {%- endif -%}
+                  
+                  {%- assign empty_stars = 5 | minus: total_stars -%}
+                  {%- for i in (1..empty_stars) -%}
+                    <span class="star empty">★</span>
+                  {%- endfor -%}
+                </div>
+                <a href="#reviews" class="mobile-rating-count">({{ product.metafields.reviews.rating_count | default: 0 | number_with_delimiter }})</a>
+              </div>
+            {%- endif -%}
+          </div>
+
+        {%- when 'title' -%}
+          <h1 class="mobile-product-title" {{ block.shopify_attributes }}>
+            {{ product.title | escape }}
+          </h1>
+
+        {%- when 'badge' -%}
+          {%- if block.settings.badge_text != blank -%}
+            <span class="mobile-badge" {{ block.shopify_attributes }}>
+              {{ block.settings.badge_text }}
+            </span>
+          {%- endif -%}
+
+        {%- when 'social_proof' -%}
+          {%- if block.settings.social_proof_text != blank -%}
+            <div class="mobile-social-proof" {{ block.shopify_attributes }}>
+              {%- assign parts = block.settings.social_proof_text | split: ' ' -%}
+              {{ parts[0] }} <span>{{ block.settings.social_proof_text | remove_first: parts[0] }}</span>
+            </div>
+          {%- endif -%}
+
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} Media Gallery Section {%- endcomment -%}
+  <div class="mobile-media-wrapper">
+    {%- comment -%} Left Arrow {%- endcomment -%}
+    {%- if product.media.size > 1 -%}
+      <button class="mobile-nav-arrow mobile-nav-arrow-left disabled" aria-label="Previous image" id="nav-left-{{ section.id }}">
+        <svg viewBox="0 0 24 24">
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+      </button>
+    {%- endif -%}
+
+    <div class="mobile-media-gallery" id="mobile-gallery-{{ section.id }}">
+      {%- if product.media.size > 0 -%}
+        {%- for media in product.media limit: 5 -%}
+          {%- case media.media_type -%}
+            {%- when 'image' -%}
+              <img 
+                src="{{ media | image_url: width: 800 }}" 
+                alt="{{ media.alt | escape }}"
+                class="mobile-media-image"
+                data-index="{{ forloop.index0 }}"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              >
+            {%- when 'video' or 'external_video' -%}
+              <div class="mobile-media-video-wrapper" data-index="{{ forloop.index0 }}">
+                {{ media | media_tag: image_size: "800x", autoplay: false, loop: false, controls: true }}
+              </div>
+            {%- when 'model' -%}
+              <div class="mobile-media-model-wrapper" data-index="{{ forloop.index0 }}">
+                {{ media | media_tag: image_size: "800x" }}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      {%- else -%}
+        <img 
+          src="{{ 'product-1.png' | asset_url }}" 
+          alt="{{ product.title | escape }}"
+          class="mobile-media-image"
+          loading="eager"
+        >
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Right Arrow {%- endcomment -%}
+    {%- if product.media.size > 1 -%}
+      <button class="mobile-nav-arrow mobile-nav-arrow-right" aria-label="Next image" id="nav-right-{{ section.id }}">
+        <svg viewBox="0 0 24 24">
+          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+        </svg>
+      </button>
+    {%- endif -%}
+
+    {%- comment -%} Video Button {%- endcomment -%}
+    {%- assign video_media = product.media | where: "media_type", "video" -%}
+    {%- assign external_video_media = product.media | where: "media_type", "external_video" -%}
+    {%- if video_media.size > 0 or external_video_media.size > 0 -%}
+      <button class="mobile-video-btn" aria-label="Play video">
+        <svg viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </button>
+    {%- endif -%}
+
+    {%- comment -%} Media Dots Navigation {%- endcomment -%}
+    {%- if product.media.size > 1 -%}
+      <div class="mobile-media-controls">
+        {%- for media in product.media limit: 5 -%}
+          <button 
+            class="mobile-media-dot {% if forloop.first %}active{% endif %}" 
+            data-index="{{ forloop.index0 }}"
+            aria-label="View image {{ forloop.index }}"
+          ></button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Image Zoom Modal {%- endcomment -%}
+  <div class="mobile-image-modal" id="image-modal-{{ section.id }}">
+    <button class="mobile-modal-close" aria-label="Close" id="modal-close-{{ section.id }}">
+      <svg viewBox="0 0 24 24">
+        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+      </svg>
+    </button>
+    <img src="" alt="" id="modal-image-{{ section.id }}">
+  </div>
+</div>
+
+<script>
+(function() {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  function init() {
+    const gallery = document.getElementById('mobile-gallery-{{ section.id }}');
+    if (!gallery) return;
+
+    const wrapper = gallery.parentElement;
+    const dots = wrapper.querySelectorAll('.mobile-media-dot');
+    const navLeft = document.getElementById('nav-left-{{ section.id }}');
+    const navRight = document.getElementById('nav-right-{{ section.id }}');
+    const totalImages = gallery.querySelectorAll('.mobile-media-image, .mobile-media-video-wrapper, .mobile-media-model-wrapper').length;
+    let currentIndex = 0;
+
+    // Image zoom modal elements
+    const modal = document.getElementById('image-modal-{{ section.id }}');
+    const modalImage = document.getElementById('modal-image-{{ section.id }}');
+    const modalClose = document.getElementById('modal-close-{{ section.id }}');
+    const allImages = gallery.querySelectorAll('.mobile-media-image');
+
+    function updateArrowStates() {
+      if (!navLeft || !navRight) return;
+      
+      if (currentIndex === 0) {
+        navLeft.classList.add('disabled');
+      } else {
+        navLeft.classList.remove('disabled');
+      }
+      
+      if (currentIndex === totalImages - 1) {
+        navRight.classList.add('disabled');
+      } else {
+        navRight.classList.remove('disabled');
+      }
+    }
+
+    function showImage(index) {
+      const imageWidth = gallery.querySelector('.mobile-media-image, .mobile-media-video-wrapper, .mobile-media-model-wrapper').offsetWidth;
+      const gap = 12;
+      const wrapperWidth = wrapper.offsetWidth;
+      const padding = 8;
+      
+      let slideDistance;
+      
+      if (index === 0) {
+        slideDistance = 0;
+      } else if (index === totalImages - 1) {
+        slideDistance = (imageWidth + gap) * index + padding + (imageWidth - wrapperWidth + padding * 2);
+      } else {
+        const centerOffset = (wrapperWidth - imageWidth) / 2 - padding;
+        slideDistance = (imageWidth + gap) * index - centerOffset;
+      }
+      
+      gallery.style.transform = `translateX(-${slideDistance}px)`;
+      
+      dots.forEach((dot, i) => {
+        if (i === index) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+      
+      currentIndex = index;
+      updateArrowStates();
+    }
+
+    // Navigation arrow handlers
+    if (navLeft) {
+      navLeft.addEventListener('click', function() {
+        if (currentIndex > 0) {
+          showImage(currentIndex - 1);
+        }
+      });
+    }
+
+    if (navRight) {
+      navRight.addEventListener('click', function() {
+        if (currentIndex < totalImages - 1) {
+          showImage(currentIndex + 1);
+        }
+      });
+    }
+
+    // Dot click handlers
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', function(e) {
+        e.preventDefault();
+        showImage(index);
+      });
+    });
+
+    // Video button handler
+    const videoBtn = wrapper.querySelector('.mobile-video-btn');
+    if (videoBtn) {
+      videoBtn.addEventListener('click', function() {
+        const firstVideo = gallery.querySelector('.mobile-media-video-wrapper');
+        if (firstVideo) {
+          const videoIndex = parseInt(firstVideo.getAttribute('data-index'));
+          showImage(videoIndex);
+        }
+      });
+    }
+
+    // Initialize arrow states
+    updateArrowStates();
+
+    // Image click handlers for zoom
+    allImages.forEach(function(img) {
+      img.addEventListener('click', function() {
+        if (modal && modalImage) {
+          modalImage.src = this.src;
+          modalImage.alt = this.alt;
+          modal.classList.add('active');
+          document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+      });
+    });
+
+    // Close modal handlers
+    if (modalClose) {
+      modalClose.addEventListener('click', function() {
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+      });
+    }
+
+    if (modal) {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          modal.classList.remove('active');
+          document.body.style.overflow = ''; // Restore scrolling
+        }
+      });
+    }
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Mobile Section 1",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "This section displays the product title, logo, reviews, and main image - VISIBLE ON MOBILE ONLY (hidden on screens 750px and wider)."
+    },
+    {
+      "type": "color",
+      "id": "section_background_color",
+      "label": "Section Background Color",
+      "default": "#ffffff",
+      "info": "Choose the background color for the header section (logo, title, badge, social proof)"
+    },
+    {
+      "type": "range",
+      "id": "logo_size",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo Size",
+      "default": 60,
+      "info": "Adjust the size of the primary logo circle"
+    },
+    {
+      "type": "range",
+      "id": "logo_padding",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo Padding",
+      "default": 8,
+      "info": "Add space inside the circle to shrink the logo image"
+    },
+    {
+      "type": "color",
+      "id": "gallery_background_color",
+      "label": "Gallery Background Color",
+      "default": "#ffffff",
+      "info": "Choose the background color behind the product images"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Title Font Size",
+      "default": 16,
+      "info": "Adjust the font size of the product title"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo_and_reviews",
+      "name": "Logo and Reviews",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Primary Logo (Left)",
+          "info": "Upload your brand/vendor logo. Will be displayed in a circular bubble. Recommended size: 120x120px square image."
+        },
+        {
+          "type": "image_picker",
+          "id": "second_logo",
+          "label": "Second Logo (Right)",
+          "info": "Upload a second logo for the right side. Will be displayed in a circular bubble. Recommended size: 120x120px square image. This takes priority over reviews image and star ratings."
+        },
+        {
+          "type": "image_picker",
+          "id": "reviews_image",
+          "label": "Reviews Image (Optional)",
+          "info": "Upload a custom reviews/rating image (e.g., '4.4 ★★★★☆ (11,444)'). Recommended size: 200x50px. Only displays if no second logo is uploaded."
+        },
+        {
+          "type": "paragraph",
+          "content": "Display priority: Second Logo → Reviews Image → Automatic Star Ratings (from metafields)"
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "Product Title",
+      "limit": 1
+    },
+    {
+      "type": "badge",
+      "name": "Badge",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge Text",
+          "default": "Overall Pick",
+          "info": "Example: 'Overall Pick', 'Best Seller', 'Amazon's Choice'"
+        }
+      ]
+    },
+    {
+      "type": "social_proof",
+      "name": "Social Proof",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "social_proof_text",
+          "label": "Social Proof Text",
+          "default": "30K+ bought in past month",
+          "info": "Example: '30K+ bought in past month' or '5K+ viewed in last week'"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mobile Section 1",
+      "blocks": [
+        {
+          "type": "logo_and_reviews"
+        },
+        {
+          "type": "title"
+        },
+        {
+          "type": "badge"
+        },
+        {
+          "type": "social_proof"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

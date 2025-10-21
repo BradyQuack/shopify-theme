@@ -1,0 +1,1007 @@
+{% comment %}
+  CustomerReviews Section
+  Responsive grid on desktop, swipeable carousel on mobile/tablet
+{% endcomment %}
+
+<div
+  id="CustomerReviews-{{ section.id }}"
+  class="customer-reviews color-{{ section.settings.color_scheme }}"
+  style="
+    --customer-reviews-bg-color: {{ section.settings.background_color }};
+    --customer-reviews-padding-top: {{ section.settings.padding_top }}px;
+    --customer-reviews-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+  {% if request.visual_preview_mode %}
+    data-shopify-visual-preview
+  {% endif %}
+>
+  <div class="customer-reviews__container {{ section.settings.container_width }}">
+    
+    <!-- Header Content -->
+    <div class="customer-reviews__header">
+      
+      <!-- Badge -->
+      {% if section.settings.show_badge and section.settings.badge_text != blank %}
+        <div class="customer-reviews__badge" style="
+          background-color: {{ section.settings.badge_bg_color }};
+          color: {{ section.settings.badge_text_color }};
+        ">
+          {{ section.settings.badge_text }}
+        </div>
+      {% endif %}
+
+      <!-- Main Heading -->
+      {% if section.settings.heading != blank %}
+        <h2 class="customer-reviews__heading" style="
+          font-size: {{ section.settings.heading_size }}px;
+          font-weight: {{ section.settings.heading_weight }};
+          color: {{ section.settings.heading_color }};
+        ">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      <!-- Description -->
+      {% if section.settings.description != blank %}
+        <p class="customer-reviews__description" style="
+          font-size: {{ section.settings.description_size }}px;
+          color: {{ section.settings.description_color }};
+        ">
+          {{ section.settings.description }}
+        </p>
+      {% endif %}
+
+    </div>
+
+    <!-- Carousel Wrapper (Mobile/Tablet) -->
+    <div class="customer-reviews__carousel-wrapper">
+      
+      <!-- Reviews Grid/Track -->
+      <div class="customer-reviews__grid" id="carousel-track-{{ section.id }}">
+        {% for block in section.blocks %}
+          {% if block.type == 'review' %}
+            <div class="customer-reviews__card" {{ block.shopify_attributes }}>
+              
+              <!-- Star Rating -->
+              <div class="customer-reviews__rating">
+                {% assign rating = block.settings.rating | plus: 0 %}
+                {% for i in (1..5) %}
+                  <span class="customer-reviews__star {% if i <= rating %}customer-reviews__star--filled{% endif %}" style="color: {{ section.settings.star_color }};">
+                    ★
+                  </span>
+                {% endfor %}
+              </div>
+
+              <!-- Quote Icon -->
+              <div class="customer-reviews__quote-icon" style="color: {{ section.settings.quote_icon_color }};">
+                {{ section.settings.quote_icon }}
+              </div>
+
+              <!-- Review Text -->
+              {% if block.settings.review_text != blank %}
+                <blockquote class="customer-reviews__text" style="
+                  font-size: {{ section.settings.review_text_size }}px;
+                  color: {{ section.settings.review_text_color }};
+                ">
+                  "{{ block.settings.review_text }}"
+                </blockquote>
+              {% endif %}
+
+              <!-- Customer Info -->
+              <div class="customer-reviews__customer-info">
+                
+                <div class="customer-reviews__customer-details">
+                  {% if block.settings.customer_name != blank %}
+                    <div class="customer-reviews__customer-name" style="
+                      font-weight: {{ section.settings.name_weight }};
+                      color: {{ section.settings.name_color }};
+                    ">
+                      {{ block.settings.customer_name }}
+                    </div>
+                  {% endif %}
+                  
+                  {% if block.settings.customer_location != blank %}
+                    <div class="customer-reviews__customer-location" style="
+                      color: {{ section.settings.location_color }};
+                    ">
+                      {{ block.settings.customer_location }}
+                    </div>
+                  {% endif %}
+                </div>
+
+                {% if block.settings.service_type != blank %}
+                  <div class="customer-reviews__service-type" style="
+                    background-color: {{ section.settings.service_badge_bg }};
+                    color: {{ section.settings.service_badge_color }};
+                  ">
+                    {{ block.settings.service_type }}
+                  </div>
+                {% endif %}
+
+              </div>
+
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <!-- Navigation Buttons (Mobile/Tablet Only) -->
+      <div class="customer-reviews__nav">
+        <button 
+          class="customer-reviews__nav-btn customer-reviews__nav-btn--prev" 
+          id="prev-btn-{{ section.id }}"
+          aria-label="Previous review"
+          style="
+            background-color: {{ section.settings.button_bg_color }};
+            color: {{ section.settings.button_text_color }};
+          "
+        >
+          ‹
+        </button>
+        <button 
+          class="customer-reviews__nav-btn customer-reviews__nav-btn--next" 
+          id="next-btn-{{ section.id }}"
+          aria-label="Next review"
+          style="
+            background-color: {{ section.settings.button_bg_color }};
+            color: {{ section.settings.button_text_color }};
+          "
+        >
+          ›
+        </button>
+      </div>
+
+      <!-- Dots Indicator (Mobile/Tablet Only) -->
+      <div class="customer-reviews__dots" id="dots-{{ section.id }}">
+        {% for block in section.blocks %}
+          {% if block.type == 'review' %}
+            <span 
+              class="customer-reviews__dot {% if forloop.first %}customer-reviews__dot--active{% endif %}" 
+              data-index="{{ forloop.index0 }}"
+              style="background-color: {{ section.settings.dot_color }};"
+            ></span>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+{% stylesheet %}
+  .customer-reviews {
+    background-color: var(--customer-reviews-bg-color);
+    padding: var(--customer-reviews-padding-top) 0 var(--customer-reviews-padding-bottom);
+  }
+
+  .customer-reviews__container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .customer-reviews__container.full-width {
+    max-width: 100%;
+  }
+
+  .customer-reviews__header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .customer-reviews__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+
+  .customer-reviews__heading {
+    margin: 0 0 16px 0;
+    font-family: var(--font-heading-family);
+    line-height: 1.3;
+  }
+
+  .customer-reviews__description {
+    margin: 0;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Carousel Wrapper */
+  .customer-reviews__carousel-wrapper {
+    position: relative;
+  }
+
+  .customer-reviews__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .customer-reviews__card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .customer-reviews__card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .customer-reviews__rating {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 16px;
+  }
+
+  .customer-reviews__star {
+    font-size: 16px;
+    color: #d1d5db;
+    transition: color 0.2s ease;
+  }
+
+  .customer-reviews__star--filled {
+    color: inherit;
+  }
+
+  .customer-reviews__quote-icon {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    font-size: 24px;
+    opacity: 0.3;
+  }
+
+  .customer-reviews__text {
+    margin: 0 0 24px 0;
+    font-style: italic;
+    line-height: 1.6;
+    border: none;
+    padding: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .customer-reviews__customer-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+  }
+
+  .customer-reviews__customer-details {
+    flex: 1;
+  }
+
+  .customer-reviews__customer-name {
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+
+  .customer-reviews__customer-location {
+    font-size: 13px;
+    opacity: 0.7;
+  }
+
+  .customer-reviews__service-type {
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  /* Navigation & Dots - Hidden on Desktop */
+  .customer-reviews__nav,
+  .customer-reviews__dots {
+    display: none;
+  }
+
+  /* Tablet Responsive (769px - 1024px) */
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    .customer-reviews__carousel-wrapper {
+      overflow: hidden;
+      padding-bottom: 60px;
+    }
+
+    .customer-reviews__grid {
+      display: flex;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      touch-action: pan-y pinch-zoom;
+      gap: 20px;
+    }
+
+    .customer-reviews__card {
+      min-width: calc(50% - 10px);
+      width: calc(50% - 10px);
+      flex-shrink: 0;
+    }
+
+    /* Show Navigation */
+    .customer-reviews__nav {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 24px;
+    }
+
+    .customer-reviews__nav-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+      font-weight: 300;
+    }
+
+    .customer-reviews__nav-btn:active {
+      transform: scale(0.95);
+    }
+
+    .customer-reviews__nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Show Dots */
+    .customer-reviews__dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .customer-reviews__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      opacity: 0.3;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .customer-reviews__dot--active {
+      opacity: 1;
+      width: 24px;
+      border-radius: 4px;
+    }
+  }
+
+  /* Mobile Responsive (max 768px) */
+  @media screen and (max-width: 768px) {
+    .customer-reviews__header {
+      margin-bottom: 40px;
+    }
+
+    .customer-reviews__carousel-wrapper {
+      overflow: hidden;
+      padding-bottom: 60px;
+    }
+
+    .customer-reviews__grid {
+      display: flex;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      touch-action: pan-y pinch-zoom;
+      gap: 0;
+    }
+
+    .customer-reviews__card {
+      min-width: 100%;
+      width: 100%;
+      padding: 20px;
+      flex-shrink: 0;
+      box-sizing: border-box;
+    }
+
+    .customer-reviews__heading {
+      font-size: clamp(24px, 6vw, 32px) !important;
+    }
+
+    .customer-reviews__description {
+      font-size: 15px !important;
+    }
+
+    .customer-reviews__customer-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .customer-reviews__text {
+      -webkit-line-clamp: 6;
+    }
+
+    /* Show Navigation */
+    .customer-reviews__nav {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 24px;
+    }
+
+    .customer-reviews__nav-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+      font-weight: 300;
+    }
+
+    .customer-reviews__nav-btn:active {
+      transform: scale(0.95);
+    }
+
+    .customer-reviews__nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Show Dots */
+    .customer-reviews__dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .customer-reviews__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      opacity: 0.3;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .customer-reviews__dot--active {
+      opacity: 1;
+      width: 24px;
+      border-radius: 4px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .customer-reviews__container {
+      padding: 0 16px;
+    }
+  }
+{% endstylesheet %}
+
+<script>
+  (function() {
+    const sectionId = '{{ section.id }}';
+    const track = document.getElementById('carousel-track-' + sectionId);
+    const prevBtn = document.getElementById('prev-btn-' + sectionId);
+    const nextBtn = document.getElementById('next-btn-' + sectionId);
+    const dotsContainer = document.getElementById('dots-' + sectionId);
+    
+    if (!track || !prevBtn || !nextBtn || !dotsContainer) return;
+    
+    const cards = track.querySelectorAll('.customer-reviews__card');
+    const dots = dotsContainer.querySelectorAll('.customer-reviews__dot');
+    
+    let currentIndex = 0;
+    let startX = 0;
+    let isDragging = false;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+
+    function getCardsPerView() {
+      const width = window.innerWidth;
+      if (width > 1024) return 3;
+      if (width > 768) return 2;
+      return 1;
+    }
+
+    function isCarouselActive() {
+      return window.innerWidth <= 1024;
+    }
+
+    function updateCarousel() {
+      if (!isCarouselActive()) {
+        track.style.transform = '';
+        return;
+      }
+
+      const cardsPerView = getCardsPerView();
+      const maxIndex = Math.max(0, cards.length - cardsPerView);
+      
+      if (currentIndex > maxIndex) {
+        currentIndex = maxIndex;
+      }
+      
+      const cardWidth = cards[0].offsetWidth;
+      const gap = cardsPerView === 1 ? 0 : 20;
+      const offset = currentIndex * (cardWidth + gap);
+      
+      track.style.transform = `translateX(-${offset}px)`;
+      
+      // Update dots
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('customer-reviews__dot--active', index === currentIndex);
+      });
+      
+      // Update button states
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex >= maxIndex;
+    }
+
+    function goToSlide(index) {
+      if (!isCarouselActive()) return;
+      
+      const cardsPerView = getCardsPerView();
+      const maxIndex = Math.max(0, cards.length - cardsPerView);
+      currentIndex = Math.max(0, Math.min(index, maxIndex));
+      updateCarousel();
+    }
+
+    // Button navigation
+    prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+    nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+    // Dot navigation
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const index = parseInt(dot.getAttribute('data-index'));
+        goToSlide(index);
+      });
+    });
+
+    // Touch/swipe support
+    track.addEventListener('touchstart', (e) => {
+      if (!isCarouselActive()) return;
+      startX = e.touches[0].clientX;
+      isDragging = true;
+      track.style.transition = 'none';
+    });
+
+    track.addEventListener('touchmove', (e) => {
+      if (!isDragging || !isCarouselActive()) return;
+      const currentX = e.touches[0].clientX;
+      const diff = currentX - startX;
+      currentTranslate = prevTranslate + diff;
+    });
+
+    track.addEventListener('touchend', () => {
+      if (!isCarouselActive()) return;
+      isDragging = false;
+      track.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+      
+      const movedBy = currentTranslate - prevTranslate;
+      
+      if (movedBy < -50 && currentIndex < cards.length - getCardsPerView()) {
+        goToSlide(currentIndex + 1);
+      } else if (movedBy > 50 && currentIndex > 0) {
+        goToSlide(currentIndex - 1);
+      } else {
+        updateCarousel();
+      }
+      
+      prevTranslate = currentTranslate;
+    });
+
+    // Window resize handler
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        updateCarousel();
+      }, 250);
+    });
+
+    // Initialize
+    updateCarousel();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Customer Reviews",
+  "tag": "section",
+  "class": "customer-reviews-wrapper section-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout & Container"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page Width"
+        },
+        {
+          "value": "full-width",
+          "label": "Full Width"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Styling"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f8f9fa"
+    },
+    {
+      "type": "header",
+      "content": "Badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Customer Reviews"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Badge Background Color",
+      "default": "#007bff"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Header Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1a2332"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "min": 24,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Weight",
+      "options": [
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra Bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Don't just take our word for it. Here's what our satisfied customers have to say about our professional interior detailing services."
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description Size",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Review Card Styling"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star Rating Color",
+      "default": "#fbbf24"
+    },
+    {
+      "type": "text",
+      "id": "quote_icon",
+      "label": "Quote Icon",
+      "default": "\""
+    },
+    {
+      "type": "color",
+      "id": "quote_icon_color",
+      "label": "Quote Icon Color",
+      "default": "#e5e7eb"
+    },
+    {
+      "type": "range",
+      "id": "review_text_size",
+      "label": "Review Text Size",
+      "min": 14,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "review_text_color",
+      "label": "Review Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "select",
+      "id": "name_weight",
+      "label": "Customer Name Weight",
+      "options": [
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "color",
+      "id": "name_color",
+      "label": "Customer Name Color",
+      "default": "#1a2332"
+    },
+    {
+      "type": "color",
+      "id": "location_color",
+      "label": "Location Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "service_badge_bg",
+      "label": "Service Badge Background",
+      "default": "#e3f2fd"
+    },
+    {
+      "type": "color",
+      "id": "service_badge_color",
+      "label": "Service Badge Text Color",
+      "default": "#1976d2"
+    },
+    {
+      "type": "header",
+      "content": "Carousel Controls (Mobile/Tablet)"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#007bff"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "dot_color",
+      "label": "Dot Indicator Color",
+      "default": "#007bff"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 20,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 20,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Customer Review",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "Absolutely incredible work! My car's interior looks better than when I first bought it. The leather seats are like new and every surface is spotless. Highly recommend CleanDetail Pro!"
+        },
+        {
+          "type": "text",
+          "id": "customer_name",
+          "label": "Customer Name",
+          "default": "Sarah Johnson"
+        },
+        {
+          "type": "text",
+          "id": "customer_location",
+          "label": "Customer Location",
+          "default": "Downtown"
+        },
+        {
+          "type": "text",
+          "id": "service_type",
+          "label": "Service Type",
+          "default": "Complete Interior Package"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer Reviews",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "Absolutely incredible work! My car's interior looks better than when I first bought it. The leather seats are like new and every surface is spotless. Highly recommend CleanDetail Pro!",
+            "customer_name": "Sarah Johnson",
+            "customer_location": "Downtown",
+            "service_type": "Complete Interior Package"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "Professional, punctual, and thorough. They transformed my messy car interior into something I'm proud to drive. The attention to detail is unmatched. Will definitely be a repeat customer.",
+            "customer_name": "Michael Chen",
+            "customer_location": "Westside",
+            "service_type": "Carpet & Leather Cleaning"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "I was amazed at how they got old stains out of my carpets that I thought were permanent. The whole interior smells fresh and clean. Worth every penny!",
+            "customer_name": "Emily Rodriguez",
+            "customer_location": "Eastside",
+            "service_type": "Stain Removal Specialist"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "Exceptional service from start to finish. They were able to fit me in same-day and the results exceeded my expectations. My dashboard and controls look brand new.",
+            "customer_name": "David Thompson",
+            "customer_location": "Suburbs",
+            "service_type": "Dashboard & Controls Detail"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "The team at CleanDetail Pro is fantastic. They're professional, use top-quality products, and really care about customer satisfaction. My car interior has never looked better!",
+            "customer_name": "Jessica Miller",
+            "customer_location": "City Center",
+            "service_type": "Full Interior Restoration"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "I've tried other detailing services, but none compare to CleanDetail Pro. They pay attention to every little detail and use the best equipment. Absolutely worth the investment.",
+            "customer_name": "Robert Wilson",
+            "customer_location": "North District",
+            "service_type": "Luxury Vehicle Detail"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

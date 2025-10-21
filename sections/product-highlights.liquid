@@ -1,0 +1,629 @@
+{% comment %}
+  Product Highlights Section
+  Displays three columns of product deals with customizable titles
+{% endcomment %}
+
+<style>
+  .product-highlights {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.background_color }};
+  }
+
+  .product-highlights__container {
+    max-width: {{ section.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .product-highlights__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .product-highlights__column {
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 24px;
+  }
+
+  .product-highlights__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .product-highlights__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+    margin: 0;
+  }
+
+  .product-highlights__view-all {
+    color: #0066c0;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .product-highlights__view-all:hover {
+    text-decoration: underline;
+  }
+
+  .product-highlights__items {
+    display: grid;
+    gap: 20px;
+  }
+
+  .product-highlights__items--grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .product-card {
+    display: flex;
+    gap: 16px;
+    padding: 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .product-card--grid {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .product-card:hover {
+    background-color: #f7f7f7;
+  }
+
+  .product-card__image-wrapper {
+    position: relative;
+    flex-shrink: 0;
+    width: 120px;
+    height: 120px;
+  }
+
+  .product-card--grid .product-card__image-wrapper {
+    width: 100%;
+    height: 150px;
+  }
+
+  .product-card__badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #00703c;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 0 0 4px 0;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .product-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+  }
+
+  .product-card__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .product-card__name {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #0066c0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .product-card--grid .product-card__name {
+    min-height: 40px;
+  }
+
+  .product-card__price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #000;
+    display: block;
+  }
+
+  .product-card__compare-price {
+    font-size: 14px;
+    color: #565959;
+    text-decoration: line-through;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .product-card__rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+  }
+
+  .product-card__stars {
+    color: #ffa724;
+  }
+
+  .product-card__reviews {
+    color: #0066c0;
+  }
+
+
+
+  @media (max-width: 768px) {
+    .product-highlights__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .product-highlights__column--mobile-hidden {
+      display: none;
+    }
+
+    .product-highlights__items--grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .product-card {
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .product-card__image-wrapper {
+      width: 200px;
+      height: 200px;
+    }
+
+    .product-card--grid .product-card__image-wrapper {
+      width: 100%;
+      height: 140px;
+    }
+  }
+</style>
+
+<div class="product-highlights">
+  <div class="product-highlights__container">
+    <div class="product-highlights__grid">
+      
+      {% comment %} Column 1 {% endcomment %}
+      {% if section.blocks.size > 0 %}
+      <div class="product-highlights__column {% unless section.settings.show_column1_mobile %}product-highlights__column--mobile-hidden{% endunless %}">
+        <div class="product-highlights__header">
+          <h2 class="product-highlights__title">{{ section.settings.column1_title }}</h2>
+          {% if section.settings.column1_link != blank %}
+            <a href="{{ section.settings.column1_link }}" class="product-highlights__view-all">
+              {{ section.settings.view_all_text }}
+            </a>
+          {% endif %}
+        </div>
+        <div class="product-highlights__items product-highlights__items--grid">
+          {% for block in section.blocks %}
+            {% if block.settings.column == 'column1' and block.settings.product != blank %}
+              {% assign product = block.settings.product %}
+              {% assign savings_percentage = 0 %}
+              {% if product.compare_at_price > product.price %}
+                {% assign savings = product.compare_at_price | minus: product.price %}
+                {% assign savings_percentage = savings | times: 100.0 | divided_by: product.compare_at_price | round %}
+              {% endif %}
+              <a href="{{ product.url }}" class="product-card product-card--grid" {{ block.shopify_attributes }}>
+                <div class="product-card__image-wrapper">
+                  {% if block.settings.show_badge and savings_percentage > 0 %}
+                    <span class="product-card__badge">Save {{ savings_percentage }}%</span>
+                  {% endif %}
+                  {% if product.featured_image %}
+                    <img src="{{ product.featured_image | image_url: width: 240 }}" 
+                         alt="{{ product.featured_image.alt | escape }}"
+                         class="product-card__image"
+                         loading="lazy">
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'product-card__image' }}
+                  {% endif %}
+                </div>
+                <div class="product-card__info">
+                  <div class="product-card__name">{{ product.title }}</div>
+                  <div>
+                    <span class="product-card__price">{{ product.price | money }}</span>
+                    {% if product.compare_at_price > product.price %}
+                      <span class="product-card__compare-price">{{ product.compare_at_price | money }}</span>
+                    {% endif %}
+                  </div>
+                  {% if block.settings.show_rating %}
+                    <div class="product-card__rating">
+                      <span class="product-card__stars">★★★★☆</span>
+                      <span class="product-card__reviews">{{ block.settings.review_count }}</span>
+                    </div>
+                  {% endif %}
+                </div>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% comment %} Column 2 {% endcomment %}
+      {% if section.blocks.size > 0 %}
+      <div class="product-highlights__column {% unless section.settings.show_column2_mobile %}product-highlights__column--mobile-hidden{% endunless %}">
+        <div class="product-highlights__header">
+          <h2 class="product-highlights__title">{{ section.settings.column2_title }}</h2>
+          {% if section.settings.column2_link != blank %}
+            <a href="{{ section.settings.column2_link }}" class="product-highlights__view-all">
+              {{ section.settings.view_all_text }}
+            </a>
+          {% endif %}
+        </div>
+        <div class="product-highlights__items">
+          {% for block in section.blocks %}
+            {% if block.settings.column == 'column2' and block.settings.product != blank %}
+              {% assign product = block.settings.product %}
+              {% assign savings_percentage = 0 %}
+              {% if product.compare_at_price > product.price %}
+                {% assign savings = product.compare_at_price | minus: product.price %}
+                {% assign savings_percentage = savings | times: 100.0 | divided_by: product.compare_at_price | round %}
+              {% endif %}
+              <div class="product-card" {{ block.shopify_attributes }}>
+                <div class="product-card__image-wrapper">
+                  {% if block.settings.show_badge and savings_percentage > 0 %}
+                    <span class="product-card__badge">Save {{ savings_percentage }}%</span>
+                  {% endif %}
+                  {% if product.featured_image %}
+                    <img src="{{ product.featured_image | image_url: width: 240 }}" 
+                         alt="{{ product.featured_image.alt | escape }}"
+                         class="product-card__image"
+                         loading="lazy">
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'product-card__image' }}
+                  {% endif %}
+                </div>
+                <div class="product-card__info">
+                  <div class="product-card__name">{{ product.title }}</div>
+                  <div>
+                    <span class="product-card__price">{{ product.price | money }}</span>
+                    {% if product.compare_at_price > product.price %}
+                      <span class="product-card__compare-price">{{ product.compare_at_price | money }}</span>
+                    {% endif %}
+                  </div>
+                  {% if block.settings.show_rating %}
+                    <div class="product-card__rating">
+                      <span class="product-card__stars">★★★★☆</span>
+                      <span class="product-card__reviews">{{ block.settings.review_count }}</span>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% comment %} Column 3 {% endcomment %}
+      {% if section.blocks.size > 0 %}
+      <div class="product-highlights__column {% unless section.settings.show_column3_mobile %}product-highlights__column--mobile-hidden{% endunless %}">
+        <div class="product-highlights__header">
+          <h2 class="product-highlights__title">{{ section.settings.column3_title }}</h2>
+          {% if section.settings.column3_link != blank %}
+            <a href="{{ section.settings.column3_link }}" class="product-highlights__view-all">
+              {{ section.settings.view_all_text }}
+            </a>
+          {% endif %}
+        </div>
+        <div class="product-highlights__items product-highlights__items--grid">
+          {% for block in section.blocks %}
+            {% if block.settings.column == 'column3' and block.settings.product != blank %}
+              {% assign product = block.settings.product %}
+              {% assign savings_percentage = 0 %}
+              {% if product.compare_at_price > product.price %}
+                {% assign savings = product.compare_at_price | minus: product.price %}
+                {% assign savings_percentage = savings | times: 100.0 | divided_by: product.compare_at_price | round %}
+              {% endif %}
+              <a href="{{ product.url }}" class="product-card product-card--grid" {{ block.shopify_attributes }}>
+                <div class="product-card__image-wrapper">
+                  {% if block.settings.show_badge and savings_percentage > 0 %}
+                    <span class="product-card__badge">Save {{ savings_percentage }}%</span>
+                  {% endif %}
+                  {% if product.featured_image %}
+                    <img src="{{ product.featured_image | image_url: width: 240 }}" 
+                         alt="{{ product.featured_image.alt | escape }}"
+                         class="product-card__image"
+                         loading="lazy">
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'product-card__image' }}
+                  {% endif %}
+                </div>
+                <div class="product-card__info">
+                  <div class="product-card__name">{{ product.title }}</div>
+                  <div>
+                    <span class="product-card__price">{{ product.price | money }}</span>
+                    {% if product.compare_at_price > product.price %}
+                      <span class="product-card__compare-price">{{ product.compare_at_price | money }}</span>
+                    {% endif %}
+                  </div>
+                  {% if block.settings.show_rating %}
+                    <div class="product-card__rating">
+                      <span class="product-card__stars">★★★★☆</span>
+                      <span class="product-card__reviews">{{ block.settings.review_count }}</span>
+                    </div>
+                  {% endif %}
+                </div>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Product Highlights",
+  "tag": "section",
+  "class": "section-product-highlights",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Column 1 Settings"
+    },
+    {
+      "type": "text",
+      "id": "column1_title",
+      "label": "Column 1 Title",
+      "default": "Top Trending Deals"
+    },
+    {
+      "type": "url",
+      "id": "column1_link",
+      "label": "Column 1 View All Link"
+    },
+    {
+      "type": "header",
+      "content": "Column 2 Settings"
+    },
+    {
+      "type": "text",
+      "id": "column2_title",
+      "label": "Column 2 Title",
+      "default": "Last Chance Offers"
+    },
+    {
+      "type": "url",
+      "id": "column2_link",
+      "label": "Column 2 View All Link"
+    },
+    {
+      "type": "header",
+      "content": "Column 3 Settings"
+    },
+    {
+      "type": "text",
+      "id": "column3_title",
+      "label": "Column 3 Title",
+      "default": "We Picked These Deals for You"
+    },
+    {
+      "type": "url",
+      "id": "column3_link",
+      "label": "Column 3 View All Link"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Visibility"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_column1_mobile",
+      "label": "Show Top Trending Deals on Mobile",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_column2_mobile",
+      "label": "Show Last Chance Offers on Mobile",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_column3_mobile",
+      "label": "Show We Picked These Deals on Mobile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Container Width",
+      "default": 1400
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View All Text",
+      "default": "View All"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "select",
+          "id": "column",
+          "label": "Column",
+          "options": [
+            {
+              "value": "column1",
+              "label": "Column 1"
+            },
+            {
+              "value": "column2",
+              "label": "Column 2"
+            },
+            {
+              "value": "column3",
+              "label": "Column 3"
+            }
+          ],
+          "default": "column1"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_badge",
+          "label": "Show Badge",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rating",
+          "label": "Show Rating",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "review_count",
+          "label": "Review Count",
+          "default": "1.2k"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Product Highlights",
+      "blocks": [
+        {
+          "type": "product",
+          "settings": {
+            "column": "column1",
+            "show_badge": true
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "column": "column1",
+            "show_badge": true
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "column": "column1",
+            "show_badge": true
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "column": "column1",
+            "show_badge": true
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "column": "column2",
+            "show_badge": true
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "column": "column2",
+            "show_badge": true
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "column": "column3",
+            "show_badge": true
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "column": "column3",
+            "show_badge": true
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "column": "column3",
+            "show_badge": true
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "column": "column3",
+            "show_badge": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

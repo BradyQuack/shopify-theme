@@ -1,0 +1,291 @@
+{% comment %}
+  File: sections/section-wholesale-apply.liquid
+  Preset: "Wholesale Apply Form"
+  Purpose: Centered page heading/subheading + carded contact form (3 fields) using basic Shopify contact form
+{% endcomment %}
+
+<section id="wh-apply" class="wh-apply-{{ section.id }}" aria-labelledby="wh-apply-heading-{{ section.id }}" style="--wa-max: {{ section.settings.max_width }}px; --wa-bg: {{ section.settings.background_color }}; --wa-head: {{ section.settings.heading_color }}; --wa-body: {{ section.settings.body_color }}; --wa-card-bg: {{ section.settings.card_bg }}; --wa-card-border: {{ section.settings.card_border }}; --wa-btn-bg: {{ section.settings.button_bg }}; --wa-btn-bg-hover: {{ section.settings.button_bg_hover }}; --wa-btn-text: {{ section.settings.button_text }};">
+  <span id="apply" tabindex="-1" aria-hidden="true"></span>  <!-- extra alias id -->
+<div class="wa{{ section.id }}-outer" style="max-width: var(--wa-max); margin: 0 auto; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+
+    <style>
+
+      /* Center capped content */
+      .wa{{ section.id }}-outer{
+        padding-inline: 24px;            /* gentle gutters on larger screens too */
+      }
+
+      /* Phone tweaks: cap widths + tighter gutters */
+      @media (max-width: 767px){
+        .wa{{ section.id }}-outer{
+          padding-inline: 16px;          /* stop the card from kissing the viewport edge */
+        }
+        .wa{{ section.id }}-card{
+          max-width: 580px;              /* comfortable cap on small screens */
+          width: 90%;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .wa{{ section.id }}-subtitle{
+          max-width: min(90vw, 36ch);    /* keep subheading from running full width */
+        }
+      }
+
+      /* ================== Scoped Styles: Wholesale Apply ================== */
+      .wh-apply-{{ section.id }}{ background: var(--wa-bg); }
+      .wh-apply-{{ section.id }} *{ box-sizing: border-box; }
+
+      .wa{{ section.id }}-header{ text-align:center; margin:0 auto 32px; color: var(--wa-body); }
+      .wa{{ section.id }}-title{
+        color: var(--wa-head);
+        font-weight: 800;
+        letter-spacing: .01em;
+        line-height: 1.15;
+        margin: 0 0 10px;
+        font-size: clamp(30px, 4vw, 44px);
+      }
+      .wa{{ section.id }}-subtitle{
+        margin: 0 auto;
+        max-width: 720px;
+        opacity: .85;
+        line-height: 1.6;
+        font-size: 16px;
+      }
+
+      .wa{{ section.id }}-card{
+        max-width: 380px; margin: 0 auto;
+        background: var(--wa-card-bg);
+        border: 1px solid var(--wa-card-border);
+        border-radius: {{ section.settings.card_radius }}px;
+        padding: 22px 22px 18px;
+        {% case section.settings.shadow_intensity %}
+          {% when 'sm' %} box-shadow: 0 1px 2px rgba(16,24,40,.06);
+          {% when 'md' %} box-shadow: 0 6px 18px rgba(16,24,40,.08);
+          {% else %} box-shadow: none;
+        {% endcase %}
+      }
+      /* Make in-page jumps land below sticky header */
+      .wh-apply-{{ section.id }}{ scroll-margin-top: 96px; }  /* adjust if your header is taller */
+
+      .wa{{ section.id }}-card h3{
+        text-align:center; margin: 6px 0 14px;
+        font-size: 20px; font-weight: 800; color: var(--wa-head);
+      }
+
+      .wa{{ section.id }}-alert{
+        border-radius: 10px; padding: 10px 12px; margin: 4px 0 14px; font-size: 14px;
+      }
+      .wa{{ section.id }}-alert--success{ background:#E7F6EF; color:#135C3F; border:1px solid #CFEBDD; }
+      .wa{{ section.id }}-alert--error{ background:#FFE8E8; color:#7A1620; border:1px solid #FFC5C5; }
+
+      .wa{{ section.id }}-field{ margin-bottom: 16px; }
+      .wa{{ section.id }}-label{ display:block; font-weight: 600; font-size:14px; margin: 0 0 6px; color: var(--wa-head); }
+      .wa{{ section.id }}-input{
+        width: 100%; height: 50px; padding: 12px 14px;
+        border: 1px solid #DDE6EE; border-radius: 10px;
+        background: #fff; color: var(--wa-body); outline: none;
+        transition: border-color .15s ease, box-shadow .15s ease;
+      }
+      .wa{{ section.id }}-input::placeholder{ color: rgba(0,0,0,.5); }
+      .wa{{ section.id }}-input:focus{
+        border-color: #84B4FF;
+        box-shadow: 0 0 0 3px rgba(17,99,255,.18);
+      }
+      .wa{{ section.id }}-input.error{ border-color:#E53E3E; box-shadow: 0 0 0 3px rgba(229,62,62,.18); }
+
+      .wa{{ section.id }}-button{
+        width: 100%; height: 50px; border:none; border-radius: 10px;
+        background: var(--wa-btn-bg); color: var(--wa-btn-text);
+        font-weight: 700; cursor: pointer; transition: background .15s ease, transform .05s ease;
+      }
+      .wa{{ section.id }}-button:hover{ background: var(--wa-btn-bg-hover); }
+      .wa{{ section.id }}-button:active{ transform: translateY(1px); }
+      .wa{{ section.id }}-button:focus-visible{
+        outline: 2px solid #1E3A8A; outline-offset: 2px;
+      }
+
+      .wa{{ section.id }}-fineprint{
+        text-align: center; font-size: 12.5px; opacity: .7; margin-top: 12px;
+      }
+
+      @media (prefers-reduced-motion: reduce){
+        .wa{{ section.id }}-button{ transition: none; }
+        .wa{{ section.id }}-input{ transition: none; }
+      }
+    </style>
+
+    <header class="wa{{ section.id }}-header">
+      <h2 id="wh-apply-heading-{{ section.id }}" class="wa{{ section.id }}-title">
+        {{ section.settings.page_heading | default: 'Apply for Wholesale Pricing' }}
+      </h2>
+      {%- if section.settings.page_subheading != blank -%}
+        <p class="wa{{ section.id }}-subtitle">{{ section.settings.page_subheading }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="wa{{ section.id }}-card">
+      <h3>{{ section.settings.card_heading | default: 'Get Started Today' }}</h3>
+
+      {% form 'contact' %}
+        {% if form.posted_successfully? %}
+          <div class="wa{{ section.id }}-alert wa{{ section.id }}-alert--success" role="status" tabindex="-1">
+            Thanks! We've received your application and will reach out within 24 hours.
+          </div>
+        {% elsif form.errors %}
+          <div class="wa{{ section.id }}-alert wa{{ section.id }}-alert--error" role="alert" tabindex="-1">
+            Please correct the highlighted fields below.
+          </div>
+          <ul class="visually-hidden">
+            {% for field in form.errors %}
+              <li>{{ field | first }} {{ field | last }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <input type="hidden" name="contact[tags]" value="{{ section.settings.tag_submission }}">
+
+        <div class="wa{{ section.id }}-field">
+          <label class="wa{{ section.id }}-label" for="wa{{ section.id }}-name">
+            {{ section.settings.label_name | default: 'Point of Contact *' }}
+          </label>
+          <input
+            class="wa{{ section.id }}-input"
+            type="text"
+            id="wa{{ section.id }}-name"
+            name="contact[Point of Contact]"
+            placeholder="{{ section.settings.ph_name | default: 'Enter your point of contact' }}"
+            required
+            autocomplete="name">
+        </div>
+
+        <div class="wa{{ section.id }}-field">
+          <label class="wa{{ section.id }}-label" for="wa{{ section.id }}-business">
+            {{ section.settings.label_business | default: 'Business Name *' }}
+          </label>
+          <input
+            class="wa{{ section.id }}-input"
+            type="text"
+            id="wa{{ section.id }}-business"
+            name="contact[Business Name]"
+            placeholder="{{ section.settings.ph_business | default: 'Enter your business name' }}"
+            required
+            autocomplete="organization">
+        </div>
+
+        <div class="wa{{ section.id }}-field">
+          <label class="wa{{ section.id }}-label" for="wa{{ section.id }}-email">
+            {{ section.settings.label_email | default: 'Business Email *' }}
+          </label>
+          <input
+            class="wa{{ section.id }}-input {% if form.errors contains 'email' %}error{% endif %}"
+            type="email"
+            id="wa{{ section.id }}-email"
+            name="contact[email]"
+            placeholder="{{ section.settings.ph_email | default: 'Enter your business email' }}"
+            required
+            autocapitalize="off" spellcheck="false"
+            {% if form.errors contains 'email' %} aria-invalid="true" aria-describedby="wa{{ section.id }}-email-error"{% endif %}>
+          {% if form.errors contains 'email' %}
+            <small id="wa{{ section.id }}-email-error" class="visually-hidden">
+              {{ form.errors.translated_fields.email }} {{ form.errors.messages.email }}
+            </small>
+          {% endif %}
+        </div>
+
+        <button type="submit" class="wa{{ section.id }}-button">
+          {{ section.settings.button_label | default: 'Submit Application' }}
+        </button>
+
+        {% if section.settings.fine_print != blank %}
+          <p class="wa{{ section.id }}-fineprint">{{ section.settings.fine_print }}</p>
+        {% endif %}
+      {% endform %}
+    </div>
+  </div>
+  <script>
+  document.addEventListener('click', function (e) {
+    const link = e.target.closest('a[href^="#wh-apply"], a[href^="#apply"]');
+    if (!link) return;
+
+    const target =
+      document.getElementById('wh-apply') ||
+      document.getElementById('apply');
+
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Optional: focus for accessibility without jumping again
+      if (target.setAttribute) target.setAttribute('tabindex','-1');
+      if (target.focus) target.focus({ preventScroll: true });
+    }
+  });
+
+  // If you arrive with a hash already in the URL, scroll on load.
+  document.addEventListener('DOMContentLoaded', function () {
+    if (location.hash === '#wh-apply' || location.hash === '#apply') {
+      const target =
+        document.getElementById('wh-apply') ||
+        document.getElementById('apply');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+  </script>
+
+
+</section>
+
+{% schema %}
+{
+  "name": "Wholesale Apply Form",
+  "tag": "section",
+  "class": "section-wholesale-apply",
+  "settings": [
+    { "type": "text", "id": "page_heading", "label": "Page heading", "default": "Apply for Wholesale Pricing" },
+    { "type": "textarea", "id": "page_subheading", "label": "Page subheading", "default": "Fill out the form below and we’ll get back to you within 24 hours" },
+    
+
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 900, "max": 1400, "step": 10, "default": 1200 },
+    { "type": "range", "id": "padding_top", "label": "Padding top (px)", "min": 0, "max": 140, "step": 2, "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom (px)", "min": 0, "max": 140, "step": 2, "default": 72 },
+
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#F8FAFC" },
+    { "type": "color", "id": "heading_color", "label": "Heading color" },
+    { "type": "color", "id": "body_color", "label": "Body text color" },
+
+    { "type": "text", "id": "card_heading", "label": "Card heading", "default": "Get Started Today" },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#FFFFFF" },
+    { "type": "color", "id": "card_border", "label": "Card border", "default": "#E6EEF5" },
+    { "type": "range", "id": "card_radius", "label": "Card corner radius (px)", "min": 8, "max": 24, "step": 1, "default": 14 },
+    {
+      "type": "select",
+      "id": "shadow_intensity",
+      "label": "Card shadow",
+      "default": "md",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "sm", "label": "Small" },
+        { "value": "md", "label": "Medium" }
+      ]
+    },
+
+    { "type": "text", "id": "label_name", "label": "Label: name", "default": "Point of Contact *" },
+    { "type": "text", "id": "ph_name", "label": "Placeholder: name", "default": "Enter your full name" },
+    { "type": "text", "id": "label_business", "label": "Label: business", "default": "Business Name *" },
+    { "type": "text", "id": "ph_business", "label": "Placeholder: business", "default": "Enter your business name" },
+    { "type": "text", "id": "label_email", "label": "Label: email", "default": "Business Email *" },
+    { "type": "text", "id": "ph_email", "label": "Placeholder: email", "default": "Enter your business email" },
+
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Submit Application" },
+    { "type": "color", "id": "button_bg", "label": "Button background", "default": "#1163FF" },
+    { "type": "color", "id": "button_bg_hover", "label": "Button hover background", "default": "#0A56E6" },
+    { "type": "color", "id": "button_text", "label": "Button text color", "default": "#FFFFFF" },
+
+    { "type": "textarea", "id": "fine_print", "label": "Fine print", "default": "By submitting this form, you agree to be contacted about wholesale pricing opportunities." },
+
+    { "type": "text", "id": "tag_submission", "label": "Submission tag", "default": "wholesale-apply" }
+  ],
+  "presets": [
+    { "name": "Wholesale Apply Form" }
+  ]
+}
+{% endschema %}

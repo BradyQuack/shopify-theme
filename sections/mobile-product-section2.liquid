@@ -1,0 +1,1218 @@
+{% comment %}
+  Mobile Product Section with Amazon-style Layout - Dynamic Price Updates
+{% endcomment %}
+
+<div class="mobile-product-section" data-section-id="{{ section.id }}">
+  <style>
+    .mobile-product-section {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      padding: 24px;
+      background: #fff;
+      max-width: {{ section.settings.desktop_max_width }}px;
+      margin: 0 auto;
+      display: none;
+    }
+
+    .discount-price-container {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .discount-badge {
+      background: #CC0C39;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 28px;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .price-container {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .price-symbol {
+      font-size: 28px;
+      font-weight: 400;
+    }
+
+    .price-whole {
+      font-size: 56px;
+      font-weight: 400;
+    }
+
+    .price-decimal {
+      font-size: 28px;
+      font-weight: 400;
+      vertical-align: super;
+    }
+
+    .price-unit {
+      font-size: 18px;
+      color: #565959;
+      margin-left: 4px;
+    }
+
+    .list-price {
+      color: #565959;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .list-price-value {
+      text-decoration: line-through;
+      margin-right: 4px;
+    }
+
+    .prime-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .prime-logo {
+      color: #00A8E1;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .prime-checkmark {
+      color: #00A8E1;
+      font-size: 24px;
+    }
+
+    .coupon-box {
+      border: 2px dashed #C45500;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .coupon-checkbox {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #565959;
+      border-radius: 4px;
+    }
+
+    .coupon-text {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .coupon-price {
+      font-weight: bold;
+    }
+
+    .coupon-terms {
+      color: #007185;
+      font-size: 16px;
+      text-decoration: none;
+      margin-left: 8px;
+    }
+
+    .delivery-info {
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+
+    .delivery-time {
+      font-weight: bold;
+    }
+
+    .delivery-countdown {
+      color: #007600;
+      font-weight: 600;
+    }
+
+    .stock-status {
+      color: #007600;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .variant-section {
+      margin-bottom: 28px;
+    }
+
+    .variant-label {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .variant-selected {
+      font-weight: bold;
+    }
+
+    .variant-carousel-wrapper {
+      position: relative;
+      width: 100%;
+      margin-bottom: 28px;
+    }
+
+    .variant-carousel {
+      display: grid;
+      grid-template-columns: repeat({{ section.settings.variant_columns }}, 1fr);
+      gap: 12px;
+    }
+
+    .variant-carousel-item {
+      width: 100%;
+    }
+
+    .variant-option {
+      border: 1px solid #D5D9D9;
+      border-radius: 8px;
+      padding: 0;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .variant-option:hover {
+      border-color: #007185;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .variant-option.selected {
+      border-color: #007185;
+      border-width: 2px;
+      box-shadow: 0 0 0 2px rgba(0, 113, 133, 0.1);
+    }
+
+    .variant-header {
+      background: #F7F7F7;
+      padding: 10px 12px;
+      border-bottom: 1px solid #E7E7E7;
+    }
+
+    .variant-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0F1111;
+      margin: 0;
+    }
+
+    .variant-body {
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .variant-price-display {
+      font-size: 18px;
+      font-weight: 400;
+      color: #0F1111;
+    }
+
+    .variant-compare-price {
+      font-size: 14px;
+      color: #565959;
+      text-decoration: line-through;
+    }
+
+    .variant-stock-status {
+      font-size: 12px;
+      color: #007600;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .variant-grid {
+      display: grid;
+      grid-template-columns: repeat({{ section.settings.variant_columns }}, 1fr);
+      gap: 12px;
+    }
+
+    .add-to-cart-btn {
+      width: 100%;
+      background: {{ section.settings.add_to_cart_bg_color }};
+      border: 1px solid {{ section.settings.add_to_cart_bg_color }};
+      color: {{ section.settings.add_to_cart_text_color }};
+      padding: 16px;
+      border-radius: 28px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 16px;
+      transition: all 0.2s;
+    }
+
+    .add-to-cart-btn:hover {
+      filter: brightness(0.92);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .add-to-cart-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .buy-now-btn {
+      width: 100%;
+      background: {{ section.settings.buy_now_bg_color }};
+      border: 1px solid {{ section.settings.buy_now_bg_color }};
+      color: {{ section.settings.buy_now_text_color }};
+      padding: 16px;
+      border-radius: 28px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 28px;
+      transition: all 0.2s;
+    }
+
+    .buy-now-btn:hover {
+      filter: brightness(0.92);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .buy-now-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .rfq-btn {
+      width: 100%;
+      background: {{ section.settings.rfq_bg_color }};
+      border: 1px solid {{ section.settings.rfq_border_color }};
+      color: {{ section.settings.rfq_text_color }};
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 15px;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .rfq-btn:hover {
+      background: {{ section.settings.rfq_hover_bg_color }};
+    }
+
+    .product-details {
+      font-size: 16px;
+      color: #565959;
+    }
+
+    .detail-row {
+      display: flex;
+      padding: 12px 0;
+      border-bottom: 1px solid #E7E7E7;
+    }
+
+    .detail-label {
+      flex: 0 0 40%;
+      font-weight: 400;
+    }
+
+    .detail-value {
+      flex: 1;
+      color: #007185;
+      font-weight: 400;
+      text-decoration: none;
+    }
+
+    .detail-value.no-link {
+      color: #0F1111;
+    }
+
+    .chevron-icon {
+      font-size: 22px;
+      color: #565959;
+    }
+
+    @media screen and (max-width: 749px) {
+      .mobile-product-section {
+        display: block;
+      }
+    }
+  </style>
+
+  {%- assign current_variant = product.selected_or_first_available_variant -%}
+
+  {% unless section.settings.hide_price %}
+  <div id="price-display-{{ section.id }}">
+    {% if current_variant.compare_at_price > current_variant.price %}
+      {%- assign discount_amount = current_variant.compare_at_price | minus: current_variant.price -%}
+      {%- assign discount_percent = discount_amount | times: 100 | divided_by: current_variant.compare_at_price -%}
+      
+      <div class="discount-price-container">
+        <div class="discount-badge" id="discount-badge-{{ section.id }}">-{{ discount_percent }}%</div>
+        <div class="price-container">
+          <span class="price-symbol">$</span>
+          {%- assign price_whole = current_variant.price | divided_by: 100 -%}
+          {%- assign price_decimal = current_variant.price | modulo: 100 -%}
+          <span class="price-whole" id="price-whole-{{ section.id }}">{{ price_whole }}</span>
+          <span class="price-decimal" id="price-decimal-{{ section.id }}">.{{ price_decimal | prepend: '00' | slice: -2, 2 }}</span>
+        </div>
+      </div>
+    {% else %}
+      <div class="price-container" style="margin-bottom: 12px;">
+        <span class="price-symbol">$</span>
+        {%- assign price_whole = current_variant.price | divided_by: 100 -%}
+        {%- assign price_decimal = current_variant.price | modulo: 100 -%}
+        <span class="price-whole" id="price-whole-{{ section.id }}">{{ price_whole }}</span>
+        <span class="price-decimal" id="price-decimal-{{ section.id }}">.{{ price_decimal | prepend: '00' | slice: -2, 2 }}</span>
+      </div>
+    {% endif %}
+
+    <div id="list-price-{{ section.id }}" {% unless current_variant.compare_at_price > current_variant.price %}style="display: none;"{% endunless %}>
+      {% if current_variant.compare_at_price > current_variant.price %}
+        <div class="list-price">
+          List Price: <span class="list-price-value" id="list-price-value-{{ section.id }}">{{ current_variant.compare_at_price | money }}</span>
+          <span style="color: #565959;">ⓘ</span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endunless %}
+
+  {% unless section.settings.hide_price %}
+    {% if section.settings.show_prime_badge %}
+    <div class="prime-badge">
+      <span class="prime-checkmark">✓</span>
+      <span class="prime-logo">prime</span>
+      <span style="font-weight: bold;">Today</span>
+    </div>
+    {% endif %}
+  {% endunless %}
+
+  {% unless section.settings.hide_price %}
+  {% if section.settings.show_coupon and section.settings.coupon_price != blank %}
+    <div style="margin-bottom: 20px;">
+      <div class="coupon-box">
+        <div class="coupon-checkbox"></div>
+        <span class="coupon-text">Coupon price <span class="coupon-price">{{ section.settings.coupon_price }}</span></span>
+      </div>
+      <a href="#" class="coupon-terms">{{ section.settings.coupon_terms_text }}</a>
+    </div>
+  {% endif %}
+
+  {% if section.settings.show_delivery_info %}
+    <div class="delivery-info" id="delivery-info-{{ section.id }}">
+      <strong>FREE delivery</strong> <span class="delivery-time">{{ section.settings.delivery_time }}</span>. Order within <span class="delivery-countdown" id="countdown-{{ section.id }}">{{ section.settings.delivery_countdown }}</span>
+    </div>
+  {% endif %}
+  {% endunless %}
+
+  {% if section.settings.hide_price and section.settings.show_rfq_button %}
+    {% if section.settings.rfq_link != blank %}
+      <a href="{{ section.settings.rfq_link }}" class="rfq-btn" data-rfq-link-btn>
+        {{ section.settings.rfq_button_text }}
+      </a>
+    {% else %}
+      <button type="button" class="rfq-btn" id="rfq-btn-{{ section.id }}" data-rfq-btn>
+        {{ section.settings.rfq_button_text }}
+      </button>
+    {% endif %}
+  {% endif %}
+
+  <div id="stock-status-{{ section.id }}">
+    {% if current_variant.available %}
+      <div class="stock-status">{{ section.settings.stock_text }}</div>
+    {% else %}
+      <div class="stock-status" style="color: #B12704;">Out of Stock</div>
+    {% endif %}
+  </div>
+
+  {% if product.has_only_default_variant == false %}
+    {%- assign first_option = product.options_with_values.first -%}
+    
+    <div class="variant-section">
+      <div class="variant-label">
+        <span>{{ first_option.name }}: <span class="variant-selected" id="selected-variant-{{ section.id }}">{{ first_option.selected_value }}</span></span>
+        <span class="chevron-icon">⌃</span>
+      </div>
+      
+      <div class="variant-carousel-wrapper">
+        <div class="variant-carousel" id="variant-carousel-{{ section.id }}">
+          {% for value in first_option.values %}
+            {%- assign variant_for_option = null -%}
+            {%- for variant in product.variants -%}
+              {%- if variant.option1 == value or variant.option2 == value or variant.option3 == value -%}
+                {%- assign variant_for_option = variant -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+            
+            <div class="variant-carousel-item">
+              <div class="variant-option {% if value == first_option.selected_value %}selected{% endif %}" 
+                   data-variant-id="{{ variant_for_option.id }}"
+                   data-variant-price="{{ variant_for_option.price }}"
+                   data-variant-compare-price="{{ variant_for_option.compare_at_price }}"
+                   data-variant-available="{{ variant_for_option.available }}">
+                <div class="variant-header">
+                  <div class="variant-name">{{ value }}</div>
+                </div>
+                {% if variant_for_option %}
+                  <div class="variant-body">
+                    {% unless section.settings.hide_price %}
+                    <div class="variant-price-display">
+                      ${%- assign v_price_whole = variant_for_option.price | divided_by: 100 -%}
+                      {%- assign v_price_decimal = variant_for_option.price | modulo: 100 -%}
+                      {{ v_price_whole }}.{{ v_price_decimal | prepend: '00' | slice: -2, 2 }}
+                    </div>
+                    {% if variant_for_option.compare_at_price > variant_for_option.price %}
+                      <div class="variant-compare-price">
+                        ${%- assign v_compare_whole = variant_for_option.compare_at_price | divided_by: 100 -%}
+                        {%- assign v_compare_decimal = variant_for_option.compare_at_price | modulo: 100 -%}
+                        {{ v_compare_whole }}.{{ v_compare_decimal | prepend: '00' | slice: -2, 2 }}
+                      </div>
+                    {% endif %}
+                    {% endunless %}
+                    {% if section.settings.show_variant_stock and variant_for_option.available %}
+                      <div class="variant-stock-status">{{ section.settings.variant_stock_text }}</div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    {% if product.options_with_values.size > 1 %}
+      <div class="variant-section">
+        <div class="variant-label">
+          <span>Options:</span>
+          <span class="chevron-icon">⌃</span>
+        </div>
+        <div class="variant-grid">
+          {% for variant in product.variants %}
+            <div class="variant-option {% if variant.id == current_variant.id %}selected{% endif %}"
+                 data-variant-id="{{ variant.id }}"
+                 data-variant-price="{{ variant.price }}"
+                 data-variant-compare-price="{{ variant.compare_at_price }}"
+                 data-variant-available="{{ variant.available }}">
+              <div class="variant-name">{{ variant.title }}</div>
+              <div class="variant-price-info">
+                <span class="variant-current-price">${{ variant.price | divided_by: 100 }}<sup>{{ variant.price | modulo: 100 | prepend: '00' | slice: -2, 2 }}</sup></span>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  {% endif %}
+
+  {%- comment -%} ADD TO CART FORM {%- endcomment -%}
+  {% unless section.settings.hide_price %}
+  <form method="post" action="/cart/add" id="product-form-{{ section.id }}" accept-charset="UTF-8" enctype="multipart/form-data" data-product-form>
+    <input type="hidden" name="form_type" value="product">
+    <input type="hidden" name="utf8" value="✓">
+    <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id-input>
+    <input type="hidden" name="quantity" value="1">
+    
+    <button type="submit" name="add" class="add-to-cart-btn" {% unless current_variant.available %}disabled{% endunless %}>
+      {{ section.settings.add_to_cart_text }}
+    </button>
+  </form>
+  {% endunless %}
+
+  {%- comment -%} RFQ BUTTON IN PLACE OF ADD TO CART {%- endcomment -%}
+  {% if section.settings.hide_price and section.settings.show_rfq_button %}
+    {% if section.settings.rfq_link != blank %}
+      <a href="{{ section.settings.rfq_link }}" class="rfq-btn" data-rfq-link-btn-2>
+        {{ section.settings.rfq_button_text }}
+      </a>
+    {% else %}
+      <button type="button" class="rfq-btn" id="rfq-btn-2-{{ section.id }}" data-rfq-btn-2>
+        {{ section.settings.rfq_button_text }}
+      </button>
+    {% endif %}
+  {% endif %}
+
+  {%- comment -%} BUY NOW FORM {%- endcomment -%}
+  {% if section.settings.show_buy_now and section.settings.hide_price == false %}
+    <button type="button" class="buy-now-btn" id="buy-now-btn-{{ section.id }}" data-buy-now-btn {% unless current_variant.available %}disabled{% endunless %}>
+      {{ section.settings.buy_now_text }}
+    </button>
+  {% endif %}
+
+  <div class="product-details">
+    {% if section.settings.ships_from %}
+      <div class="detail-row">
+        <span class="detail-label">Ships from</span>
+        <span class="detail-value no-link">{{ section.settings.ships_from }}</span>
+      </div>
+    {% endif %}
+    {% if section.settings.sold_by %}
+      <div class="detail-row">
+        <span class="detail-label">Sold by</span>
+        <span class="detail-value">{{ section.settings.sold_by }}</span>
+      </div>
+    {% endif %}
+    {% if section.settings.returns_policy %}
+      <div class="detail-row">
+        <span class="detail-label">Returns</span>
+        {% if section.settings.returns_policy_url != blank %}
+          <a href="{{ section.settings.returns_policy_url }}" class="detail-value">{{ section.settings.returns_policy }}</a>
+        {% else %}
+          <span class="detail-value">{{ section.settings.returns_policy }}</span>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+(function() {
+  console.log('[Mobile Section 2] Script loaded');
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  function init() {
+    console.log('[Mobile Section 2] Init called');
+    
+    const section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    console.log('[Mobile Section 2] Section found:', section ? 'YES' : 'NO');
+    if (!section) return;
+
+    // Get form elements
+    const addToCartForm = section.querySelector('#product-form-{{ section.id }}');
+    const addToCartBtn = addToCartForm ? addToCartForm.querySelector('.add-to-cart-btn') : null;
+    const buyNowBtn = section.querySelector('#buy-now-btn-{{ section.id }}');
+    const rfqBtn = section.querySelector('#rfq-btn-{{ section.id }}');
+    const rfqBtn2 = section.querySelector('#rfq-btn-2-{{ section.id }}');
+    const rfqLinkBtn = section.querySelector('[data-rfq-link-btn]');
+    const rfqLinkBtn2 = section.querySelector('[data-rfq-link-btn-2]');
+    const variantInput = section.querySelector('[data-variant-id-input]');
+
+    // Product information
+    const productTitle = '{{ product.title | escape }}';
+    const productId = '{{ product.id }}';
+    const productUrl = window.location.origin + '{{ product.url }}';
+    const productImage = '{{ product.featured_image | image_url: width: 300 }}';
+
+    // Function to build RFQ URL with product info
+    function buildRFQUrl(baseUrl) {
+      const currentVariantId = variantInput ? variantInput.value : '{{ product.selected_or_first_available_variant.id }}';
+      
+      // Get selected variant name if available
+      const selectedVariantLabel = section.querySelector('#selected-variant-{{ section.id }}');
+      const variantName = selectedVariantLabel ? selectedVariantLabel.textContent : '';
+      
+      const params = new URLSearchParams({
+        product: productTitle,
+        product_id: productId,
+        product_url: productUrl,
+        variant_id: currentVariantId
+      });
+      
+      if (variantName) {
+        params.append('variant_name', variantName);
+      }
+      
+      return `${baseUrl}?${params.toString()}`;
+    }
+
+    // RFQ Button functionality (button version - opens email if no link)
+    if (rfqBtn) {
+      rfqBtn.addEventListener('click', function(e) {
+        const currentVariantId = variantInput ? variantInput.value : '{{ product.selected_or_first_available_variant.id }}';
+        const emailSubject = `Quote Request for ${productTitle}`;
+        const emailBody = `I would like to request a quote for:\n\nProduct: ${productTitle}\nProduct ID: ${productId}\nVariant ID: ${currentVariantId}\nProduct URL: ${productUrl}\n\nAdditional comments:\n`;
+        
+        window.location.href = 'mailto:{{ section.settings.rfq_email }}?subject=' + encodeURIComponent(emailSubject) + '&body=' + encodeURIComponent(emailBody);
+      });
+    }
+
+    // RFQ Button 2 functionality (second button in cart position)
+    if (rfqBtn2) {
+      rfqBtn2.addEventListener('click', function(e) {
+        const currentVariantId = variantInput ? variantInput.value : '{{ product.selected_or_first_available_variant.id }}';
+        const emailSubject = `Quote Request for ${productTitle}`;
+        const emailBody = `I would like to request a quote for:\n\nProduct: ${productTitle}\nProduct ID: ${productId}\nVariant ID: ${currentVariantId}\nProduct URL: ${productUrl}\n\nAdditional comments:\n`;
+        
+        window.location.href = 'mailto:{{ section.settings.rfq_email }}?subject=' + encodeURIComponent(emailSubject) + '&body=' + encodeURIComponent(emailBody);
+      });
+    }
+
+    // RFQ Link buttons - update href with product info
+    if (rfqLinkBtn) {
+      const baseUrl = rfqLinkBtn.getAttribute('href');
+      rfqLinkBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = buildRFQUrl(baseUrl);
+      });
+    }
+
+    if (rfqLinkBtn2) {
+      const baseUrl = rfqLinkBtn2.getAttribute('href');
+      rfqLinkBtn2.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = buildRFQUrl(baseUrl);
+      });
+    }
+
+    // Add to Cart functionality
+    if (addToCartForm && addToCartBtn) {
+      addToCartForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(addToCartForm);
+        const variantId = formData.get('id');
+        
+        console.log('[Add to Cart] Submitting variant:', variantId);
+        
+        addToCartBtn.disabled = true;
+        addToCartBtn.textContent = 'Adding...';
+        
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: variantId,
+            quantity: 1
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('[Add to Cart] Success:', data);
+          
+          // Show success message
+          addToCartBtn.textContent = '✓ Added!';
+          
+          // Trigger cart update event for cart drawer/notification
+          document.dispatchEvent(new CustomEvent('cart:refresh'));
+          
+          // Update cart count if element exists
+          fetch('/cart.js')
+            .then(response => response.json())
+            .then(cart => {
+              const cartCountElements = document.querySelectorAll('[data-cart-count], .cart-count');
+              cartCountElements.forEach(el => {
+                el.textContent = cart.item_count;
+              });
+            });
+          
+          // Reset button after 2 seconds
+          setTimeout(() => {
+            addToCartBtn.textContent = '{{ section.settings.add_to_cart_text }}';
+            addToCartBtn.disabled = false;
+          }, 2000);
+        })
+        .catch(error => {
+          console.error('[Add to Cart] Error:', error);
+          addToCartBtn.textContent = 'Error - Try Again';
+          addToCartBtn.disabled = false;
+          
+          setTimeout(() => {
+            addToCartBtn.textContent = '{{ section.settings.add_to_cart_text }}';
+          }, 2000);
+        });
+      });
+    }
+
+    // Buy Now functionality
+    if (buyNowBtn) {
+      buyNowBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const variantId = variantInput ? variantInput.value : null;
+        
+        if (!variantId) {
+          console.error('[Buy Now] No variant ID found');
+          return;
+        }
+        
+        console.log('[Buy Now] Processing variant:', variantId);
+        
+        buyNowBtn.disabled = true;
+        buyNowBtn.textContent = 'Processing...';
+        
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: variantId,
+            quantity: 1
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('[Buy Now] Added to cart, redirecting to checkout');
+          window.location.href = '/checkout';
+        })
+        .catch(error => {
+          console.error('[Buy Now] Error:', error);
+          buyNowBtn.textContent = 'Error - Try Again';
+          
+          setTimeout(() => {
+            buyNowBtn.textContent = '{{ section.settings.buy_now_text }}';
+            buyNowBtn.disabled = false;
+          }, 2000);
+        });
+      });
+    }
+
+    function updatePriceDisplay(variantPrice, variantComparePrice, variantAvailable) {
+      const priceWhole = Math.floor(variantPrice / 100);
+      const priceDecimal = (variantPrice % 100).toString().padStart(2, '0');
+      
+      const priceWholeEl = section.querySelector('#price-whole-{{ section.id }}');
+      const priceDecimalEl = section.querySelector('#price-decimal-{{ section.id }}');
+      const discountBadgeEl = section.querySelector('#discount-badge-{{ section.id }}');
+      const listPriceContainer = section.querySelector('#list-price-{{ section.id }}');
+      const listPriceValueEl = section.querySelector('#list-price-value-{{ section.id }}');
+      const priceDisplayContainer = section.querySelector('#price-display-{{ section.id }}');
+      const stockStatusContainer = section.querySelector('#stock-status-{{ section.id }}');
+      
+      if (priceWholeEl) priceWholeEl.textContent = priceWhole;
+      if (priceDecimalEl) priceDecimalEl.textContent = '.' + priceDecimal;
+      
+      // Update button states
+      const isAvailable = variantAvailable === 'true' || variantAvailable === true;
+      if (addToCartBtn) addToCartBtn.disabled = !isAvailable;
+      if (buyNowBtn) buyNowBtn.disabled = !isAvailable;
+      
+      if (stockStatusContainer) {
+        if (isAvailable) {
+          stockStatusContainer.innerHTML = '<div class="stock-status">{{ section.settings.stock_text | escape }}</div>';
+        } else {
+          stockStatusContainer.innerHTML = '<div class="stock-status" style="color: #B12704;">Out of Stock</div>';
+        }
+      }
+      
+      if (variantComparePrice && parseInt(variantComparePrice) > variantPrice) {
+        const discountAmount = parseInt(variantComparePrice) - variantPrice;
+        const discountPercent = Math.round((discountAmount * 100) / parseInt(variantComparePrice));
+        const compareWhole = Math.floor(parseInt(variantComparePrice) / 100);
+        const compareDecimal = (parseInt(variantComparePrice) % 100).toString().padStart(2, '0');
+        const compareFormatted = '$' + compareWhole + '.' + compareDecimal;
+        
+        if (!discountBadgeEl && priceDisplayContainer) {
+          priceDisplayContainer.innerHTML = '<div class="discount-price-container"><div class="discount-badge" id="discount-badge-{{ section.id }}">-' + discountPercent + '%</div><div class="price-container"><span class="price-symbol">$</span><span class="price-whole" id="price-whole-{{ section.id }}">' + priceWhole + '</span><span class="price-decimal" id="price-decimal-{{ section.id }}">.' + priceDecimal + '</span></div></div><div id="list-price-{{ section.id }}"><div class="list-price">List Price: <span class="list-price-value" id="list-price-value-{{ section.id }}">' + compareFormatted + '</span> <span style="color: #565959;">ⓘ</span></div></div>';
+        } else {
+          if (discountBadgeEl) discountBadgeEl.textContent = '-' + discountPercent + '%';
+          if (listPriceValueEl) listPriceValueEl.textContent = compareFormatted;
+          if (listPriceContainer) listPriceContainer.style.display = 'block';
+        }
+      } else {
+        if (discountBadgeEl && priceDisplayContainer) {
+          priceDisplayContainer.innerHTML = '<div class="price-container" style="margin-bottom: 12px;"><span class="price-symbol">$</span><span class="price-whole" id="price-whole-{{ section.id }}">' + priceWhole + '</span><span class="price-decimal" id="price-decimal-{{ section.id }}">.' + priceDecimal + '</span></div><div id="list-price-{{ section.id }}" style="display: none;"></div>';
+        } else {
+          if (listPriceContainer) listPriceContainer.style.display = 'none';
+        }
+      }
+    }
+    
+    const variantCarousel = section.querySelector('#variant-carousel-{{ section.id }}');
+    
+    if (variantCarousel) {
+      const items = variantCarousel.querySelectorAll('.variant-carousel-item');
+      console.log('[Mobile Section 2] Carousel items found:', items.length);
+      
+      items.forEach(function(item, index) {
+        const variantOption = item.querySelector('.variant-option');
+        
+        const handleSelect = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const variantName = this.querySelector('.variant-name').textContent;
+          const variantId = this.dataset.variantId;
+          const variantPrice = this.dataset.variantPrice;
+          const variantComparePrice = this.dataset.variantComparePrice;
+          const variantAvailable = this.dataset.variantAvailable;
+          
+          console.log('[Variant] Selected:', variantName, variantId);
+          
+          const selectedVariantLabel = section.querySelector('#selected-variant-{{ section.id }}');
+          if (selectedVariantLabel) {
+            selectedVariantLabel.textContent = variantName;
+          }
+          
+          items.forEach(function(i) {
+            i.querySelector('.variant-option').classList.remove('selected');
+          });
+          this.classList.add('selected');
+          
+          if (variantPrice) {
+            updatePriceDisplay(parseInt(variantPrice), variantComparePrice, variantAvailable);
+          }
+          
+          if (variantId && variantInput) {
+            variantInput.value = variantId;
+            console.log('[Variant] Updated form input to:', variantId);
+            
+            const url = new URL(window.location.href);
+            url.searchParams.set('variant', variantId);
+            window.history.replaceState({}, '', url);
+          }
+        };
+        
+        variantOption.addEventListener('click', handleSelect);
+      });
+    }
+    
+    section.querySelectorAll('.variant-grid .variant-option').forEach(function(option) {
+      const handleSelect = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const variantId = this.dataset.variantId;
+        const variantPrice = this.dataset.variantPrice;
+        const variantComparePrice = this.dataset.variantComparePrice;
+        const variantAvailable = this.dataset.variantAvailable;
+        
+        if (variantId) {
+          section.querySelectorAll('[data-variant-id]').forEach(function(opt) {
+            opt.classList.remove('selected');
+          });
+          this.classList.add('selected');
+          
+          if (variantPrice) {
+            updatePriceDisplay(parseInt(variantPrice), variantComparePrice, variantAvailable);
+          }
+          
+          if (variantInput) {
+            variantInput.value = variantId;
+            console.log('[Grid Variant] Updated form input to:', variantId);
+          }
+          
+          const url = new URL(window.location.href);
+          url.searchParams.set('variant', variantId);
+          window.history.replaceState({}, '', url);
+        }
+      };
+      
+      option.addEventListener('click', handleSelect);
+    });
+    
+    const countdownElement = section.querySelector('#countdown-{{ section.id }}');
+    if (countdownElement) {
+      function updateCountdown() {
+        const now = new Date();
+        
+        const target = new Date();
+        target.setHours(13, 0, 0, 0);
+        
+        if (now >= target) {
+          target.setDate(target.getDate() + 1);
+        }
+        
+        const diffMs = target.getTime() - now.getTime();
+        
+        if (diffMs <= 0) {
+          countdownElement.textContent = '0 hrs 0 mins 0 secs';
+          return;
+        }
+        
+        const totalSeconds = Math.floor(diffMs / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        
+        let timeString = '';
+        if (hours > 0) {
+          timeString += hours + ' hr' + (hours !== 1 ? 's' : '') + ' ';
+        }
+        timeString += minutes + ' min' + (minutes !== 1 ? 's' : '') + ' ';
+        timeString += seconds + ' sec' + (seconds !== 1 ? 's' : '');
+        
+        countdownElement.textContent = timeString;
+      }
+      
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+      
+      console.log('[Mobile Section 2] Countdown timer initialized');
+    }
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Mobile Section 2",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "desktop_max_width",
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "label": "Desktop maximum width",
+      "default": 600,
+      "info": "Control the maximum width of the section on desktop"
+    },
+    {
+      "type": "range",
+      "id": "variant_columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Variant card columns",
+      "default": 3,
+      "info": "Number of columns for variant cards (2-4)"
+    },
+    {
+      "type": "header",
+      "content": "Price Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_price",
+      "label": "Hide price and show Request For Quote",
+      "default": false,
+      "info": "When enabled, hides all prices and replaces Add to Cart with RFQ button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_unit_price",
+      "label": "Show unit price",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Request For Quote Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rfq_button",
+      "label": "Show Request For Quote button",
+      "default": true,
+      "info": "Only visible when 'Hide price' is enabled"
+    },
+    {
+      "type": "text",
+      "id": "rfq_button_text",
+      "label": "RFQ button text",
+      "default": "Request For Quote"
+    },
+    {
+      "type": "url",
+      "id": "rfq_link",
+      "label": "RFQ button link (optional)",
+      "info": "Link to contact page or quote form. If empty, opens email client."
+    },
+    {
+      "type": "text",
+      "id": "rfq_email",
+      "label": "RFQ email address",
+      "default": "sales@yourstore.com",
+      "info": "Used when no link is provided - opens email client"
+    },
+    {
+      "type": "color",
+      "id": "rfq_bg_color",
+      "label": "RFQ button background color",
+      "default": "#232f3e"
+    },
+    {
+      "type": "color",
+      "id": "rfq_border_color",
+      "label": "RFQ button border color",
+      "default": "#131921"
+    },
+    {
+      "type": "color",
+      "id": "rfq_hover_bg_color",
+      "label": "RFQ button hover background color",
+      "default": "#131921"
+    },
+    {
+      "type": "color",
+      "id": "rfq_text_color",
+      "label": "RFQ button text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Prime Badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_prime_badge",
+      "label": "Show Prime badge",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Coupon Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_coupon",
+      "label": "Show coupon box",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "coupon_price",
+      "label": "Coupon price",
+      "default": "$35.14"
+    },
+    {
+      "type": "text",
+      "id": "coupon_terms_text",
+      "label": "Coupon terms text",
+      "default": "Terms"
+    },
+    {
+      "type": "header",
+      "content": "Delivery Information"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_delivery_info",
+      "label": "Show delivery information",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "delivery_time",
+      "label": "Delivery time",
+      "default": "Today 5 PM - 10 PM"
+    },
+    {
+      "type": "text",
+      "id": "delivery_countdown",
+      "label": "Daily countdown end time (24-hour format)",
+      "default": "13:00",
+      "info": "Enter time in HH:MM format (e.g., 13:00 for 1:00 PM). Timer resets daily to count down to this time."
+    },
+    {
+      "type": "header",
+      "content": "Stock Status"
+    },
+    {
+      "type": "text",
+      "id": "stock_text",
+      "label": "In stock text",
+      "default": "In Stock"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_variant_stock",
+      "label": "Show stock status in variant cards",
+      "default": true,
+      "info": "Display 'In Stock' text below price in variant cards"
+    },
+    {
+      "type": "text",
+      "id": "variant_stock_text",
+      "label": "Variant card stock text",
+      "default": "In Stock"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_text",
+      "label": "Add to cart button text",
+      "default": "Add to Cart"
+    },
+    {
+      "type": "color",
+      "id": "add_to_cart_bg_color",
+      "label": "Add to cart background color",
+      "default": "#FF9900"
+    },
+    {
+      "type": "color",
+      "id": "add_to_cart_text_color",
+      "label": "Add to cart text color",
+      "default": "#0F1111"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_buy_now",
+      "label": "Show buy now button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "buy_now_text",
+      "label": "Buy now button text",
+      "default": "Buy Now"
+    },
+    {
+      "type": "color",
+      "id": "buy_now_bg_color",
+      "label": "Buy now background color",
+      "default": "#FFA41C"
+    },
+    {
+      "type": "color",
+      "id": "buy_now_text_color",
+      "label": "Buy now text color",
+      "default": "#0F1111"
+    },
+    {
+      "type": "header",
+      "content": "Product Details"
+    },
+    {
+      "type": "text",
+      "id": "ships_from",
+      "label": "Ships from",
+      "default": "Amazon"
+    },
+    {
+      "type": "text",
+      "id": "sold_by",
+      "label": "Sold by",
+      "default": "ZELUS Direct"
+    },
+    {
+      "type": "text",
+      "id": "returns_policy",
+      "label": "Returns policy",
+      "default": "FREE 30-day refund/replacement"
+    },
+    {
+      "type": "url",
+      "id": "returns_policy_url",
+      "label": "Returns policy link (optional)",
+      "info": "Add a link to your returns/refunds policy page"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mobile Section 2"
+    }
+  ]
+}
+{% endschema %}

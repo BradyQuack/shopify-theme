@@ -1,0 +1,2202 @@
+<product-info
+  id="MainProduct-{{ section.id }}"
+  class="product-amazon-layout section-{{ section.id }}-padding desktop-only-section"
+  data-section="{{ section.id }}"
+  data-product-id="{{ product.id }}"
+  data-update-url="true"
+  data-url="{{ product.url }}"
+  {% if section.settings.image_zoom == 'hover' %}
+    data-zoom-on-hover
+  {% endif %}
+>
+  <div class="product-amazon-full-width" style="background-color: {{ section.settings.color_scheme.settings.background | default: '#ffffff' }};">
+    <div class="product-amazon-container">
+  {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+  {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
+  {{ 'component-price.css' | asset_url | stylesheet_tag }}
+  {{ 'component-slider.css' | asset_url | stylesheet_tag }}
+  {{ 'component-rating.css' | asset_url | stylesheet_tag }}
+  {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+
+  {% unless product.has_only_default_variant %}
+    {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
+    {{ 'component-swatch-input.css' | asset_url | stylesheet_tag }}
+    {{ 'component-swatch.css' | asset_url | stylesheet_tag }}
+  {% endunless %}
+  {%- if product.quantity_price_breaks_configured? -%}
+    {{ 'component-volume-pricing.css' | asset_url | stylesheet_tag }}
+  {%- endif -%}
+
+  <style>
+    /* DESKTOP ONLY - Hide on mobile and tablet */
+    @media screen and (max-width: 989px) {
+      .desktop-only-section {
+        display: none !important;
+      }
+    }
+
+    /* Show only on desktop */
+    @media screen and (min-width: 990px) {
+      .desktop-only-section {
+        display: block !important;
+      }
+    }
+
+    {% if section.settings.enable_debug_mode %}
+    /* DEBUG MODE - Visible outlines */
+    .amazon-grid { outline: 3px solid red; }
+    .amazon-thumbnails { outline: 3px solid blue; }
+    .amazon-center-content { outline: 3px solid green; }
+    .amazon-product-info-column { outline: 3px solid purple; }
+    .amazon-sidebar { outline: 3px solid orange; }
+    .amazon-main-image { outline: 2px solid cyan; }
+    .debug-label { display: block !important; }
+    .debug-overlay { display: block !important; }
+    .divider-debug { display: none; }
+    {% else %}
+    /* DEBUG MODE OFF - Hide all debug elements */
+    .debug-label { display: none !important; }
+    .debug-overlay { display: none !important; }
+    .divider-debug { display: none !important; }
+    {% endif %}
+
+    /* Layout Variables */
+    :root {
+      --color-background: {{ section.settings.color_scheme.settings.background }};
+      --color-foreground: {{ section.settings.color_scheme.settings.text }};
+      --color-accent: {{ section.settings.color_scheme.settings.button }};
+      --color-accent-text: {{ section.settings.color_scheme.settings.button_label }};
+    }
+
+    /* Main Layout */
+    .product-amazon-full-width {
+      width: 100%;
+      min-height: 100%;
+    }
+    
+    .product-amazon-container {
+      max-width: {{ section.settings.section_max_width }}px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+    }
+    
+    .product-amazon-layout {
+      position: relative;
+    }
+
+    .amazon-grid {
+      display: grid;
+      grid-template-columns: {{ section.settings.column_2_width }}% {{ section.settings.column_3_width }}% {{ section.settings.column_4_width }}%;
+      gap: 30px;
+      align-items: start;
+      overflow: visible;
+      {% if section.settings.enable_debug_mode %}
+      outline: 10px solid red;
+      min-height: 2000px;
+      background: rgba(255, 0, 0, 0.05);
+      {% endif %}
+    }
+
+    /* Column 1: Thumbnails (now horizontal below main image) */
+    .amazon-thumbnails {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      {% if section.settings.enable_debug_mode %}
+      outline: 5px solid blue;
+      background: rgba(0, 0, 255, 0.1);
+      {% endif %}
+    }
+
+    .amazon-thumbnail {
+      width: 60px;
+      height: 60px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .amazon-thumbnail:hover,
+    .amazon-thumbnail.active {
+      border-color: #ff9900;
+    }
+
+    .amazon-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Column 2: Main Image */
+    .amazon-main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .amazon-center-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .amazon-main-image {
+      width: 100%;
+      max-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7f7f7;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #ddd;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .amazon-main-image img {
+      max-width: 100%;
+      max-height: 600px;
+      object-fit: contain;
+    }
+
+    /* Image Lightbox */
+    .amazon-image-lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .amazon-image-lightbox.active {
+      display: flex;
+    }
+
+    .amazon-lightbox-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .amazon-lightbox-image {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    .amazon-lightbox-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 40px;
+      cursor: pointer;
+      padding: 0;
+      width: 40px;
+      height: 40px;
+      line-height: 1;
+      transition: opacity 0.2s;
+    }
+
+    .amazon-lightbox-close:hover {
+      opacity: 0.7;
+    }
+
+    /* Column 3: Product Info */
+    .amazon-product-info-column {
+      display: flex;
+      flex-direction: column;
+      gap: {{ section.settings.column_3_spacing }}px;
+    }
+
+    .amazon-product-title {
+      font-size: 24px;
+      line-height: 1.3;
+      font-weight: 400;
+      color: #0f1111;
+      margin: 0;
+    }
+
+    /* Store Link & Logo */
+    .amazon-logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 0;
+    }
+
+    .amazon-logo-link {
+      display: inline-block;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .amazon-logo-link:hover {
+      transform: scale(1.05);
+    }
+
+    .amazon-logo-link:hover .amazon-vendor-logo {
+      border-color: #ff9900;
+    }
+
+    .amazon-vendor-logo {
+      border-radius: 50%;
+      object-fit: contain;
+      object-position: center;
+      border: 1px solid #e5e5e5;
+      flex-shrink: 0;
+      display: block;
+      background: #fff;
+      box-sizing: border-box;
+    }
+
+    .amazon-second-logo {
+      max-width: 150px;
+      height: auto;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+
+    .amazon-logo-reviews {
+      margin-left: auto;
+    }
+
+    .amazon-brand-name {
+      font-size: 14px;
+      color: #0f1111;
+      font-weight: 500;
+    }
+
+    .amazon-store-link {
+      color: #007185;
+      font-size: 14px;
+      text-decoration: none;
+      margin-bottom: 0;
+      display: inline-block;
+    }
+
+    .amazon-store-link:hover {
+      color: #c7511f;
+      text-decoration: underline;
+    }
+
+    {% for block in section.blocks %}
+      {% if block.type == 'text' %}
+        #shopify-block-{{ block.id }} .amazon-vendor-logo {
+          width: {{ block.settings.logo_size }}px;
+          height: {{ block.settings.logo_size }}px;
+          min-width: {{ block.settings.logo_size }}px;
+          min-height: {{ block.settings.logo_size }}px;
+          max-width: {{ block.settings.logo_size }}px;
+          max-height: {{ block.settings.logo_size }}px;
+          padding: {{ block.settings.logo_padding }}px;
+        }
+      {% endif %}
+    {% endfor %}
+
+    /* Rating */
+    .amazon-rating {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+    }
+
+    /* Badge */
+    .amazon-badge {
+      display: inline-block;
+      background: #232f3e;
+      color: white;
+      padding: 4px 10px;
+      font-size: 12px;
+      border-radius: 4px;
+      width: fit-content;
+    }
+
+    /* Sales Count */
+    .amazon-sales-count {
+      font-size: 14px;
+      color: #565959;
+    }
+
+    .amazon-sales-count strong {
+      font-weight: 700;
+    }
+
+    /* Price */
+    .amazon-price-box {
+      margin-bottom: 15px;
+    }
+
+    .amazon-price-wrapper {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+
+    .amazon-price-discount-badge {
+      background: #cc0c39;
+      color: white;
+      padding: 3px 8px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 3px;
+      line-height: 1;
+    }
+
+    .amazon-price {
+      font-size: 28px;
+      color: #b12704;
+      line-height: 1.3;
+      font-weight: 400;
+    }
+
+    .amazon-price-symbol {
+      font-size: 18px;
+      vertical-align: super;
+    }
+
+    .amazon-price-whole {
+      font-size: 28px;
+    }
+
+    .amazon-price-fraction {
+      font-size: 18px;
+      vertical-align: super;
+    }
+
+    .amazon-compare-price {
+      font-size: 13px;
+      color: #565959;
+      text-decoration: line-through;
+    }
+
+    /* Free Shipping Timer */
+    .amazon-shipping-timer {
+      font-size: 14px;
+      color: #0f1111;
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+
+    .amazon-shipping-timer-countdown {
+      color: #007600;
+      font-weight: 700;
+    }
+
+    /* Stock Message */
+    .amazon-stock-message {
+      color: #007600;
+      font-size: 18px;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+
+    /* Collapsible Tab Styles */
+    .amazon-collapsible-tab {
+      border: 1px solid #e7e7e7;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .amazon-collapsible-heading {
+      padding: 12px 16px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      color: #0f1111;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+    }
+
+    .amazon-collapsible-heading:hover {
+      background: #f7f7f7;
+    }
+
+    .amazon-collapsible-heading::-webkit-details-marker {
+      display: none;
+    }
+
+    .amazon-collapsible-heading::after {
+      content: '+';
+      font-size: 20px;
+      font-weight: 400;
+      color: #565959;
+    }
+
+    details[open] .amazon-collapsible-heading::after {
+      content: '−';
+    }
+
+    .amazon-collapsible-content {
+      padding: 12px 16px;
+      border-top: 1px solid #e7e7e7;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #0f1111;
+    }
+
+    /* Divider */
+    .amazon-divider {
+      height: 1px;
+      background-color: #000000;
+      margin: 15px 0;
+    }
+
+    /* Description */
+    .amazon-description {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .amazon-description h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    /* Column 4: Sidebar */
+    .amazon-sidebar {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      background: white;
+    }
+
+    .amazon-stock {
+      color: #007600;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    /* Variant Picker */
+    .amazon-variant-picker {
+      margin-bottom: 15px;
+    }
+
+    .amazon-variant-label {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .amazon-variant-options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .amazon-variant-btn {
+      padding: 0;
+      border: 1px solid #d5d9d9;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      text-align: left;
+      overflow: hidden;
+    }
+
+    .amazon-variant-btn:hover {
+      border-color: #007185;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .amazon-variant-btn.selected {
+      border-color: #007185;
+      border-width: 2px;
+      box-shadow: 0 0 0 2px rgba(0, 113, 133, 0.1);
+    }
+
+    .amazon-variant-header {
+      background: #f7f7f7;
+      padding: 10px 12px;
+      border-bottom: 1px solid #e7e7e7;
+    }
+
+    .amazon-variant-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0f1111;
+      margin: 0;
+    }
+
+    .amazon-variant-body {
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .amazon-variant-price-display {
+      font-size: 18px;
+      font-weight: 400;
+      color: #0f1111;
+    }
+
+    .amazon-variant-compare-price {
+      font-size: 14px;
+      color: #565959;
+      text-decoration: line-through;
+    }
+
+    .amazon-color-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .amazon-color-swatch {
+      width: 40px;
+      height: 40px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .amazon-color-swatch:hover,
+    .amazon-color-swatch.selected {
+      border-color: #ff9900;
+      box-shadow: 0 0 3px 2px rgba(228, 121, 17, 0.5);
+    }
+
+    .amazon-color-swatch img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Quantity Selector */
+    .amazon-quantity {
+      margin-bottom: 15px;
+    }
+
+    .amazon-quantity-label {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .amazon-quantity-select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #d5d9d9;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    /* Buttons */
+    .amazon-add-to-cart {
+      width: 100%;
+      padding: 12px;
+      background: #ffd814;
+      border: 1px solid #fcd200;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-bottom: 10px;
+      transition: background 0.2s;
+    }
+
+    .amazon-add-to-cart:hover {
+      background: #f7ca00;
+    }
+
+    .amazon-buy-now {
+      width: 100%;
+      padding: 12px;
+      background: #ffa41c;
+      border: 1px solid #ff8f00;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-bottom: 15px;
+      transition: background 0.2s;
+    }
+
+    .amazon-buy-now:hover {
+      background: #fa8900;
+    }
+
+    /* Product Info Rows */
+    .amazon-info-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid #e7e7e7;
+    }
+
+    .amazon-info-label {
+      color: #565959;
+    }
+
+    .amazon-info-value {
+      color: #0f1111;
+    }
+
+    .amazon-info-value:hover {
+      color: #c7511f;
+      text-decoration: underline;
+    }
+
+    .amazon-info-value.no-link {
+      color: #0f1111;
+      cursor: default;
+    }
+
+    .amazon-info-value.no-link:hover {
+      text-decoration: none;
+    }
+
+    /* Debug Styles */
+    .debug-label {
+      background: yellow;
+      padding: 5px;
+      font-size: 10px;
+      font-weight: bold;
+      display: none;
+    }
+
+    .debug-overlay {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: red;
+      color: white;
+      padding: 10px;
+      z-index: 9999;
+      max-width: 300px;
+      font-size: 12px;
+      border-radius: 4px;
+      display: none;
+    }
+  </style>
+
+  {%- style -%}
+    #MainProduct-{{ section.id }} {
+      background-color: {{ section.settings.color_scheme.settings.background | default: '#ffffff' }};
+    }
+    
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+  {%- endstyle -%}
+
+  <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+  {% if section.settings.image_zoom == 'hover' %}
+    <script src="{{ 'magnify.js' | asset_url }}" defer="defer"></script>
+  {% endif %}
+  {%- if request.design_mode -%}
+    <script src="{{ 'theme-editor.js' | asset_url }}" defer="defer"></script>
+  {%- endif -%}
+
+  <div class="amazon-grid">
+    <!-- Debug Overlay -->
+    <div class="debug-overlay">
+      <strong>DEBUG OVERLAY:</strong><br>
+      Grid is rendering!<br>
+      Total blocks: {{ section.blocks.size }}<br>
+      Section ID: {{ section.id }}<br>
+      Debug Mode: {{ section.settings.enable_debug_mode }}
+    </div>
+
+    <!-- Column 1: Main Image + Thumbnails Below -->
+    <div class="amazon-center-content">
+      <div class="debug-label">COLUMN 1 - MAIN IMAGE + THUMBNAILS</div>
+      {% if section.settings.enable_debug_mode %}
+      <div style="background: lime; color: black; padding: 10px; font-weight: bold; margin-bottom: 10px; border: 3px solid black;">
+        🔧 COL 1 STICKY DEBUG:<br>
+        Position: sticky !important<br>
+        Top: 20px !important<br>
+        Z-index: 10<br>
+        Height: fit-content
+      </div>
+      {% endif %}
+      <div class="amazon-main-image" id="MainImage-{{ section.id }}">
+        {%- if product.featured_media -%}
+          <img src="{{ product.featured_media | image_url: width: 800 }}" alt="{{ product.featured_media.alt | escape }}" id="MainImageSrc-{{ section.id }}" data-full-src="{{ product.featured_media | image_url }}" style="cursor: pointer;">
+        {%- endif -%}
+      </div>
+      
+      <!-- Thumbnails Below Main Image -->
+      <div class="amazon-thumbnails" style="margin-top: 15px;">
+        <div class="debug-label">THUMBNAILS (HORIZONTAL)</div>
+        {% if section.settings.enable_debug_mode %}
+        <div style="background: blue; color: white; padding: 5px; font-size: 10px; font-weight: bold; width: 100%; text-align: center;">
+          📍 THUMBNAILS HORIZONTAL
+        </div>
+        {% endif %}
+        {%- for media in product.media limit: 8 -%}
+          <div class="amazon-thumbnail{% if forloop.first %} active{% endif %}" data-media-id="{{ media.id }}">
+            {%- if media.media_type == 'image' -%}
+              <img src="{{ media | image_url: width: 60 }}" alt="{{ media.alt | escape }}">
+            {%- elsif media.media_type == 'video' or media.media_type == 'external_video' -%}
+              <img src="{{ media.preview_image | image_url: width: 60 }}" alt="{{ media.alt | escape }}">
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+      
+      {%- for block in section.blocks -%}
+        {%- if block.settings.column == '2' -%}
+          {% render 'product-block', block: block, product: product %}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <!-- Column 2: Product Info -->
+    <div class="amazon-product-info-column">
+      <div class="debug-label">COLUMN 3 - PRODUCT INFO</div>
+      {% if section.settings.enable_debug_mode %}
+      <div style="background: purple; color: white; padding: 5px; font-size: 10px; font-weight: bold;">
+        📜 COL 3 (NOT STICKY)<br>
+        This column scrolls normally
+      </div>
+      {% endif %}
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          
+          {%- when 'title' -%}
+            <h1 class="amazon-product-title" {{ block.shopify_attributes }}>
+              {{ product.title | escape }}
+            </h1>
+          
+          {%- when 'text' -%}
+            <div class="amazon-logo-container" {{ block.shopify_attributes }}>
+              <div class="amazon-logo-section">
+                {%- if block.settings.logo != blank -%}
+                  <a href="{{ shop.url }}" class="amazon-logo-link">
+                    <img 
+                      src="{{ block.settings.logo | image_url: width: 240 }}" 
+                      alt="{{ product.vendor | default: shop.name }}"
+                      class="amazon-vendor-logo"
+                      loading="eager"
+                      width="{{ block.settings.logo_size }}"
+                      height="{{ block.settings.logo_size }}"
+                      style="width: {{ block.settings.logo_size }}px; height: {{ block.settings.logo_size }}px; min-width: {{ block.settings.logo_size }}px; min-height: {{ block.settings.logo_size }}px; max-width: {{ block.settings.logo_size }}px; max-height: {{ block.settings.logo_size }}px; padding: {{ block.settings.logo_padding }}px;"
+                    >
+                  </a>
+                {%- elsif product.vendor != blank -%}
+                  <a href="{{ shop.url }}" class="amazon-store-link">
+                    Visit the {{ shop.name }} Store
+                  </a>
+                {%- endif -%}
+              </div>
+              
+              {%- if block.settings.reviews_image != blank -%}
+                <div class="amazon-logo-reviews">
+                  <img 
+                    src="{{ block.settings.reviews_image | image_url: width: 300 }}" 
+                    alt="Reviews"
+                    class="amazon-second-logo"
+                    loading="eager"
+                  >
+                </div>
+              {%- endif -%}
+            </div>
+
+          {%- when 'rating' -%}
+            <div class="amazon-rating" {{ block.shopify_attributes }}>
+              {%- if block.settings.rating_image != blank -%}
+                <img src="{{ block.settings.rating_image | image_url }}" alt="Product rating" style="max-height: 20px;">
+              {%- elsif product.metafields.reviews.rating.value != blank -%}
+                <span>{{ product.metafields.reviews.rating.value }}</span>
+                <span>({{ product.metafields.reviews.rating_count }})</span>
+              {%- endif -%}
+            </div>
+
+          {%- when 'badge' -%}
+            <div class="amazon-badge" {{ block.shopify_attributes }}>
+              {{ block.settings.badge_text | default: "Amazon's Choice" }}
+            </div>
+
+          {%- when 'sales_count' -%}
+            <div class="amazon-sales-count" {{ block.shopify_attributes }}>
+              {%- if block.settings.sales_bold_text != blank -%}
+                <strong>{{ block.settings.sales_bold_text }}</strong>{% if block.settings.sales_text != blank %} {% endif %}
+              {%- endif -%}
+              {{- block.settings.sales_text -}}
+            </div>
+
+          {%- when 'divider' -%}
+            <div {{ block.shopify_attributes }}>
+              {% if section.settings.enable_debug_mode %}
+              <div style="background: pink; padding: 10px; border: 3px solid red; margin-bottom: 10px;">
+                <strong style="color: red;">🔴 DIVIDER BLOCK FOUND!</strong><br>
+                Color: {{ block.settings.divider_color | default: "NOT SET" }}<br>
+                Thickness: {{ block.settings.divider_thickness | default: "NOT SET" }}px<br>
+                <strong style="color: red;">↓ Divider line should appear below ↓</strong>
+              </div>
+              {% endif %}
+              <div style="width: 100%; background-color: {{ block.settings.divider_color | default: '#000000' }}; height: {{ block.settings.divider_thickness | default: 1 }}px; margin: 15px 0; display: block;"></div>
+            </div>
+
+          {%- when 'description' -%}
+            {%- if product.description != blank -%}
+              <div class="amazon-description" {{ block.shopify_attributes }}>
+                {{ product.description }}
+              </div>
+            {%- endif -%}
+
+          {%- when 'collapsible_tab' -%}
+            {%- if block.settings.column == '3' -%}
+              {%- if block.settings.heading != blank -%}
+                <details class="amazon-collapsible-tab" {{ block.shopify_attributes }}>
+                  <summary class="amazon-collapsible-heading">
+                    {{ block.settings.heading }}
+                  </summary>
+                  <div class="amazon-collapsible-content">
+                    {{ block.settings.content }}
+                  </div>
+                </details>
+              {%- endif -%}
+            {%- endif -%}
+            
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    <!-- Column 3: Sidebar -->
+    <div class="amazon-sidebar">
+      <div class="debug-label">COLUMN 3 - BUY BUTTONS</div>
+      {%- assign product_form_id = 'product-form-' | append: section.id -%}
+      
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          
+          {%- when 'price' -%}
+            <div class="amazon-price-box" {{ block.shopify_attributes }} data-price-block-{{ section.id }}>
+              {%- if block.settings.enable_request_quote -%}
+                <button type="button" class="amazon-request-quote-btn" onclick="redirectToQuote('{{ block.settings.quote_page_url }}', '{{ product.title | escape }}', '{{ product.id }}', '{{ product.url }}', '{{ product.selected_or_first_available_variant.id }}')" style="width: 100%; padding: 12px 16px; background: #232f3e; color: white; border: 1px solid #131921; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-bottom: 15px;">
+                  {{ block.settings.request_quote_text | default: "Request to Quote" }}
+                </button>
+                <style>
+                  .amazon-request-quote-btn:hover {
+                    background: #131921;
+                  }
+                </style>
+              {%- else -%}
+                {%- assign current_variant = product.selected_or_first_available_variant -%}
+                {%- if current_variant.compare_at_price > current_variant.price -%}
+                  {%- assign discount_percentage = current_variant.compare_at_price | minus: current_variant.price | times: 100 | divided_by: current_variant.compare_at_price -%}
+                  <div class="amazon-price-wrapper" data-price-wrapper style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 5px;">
+                    <span class="amazon-price-discount-badge" data-discount-badge style="background-color: {{ block.settings.discount_badge_bg }}; color: {{ block.settings.discount_badge_text }}; font-size: {{ block.settings.discount_badge_size }}px; padding: 3px 8px; border-radius: 3px; font-weight: 700; line-height: 1;">-{{ discount_percentage }}%</span>
+                    <span class="amazon-price" style="color: {{ block.settings.price_color }}; font-size: {{ block.settings.price_size }}px; line-height: 1.3; font-weight: 400;">
+                      <span class="amazon-price-symbol" style="font-size: {{ block.settings.price_size | times: 0.64 | round: 0 }}px; vertical-align: super;">$</span><span class="amazon-price-whole" data-price-whole>{{ current_variant.price | money_without_currency | split: '.' | first }}</span><span class="amazon-price-fraction" data-price-decimal style="font-size: {{ block.settings.price_size | times: 0.64 | round: 0 }}px; vertical-align: super;">{{ current_variant.price | money_without_currency | split: '.' | last }}</span>
+                    </span>
+                  </div>
+                  <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 15px;">
+                    <span class="amazon-compare-price" data-compare-price style="color: {{ block.settings.compare_price_color }}; font-size: {{ block.settings.compare_price_size }}px; text-decoration: line-through;">List: {{ current_variant.compare_at_price | money }}</span>
+                  </div>
+                {%- else -%}
+                  <div class="amazon-price-wrapper" data-price-wrapper style="display: flex; margin-bottom: 15px;">
+                    <span class="amazon-price-discount-badge" data-discount-badge style="background-color: {{ block.settings.discount_badge_bg }}; color: {{ block.settings.discount_badge_text }}; font-size: {{ block.settings.discount_badge_size }}px; padding: 3px 8px; border-radius: 3px; font-weight: 700; line-height: 1; display: none;">-0%</span>
+                    <span class="amazon-price" style="color: {{ block.settings.price_color }}; font-size: {{ block.settings.price_size }}px; line-height: 1.3; font-weight: 400;">
+                      <span class="amazon-price-symbol" style="font-size: {{ block.settings.price_size | times: 0.64 | round: 0 }}px; vertical-align: super;">$</span><span class="amazon-price-whole" data-price-whole>{{ current_variant.price | money_without_currency | split: '.' | first }}</span><span class="amazon-price-fraction" data-price-decimal style="font-size: {{ block.settings.price_size | times: 0.64 | round: 0 }}px; vertical-align: super;">{{ current_variant.price | money_without_currency | split: '.' | last }}</span>
+                    </span>
+                  </div>
+                  <div style="display: none;">
+                    <span class="amazon-compare-price" data-compare-price style="color: {{ block.settings.compare_price_color }}; font-size: {{ block.settings.compare_price_size }}px; text-decoration: line-through; display: none;">List: $0.00</span>
+                  </div>
+                {%- endif -%}
+              {%- endif -%}
+              
+              {%- comment -%} Stock Status - Always show after price {%- endcomment -%}
+              <div class="amazon-stock" id="stock-status-{{ section.id }}" style="color: #007600; font-size: 18px; font-weight: 700; margin-bottom: 15px;">
+                {%- if product.selected_or_first_available_variant.available -%}
+                  In Stock
+                {%- else -%}
+                  <span style="color: #B12704;">Out of Stock</span>
+                {%- endif -%}
+              </div>
+              
+              {%- comment -%} Shipping Timer and Stock Message - Always visible {%- endcomment -%}
+              {%- if block.settings.show_shipping_timer -%}
+                <div class="amazon-shipping-timer" id="shipping-timer-{{ section.id }}" style="font-size: 14px; color: #0f1111; margin: 0 0 10px 0; line-height: 1.5; {% if block.settings.shipping_timer_bold %}font-weight: 700;{% else %}font-weight: 400;{% endif %}">
+                  {{ block.settings.shipping_timer_text }} <span class="amazon-shipping-timer-countdown" id="countdown-{{ section.id }}" style="color: #007600; font-weight: 700;"></span>
+                </div>
+              {%- endif -%}
+              
+              {%- if block.settings.show_stock_message -%}
+                <div class="amazon-stock-message" style="color: #007600; font-size: 14px; font-weight: 700; margin: 0 0 15px 0;">
+                  {{ block.settings.stock_message_text }}
+                </div>
+              {%- endif -%}
+            </div>
+
+          {%- when 'inventory' -%}
+            {%- comment -%} Inventory block is now always displayed after price {%- endcomment -%}
+
+          {%- when 'variant_picker' -%}
+            {%- unless product.has_only_default_variant -%}
+              <div class="amazon-variant-picker" {{ block.shopify_attributes }}>
+                {%- for option in product.options_with_values -%}
+                  <div>
+                    <span class="amazon-variant-label">{{ option.name }}:</span>
+                    {%- if option.name == 'Color' or option.name == 'Colour' -%}
+                      <div class="amazon-color-swatches">
+                        {%- for value in option.values -%}
+                          {%- assign variant_for_value = null -%}
+                          {%- for variant in product.variants -%}
+                            {%- if variant.option1 == value or variant.option2 == value or variant.option3 == value -%}
+                              {%- assign variant_for_value = variant -%}
+                              {%- break -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+                          <div class="amazon-color-swatch{% if option.selected_value == value %} selected{% endif %}" 
+                               data-option-value="{{ value | escape }}"
+                               data-variant-id="{{ variant_for_value.id }}"
+                               data-variant-price="{{ variant_for_value.price }}"
+                               data-variant-compare-price="{{ variant_for_value.compare_at_price }}"
+                               data-variant-available="{{ variant_for_value.available }}">
+                            {%- if variant_for_value.featured_image -%}
+                              <img src="{{ variant_for_value.featured_image | image_url: width: 40 }}" alt="{{ value | escape }}">
+                            {%- else -%}
+                              <div style="width: 100%; height: 100%; background: {{ value | downcase }};"></div>
+                            {%- endif -%}
+                          </div>
+                        {%- endfor -%}
+                      </div>
+                    {%- else -%}
+                      <div class="amazon-variant-options" style="grid-template-columns: repeat({{ block.settings.variant_columns | default: 3 }}, 1fr);">
+                        {%- for value in option.values -%}
+                          {%- assign variant_for_value = null -%}
+                          {%- for variant in product.variants -%}
+                            {%- if variant.option1 == value or variant.option2 == value or variant.option3 == value -%}
+                              {%- assign variant_for_value = variant -%}
+                              {%- break -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+                          <button type="button" 
+                                  class="amazon-variant-btn{% if option.selected_value == value %} selected{% endif %}" 
+                                  data-option-value="{{ value | escape }}"
+                                  data-variant-id="{{ variant_for_value.id }}"
+                                  data-variant-price="{{ variant_for_value.price }}"
+                                  data-variant-compare-price="{{ variant_for_value.compare_at_price }}"
+                                  data-variant-available="{{ variant_for_value.available }}">
+                            <div class="amazon-variant-header">
+                              <div class="amazon-variant-name">{{ value }}</div>
+                            </div>
+                            {%- if variant_for_value -%}
+                              <div class="amazon-variant-body">
+                                {%- unless block.settings.hide_variant_price -%}
+                                  <div class="amazon-variant-price-display">
+                                    ${%- assign v_price_whole = variant_for_value.price | divided_by: 100 -%}
+                                    {%- assign v_price_decimal = variant_for_value.price | modulo: 100 -%}
+                                    {{ v_price_whole }}.{{ v_price_decimal | prepend: '00' | slice: -2, 2 }}
+                                  </div>
+                                  {%- if variant_for_value.compare_at_price > variant_for_value.price -%}
+                                    <div class="amazon-variant-compare-price">
+                                      ${%- assign v_compare_whole = variant_for_value.compare_at_price | divided_by: 100 -%}
+                                      {%- assign v_compare_decimal = variant_for_value.compare_at_price | modulo: 100 -%}
+                                      {{ v_compare_whole }}.{{ v_compare_decimal | prepend: '00' | slice: -2, 2 }}
+                                    </div>
+                                  {%- endif -%}
+                                {%- endunless -%}
+                                {%- if block.settings.show_variant_stock -%}
+                                  <div class="amazon-variant-stock-status" style="color: #007600; font-size: 12px; font-weight: 600; margin-top: 4px;">
+                                    {%- if variant_for_value.available -%}
+                                      In Stock
+                                    {%- else -%}
+                                      <span style="color: #B12704;">Out of Stock</span>
+                                    {%- endif -%}
+                                  </div>
+                                {%- endif -%}
+                              </div>
+                            {%- endif -%}
+                          </button>
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                {%- endfor -%}
+              </div>
+            {%- endunless -%}
+
+          {%- when 'quantity_selector' -%}
+            {%- assign price_block = section.blocks | where: "type", "price" | first -%}
+            {%- unless price_block.settings.enable_request_quote -%}
+              <div class="amazon-quantity" {{ block.shopify_attributes }}>
+                <label class="amazon-quantity-label" for="Quantity-{{ section.id }}">
+                  Quantity:
+                </label>
+                <select class="amazon-quantity-select" id="Quantity-{{ section.id }}" name="quantity" form="{{ product_form_id }}">
+                  {%- for i in (1..10) -%}
+                    <option value="{{ i }}">{{ i }}</option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            {%- endunless -%}
+
+          {%- when 'buy_buttons' -%}
+            {%- assign price_block = section.blocks | where: "type", "price" | first -%}
+            {%- unless price_block.settings.enable_request_quote -%}
+              <div {{ block.shopify_attributes }}>
+                {%- form 'product', product, id: product_form_id -%}
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  
+                  <button type="submit" name="add" class="amazon-add-to-cart"
+                    {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+                    {%- if product.selected_or_first_available_variant.available -%}
+                      Add to Cart
+                    {%- else -%}
+                      Sold Out
+                    {%- endif -%}
+                  </button>
+                {%- endform -%}
+                
+                <button type="button" class="amazon-buy-now">
+                  Buy Now
+                </button>
+              </div>
+            {%- endunless -%}
+            
+        {%- endcase -%}
+      {%- endfor -%}
+
+      <!-- Additional Info -->
+      <div style="margin-top: 15px;">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'shipping_info' -%}
+            <div {{ block.shopify_attributes }}>
+              {%- if block.settings.show_ships_from and block.settings.ships_from_text != blank -%}
+                <div class="amazon-info-row">
+                  <span class="amazon-info-label">{{ block.settings.ships_from_label }}</span>
+                  {%- if block.settings.ships_from_url != blank -%}
+                    <a href="{{ block.settings.ships_from_url }}" class="amazon-info-value" style="color: #007185; text-decoration: none;">{{ block.settings.ships_from_text }}</a>
+                  {%- else -%}
+                    <span class="amazon-info-value no-link">{{ block.settings.ships_from_text }}</span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+              
+              {%- if block.settings.show_sold_by and block.settings.sold_by_text != blank -%}
+                <div class="amazon-info-row">
+                  <span class="amazon-info-label">{{ block.settings.sold_by_label }}</span>
+                  {%- if block.settings.sold_by_url != blank -%}
+                    <a href="{{ block.settings.sold_by_url }}" class="amazon-info-value" style="color: #007185; text-decoration: none;">{{ block.settings.sold_by_text }}</a>
+                  {%- else -%}
+                    <span class="amazon-info-value no-link">{{ block.settings.sold_by_text }}</span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+              
+              {%- if block.settings.show_returns and block.settings.returns_text != blank -%}
+                <div class="amazon-info-row">
+                  <span class="amazon-info-label">{{ block.settings.returns_label }}</span>
+                  {%- if block.settings.returns_url != blank -%}
+                    <a href="{{ block.settings.returns_url }}" class="amazon-info-value" style="color: #007185; text-decoration: none;">{{ block.settings.returns_text }}</a>
+                  {%- else -%}
+                    <span class="amazon-info-value no-link">{{ block.settings.returns_text }}</span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- elsif block.type == 'collapsible_tab' and block.settings.column == '4' -%}
+            {%- if block.settings.heading != blank -%}
+              <details class="amazon-collapsible-tab" {{ block.shopify_attributes }}>
+                <summary class="amazon-collapsible-heading">
+                  {{ block.settings.heading }}
+                </summary>
+                <div class="amazon-collapsible-content">
+                  {{ block.settings.content }}
+                </div>
+              </details>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+    </div>
+  </div>
+
+  <!-- Image Lightbox -->
+  <div class="amazon-image-lightbox" id="imageLightbox-{{ section.id }}">
+    <div class="amazon-lightbox-content">
+      <button type="button" class="amazon-lightbox-close" id="closeLightboxBtn-{{ section.id }}">&times;</button>
+      <img src="" alt="" class="amazon-lightbox-image" id="lightboxImage-{{ section.id }}">
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    const sectionId = '{{ section.id }}';
+    
+    // Shipping Timer Countdown to 3pm ET
+    const initShippingTimer = () => {
+      const timerContainer = document.querySelector(`#shipping-timer-${sectionId}`);
+      const countdownEl = document.querySelector(`#countdown-${sectionId}`);
+      if (!timerContainer || !countdownEl) return;
+      
+      const updateCountdown = () => {
+        // Get current time in ET
+        const now = new Date();
+        const etTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        const currentHour = etTime.getHours();
+        
+        // Only show timer between 1am (1) and 3pm (15) ET
+        if (currentHour < 1 || currentHour >= 15) {
+          timerContainer.style.display = 'none';
+          return;
+        } else {
+          timerContainer.style.display = 'block';
+        }
+        
+        // Set target to 3pm ET today
+        const target = new Date(etTime);
+        target.setHours(15, 0, 0, 0); // 3pm ET
+        
+        // Calculate time difference
+        const diff = target - etTime;
+        
+        if (diff <= 0) {
+          countdownEl.textContent = '0h 0m 0s';
+          timerContainer.style.display = 'none';
+          return;
+        }
+        
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        
+        countdownEl.textContent = `${hours}h ${minutes}m ${seconds}s`;
+      };
+      
+      // Update immediately and then every second
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    };
+    
+    // Quote Page Redirect Function
+    window.redirectToQuote = function(quoteUrl, productTitle, productId, productUrl, variantId) {
+      if (!quoteUrl) {
+        console.error('Quote page URL not configured');
+        alert('Quote page URL not configured. Please contact support.');
+        return;
+      }
+      
+      // Build URL with parameters
+      const params = new URLSearchParams({
+        product: productTitle,
+        product_id: productId,
+        product_url: productUrl,
+        variant_id: variantId
+      });
+      
+      // Redirect to quote page with parameters
+      window.location.href = `${quoteUrl}?${params.toString()}`;
+    };
+    
+    // Image Lightbox Setup
+    const initImageLightbox = () => {
+      const mainImage = document.querySelector(`#MainImageSrc-${sectionId}`);
+      const lightbox = document.querySelector(`#imageLightbox-${sectionId}`);
+      const lightboxImage = document.querySelector(`#lightboxImage-${sectionId}`);
+      const closeBtn = document.querySelector(`#closeLightboxBtn-${sectionId}`);
+      
+      console.log('[Lightbox] Elements found:', {
+        mainImage: !!mainImage,
+        lightbox: !!lightbox
+      });
+      
+      const openLightbox = () => {
+        console.log('[Lightbox] Opening...');
+        if (mainImage && lightbox && lightboxImage) {
+          const fullImageSrc = mainImage.dataset.fullSrc || mainImage.src;
+          console.log('[Lightbox] Image src:', fullImageSrc);
+          lightboxImage.src = fullImageSrc;
+          lightboxImage.alt = mainImage.alt;
+          lightbox.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      };
+      
+      const closeLightbox = () => {
+        console.log('[Lightbox] Closing...');
+        if (lightbox) {
+          lightbox.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      };
+      
+      // Click image to open lightbox
+      if (mainImage) {
+        mainImage.addEventListener('click', () => {
+          console.log('[Lightbox] Image clicked');
+          openLightbox();
+        });
+      }
+      
+      if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          closeLightbox();
+        });
+      }
+      
+      if (lightbox) {
+        lightbox.addEventListener('click', (e) => {
+          if (e.target === lightbox) {
+            closeLightbox();
+          }
+        });
+      }
+      
+      // ESC key to close
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox && lightbox.classList.contains('active')) {
+          closeLightbox();
+        }
+      });
+    };
+    
+    // Thumbnail Gallery Handler
+    const initThumbnails = () => {
+      document.querySelectorAll('.amazon-thumbnail').forEach(thumb => {
+        thumb.addEventListener('click', function() {
+          document.querySelectorAll('.amazon-thumbnail').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          
+          const mediaId = this.dataset.mediaId;
+          const media = {{ product.media | json }}.find(m => m.id == mediaId);
+          
+          if (media && media.src) {
+            const mainImage = document.querySelector(`#MainImage-${sectionId} img`);
+            if (mainImage) {
+              mainImage.src = media.src.replace(/\.(jpg|png|jpeg)/g, '_800x.$1');
+              mainImage.alt = media.alt || '';
+            }
+          }
+        });
+      });
+    };
+
+    // Price Display Update Handler
+    const updatePriceDisplay = (variantPrice, variantComparePrice, variantAvailable) => {
+      console.log('[Price Update]', { variantPrice, variantComparePrice, variantAvailable });
+      
+      const priceWhole = Math.floor(variantPrice / 100);
+      const priceDecimal = (variantPrice % 100).toString().padStart(2, '0');
+      
+      // Update all price blocks
+      document.querySelectorAll(`[data-price-block-${sectionId}]`).forEach(priceBlock => {
+        const priceWholeEl = priceBlock.querySelector('[data-price-whole]');
+        const priceDecimalEl = priceBlock.querySelector('[data-price-decimal]');
+        const discountBadgeEl = priceBlock.querySelector('[data-discount-badge]');
+        const comparePriceEl = priceBlock.querySelector('[data-compare-price]');
+        
+        if (priceWholeEl) priceWholeEl.textContent = priceWhole;
+        if (priceDecimalEl) priceDecimalEl.textContent = priceDecimal;
+        
+        // Handle discount display
+        if (variantComparePrice && parseInt(variantComparePrice) > variantPrice) {
+          const discountPercent = Math.round(((parseInt(variantComparePrice) - variantPrice) * 100) / parseInt(variantComparePrice));
+          const compareFormatted = `${Math.floor(parseInt(variantComparePrice) / 100)}.${(parseInt(variantComparePrice) % 100).toString().padStart(2, '0')}`;
+          
+          if (discountBadgeEl) {
+            discountBadgeEl.textContent = `-${discountPercent}%`;
+            discountBadgeEl.style.display = 'inline-block';
+          }
+          if (comparePriceEl) {
+            comparePriceEl.textContent = `List: $${compareFormatted}`;
+            comparePriceEl.style.display = 'block';
+          }
+        } else {
+          if (discountBadgeEl) discountBadgeEl.style.display = 'none';
+          if (comparePriceEl) comparePriceEl.style.display = 'none';
+        }
+      });
+      
+      // Update stock status
+      const stockStatusEl = document.querySelector(`#stock-status-${sectionId}`);
+      if (stockStatusEl) {
+        const isAvailable = variantAvailable === 'true' || variantAvailable === true;
+        stockStatusEl.innerHTML = `<div class="amazon-stock" style="color: ${isAvailable ? '#007600' : '#B12704'};">${isAvailable ? 'In Stock' : 'Out of Stock'}</div>`;
+      }
+      
+      // Update cart buttons
+      document.querySelectorAll('.amazon-add-to-cart').forEach(btn => {
+        const isAvailable = variantAvailable === 'true' || variantAvailable === true;
+        btn.disabled = !isAvailable;
+        btn.textContent = isAvailable ? 'Add to Cart' : 'Sold Out';
+      });
+    };
+
+    // Variant Selection Handler
+    const initVariantSelection = () => {
+      document.querySelectorAll('.amazon-variant-btn, .amazon-color-swatch').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // Update UI
+          const parent = this.closest('.amazon-variant-picker > div');
+          parent.querySelectorAll('.amazon-variant-btn, .amazon-color-swatch').forEach(b => b.classList.remove('selected'));
+          this.classList.add('selected');
+          
+          // Get variant data
+          const { variantId, variantPrice, variantComparePrice, variantAvailable } = this.dataset;
+          
+          if (variantId && variantPrice) {
+            // Update price
+            updatePriceDisplay(parseInt(variantPrice), variantComparePrice, variantAvailable);
+            
+            // Update forms
+            document.querySelectorAll(`#MainProduct-${sectionId} input[name="id"]`).forEach(input => {
+              input.value = variantId;
+            });
+            
+            // Update URL
+            const url = new URL(window.location.href);
+            url.searchParams.set('variant', variantId);
+            window.history.replaceState({}, '', url);
+            
+            // Dispatch change event
+            const event = new Event('change', { bubbles: true });
+            document.querySelector(`#MainProduct-${sectionId} input[name="id"]`)?.dispatchEvent(event);
+          }
+        });
+      });
+    };
+
+    // Initialize
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        initShippingTimer();
+        initImageLightbox();
+        initThumbnails();
+        initVariantSelection();
+      });
+    } else {
+      initShippingTimer();
+      initImageLightbox();
+      initThumbnails();
+      initVariantSelection();
+    }
+  })();
+  </script>
+
+  {%- liquid
+    if product.selected_or_first_available_variant.featured_media
+      assign seo_media = product.selected_or_first_available_variant.featured_media
+    else
+      assign seo_media = product.featured_media
+    endif
+  -%}
+
+  <script type="application/ld+json">
+    {{ product | structured_data }}
+  </script>
+</product-info>
+
+{% schema %}
+{
+  "name": "Amazon - Product Desktop",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "title",
+      "name": "Product Title",
+      "limit": 1
+    },
+    {
+      "type": "text",
+      "name": "Store Link",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Brand Logo",
+          "info": "Upload a brand/vendor logo. If not provided, will show product vendor name. Click logo to visit store."
+        },
+        {
+          "type": "range",
+          "id": "logo_size",
+          "min": 40,
+          "max": 120,
+          "step": 5,
+          "unit": "px",
+          "label": "Logo Size",
+          "default": 60,
+          "info": "Size of the circular brand logo"
+        },
+        {
+          "type": "range",
+          "id": "logo_padding",
+          "min": 0,
+          "max": 20,
+          "step": 2,
+          "unit": "px",
+          "label": "Logo Padding",
+          "default": 8,
+          "info": "Padding inside the logo circle"
+        },
+        {
+          "type": "image_picker",
+          "id": "reviews_image",
+          "label": "Reviews Image (Optional)",
+          "info": "Upload a reviews/ratings image to display on the right side (e.g., star ratings, review count)"
+        },
+        {
+          "type": "select",
+          "id": "column",
+          "label": "Display Column",
+          "options": [
+            {
+              "value": "1",
+              "label": "Column 1 - Thumbnails"
+            },
+            {
+              "value": "2",
+              "label": "Column 2 - Main Image"
+            },
+            {
+              "value": "3",
+              "label": "Column 3 - Product Info"
+            },
+            {
+              "value": "4",
+              "label": "Column 4 - Buy Buttons"
+            }
+          ],
+          "default": "3",
+          "info": "Choose which column to display this block in"
+        }
+      ]
+    },
+    {
+      "type": "rating",
+      "name": "Product Rating",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "rating_image",
+          "label": "Custom Rating Image",
+          "info": "Upload a custom rating image (e.g., 4.5 stars with review count). If not provided, will use product metafield or default rating."
+        },
+        {
+          "type": "select",
+          "id": "column",
+          "label": "Display Column",
+          "options": [
+            {
+              "value": "1",
+              "label": "Column 1 - Thumbnails"
+            },
+            {
+              "value": "2",
+              "label": "Column 2 - Main Image"
+            },
+            {
+              "value": "3",
+              "label": "Column 3 - Product Info"
+            },
+            {
+              "value": "4",
+              "label": "Column 4 - Buy Buttons"
+            }
+          ],
+          "default": "3",
+          "info": "Choose which column to display this block in"
+        }
+      ]
+    },
+    {
+      "type": "badge",
+      "name": "Badge (Best Seller)",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge Text",
+          "default": "Amazon's Choice",
+          "info": "Common badges: 'Amazon's Choice', 'Best Seller', '#1 Best Seller'"
+        },
+        {
+          "type": "select",
+          "id": "column",
+          "label": "Display Column",
+          "options": [
+            {
+              "value": "1",
+              "label": "Column 1 - Thumbnails"
+            },
+            {
+              "value": "2",
+              "label": "Column 2 - Main Image"
+            },
+            {
+              "value": "3",
+              "label": "Column 3 - Product Info"
+            },
+            {
+              "value": "4",
+              "label": "Column 4 - Buy Buttons"
+            }
+          ],
+          "default": "3",
+          "info": "Choose which column to display this block in"
+        }
+      ]
+    },
+    {
+      "type": "sales_count",
+      "name": "Sales Count",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "sales_bold_text",
+          "label": "Sales Bold Text",
+          "default": "30K+",
+          "info": "This text will appear in bold (e.g., '30K+')"
+        },
+        {
+          "type": "text",
+          "id": "sales_text",
+          "label": "Sales Text",
+          "default": "bought in past month",
+          "info": "Text that appears after the bold text"
+        },
+        {
+          "type": "select",
+          "id": "column",
+          "label": "Display Column",
+          "options": [
+            {
+              "value": "1",
+              "label": "Column 1 - Thumbnails"
+            },
+            {
+              "value": "2",
+              "label": "Column 2 - Main Image"
+            },
+            {
+              "value": "3",
+              "label": "Column 3 - Product Info"
+            },
+            {
+              "value": "4",
+              "label": "Column 4 - Buy Buttons"
+            }
+          ],
+          "default": "3",
+          "info": "Choose which column to display this block in"
+        }
+      ]
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Request to Quote"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_request_quote",
+          "label": "Enable Request to Quote",
+          "default": false,
+          "info": "When enabled, hides pricing and shows a 'Request to Quote' button instead"
+        },
+        {
+          "type": "url",
+          "id": "quote_page_url",
+          "label": "Quote Page URL",
+          "info": "Enter the URL of your request quote page (e.g., /pages/request-quote). Product info will be passed via URL parameters."
+        },
+        {
+          "type": "text",
+          "id": "request_quote_text",
+          "label": "Request Quote Button Text",
+          "default": "Request to Quote",
+          "info": "Text displayed on the request quote button"
+        },
+        {
+          "type": "header",
+          "content": "Sale Percentage Badge"
+        },
+        {
+          "type": "color",
+          "id": "discount_badge_bg",
+          "label": "Badge Background Color",
+          "default": "#cc0c39"
+        },
+        {
+          "type": "color",
+          "id": "discount_badge_text",
+          "label": "Badge Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "range",
+          "id": "discount_badge_size",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "unit": "px",
+          "label": "Badge Font Size",
+          "default": 20
+        },
+        {
+          "type": "header",
+          "content": "Price Styling"
+        },
+        {
+          "type": "color",
+          "id": "price_color",
+          "label": "Price Color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "price_size",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "unit": "px",
+          "label": "Price Font Size",
+          "default": 20
+        },
+        {
+          "type": "header",
+          "content": "Compare At Price (List Price)"
+        },
+        {
+          "type": "color",
+          "id": "compare_price_color",
+          "label": "Compare Price Color",
+          "default": "#565959"
+        },
+        {
+          "type": "range",
+          "id": "compare_price_size",
+          "min": 10,
+          "max": 18,
+          "step": 1,
+          "unit": "px",
+          "label": "Compare Price Font Size",
+          "default": 15
+        },
+        {
+          "type": "header",
+          "content": "⏰ Countdown Timer Settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_shipping_timer",
+          "label": "Show Shipping Timer",
+          "default": true,
+          "info": "Display countdown timer to 3pm ET for same-day shipping"
+        },
+        {
+          "type": "text",
+          "id": "shipping_timer_text",
+          "label": "Timer Text (before countdown)",
+          "default": "FREE delivery today. Order within",
+          "info": "Customize the text that appears before the countdown timer"
+        },
+        {
+          "type": "checkbox",
+          "id": "shipping_timer_bold",
+          "label": "Bold Timer Text",
+          "default": false,
+          "info": "Make the timer text bold"
+        },
+        {
+          "type": "header",
+          "content": "📦 Stock Urgency Message"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_stock_message",
+          "label": "Show Stock Message",
+          "default": true,
+          "info": "Display additional stock urgency message below timer"
+        },
+        {
+          "type": "text",
+          "id": "stock_message_text",
+          "label": "Stock Urgency Text",
+          "default": "Order soon.",
+          "info": "Customize the urgency text displayed below the countdown timer"
+        }
+      ]
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant Picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "variant_columns",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "label": "Variant Card Columns",
+          "default": 3,
+          "info": "Number of columns for variant cards (does not affect color swatches)"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_variant_price",
+          "label": "Hide Price in Variant Cards",
+          "default": false,
+          "info": "When enabled, hides the price display in variant selection cards"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_variant_stock",
+          "label": "Show Stock Status in Variant Cards",
+          "default": false,
+          "info": "When enabled, displays 'In Stock' or 'Out of Stock' in green/red below the price in each variant card"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Product Description",
+      "limit": 1
+    },
+    {
+      "type": "inventory",
+      "name": "Stock Status",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "inventory_threshold",
+          "label": "Low stock threshold",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 10
+        },
+        {
+          "type": "checkbox",
+          "id": "show_inventory_quantity",
+          "label": "Show inventory quantity",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "quantity_selector",
+      "name": "Quantity Selector",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "default": true,
+          "label": "Show dynamic checkout buttons",
+          "info": "Shows Buy Now button alongside Add to Cart"
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divider Line",
+      "settings": [
+        {
+          "type": "color",
+          "id": "divider_color",
+          "label": "Divider Color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "divider_thickness",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "label": "Divider Thickness",
+          "default": 1
+        },
+        {
+          "type": "select",
+          "id": "column",
+          "label": "Display Column",
+          "options": [
+            {
+              "value": "1",
+              "label": "Column 1 - Thumbnails"
+            },
+            {
+              "value": "2",
+              "label": "Column 2 - Main Image"
+            },
+            {
+              "value": "3",
+              "label": "Column 3 - Product Info"
+            },
+            {
+              "value": "4",
+              "label": "Column 4 - Buy Buttons"
+            }
+          ],
+          "default": "3",
+          "info": "Choose which column to display this divider in"
+        }
+      ]
+    },
+    {
+      "type": "sku",
+      "name": "SKU",
+      "limit": 1
+    },
+    {
+      "type": "share",
+      "name": "Share",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "share_label",
+          "label": "Share label",
+          "default": "Share"
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom Liquid Code",
+          "info": "Add custom code for advanced customization"
+        }
+      ]
+    },
+    {
+      "type": "collapsible_tab",
+      "name": "Collapsible Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Shipping & Returns",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "select",
+          "id": "column",
+          "label": "Display Column",
+          "options": [
+            {
+              "value": "3",
+              "label": "Column 3 - Product Info"
+            },
+            {
+              "value": "4",
+              "label": "Column 4 - Buy Buttons"
+            }
+          ],
+          "default": "3",
+          "info": "Choose which column to display this collapsible tab in"
+        }
+      ]
+    },
+    {
+      "type": "shipping_info",
+      "name": "Shipping Info",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Ships From"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_ships_from",
+          "label": "Show Ships From",
+          "default": true,
+          "info": "Toggle visibility of the Ships From row"
+        },
+        {
+          "type": "text",
+          "id": "ships_from_label",
+          "label": "Label",
+          "default": "Ships from"
+        },
+        {
+          "type": "text",
+          "id": "ships_from_text",
+          "label": "Text",
+          "default": "ASIW"
+        },
+        {
+          "type": "url",
+          "id": "ships_from_url",
+          "label": "Link URL (Optional)",
+          "info": "Leave blank for no link"
+        },
+        {
+          "type": "header",
+          "content": "Sold By"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sold_by",
+          "label": "Show Sold By",
+          "default": true,
+          "info": "Toggle visibility of the Sold By row"
+        },
+        {
+          "type": "text",
+          "id": "sold_by_label",
+          "label": "Label",
+          "default": "Sold by"
+        },
+        {
+          "type": "text",
+          "id": "sold_by_text",
+          "label": "Text",
+          "default": "ASIW"
+        },
+        {
+          "type": "url",
+          "id": "sold_by_url",
+          "label": "Link URL (Optional)",
+          "info": "Link to seller/brand page"
+        },
+        {
+          "type": "header",
+          "content": "Returns"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_returns",
+          "label": "Show Returns",
+          "default": true,
+          "info": "Toggle visibility of the Returns row"
+        },
+        {
+          "type": "text",
+          "id": "returns_label",
+          "label": "Label",
+          "default": "Returns"
+        },
+        {
+          "type": "text",
+          "id": "returns_text",
+          "label": "Text",
+          "default": "30-day refund/replacement"
+        },
+        {
+          "type": "url",
+          "id": "returns_url",
+          "label": "Link URL (Optional)",
+          "info": "Link to returns/refunds policy page"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "⚠️ This section only displays on desktop (screens 990px and wider). It will be hidden on mobile and tablet devices."
+    },
+    {
+      "type": "header",
+      "content": "Section Width"
+    },
+    {
+      "type": "range",
+      "id": "section_max_width",
+      "min": 1000,
+      "max": 2000,
+      "step": 50,
+      "unit": "px",
+      "label": "Maximum Section Width",
+      "default": 1500,
+      "info": "Control the maximum width of the entire product section"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "info": "Select a color scheme to apply to this section"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_debug_mode",
+      "label": "🔧 Enable Debug Mode",
+      "default": false,
+      "info": "Shows colored outlines and labels for development. Turn OFF for production."
+    },
+    {
+      "type": "header",
+      "content": "Column Spacing"
+    },
+    {
+      "type": "range",
+      "id": "column_3_spacing",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Column 3 Block Spacing",
+      "default": 15,
+      "info": "Control the vertical spacing between blocks in the product info column (Column 3)"
+    },
+    {
+      "type": "header",
+      "content": "Column Width Settings"
+    },
+    {
+      "type": "range",
+      "id": "column_2_width",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "%",
+      "label": "Column 1 Width (Main Image + Thumbnails)",
+      "default": 40,
+      "info": "Percentage width for the main image and thumbnails column"
+    },
+    {
+      "type": "range",
+      "id": "column_3_width",
+      "min": 15,
+      "max": 40,
+      "step": 5,
+      "unit": "%",
+      "label": "Column 2 Width (Product Info)",
+      "default": 30,
+      "info": "Percentage width for the product info column"
+    },
+    {
+      "type": "range",
+      "id": "column_4_width",
+      "min": 15,
+      "max": 40,
+      "step": 5,
+      "unit": "%",
+      "label": "Column 3 Width (Buy Buttons)",
+      "default": 30,
+      "info": "Percentage width for the buy buttons sidebar (Total should equal 100%)"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_info",
+      "default": true,
+      "label": "Enable sticky sidebar",
+      "info": "Makes the buy buttons sidebar stick when scrolling"
+    },
+    {
+      "type": "select",
+      "id": "image_zoom",
+      "options": [
+        {
+          "value": "lightbox",
+          "label": "Lightbox"
+        },
+        {
+          "value": "hover",
+          "label": "Hover zoom"
+        },
+        {
+          "value": "none",
+          "label": "No zoom"
+        }
+      ],
+      "default": "hover",
+      "label": "Image zoom"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}

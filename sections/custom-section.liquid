@@ -1,0 +1,965 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'title_pill' -%}
+      #shopify-block-{{ block.id }} .pill-text,
+      #block-{{ block.id }} .pill-text {
+        font-size: {{ block.settings.pill_font_size }}px !important;
+        background-color: {{ block.settings.pill_bg_color }} !important;
+      }
+    {%- endif -%}
+    {%- if block.type == 'description_title' -%}
+      #shopify-block-{{ block.id }} h2,
+      #shopify-block-{{ block.id }} h2 *,
+      #shopify-block-{{ block.id }} h2 span,
+      #block-{{ block.id }} h2,
+      #block-{{ block.id }} h2 *,
+      #block-{{ block.id }} h2 span {
+        color: {{ block.settings.title_text_color }} !important;
+      }
+    {%- endif -%}
+    {%- if block.type == 'description_body' -%}
+      #shopify-block-{{ block.id }},
+      #shopify-block-{{ block.id }} *,
+      #shopify-block-{{ block.id }} p,
+      #shopify-block-{{ block.id }} span,
+      #block-{{ block.id }},
+      #block-{{ block.id }} *,
+      #block-{{ block.id }} p,
+      #block-{{ block.id }} span {
+        color: {{ block.settings.body_text_color }} !important;
+      }
+    {%- endif -%}
+    {%- if block.type == 'features_highlight' -%}
+      #block-{{ block.id }} .features-highlight__item {
+        background-color: {{ block.settings.container_bg_color }};
+      }
+      
+      #block-{{ block.id }} .features-highlight__grid {
+        grid-template-columns: repeat({{ block.settings.mobile_columns }}, 1fr);
+      }
+      
+      @media screen and (min-width: 750px) {
+        #block-{{ block.id }} .features-highlight__grid {
+          grid-template-columns: repeat({{ block.settings.desktop_columns }}, 1fr);
+        }
+      }
+    {%- endif -%}
+  {%- endfor -%}
+
+  .customer-reviews {
+    margin-top: 0;
+  }
+
+  .customer-reviews__wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .customer-reviews__wrapper--left {
+    justify-content: flex-start;
+  }
+
+  .customer-reviews__wrapper--right {
+    justify-content: flex-end;
+  }
+
+  .customer-reviews__blocks {
+    max-width: 80rem;
+    width: 100%;
+  }
+
+  .customer-reviews__blocks.left {
+    text-align: left;
+  }
+
+  .customer-reviews__blocks.center {
+    text-align: center;
+  }
+
+  .customer-reviews__blocks.right {
+    text-align: right;
+  }
+
+  .customer-reviews__pill {
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+
+  .customer-reviews__pill .pill-text {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #ffffff;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .customer-reviews__heading {
+    word-break: break-word;
+  }
+
+  .customer-reviews__heading * {
+    color: inherit !important;
+  }
+
+  .customer-reviews__text {
+    color: rgb(113, 128, 150);
+  }
+
+  .customer-reviews__text * {
+    color: inherit !important;
+  }
+
+  .customer-reviews__text p {
+    margin: 0;
+  }
+
+  .features-highlight-wrapper {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    display: flex;
+    justify-content: center;
+  }
+
+  .features-highlight {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .features-highlight__container {
+    width: 100%;
+  }
+
+  .features-highlight__container.show-outlines {
+    outline: 3px solid red;
+  }
+
+  .features-highlight__grid.show-outlines {
+    outline: 3px solid blue;
+  }
+
+  .features-highlight__grid {
+    display: grid;
+    gap: 3rem 2rem;
+    align-items: center;
+    justify-items: center;
+    max-width: 100%;
+  }
+
+  .features-highlight__item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 2px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    aspect-ratio: 1;
+  }
+
+  .features-highlight__item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .features-highlight__item.show-outlines {
+    outline: 3px solid green;
+  }
+
+  .features-highlight__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .features-highlight__image.show-outlines {
+    outline: 3px solid orange;
+  }
+
+  .three-way-video-wrapper {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    display: flex;
+    justify-content: center;
+  }
+
+  .three-way-video {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    width: 90%;
+    max-width: 90vw;
+    position: relative;
+  }
+
+  .three-way-video__main-video {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+
+  .three-way-video__main-video::before {
+    content: '';
+    display: block;
+    padding-top: 56.25%;
+  }
+
+  .three-way-video__main-video video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 0;
+  }
+
+  .three-way-video__main-video .placeholder-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .three-way-video__video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .three-way-video__images-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .three-way-video__image {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+
+  .three-way-video__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media screen and (max-width: 749px) {
+    .three-way-video-wrapper {
+      width: 100%;
+      position: static;
+      left: auto;
+      right: auto;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .three-way-video {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .three-way-video__main-video,
+    .three-way-video__images-container {
+      min-height: 300px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .customer-reviews__heading {
+      font-size: 2.8rem;
+    }
+    
+    .customer-reviews__pill .pill-text {
+      font-size: 12px;
+      padding: 6px 14px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="isolate{% unless section.settings.full_width %} page-width{% endunless %}">
+  <div class="customer-reviews content-container color-{{ section.settings.color_scheme }} gradient{% if section.settings.full_width %} customer-reviews--full-width content-container--full-width{% endif %} section-{{ section.id }}-padding">
+    <div class="customer-reviews__wrapper customer-reviews__wrapper--{{ section.settings.desktop_content_position }}{% if section.settings.full_width %} page-width{% endif %}">
+      <div class="customer-reviews__blocks {{ section.settings.content_alignment }}">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'title_pill' -%}
+              <div
+                class="customer-reviews__pill{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                id="block-{{ block.id }}"
+                {{ block.shopify_attributes }}
+                {% if settings.animations_reveal_on_scroll %}
+                  data-cascade
+                  style="--animation-order: {{ forloop.index }};"
+                {% endif %}
+                style="padding-top: {{ block.settings.pill_padding_top }}px; padding-bottom: {{ block.settings.pill_padding_bottom }}px;{% if settings.animations_reveal_on_scroll %} --animation-order: {{ forloop.index }};{% endif %}"
+              >
+                <span class="pill-text">{{ block.settings.pill_text | escape }}</span>
+              </div>
+            {%- when 'description_title' -%}
+              <h2
+                id="block-{{ block.id }}"
+                class="customer-reviews__heading rte inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                {{ block.shopify_attributes }}
+                {% if settings.animations_reveal_on_scroll %}
+                  data-cascade
+                  style="--animation-order: {{ forloop.index }};"
+                {% endif %}
+                style="padding-top: {{ block.settings.title_padding_top }}px; padding-bottom: {{ block.settings.title_padding_bottom }}px;{% if settings.animations_reveal_on_scroll %} --animation-order: {{ forloop.index }};{% endif %}"
+              >
+                {{ block.settings.title_text }}
+              </h2>
+            {%- when 'description_body' -%}
+              <div
+                id="block-{{ block.id }}"
+                class="customer-reviews__text rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                {{ block.shopify_attributes }}
+                {% if settings.animations_reveal_on_scroll %}
+                  data-cascade
+                  style="--animation-order: {{ forloop.index }};"
+                {% endif %}
+                style="padding-top: {{ block.settings.body_padding_top }}px; padding-bottom: {{ block.settings.body_padding_bottom }}px; color: {{ block.settings.body_text_color }} !important;{% if settings.animations_reveal_on_scroll %} --animation-order: {{ forloop.index }};{% endif %}"
+              >
+                {{ block.settings.body_text }}
+              </div>
+            {%- when 'features_highlight' -%}
+              <div class="features-highlight-wrapper" style="padding-top: {{ block.settings.features_padding_top }}px; padding-bottom: {{ block.settings.features_padding_bottom }}px;">
+                <div
+                  id="block-{{ block.id }}"
+                  class="features-highlight{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                  {{ block.shopify_attributes }}
+                  {% if settings.animations_reveal_on_scroll %}
+                    data-cascade
+                    style="--animation-order: {{ forloop.index }};"
+                  {% endif %}
+                >
+                  <div class="features-highlight__container{% if block.settings.show_outlines %} show-outlines{% endif %}" style="width: {{ block.settings.container_width }}%;">
+                    <div class="features-highlight__grid{% if block.settings.show_outlines %} show-outlines{% endif %}">
+                      {%- for i in (1..12) -%}
+                        {%- assign image_key = 'feature_image_' | append: i -%}
+                        {%- assign feature_image = block.settings[image_key] -%}
+                        {%- if feature_image != blank -%}
+                          <div class="features-highlight__item{% if block.settings.show_outlines %} show-outlines{% endif %}">
+                            <img 
+                              src="{{ feature_image | image_url: width: 400 }}" 
+                              loading="lazy" 
+                              class="features-highlight__image{% if block.settings.show_outlines %} show-outlines{% endif %}"
+                              alt="{{ feature_image.alt | escape }}"
+                            >
+                          </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- when 'three_way_video' -%}
+              <div class="three-way-video-wrapper" style="padding-top: {{ block.settings.video_padding_top }}px; padding-bottom: {{ block.settings.video_padding_bottom }}px;">
+                <div
+                  class="three-way-video{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                  {{ block.shopify_attributes }}
+                  {% if settings.animations_reveal_on_scroll %}
+                    data-cascade
+                    style="--animation-order: {{ forloop.index }};"
+                  {% endif %}
+                >
+                  <div class="three-way-video__main-video" style="flex: {{ block.settings.video_flex_ratio }};">
+                    {%- if block.settings.main_video != blank -%}
+                      {% if block.settings.main_video.sources %}
+                        <video autoplay loop muted playsinline>
+                          {% for source in block.settings.main_video.sources %}
+                            <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                          {% endfor %}
+                        </video>
+                      {% endif %}
+                    {%- else -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                    {%- if block.settings.enable_video_overlay -%}
+                      <div 
+                        class="three-way-video__video-overlay" 
+                        style="
+                          background-color: {{ block.settings.video_overlay_color }};
+                          opacity: {{ block.settings.video_overlay_opacity | divided_by: 100.0 }};
+                        "
+                      ></div>
+                    {%- endif -%}
+                  </div>
+                  <div class="three-way-video__images-container" style="flex: {{ 10 | minus: block.settings.video_flex_ratio }}; gap: {{ block.settings.images_gap }}rem;">
+                    <div class="three-way-video__image">
+                      {%- if block.settings.image_top != blank -%}
+                        {{ block.settings.image_top | image_url: width: 800 | image_tag: loading: 'lazy' }}
+                      {%- else -%}
+                        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {%- endif -%}
+                    </div>
+                    <div class="three-way-video__image">
+                      {%- if block.settings.image_bottom != blank -%}
+                        {{ block.settings.image_bottom | image_url: width: 800 | image_tag: loading: 'lazy' }}
+                      {%- else -%}
+                        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Section",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Desktop content position"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Content alignment"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": true,
+      "label": "Make section full width"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 52
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title_pill",
+      "name": "Title Pill",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "pill_text",
+          "default": "Customer Reviews",
+          "label": "Pill text"
+        },
+        {
+          "type": "color",
+          "id": "pill_bg_color",
+          "label": "Background color",
+          "default": "#007bff"
+        },
+        {
+          "type": "range",
+          "id": "pill_font_size",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Font size",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "pill_padding_top",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Top padding",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "pill_padding_bottom",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Bottom padding",
+          "default": 20
+        }
+      ]
+    },
+    {
+      "type": "description_title",
+      "name": "Description Title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "title_text",
+          "default": "What Our Customers Say",
+          "label": "Title"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h2",
+              "label": "Small"
+            },
+            {
+              "value": "h1",
+              "label": "Medium"
+            },
+            {
+              "value": "h0",
+              "label": "Large"
+            },
+            {
+              "value": "hxl",
+              "label": "Extra large"
+            },
+            {
+              "value": "hxxl",
+              "label": "Extra extra large"
+            }
+          ],
+          "default": "h1",
+          "label": "Heading size"
+        },
+        {
+          "type": "color",
+          "id": "title_text_color",
+          "label": "Text color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "title_padding_top",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Top padding",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "title_padding_bottom",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Bottom padding",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "type": "description_body",
+      "name": "Description Body",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "body_text",
+          "default": "<p>Don't just take our word for it. Here's what our satisfied customers have to say about our products.</p>",
+          "label": "Description"
+        },
+        {
+          "type": "color",
+          "id": "body_text_color",
+          "label": "Text color",
+          "default": "#718096"
+        },
+        {
+          "type": "range",
+          "id": "body_padding_top",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Top padding",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "body_padding_bottom",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Bottom padding",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "type": "features_highlight",
+      "name": "Features Highlight",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_outlines",
+          "default": false,
+          "label": "Show debug outlines",
+          "info": "Display colored outlines to visualize container boundaries: Red = Container, Blue = Grid, Green = Items, Orange = Images"
+        },
+        {
+          "type": "range",
+          "id": "container_width",
+          "min": 50,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Container width",
+          "default": 90,
+          "info": "Adjust the width of the features grid container"
+        },
+        {
+          "type": "header",
+          "content": "Container Styling"
+        },
+        {
+          "type": "color",
+          "id": "container_bg_color",
+          "label": "Container background color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "header",
+          "content": "Grid Columns"
+        },
+        {
+          "type": "range",
+          "id": "mobile_columns",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "label": "Mobile columns",
+          "default": 2,
+          "info": "Number of columns on mobile devices"
+        },
+        {
+          "type": "range",
+          "id": "desktop_columns",
+          "min": 2,
+          "max": 12,
+          "step": 1,
+          "label": "Desktop columns",
+          "default": 6,
+          "info": "Number of columns on desktop devices"
+        },
+        {
+          "type": "header",
+          "content": "Feature Images"
+        },
+        {
+          "type": "paragraph",
+          "content": "Add up to 12 images (e.g., brand logos, feature icons). Images will display in a clean grid layout."
+        },
+        {
+          "type": "image_picker",
+          "id": "feature_image_1",
+          "label": "Image 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "feature_image_2",
+          "label": "Image 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "feature_image_3",
+          "label": "Image 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "feature_image_4",
+          "label": "Image 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "feature_image_5",
+          "label": "Image 5"
+        },
+        {
+          "type": "image_picker",
+          "id": "feature_image_6",
+          "label": "Image 6"
+        },
+        {
+          "type": "image_picker",
+          "id": "feature_image_7",
+          "label": "Image 7"
+        },
+        {
+          "type": "image_picker",
+          "id": "feature_image_8",
+          "label": "Image 8"
+        },
+        {
+          "type": "image_picker",
+          "id": "feature_image_9",
+          "label": "Image 9"
+        },
+        {
+          "type": "image_picker",
+          "id": "feature_image_10",
+          "label": "Image 10"
+        },
+        {
+          "type": "image_picker",
+          "id": "feature_image_11",
+          "label": "Image 11"
+        },
+        {
+          "type": "image_picker",
+          "id": "feature_image_12",
+          "label": "Image 12"
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "range",
+          "id": "features_padding_top",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Top padding",
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "features_padding_bottom",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Bottom padding",
+          "default": 40
+        }
+      ]
+    },
+    {
+      "type": "three_way_video",
+      "name": "3 Way Video",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "video",
+          "id": "main_video",
+          "label": "Main video"
+        },
+        {
+          "type": "header",
+          "content": "Video Overlay Settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_video_overlay",
+          "default": false,
+          "label": "Enable color overlay on video"
+        },
+        {
+          "type": "color",
+          "id": "video_overlay_color",
+          "default": "#000000",
+          "label": "Overlay color"
+        },
+        {
+          "type": "range",
+          "id": "video_overlay_opacity",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Overlay opacity",
+          "default": 50
+        },
+        {
+          "type": "header",
+          "content": "Images"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_top",
+          "label": "Top image",
+          "info": "Aspect ratio 3:2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_bottom",
+          "label": "Bottom image",
+          "info": "Aspect ratio 3:2"
+        },
+        {
+          "type": "header",
+          "content": "Layout proportions"
+        },
+        {
+          "type": "range",
+          "id": "video_flex_ratio",
+          "min": 5,
+          "max": 9,
+          "step": 0.1,
+          "label": "Video container ratio",
+          "default": 5,
+          "info": "Adjust the width ratio of the video container (5 = 50%, 7 = 70%, 9 = 90%). Images automatically adjust to fill remaining space."
+        },
+        {
+          "type": "range",
+          "id": "images_gap",
+          "min": 0,
+          "max": 10,
+          "step": 0.5,
+          "label": "Space between stacked images",
+          "default": 2,
+          "info": "Gap in rem units (1 rem = 10px typically)"
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "range",
+          "id": "video_padding_top",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Top padding",
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "video_padding_bottom",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Bottom padding",
+          "default": 40
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Section",
+      "blocks": [
+        {
+          "type": "title_pill"
+        },
+        {
+          "type": "description_title"
+        },
+        {
+          "type": "description_body"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

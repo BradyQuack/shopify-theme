@@ -1,0 +1,1573 @@
+{{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
+{{ 'component-search.css' | asset_url | stylesheet_tag }}
+{{ 'component-menu-drawer.css' | asset_url | stylesheet_tag }}
+
+<style>
+  /* Top promotional bar */
+  .promo-bar {
+    background-color: {{ section.settings.promo_bar_color }};
+    color: {{ section.settings.promo_bar_text_color }};
+    padding: 12px 0;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  .promo-bar__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: {% if section.settings.header_full_width %}100%{% else %}1200px{% endif %};
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .promo-bar__message {
+    flex: 1;
+  }
+  
+  .promo-bar__links {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+  }
+  
+  .promo-bar__links a {
+    color: {{ section.settings.promo_bar_text_color }};
+    text-decoration: none;
+  }
+  
+  .promo-bar__links a:hover {
+    text-decoration: underline;
+  }
+
+  /* Mobile menu button */
+  .header2__mobile-menu-button {
+    display: none;
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header2__mobile-menu-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Mobile overlay menu */
+  .header2__mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .header2__mobile-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .header2__mobile-menu {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 85%;
+    max-width: 320px;
+    height: 100%;
+    background: white;
+    z-index: 1001;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+  }
+
+  .header2__mobile-menu.active {
+    left: 0;
+  }
+
+  .header2__mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .header2__mobile-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .header2__mobile-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .header2__mobile-nav-item {
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .header2__mobile-nav-link {
+    display: block;
+    padding: 16px 20px;
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+  }
+
+  .header2__mobile-nav-link:hover {
+    background-color: #f5f5f5;
+  }
+
+  .header2__mobile-nav-link--shop-all {
+    background: {{ section.settings.shop_all_bg_color }};
+    color: {{ section.settings.shop_all_text_color }};
+    font-weight: 600;
+  }
+
+  /* Main header */
+  .header2 {
+    background-color: {{ section.settings.header_bg_color }};
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .header2__main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: {% if section.settings.header_full_width %}100%{% else %}1200px{% endif %};
+    margin: 0 auto;
+    padding: {{ section.settings.header_padding_vertical | default: 15 }}px {{ section.settings.header_padding_horizontal | default: 20 }}px;
+    gap: {{ section.settings.header_element_spacing | default: 20 }}px;
+  }
+  
+  .header2__logo {
+    flex-shrink: 0;
+  }
+  
+  .header2__logo img {
+    max-height: {{ section.settings.logo_height }}px;
+    width: auto;
+  }
+  
+  .header2__store-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #666;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .header2__store-info:hover {
+    color: {{ section.settings.accent_color }};
+  }
+  
+  .header2__store-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .header2__store-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  
+  .header2__search {
+    flex: 1;
+    {% unless section.settings.search_no_max_width %}
+    max-width: {{ section.settings.search_max_width | default: 600 }}px;
+    {% endunless %}
+    position: relative;
+  }
+  
+  .header2__search-form {
+    display: flex;
+    border: 2px solid {{ section.settings.search_border_color }};
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .header2__search-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  .header2__search-button {
+    background: {{ section.settings.search_button_color }};
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .header2__search-button:hover {
+    background: {{ section.settings.search_button_hover_color }};
+  }
+
+  /* Predictive Search Results */
+  .header2__search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-height: 500px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+  }
+
+  .header2__search-results.active {
+    display: block;
+  }
+
+  .header2__search-loading {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+  }
+
+  .header2__search-no-results {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+  }
+
+  .header2__search-item {
+    display: flex;
+    gap: 15px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    text-decoration: none;
+    color: #333;
+    transition: background 0.2s;
+  }
+
+  .header2__search-item:hover {
+    background: #f7f7f7;
+  }
+
+  .header2__search-item:last-child {
+    border-bottom: none;
+  }
+
+  .header2__search-item-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    flex-shrink: 0;
+  }
+
+  .header2__search-item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .header2__search-item-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #0f1111;
+    line-height: 1.4;
+  }
+  
+  .header2__actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .header2__action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #333;
+    font-size: 12px;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+    min-width: 60px;
+  }
+  
+  .header2__action:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .header2__action-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .svg-wrapper {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+  
+  .svg-wrapper svg,
+  .svg-wrapper img,
+  .header2__signin-icon svg,
+  .header2__signin-icon img,
+  .header2__cart-icon svg,
+  .header2__cart-icon img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+  }
+  
+  .header2__cart-count {
+    background: {{ section.settings.accent_color }};
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+  }
+  
+  /* Navigation bar */
+  .header2__nav {
+    background: {{ section.settings.nav_bg_color }};
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .header2__nav-content {
+    max-width: {% if section.settings.nav_full_width %}100%{% else %}1200px{% endif %};
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    {% unless section.settings.nav_full_width %}
+    justify-content: center;
+    {% endunless %}
+  }
+  
+  .header2__nav-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+    {% if section.settings.nav_full_width %}
+    justify-content: space-between;
+    width: 100%;
+    {% endif %}
+  }
+  
+  .header2__nav-item {
+    position: relative;
+    {% if section.settings.nav_full_width %}
+    flex: 1;
+    {% endif %}
+  }
+  
+  .header2__nav-link {
+    display: flex;
+    align-items: center;
+    {% if section.settings.nav_full_width %}
+    justify-content: center;
+    {% endif %}
+    padding: 16px 20px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 14px;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+  }
+  
+  .header2__nav-link:hover {
+    background-color: {{ section.settings.nav_hover_color }};
+    color: {{ section.settings.nav_text_hover_color | default: '#333' }};
+  }
+  
+  .header2__nav-link--shop-all {
+    background: {{ section.settings.shop_all_bg_color }};
+    color: {{ section.settings.shop_all_text_color }};
+  }
+  
+  .header2__nav-link--shop-all:hover {
+    background: {{ section.settings.shop_all_hover_color }};
+  }
+  
+  .header2__nav-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+  }
+  
+  /* Recommended searches */
+  .header2__recommendations {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 12px 0;
+  }
+  
+  .header2__recommendations-content {
+    max-width: {% if section.settings.header_full_width %}100%{% else %}1200px{% endif %};
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .header2__recommendations-title {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  
+  .header2__recommendations-list {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .header2__recommendations-list::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .header2__recommendation-item {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #333;
+    font-size: 13px;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  
+  .header2__recommendation-item:hover {
+    border-color: {{ section.settings.accent_color }};
+    background: {{ section.settings.recommendation_hover_color | default: '#f0f8ff' }};
+  }
+  
+  .header2__more-suggestions {
+    color: {{ section.settings.accent_color }};
+    text-decoration: none;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  
+  .header2__more-suggestions:hover {
+    text-decoration: underline;
+  }
+  
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .promo-bar__links {
+      display: none;
+    }
+    
+    .header2__main {
+      gap: 10px;
+      padding: 10px 15px;
+      flex-wrap: wrap;
+    }
+    
+    .header2__mobile-menu-button {
+      display: flex;
+      order: -1;
+    }
+    
+    .header2__store-info {
+      display: none;
+    }
+
+    .header2__logo {
+      order: 0;
+    }
+    
+    .header2__search {
+      order: 2;
+      width: 100%;
+      max-width: none;
+      flex-basis: 100%;
+    }
+
+    .header2__actions {
+      order: 1;
+    }
+
+    .header2__search-input {
+      padding: 10px 12px;
+      font-size: 16px; /* Prevents zoom on iOS */
+    }
+
+    .header2__search-button {
+      padding: 10px 16px;
+    }
+    
+    .header2__actions {
+      gap: 8px;
+    }
+
+    .header2__action {
+      min-width: 50px;
+      font-size: 11px;
+      padding: 6px;
+    }
+    
+    .header2__nav {
+      display: none;
+    }
+    
+    .header2__recommendations {
+      padding: 8px 0;
+    }
+
+    .header2__recommendations-content {
+      padding: 0 15px;
+      gap: 10px;
+    }
+
+    .header2__recommendations-title {
+      font-size: 13px;
+    }
+
+    .header2__recommendation-item {
+      font-size: 12px;
+      padding: 6px 12px;
+    }
+
+    .header2__more-suggestions {
+      font-size: 13px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .promo-bar {
+      font-size: 12px;
+      padding: 8px 0;
+    }
+
+    .promo-bar__content {
+      padding: 0 15px;
+    }
+
+    .header2__main {
+      padding: 8px 12px;
+    }
+
+    .header2__actions {
+      gap: 5px;
+    }
+
+    .header2__action {
+      min-width: 45px;
+      font-size: 10px;
+      padding: 4px;
+    }
+
+    .svg-wrapper,
+    .header2__signin-wrapper,
+    .header2__cart-wrapper {
+      width: 20px;
+      height: 20px;
+    }
+
+    .header2__recommendations-content {
+      padding: 0 12px;
+      gap: 8px;
+    }
+
+    .header2__recommendations-title {
+      display: none;
+    }
+  }
+
+  /* Very small screens */
+  @media (max-width: 360px) {
+    .header2__search {
+      width: calc(100% + 30px);
+      margin: 10px -15px 0 -15px;
+    }
+
+    .header2__search-form {
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+    }
+  }
+
+  /* Touch improvements */
+  @media (hover: none) and (pointer: coarse) {
+    .header2__action:hover,
+    .header2__nav-link:hover,
+    .header2__recommendation-item:hover {
+      background-color: transparent;
+    }
+
+    .header2__action:active {
+      background-color: #f5f5f5;
+    }
+
+    .header2__mobile-nav-link:active {
+      background-color: #f5f5f5;
+    }
+
+    .header2__recommendation-item:active {
+      background-color: {{ section.settings.recommendation_hover_color | default: '#f0f8ff' }};
+    }
+  }
+</style>
+
+{%- style -%}
+  .header2-section {
+    margin-bottom: {{ section.settings.margin_bottom }}px;
+  }
+  
+  .header2__signin-icon {
+    width: {{ section.settings.signin_icon_size }}px !important;
+    height: {{ section.settings.signin_icon_size }}px !important;
+  }
+  
+  .header2__cart-icon {
+    width: {{ section.settings.cart_icon_size }}px !important;
+    height: {{ section.settings.cart_icon_size }}px !important;
+  }
+  
+  .header2__signin-wrapper {
+    width: {{ section.settings.signin_icon_size }}px;
+    height: {{ section.settings.signin_icon_size }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+  
+  .header2__cart-wrapper {
+    width: {{ section.settings.cart_icon_size }}px;
+    height: {{ section.settings.cart_icon_size }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+
+  .promo-bar__message-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .promo-bar__message-link:hover {
+    text-decoration: underline;
+  }
+
+  /* Mobile icon adjustments */
+  @media (max-width: 768px) {
+    .header2__logo img {
+      max-height: {{ section.settings.mobile_logo_height }}px !important;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header2__signin-icon {
+      width: 20px !important;
+      height: 20px !important;
+    }
+    
+    .header2__cart-icon {
+      width: 20px !important;
+      height: 20px !important;
+    }
+    
+    .header2__signin-wrapper,
+    .header2__cart-wrapper {
+      width: 20px;
+      height: 20px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="header2-section">
+  <!-- Top Promotional Bar -->
+  {%- if section.settings.show_promo_bar -%}
+    <div class="promo-bar">
+      <div class="promo-bar__content">
+        <div class="promo-bar__message">
+          {%- if section.settings.promo_link != blank -%}
+            <a href="{{ section.settings.promo_link }}" class="promo-bar__message-link">
+              {{ section.settings.promo_message | default: "Special offer! Free shipping on orders over $45. Shop Now >" }}
+            </a>
+          {%- else -%}
+            {{ section.settings.promo_message | default: "Special offer! Free shipping on orders over $45. Shop Now >" }}
+          {%- endif -%}
+        </div>
+        <div class="promo-bar__links">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'promo_link' -%}
+              <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!-- Mobile Menu Overlay -->
+  <div class="header2__mobile-overlay" id="mobile-overlay">
+    <div class="header2__mobile-menu" id="mobile-menu">
+      <div class="header2__mobile-menu-header">
+        <h3>Menu</h3>
+        <button class="header2__mobile-close" id="mobile-close">&times;</button>
+      </div>
+      <ul class="header2__mobile-nav-list">
+        <!-- Shop All -->
+        <li class="header2__mobile-nav-item">
+          <a href="{{ section.settings.shop_all_link | default: '/collections' }}" class="header2__mobile-nav-link header2__mobile-nav-link--shop-all">
+            {{ section.settings.shop_all_text | default: 'Shop All' }}
+          </a>
+        </li>
+        <!-- Navigation Links -->
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'nav_item' -%}
+            <li class="header2__mobile-nav-item">
+              <a href="{{ block.settings.link }}" class="header2__mobile-nav-link">
+                {{ block.settings.text }}
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Main Header -->
+  <div class="header2">
+    <div class="header2__main">
+      <!-- Mobile Menu Button -->
+      <button class="header2__mobile-menu-button" id="mobile-menu-button">
+        <svg class="header2__mobile-menu-icon" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+        </svg>
+      </button>
+
+      <!-- Logo -->
+      <div class="header2__logo">
+        <a href="{{ routes.root_url }}">
+          {%- if settings.logo -%}
+            {{ settings.logo | image_url: width: 200 | image_tag: alt: shop.name }}
+          {%- else -%}
+            <h1>{{ shop.name }}</h1>
+          {%- endif -%}
+        </a>
+      </div>
+
+      <!-- Store Info -->
+      <div class="header2__store-info">
+        <div class="header2__store-icon">
+          <svg class="header2__action-icon" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          </svg>
+        </div>
+        <div class="header2__store-details">
+          <div class="header2__store-name">
+            {{ section.settings.store_name | default: "Your Store" }}
+          </div>
+          <div class="header2__store-hours">
+            {{ section.settings.store_hours | default: "10 PM" }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="header2__search">
+        <form class="header2__search-form" action="{{ routes.search_url }}" method="get">
+          <input
+            class="header2__search-input"
+            type="search"
+            name="q"
+            id="header-search-input"
+            placeholder="{{ section.settings.search_placeholder | default: 'What can we help you find?' }}"
+            value="{{ search.terms | escape }}"
+            autocomplete="off"
+          >
+          <button class="header2__search-button" type="submit">
+            <svg width="20" height="20" fill="white" viewBox="0 0 24 24">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+          </button>
+        </form>
+        <!-- Predictive Search Results -->
+        <div class="header2__search-results" id="header-search-results"></div>
+      </div>
+
+      <!-- Actions -->
+      <div class="header2__actions">
+        <!-- Account -->
+        <a href="{{ routes.account_url }}" class="header2__action">
+          <span class="header2__signin-wrapper">
+            {%- if section.settings.signin_icon -%}
+              {{ section.settings.signin_icon | image_url: width: section.settings.signin_icon_size, height: section.settings.signin_icon_size | image_tag: alt: 'Sign In', class: 'header2__signin-icon' }}
+            {%- else -%}
+              <span class="header2__signin-icon">{{ 'icon-account.svg' | inline_asset_content }}</span>
+            {%- endif -%}
+          </span>
+          {%- if customer -%}
+            Account
+          {%- else -%}
+            Sign In
+          {%- endif -%}
+        </a>
+
+        <!-- Cart -->
+        <a href="{{ routes.cart_url }}" class="header2__action" style="position: relative;">
+          <span class="header2__cart-wrapper">
+            {%- if section.settings.cart_icon -%}
+              {{ section.settings.cart_icon | image_url: width: section.settings.cart_icon_size, height: section.settings.cart_icon_size | image_tag: alt: 'Cart', class: 'header2__cart-icon' }}
+            {%- else -%}
+              <span class="header2__cart-icon">{{ 'icon-cart.svg' | inline_asset_content }}</span>
+            {%- endif -%}
+          </span>
+          Cart
+          {%- if cart.item_count > 0 -%}
+            <span class="header2__cart-count">{{ cart.item_count }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Menu (Desktop Only) -->
+  <div class="header2__nav">
+    <div class="header2__nav-content">
+      <ul class="header2__nav-menu">
+        <!-- Shop All -->
+        <li class="header2__nav-item">
+          <a href="{{ section.settings.shop_all_link | default: '/collections' }}" class="header2__nav-link header2__nav-link--shop-all">
+            <svg class="header2__nav-icon" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/>
+            </svg>
+            {{ section.settings.shop_all_text | default: 'Shop All' }}
+          </a>
+        </li>
+
+        <!-- Navigation Links -->
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'nav_item' -%}
+            <li class="header2__nav-item">
+              <a href="{{ block.settings.link }}" class="header2__nav-link">
+                {%- if block.settings.show_icon -%}
+                  <svg class="header2__nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                {%- endif -%}
+                {{ block.settings.text }}
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Recommended Searches -->
+  {%- if section.settings.show_recommendations -%}
+    <div class="header2__recommendations">
+      <div class="header2__recommendations-content">
+        <span class="header2__recommendations-title">
+          {{ section.settings.recommendations_title | default: 'Recommended Searches for You' }}
+        </span>
+        <div class="header2__recommendations-list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'recommendation' -%}
+              <a href="{{ block.settings.link }}" class="header2__recommendation-item">
+                {{ block.settings.text }}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- if section.settings.more_suggestions_text != blank -%}
+          <a href="{{ section.settings.more_suggestions_link }}" class="header2__more-suggestions">
+            {{ section.settings.more_suggestions_text | default: 'More Suggestions for You >' }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Mobile Menu Functionality
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileClose = document.getElementById('mobile-close');
+
+    function openMobileMenu() {
+      mobileOverlay.classList.add('active');
+      mobileMenu.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileMenu() {
+      mobileOverlay.classList.remove('active');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    if (mobileMenuButton) {
+      mobileMenuButton.addEventListener('click', openMobileMenu);
+    }
+
+    if (mobileClose) {
+      mobileClose.addEventListener('click', closeMobileMenu);
+    }
+
+    if (mobileOverlay) {
+      mobileOverlay.addEventListener('click', function(e) {
+        if (e.target === mobileOverlay) {
+          closeMobileMenu();
+        }
+      });
+    }
+
+    // Close mobile menu on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && mobileOverlay.classList.contains('active')) {
+        closeMobileMenu();
+      }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768 && mobileOverlay.classList.contains('active')) {
+        closeMobileMenu();
+      }
+    });
+
+    // Predictive Search Functionality
+    const searchInput = document.getElementById('header-search-input');
+    const searchResults = document.getElementById('header-search-results');
+    let searchTimeout;
+
+    function displaySearchResults(products) {
+      if (products.length === 0) {
+        searchResults.innerHTML = '<div class="header2__search-no-results">No products found</div>';
+        return;
+      }
+
+      searchResults.innerHTML = products.map(product => {
+        return `
+          <a href="${product.url}" class="header2__search-item">
+            <img src="${product.image}" alt="${product.title}" class="header2__search-item-image" />
+            <div class="header2__search-item-info">
+              <div class="header2__search-item-title">${product.title}</div>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    function performSearch(query) {
+      if (!query || query.length < 2) {
+        searchResults.classList.remove('active');
+        return;
+      }
+
+      searchResults.innerHTML = '<div class="header2__search-loading">Searching...</div>';
+      searchResults.classList.add('active');
+
+      fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=8`)
+        .then(response => response.json())
+        .then(data => {
+          const products = data.resources.results.products || [];
+          displaySearchResults(products);
+        })
+        .catch(error => {
+          console.error('Search error:', error);
+          searchResults.innerHTML = '<div class="header2__search-no-results">Search error. Please try again.</div>';
+        });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', function(e) {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          performSearch(e.target.value);
+        }, 300);
+      });
+
+      searchInput.addEventListener('focus', function(e) {
+        if (e.target.value.length >= 2) {
+          performSearch(e.target.value);
+        }
+      });
+
+      // Close results when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.header2__search')) {
+          searchResults.classList.remove('active');
+        }
+      });
+
+      // Close results on escape key
+      searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          searchResults.classList.remove('active');
+        }
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Header2",
+  "class": "header2-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_full_width",
+      "label": "Use full width for header",
+      "default": false,
+      "info": "When enabled, the header will span the full width of the screen instead of being contained to 1200px"
+    },
+    {
+      "type": "header",
+      "content": "Promotional Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_promo_bar",
+      "label": "Show promotional bar",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "promo_link",
+      "label": "Promotional message link",
+      "info": "When set, clicking the promotional message will navigate to this URL"
+    },
+    {
+      "type": "text",
+      "id": "promo_message",
+      "label": "Promotional message",
+      "default": "Special offer! Free shipping on orders over $45. Shop Now >"
+    },
+    {
+      "type": "color",
+      "id": "promo_bar_color",
+      "label": "Promotional bar background",
+      "default": "#1e3a8a"
+    },
+    {
+      "type": "color",
+      "id": "promo_bar_text_color",
+      "label": "Promotional bar text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "header_element_spacing",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Spacing between header elements",
+      "default": 20,
+      "info": "Control the spacing between logo, store hours, search bar, and sign in/cart buttons"
+    },
+    {
+      "type": "range",
+      "id": "header_padding_vertical",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Header vertical padding (top/bottom)",
+      "default": 15,
+      "info": "Control the top and bottom padding inside the header"
+    },
+    {
+      "type": "range",
+      "id": "header_padding_horizontal",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Header horizontal padding (left/right)",
+      "default": 20,
+      "info": "Control the left and right padding inside the header"
+    },
+    {
+      "type": "header",
+      "content": "Store Information"
+    },
+    {
+      "type": "text",
+      "id": "store_name",
+      "label": "Store name",
+      "default": "Your Store"
+    },
+    {
+      "type": "text",
+      "id": "store_hours",
+      "label": "Store hours",
+      "default": "10 PM"
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo height (desktop)",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_height",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo height (mobile)",
+      "default": 35,
+      "info": "Control the logo size specifically for mobile devices"
+    },
+    {
+      "type": "header",
+      "content": "Search"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder text",
+      "default": "What can we help you find?"
+    },
+    {
+      "type": "range",
+      "id": "search_max_width",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Search bar maximum width",
+      "default": 600,
+      "info": "Control the maximum width of the search bar (only applies when 'Fill available space' is disabled)"
+    },
+    {
+      "type": "checkbox",
+      "id": "search_no_max_width",
+      "label": "Fill available space",
+      "default": false,
+      "info": "When enabled, the search bar will expand to fill all available space between other elements"
+    },
+    {
+      "type": "color",
+      "id": "search_border_color",
+      "label": "Search border color",
+      "default": "#d1d5db"
+    },
+    {
+      "type": "color",
+      "id": "search_button_color",
+      "label": "Search button color",
+      "default": "#1e3a8a"
+    },
+    {
+      "type": "color",
+      "id": "search_button_hover_color",
+      "label": "Search button hover color",
+      "default": "#1e40af"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "nav_full_width",
+      "label": "Use full width for navigation",
+      "default": false,
+      "info": "When enabled, navigation items will span the full width of the screen instead of being contained to 1200px"
+    },
+    {
+      "type": "text",
+      "id": "shop_all_text",
+      "label": "Shop all text",
+      "default": "Shop All"
+    },
+    {
+      "type": "url",
+      "id": "shop_all_link",
+      "label": "Shop all link",
+      "default": "/collections"
+    },
+    {
+      "type": "color",
+      "id": "shop_all_bg_color",
+      "label": "Shop all background color",
+      "default": "#f3f4f6"
+    },
+    {
+      "type": "color",
+      "id": "shop_all_text_color",
+      "label": "Shop all text color",
+      "default": "#374151"
+    },
+    {
+      "type": "color",
+      "id": "shop_all_hover_color",
+      "label": "Shop all hover color",
+      "default": "#e5e7eb"
+    },
+    {
+      "type": "header",
+      "content": "Recommendations"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_recommendations",
+      "label": "Show recommendations bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "recommendations_title",
+      "label": "Recommendations title",
+      "default": "Recommended Searches for You"
+    },
+    {
+      "type": "text",
+      "id": "more_suggestions_text",
+      "label": "More suggestions text",
+      "default": "More Suggestions for You >"
+    },
+    {
+      "type": "url",
+      "id": "more_suggestions_link",
+      "label": "More suggestions link"
+    },
+    {
+      "type": "header",
+      "content": "Icons"
+    },
+    {
+      "type": "image_picker",
+      "id": "signin_icon",
+      "label": "Sign In Icon",
+      "info": "Upload a custom sign in icon (recommended size: 24x24px)"
+    },
+    {
+      "type": "range",
+      "id": "signin_icon_size",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Sign In Icon Size",
+      "default": 24
+    },
+    {
+      "type": "image_picker",
+      "id": "cart_icon",
+      "label": "Cart Icon",
+      "info": "Upload a custom cart icon (recommended size: 24x24px)"
+    },
+    {
+      "type": "range",
+      "id": "cart_icon_size",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Cart Icon Size",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "header_bg_color",
+      "label": "Header background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "nav_bg_color",
+      "label": "Navigation background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "nav_hover_color",
+      "label": "Navigation hover color",
+      "default": "#f3f4f6"
+    },
+    {
+      "type": "color",
+      "id": "nav_text_hover_color",
+      "label": "Navigation text hover color",
+      "default": "#333"
+    },
+    {
+      "type": "color",
+      "id": "recommendation_hover_color",
+      "label": "Recommendation hover color",
+      "default": "#f0f8ff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#2563eb"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom margin",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "promo_link",
+      "name": "Promotional Link",
+      "limit": 10,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Link text",
+          "default": "Link Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL"
+        }
+      ]
+    },
+    {
+      "type": "nav_item",
+      "name": "Navigation Item",
+      "limit": 20,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Navigation text",
+          "default": "Menu Item"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Navigation link"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Show icon",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "recommendation",
+      "name": "Recommendation Item",
+      "limit": 20,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Recommendation text",
+          "default": "Search Term"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Recommendation link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header2 Mobile",
+      "blocks": [
+        {
+          "type": "promo_link",
+          "settings": {
+            "text": "Credit Center",
+            "link": "/pages/credit"
+          }
+        },
+        {
+          "type": "promo_link",
+          "settings": {
+            "text": "Order Status",
+            "link": "/account"
+          }
+        },
+        {
+          "type": "promo_link",
+          "settings": {
+            "text": "Weekly Ad",
+            "link": "/pages/weekly-ad"
+          }
+        },
+        {
+          "type": "nav_item",
+          "settings": {
+            "text": "Installations",
+            "link": "/pages/installations",
+            "show_icon": true
+          }
+        },
+        {
+          "type": "nav_item",
+          "settings": {
+            "text": "Deals",
+            "link": "/collections/deals",
+            "show_icon": true
+          }
+        },
+        {
+          "type": "nav_item",
+          "settings": {
+            "text": "Holiday Decorations",
+            "link": "/collections/holiday"
+          }
+        },
+        {
+          "type": "nav_item",
+          "settings": {
+            "text": "Appliances",
+            "link": "/collections/appliances"
+          }
+        },
+        {
+          "type": "nav_item",
+          "settings": {
+            "text": "Bathroom",
+            "link": "/collections/bathroom"
+          }
+        },
+        {
+          "type": "nav_item",
+          "settings": {
+            "text": "Building Supplies",
+            "link": "/collections/building-supplies"
+          }
+        },
+        {
+          "type": "nav_item",
+          "settings": {
+            "text": "Flooring",
+            "link": "/collections/flooring"
+          }
+        },
+        {
+          "type": "recommendation",
+          "settings": {
+            "text": "Lawn Mower",
+            "link": "/search?q=lawn+mower"
+          }
+        },
+        {
+          "type": "recommendation",
+          "settings": {
+            "text": "Peel Stick Wallpaper",
+            "link": "/search?q=peel+stick+wallpaper"
+          }
+        },
+        {
+          "type": "recommendation",
+          "settings": {
+            "text": "Refrigerator",
+            "link": "/search?q=refrigerator"
+          }
+        },
+        {
+          "type": "recommendation",
+          "settings": {
+            "text": "Toilet",
+            "link": "/search?q=toilet"
+          }
+        },
+        {
+          "type": "recommendation",
+          "settings": {
+            "text": "Vacuum",
+            "link": "/search?q=vacuum"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
