@@ -281,9 +281,10 @@ customElements.define('quantity-input', QuantityInput);
 
 function debounce(fn, wait) {
   let t;
-  return (...args) => {
+  return function (...args) {
+    const context = this;
     clearTimeout(t);
-    t = setTimeout(() => fn.apply(this, args), wait);
+    t = setTimeout(() => fn.apply(context, args), wait);
   };
 }
 
@@ -410,7 +411,7 @@ Shopify.CountryProvinceSelector.prototype = {
   },
 
   setOptions: function (selector, values) {
-    for (var i = 0, count = values.length; i < values.length; i++) {
+    for (var i = 0, count = values.length; i < count; i++) {
       var opt = document.createElement('option');
       opt.value = values[i];
       opt.innerHTML = values[i];
