@@ -36,16 +36,321 @@
   }
 
   {%- unless section.settings.show_quick_add -%}
+    #product-grid .quick-add,
+    #product-grid .card__badge.bottom,
+    #product-grid .card-wrapper .quick-add-bulk {
+      display: none !important;
+    }
+  {%- endunless -%}
+
+  {%- unless section.settings.show_quick_add -%}
     #product-grid-{{ section.id }} .quick-add,
     #product-grid-{{ section.id }} .card__badge.bottom,
     #product-grid-{{ section.id }} .card-wrapper .quick-add-bulk {
       display: none !important;
     }
   {%- endunless -%}
+
+  /* Search Bar Styles */
+  .collection-search {
+    margin-bottom: 3rem;
+  }
+
+  .collection-search__wrapper {
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .collection-search__form {
+    position: relative;
+  }
+
+  .collection-search__input-wrapper {
+    position: relative;
+  }
+
+  .collection-search__input {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    border: 2px solid rgba(var(--color-foreground), 0.15);
+    border-radius: 50px;
+    font-size: 1.25rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .collection-search__input::placeholder {
+    font-size: 1.25rem;
+  }
+
+  .collection-search__input:focus {
+    outline: none;
+    border-color: rgba(var(--color-foreground), 0.4);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Predictive Search Results */
+  .predictive-search {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    right: 0;
+    background: rgb(var(--color-background));
+    border: 1px solid rgba(var(--color-foreground), 0.15);
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    max-height: 500px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+  }
+
+  .predictive-search.active {
+    display: block;
+  }
+
+  .predictive-search__loading {
+    padding: 2rem;
+    text-align: center;
+    color: rgba(var(--color-foreground), 0.6);
+  }
+
+  .predictive-search__results {
+    padding: 1rem;
+  }
+
+  .predictive-search__no-results {
+    padding: 2rem;
+    text-align: center;
+    color: rgba(var(--color-foreground), 0.6);
+  }
+
+  .predictive-search__item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    border-radius: 12px;
+    transition: background-color 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: rgb(var(--color-foreground));
+  }
+
+  .predictive-search__item:hover {
+    background-color: rgba(var(--color-foreground), 0.05);
+  }
+
+  .predictive-search__image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  .predictive-search__info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .predictive-search__title {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media screen and (max-width: 749px) {
+    .collection-search__input {
+      font-size: 1rem;
+      padding: 1rem 1.25rem;
+    }
+  }
 {%- endstyle -%}
 
 <div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
   {%- paginate collection.products by section.settings.products_per_page -%}
+
+    {%- if section.settings.enable_search -%}
+      <div class="collection-search page-width">
+        <div class="collection-search__wrapper">
+          <form action="{{ routes.search_url }}" method="get" class="collection-search__form" role="search">
+            <div class="collection-search__input-wrapper">
+              <input
+                type="search"
+                name="q"
+                class="collection-search__input"
+                placeholder="{{ section.settings.search_placeholder | default: 'Search products...' }}"
+                value="{{ search.terms | escape }}"
+                aria-label="Search products"
+                autocomplete="off"
+                id="collection-search-input"
+              >
+              <div class="predictive-search" id="predictive-search-results"></div>
+            </div>
+            <input type="hidden" name="type" value="product">
+            <input type="hidden" name="options[prefix]" value="last">
+            {%- if collection -%}
+              <input type="hidden" name="collection_constraint" value="{{ collection.handle }}">
+            {%- endif -%}
+          </form>
+        </div>
+      </div>
+
+      <script>
+        (function() {
+          console.log('=== COLLECTION SEARCH DEBUG ===');
+          console.log('Section ID:', '{{ section.id }}');
+
+          const searchInput = document.getElementById('collection-search-input');
+          const resultsContainer = document.getElementById('predictive-search-results');
+
+          console.log('Search input found:', !!searchInput);
+          console.log('Results container found:', !!resultsContainer);
+
+          // Check for facets elements
+          console.log('=== FACETS DEBUG ===');
+          const facetsWrapper = document.getElementById('main-collection-filters');
+          const productGrid = document.getElementById('product-grid');
+          const productGridContainer = document.getElementById('ProductGridContainer');
+
+          console.log('Facets wrapper found:', !!facetsWrapper);
+          console.log('Product grid found:', !!productGrid);
+          console.log('Product grid container found:', !!productGridContainer);
+
+          if (facetsWrapper) {
+            console.log('Facets wrapper data-id:', facetsWrapper.dataset.id);
+          }
+
+          if (productGrid) {
+            console.log('Product grid data-id:', productGrid.dataset.id);
+          } else {
+            console.error('ERROR: Product grid element not found! This may cause facets.js to fail.');
+          }
+
+          if (!searchInput || !resultsContainer) {
+            console.error('Search elements not found!');
+            return;
+          }
+
+          function displaySearchResults(products) {
+            console.log('Display results called with', products.length, 'products');
+
+            if (products.length === 0) {
+              console.log('No products found');
+              resultsContainer.innerHTML = '<div class="predictive-search__no-results">No products found</div>';
+              return;
+            }
+
+            let html = '<div class="predictive-search__results">';
+
+            products.forEach(product => {
+              console.log('Product:', product.title, product.url);
+              const imageUrl = product.image || product.featured_image || '';
+
+              html += `
+                <a href="${product.url}" class="predictive-search__item">
+                  ${imageUrl ? `<img src="${imageUrl}" alt="${escapeHtml(product.title)}" class="predictive-search__image">` : ''}
+                  <div class="predictive-search__info">
+                    <div class="predictive-search__title">${escapeHtml(product.title)}</div>
+                  </div>
+                </a>
+              `;
+            });
+
+            html += '</div>';
+            resultsContainer.innerHTML = html;
+            console.log('Results HTML updated');
+          }
+
+          function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+          }
+
+          function performSearch(query) {
+            console.log('Performing search for:', query);
+
+            if (!query || query.length < 1) {
+              console.log('Query too short, hiding results');
+              resultsContainer.classList.remove('active');
+              return;
+            }
+
+            resultsContainer.innerHTML = '<div class="predictive-search__loading">Searching...</div>';
+            resultsContainer.classList.add('active');
+            console.log('Results container shown');
+
+            const searchUrl = `/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=8`;
+            console.log('Fetching:', searchUrl);
+
+            fetch(searchUrl)
+              .then(response => {
+                console.log('Response status:', response.status);
+                return response.json();
+              })
+              .then(data => {
+                console.log('Search API response:', data);
+                const products = data.resources.results.products || [];
+                console.log('Found products:', products.length);
+                displaySearchResults(products);
+              })
+              .catch(error => {
+                console.error('Search error:', error);
+                resultsContainer.innerHTML = '<div class="predictive-search__no-results">Search error. Please try again.</div>';
+              });
+          }
+
+          searchInput.addEventListener('input', function(e) {
+            console.log('Input event triggered, value:', e.target.value);
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+              performSearch(e.target.value);
+            }, 300);
+          });
+
+          searchInput.addEventListener('focus', function(e) {
+            console.log('Focus event, value:', e.target.value);
+            if (e.target.value.length >= 1) {
+              performSearch(e.target.value);
+            }
+          });
+
+          // Close results when clicking outside
+          document.addEventListener('click', function(e) {
+            if (!e.target.closest('.collection-search__wrapper')) {
+              console.log('Clicked outside, closing results');
+              resultsContainer.classList.remove('active');
+            }
+          });
+
+          // Close results on escape key
+          searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+              console.log('Escape pressed, closing results');
+              resultsContainer.classList.remove('active');
+            }
+          });
+
+          console.log('Search event listeners attached');
+
+          // Listen for facets errors
+          window.addEventListener('error', function(e) {
+            if (e.message && e.message.includes('dataset')) {
+              console.error('=== FACETS ERROR DETECTED ===');
+              console.error('Error message:', e.message);
+              console.error('Error location:', e.filename, 'Line:', e.lineno);
+              console.error('This error is likely in facets.js trying to access a missing element');
+            }
+          });
+        })();
+      </script>
+    {%- endif -%}
+
     {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
     {%- if section.settings.enable_sorting and section.settings.filter_type == 'vertical' -%}
       <facet-filters-form class="facets facets-vertical-sort page-width small-hide">
@@ -152,7 +457,7 @@
           >
             <div class="loading-overlay gradient"></div>
             <ul
-              id="product-grid-{{ section.id }}"
+              id="product-grid"
               data-id="{{ section.id }}"
               class="
                 grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
@@ -209,6 +514,22 @@
   "class": "section",
   "settings": [
     {
+      "type": "header",
+      "content": "Search Bar Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_search",
+      "default": true,
+      "label": "Enable search bar"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "default": "Search products...",
+      "label": "Search placeholder text"
+    },
+    {
       "type": "range",
       "id": "products_per_page",
       "min": 8,
@@ -241,7 +562,7 @@
           "label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__2.label"
         }
       ]
-    },    
+    },
     {
       "type": "color_scheme",
       "id": "color_scheme",
