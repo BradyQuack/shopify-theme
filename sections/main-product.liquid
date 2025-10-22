@@ -1298,15 +1298,17 @@
         thumb.addEventListener('click', function() {
           document.querySelectorAll('.amazon-thumbnail').forEach(t => t.classList.remove('active'));
           this.classList.add('active');
-          
+
           const mediaId = this.dataset.mediaId;
           const media = {{ product.media | json }}.find(m => m.id == mediaId);
-          
+
           if (media && media.src) {
             const mainImage = document.querySelector(`#MainImage-${sectionId} img`);
             if (mainImage) {
               mainImage.src = media.src.replace(/\.(jpg|png|jpeg)/g, '_800x.$1');
               mainImage.alt = media.alt || '';
+              // Update data-full-src so lightbox shows the correct image
+              mainImage.dataset.fullSrc = media.src;
             }
           }
         });
