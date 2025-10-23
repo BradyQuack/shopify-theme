@@ -968,89 +968,91 @@
             {%- comment -%} Inventory block is now always displayed after price {%- endcomment -%}
 
           {%- when 'variant_picker' -%}
-            {%- unless product.has_only_default_variant -%}
-              <div class="amazon-variant-picker" {{ block.shopify_attributes }}>
-                {%- for option in product.options_with_values -%}
-                  <div>
-                    <span class="amazon-variant-label">{{ option.name }}:</span>
-                    {%- if option.name == 'Color' or option.name == 'Colour' -%}
-                      <div class="amazon-color-swatches">
-                        {%- for value in option.values -%}
-                          {%- assign variant_for_value = null -%}
-                          {%- for variant in product.variants -%}
-                            {%- if variant.option1 == value or variant.option2 == value or variant.option3 == value -%}
-                              {%- assign variant_for_value = variant -%}
-                              {%- break -%}
-                            {%- endif -%}
-                          {%- endfor -%}
-                          <div class="amazon-color-swatch{% if option.selected_value == value %} selected{% endif %}" 
-                               data-option-value="{{ value | escape }}"
-                               data-variant-id="{{ variant_for_value.id }}"
-                               data-variant-price="{{ variant_for_value.price }}"
-                               data-variant-compare-price="{{ variant_for_value.compare_at_price }}"
-                               data-variant-available="{{ variant_for_value.available }}">
-                            {%- if variant_for_value.featured_image -%}
-                              <img src="{{ variant_for_value.featured_image | image_url: width: 40 }}" alt="{{ value | escape }}">
-                            {%- else -%}
-                              <div style="width: 100%; height: 100%; background: {{ value | downcase }};"></div>
-                            {%- endif -%}
-                          </div>
-                        {%- endfor -%}
-                      </div>
-                    {%- else -%}
-                      <div class="amazon-variant-options" style="grid-template-columns: repeat({{ block.settings.variant_columns | default: 3 }}, 1fr);">
-                        {%- for value in option.values -%}
-                          {%- assign variant_for_value = null -%}
-                          {%- for variant in product.variants -%}
-                            {%- if variant.option1 == value or variant.option2 == value or variant.option3 == value -%}
-                              {%- assign variant_for_value = variant -%}
-                              {%- break -%}
-                            {%- endif -%}
-                          {%- endfor -%}
-                          <button type="button" 
-                                  class="amazon-variant-btn{% if option.selected_value == value %} selected{% endif %}" 
-                                  data-option-value="{{ value | escape }}"
-                                  data-variant-id="{{ variant_for_value.id }}"
-                                  data-variant-price="{{ variant_for_value.price }}"
-                                  data-variant-compare-price="{{ variant_for_value.compare_at_price }}"
-                                  data-variant-available="{{ variant_for_value.available }}">
-                            <div class="amazon-variant-header">
-                              <div class="amazon-variant-name">{{ value }}</div>
+            {%- unless section.settings.variant_picker_below -%}
+              {%- unless product.has_only_default_variant -%}
+                <div class="amazon-variant-picker" {{ block.shopify_attributes }}>
+                  {%- for option in product.options_with_values -%}
+                    <div>
+                      <span class="amazon-variant-label">{{ option.name }}:</span>
+                      {%- if option.name == 'Color' or option.name == 'Colour' -%}
+                        <div class="amazon-color-swatches">
+                          {%- for value in option.values -%}
+                            {%- assign variant_for_value = null -%}
+                            {%- for variant in product.variants -%}
+                              {%- if variant.option1 == value or variant.option2 == value or variant.option3 == value -%}
+                                {%- assign variant_for_value = variant -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                            <div class="amazon-color-swatch{% if option.selected_value == value %} selected{% endif %}"
+                                 data-option-value="{{ value | escape }}"
+                                 data-variant-id="{{ variant_for_value.id }}"
+                                 data-variant-price="{{ variant_for_value.price }}"
+                                 data-variant-compare-price="{{ variant_for_value.compare_at_price }}"
+                                 data-variant-available="{{ variant_for_value.available }}">
+                              {%- if variant_for_value.featured_image -%}
+                                <img src="{{ variant_for_value.featured_image | image_url: width: 40 }}" alt="{{ value | escape }}">
+                              {%- else -%}
+                                <div style="width: 100%; height: 100%; background: {{ value | downcase }};"></div>
+                              {%- endif -%}
                             </div>
-                            {%- if variant_for_value -%}
-                              <div class="amazon-variant-body">
-                                {%- unless block.settings.hide_variant_price -%}
-                                  <div class="amazon-variant-price-display">
-                                    ${%- assign v_price_whole = variant_for_value.price | divided_by: 100 -%}
-                                    {%- assign v_price_decimal = variant_for_value.price | modulo: 100 -%}
-                                    {{ v_price_whole }}.{{ v_price_decimal | prepend: '00' | slice: -2, 2 }}
-                                  </div>
-                                  {%- if variant_for_value.compare_at_price > variant_for_value.price -%}
-                                    <div class="amazon-variant-compare-price">
-                                      ${%- assign v_compare_whole = variant_for_value.compare_at_price | divided_by: 100 -%}
-                                      {%- assign v_compare_decimal = variant_for_value.compare_at_price | modulo: 100 -%}
-                                      {{ v_compare_whole }}.{{ v_compare_decimal | prepend: '00' | slice: -2, 2 }}
+                          {%- endfor -%}
+                        </div>
+                      {%- else -%}
+                        <div class="amazon-variant-options" style="grid-template-columns: repeat({{ block.settings.variant_columns | default: 3 }}, 1fr);">
+                          {%- for value in option.values -%}
+                            {%- assign variant_for_value = null -%}
+                            {%- for variant in product.variants -%}
+                              {%- if variant.option1 == value or variant.option2 == value or variant.option3 == value -%}
+                                {%- assign variant_for_value = variant -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                            <button type="button"
+                                    class="amazon-variant-btn{% if option.selected_value == value %} selected{% endif %}"
+                                    data-option-value="{{ value | escape }}"
+                                    data-variant-id="{{ variant_for_value.id }}"
+                                    data-variant-price="{{ variant_for_value.price }}"
+                                    data-variant-compare-price="{{ variant_for_value.compare_at_price }}"
+                                    data-variant-available="{{ variant_for_value.available }}">
+                              <div class="amazon-variant-header">
+                                <div class="amazon-variant-name">{{ value }}</div>
+                              </div>
+                              {%- if variant_for_value -%}
+                                <div class="amazon-variant-body">
+                                  {%- unless block.settings.hide_variant_price -%}
+                                    <div class="amazon-variant-price-display">
+                                      ${%- assign v_price_whole = variant_for_value.price | divided_by: 100 -%}
+                                      {%- assign v_price_decimal = variant_for_value.price | modulo: 100 -%}
+                                      {{ v_price_whole }}.{{ v_price_decimal | prepend: '00' | slice: -2, 2 }}
+                                    </div>
+                                    {%- if variant_for_value.compare_at_price > variant_for_value.price -%}
+                                      <div class="amazon-variant-compare-price">
+                                        ${%- assign v_compare_whole = variant_for_value.compare_at_price | divided_by: 100 -%}
+                                        {%- assign v_compare_decimal = variant_for_value.compare_at_price | modulo: 100 -%}
+                                        {{ v_compare_whole }}.{{ v_compare_decimal | prepend: '00' | slice: -2, 2 }}
+                                      </div>
+                                    {%- endif -%}
+                                  {%- endunless -%}
+                                  {%- if block.settings.show_variant_stock -%}
+                                    <div class="amazon-variant-stock-status" style="color: #007600; font-size: 12px; font-weight: 600; margin-top: 4px;">
+                                      {%- if variant_for_value.available -%}
+                                        In Stock
+                                      {%- else -%}
+                                        <span style="color: #B12704;">Out of Stock</span>
+                                      {%- endif -%}
                                     </div>
                                   {%- endif -%}
-                                {%- endunless -%}
-                                {%- if block.settings.show_variant_stock -%}
-                                  <div class="amazon-variant-stock-status" style="color: #007600; font-size: 12px; font-weight: 600; margin-top: 4px;">
-                                    {%- if variant_for_value.available -%}
-                                      In Stock
-                                    {%- else -%}
-                                      <span style="color: #B12704;">Out of Stock</span>
-                                    {%- endif -%}
-                                  </div>
-                                {%- endif -%}
-                              </div>
-                            {%- endif -%}
-                          </button>
-                        {%- endfor -%}
-                      </div>
-                    {%- endif -%}
-                  </div>
-                {%- endfor -%}
-              </div>
+                                </div>
+                              {%- endif -%}
+                            </button>
+                          {%- endfor -%}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  {%- endfor -%}
+                </div>
+              {%- endunless -%}
             {%- endunless -%}
 
           {%- when 'quantity_selector' -%}
@@ -1151,6 +1153,99 @@
 
     </div>
   </div>
+
+  <!-- Variant Picker Below (when setting is enabled) -->
+  {%- if section.settings.variant_picker_below -%}
+    {%- unless product.has_only_default_variant -%}
+      {%- assign variant_picker_block = section.blocks | where: "type", "variant_picker" | first -%}
+      {%- if variant_picker_block -%}
+        <div class="amazon-variant-picker-below" style="max-width: 1200px; margin: 40px auto; padding: 30px; background: #fff; border: 1px solid #ddd; border-radius: 8px;">
+          <div class="amazon-variant-picker" {{ variant_picker_block.shopify_attributes }}>
+            {%- for option in product.options_with_values -%}
+              <div>
+                <span class="amazon-variant-label">{{ option.name }}:</span>
+                {%- if option.name == 'Color' or option.name == 'Colour' -%}
+                  <div class="amazon-color-swatches">
+                    {%- for value in option.values -%}
+                      {%- assign variant_for_value = null -%}
+                      {%- for variant in product.variants -%}
+                        {%- if variant.option1 == value or variant.option2 == value or variant.option3 == value -%}
+                          {%- assign variant_for_value = variant -%}
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                      <div class="amazon-color-swatch{% if option.selected_value == value %} selected{% endif %}"
+                           data-option-value="{{ value | escape }}"
+                           data-variant-id="{{ variant_for_value.id }}"
+                           data-variant-price="{{ variant_for_value.price }}"
+                           data-variant-compare-price="{{ variant_for_value.compare_at_price }}"
+                           data-variant-available="{{ variant_for_value.available }}">
+                        {%- if variant_for_value.featured_image -%}
+                          <img src="{{ variant_for_value.featured_image | image_url: width: 40 }}" alt="{{ value | escape }}">
+                        {%- else -%}
+                          <div style="width: 100%; height: 100%; background: {{ value | downcase }};"></div>
+                        {%- endif -%}
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                {%- else -%}
+                  <div class="amazon-variant-options" style="grid-template-columns: repeat({{ variant_picker_block.settings.variant_columns | default: 3 }}, 1fr);">
+                    {%- for value in option.values -%}
+                      {%- assign variant_for_value = null -%}
+                      {%- for variant in product.variants -%}
+                        {%- if variant.option1 == value or variant.option2 == value or variant.option3 == value -%}
+                          {%- assign variant_for_value = variant -%}
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                      <button type="button"
+                              class="amazon-variant-btn{% if option.selected_value == value %} selected{% endif %}"
+                              data-option-value="{{ value | escape }}"
+                              data-variant-id="{{ variant_for_value.id }}"
+                              data-variant-price="{{ variant_for_value.price }}"
+                              data-variant-compare-price="{{ variant_for_value.compare_at_price }}"
+                              data-variant-available="{{ variant_for_value.available }}">
+                        <div class="amazon-variant-header">
+                          <div class="amazon-variant-name">{{ value }}</div>
+                        </div>
+                        {%- if variant_for_value -%}
+                          <div class="amazon-variant-body">
+                            {%- unless variant_picker_block.settings.hide_variant_price -%}
+                              <div class="amazon-variant-price-display">
+                                ${%- assign v_price_whole = variant_for_value.price | divided_by: 100 -%}
+                                {%- assign v_price_decimal = variant_for_value.price | modulo: 100 -%}
+                                {{ v_price_whole }}.{{ v_price_decimal | prepend: '00' | slice: -2, 2 }}
+                              </div>
+                              {%- if variant_for_value.compare_at_price > variant_for_value.price -%}
+                                <div class="amazon-variant-compare-price">
+                                  ${%- assign v_compare_whole = variant_for_value.compare_at_price | divided_by: 100 -%}
+                                  {%- assign v_compare_decimal = variant_for_value.compare_at_price | modulo: 100 -%}
+                                  {{ v_compare_whole }}.{{ v_compare_decimal | prepend: '00' | slice: -2, 2 }}
+                                </div>
+                              {%- endif -%}
+                            {%- endunless -%}
+                            {%- if variant_picker_block.settings.show_variant_stock -%}
+                              <div class="amazon-variant-stock-status" style="color: #007600; font-size: 12px; font-weight: 600; margin-top: 4px;">
+                                {%- if variant_for_value.available -%}
+                                  In Stock
+                                {%- else -%}
+                                  <span style="color: #B12704;">Out of Stock</span>
+                                {%- endif -%}
+                              </div>
+                            {%- endif -%}
+                          </div>
+                        {%- endif -%}
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endunless -%}
+  {%- endif -%}
 
   <!-- Image Lightbox -->
   <div class="amazon-image-lightbox" id="imageLightbox-{{ section.id }}">
@@ -2154,6 +2249,13 @@
       "default": true,
       "label": "Enable sticky sidebar",
       "info": "Makes the buy buttons sidebar stick when scrolling"
+    },
+    {
+      "type": "checkbox",
+      "id": "variant_picker_below",
+      "default": false,
+      "label": "Move variant selection below product columns",
+      "info": "When enabled, displays variant selection below the main image, product info, and buy now sections"
     },
     {
       "type": "select",
