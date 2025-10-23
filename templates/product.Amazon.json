@@ -101,7 +101,7 @@
             "show_shipping_timer": true,
             "shipping_timer_text": "FREE delivery shipped out Today. Order within",
             "shipping_timer_bold": false,
-            "show_stock_message": true,
+            "show_stock_message": false,
             "stock_message_text": "Order soon."
           }
         },
