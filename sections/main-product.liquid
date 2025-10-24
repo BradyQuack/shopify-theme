@@ -973,8 +973,8 @@
                 <div class="amazon-variant-picker" {{ block.shopify_attributes }} data-section-id="{{ section.id }}">
                   {%- assign option_count = product.options_with_values.size -%}
 
+                  {%- comment -%} Use dropdowns for products with 2+ variant options {%- endcomment -%}
                   {%- if option_count >= 2 -%}
-                    {%- comment -%} Use dropdowns for 2+ options {%- endcomment -%}
                     {%- for option in product.options_with_values -%}
                       <div class="amazon-variant-dropdown-wrapper" style="margin-bottom: 15px;">
                         <label class="amazon-variant-label" for="Option{{ option.position }}-{{ section.id }}">{{ option.name }}:</label>
@@ -994,7 +994,6 @@
                         </select>
                       </div>
                     {%- endfor -%}
-
                   {%- else -%}
                     {%- comment -%} Use buttons/swatches for single option {%- endcomment -%}
                     {%- for option in product.options_with_values -%}
