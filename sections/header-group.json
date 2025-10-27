@@ -66,7 +66,8 @@
             "text": "Business Wholesale",
             "link": "shopify://pages/wholesale",
             "show_icon": true,
-            "show_in_navbar": true
+            "show_in_navbar": true,
+            "show_in_dropdown": false
           }
         },
         "nav_item_itbf9J": {
@@ -75,7 +76,8 @@
             "text": "Deals",
             "link": "shopify://collections",
             "show_icon": true,
-            "show_in_navbar": true
+            "show_in_navbar": true,
+            "show_in_dropdown": false
           }
         },
         "nav_item_tH4xB6": {
@@ -84,7 +86,8 @@
             "text": "Pumps",
             "link": "shopify://collections/pumps",
             "show_icon": false,
-            "show_in_navbar": false
+            "show_in_navbar": false,
+            "show_in_dropdown": true
           }
         },
         "nav_item_pKiUV6": {
@@ -93,7 +96,8 @@
             "text": "Pump Parts",
             "link": "shopify://collections/pump-parts",
             "show_icon": false,
-            "show_in_navbar": false
+            "show_in_navbar": false,
+            "show_in_dropdown": true
           }
         },
         "nav_item_nNB3QA": {
@@ -102,7 +106,8 @@
             "text": "PVC Pipe",
             "link": "shopify://collections/custom-pvc-pipe",
             "show_icon": false,
-            "show_in_navbar": false
+            "show_in_navbar": false,
+            "show_in_dropdown": true
           }
         },
         "nav_item_iU8Ant": {
@@ -111,7 +116,8 @@
             "text": "PVC Fittings",
             "link": "shopify://collections/pvc-fittings",
             "show_icon": false,
-            "show_in_navbar": false
+            "show_in_navbar": false,
+            "show_in_dropdown": true
           }
         },
         "nav_item_7XUDQb": {
@@ -121,7 +127,8 @@
             "text": "Valves",
             "link": "",
             "show_icon": false,
-            "show_in_navbar": true
+            "show_in_navbar": true,
+            "show_in_dropdown": true
           }
         },
         "nav_item_9wULAV": {
@@ -131,7 +138,8 @@
             "text": "Filters",
             "link": "",
             "show_icon": false,
-            "show_in_navbar": true
+            "show_in_navbar": true,
+            "show_in_dropdown": true
           }
         },
         "nav_item_XUXbyX": {
@@ -140,7 +148,8 @@
             "text": "Berkeley Parts",
             "link": "shopify://collections/berkeley-replacement-parts",
             "show_icon": false,
-            "show_in_navbar": false
+            "show_in_navbar": false,
+            "show_in_dropdown": true
           }
         },
         "nav_item_kbChHY": {
@@ -148,8 +157,9 @@
           "settings": {
             "text": "About",
             "link": "shopify://pages/about-us",
-            "show_icon": false,
-            "show_in_navbar": true
+            "show_icon": true,
+            "show_in_navbar": true,
+            "show_in_dropdown": false
           }
         },
         "nav_item_e46ACM": {
@@ -157,8 +167,9 @@
           "settings": {
             "text": "Contact",
             "link": "shopify://pages/contact",
-            "show_icon": false,
-            "show_in_navbar": true
+            "show_icon": true,
+            "show_in_navbar": true,
+            "show_in_dropdown": false
           }
         },
         "recommendation_gkFc88": {
