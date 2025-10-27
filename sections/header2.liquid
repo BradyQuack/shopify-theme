@@ -959,11 +959,13 @@
                 <div class="header2__dropdown-divider"></div>
                 {%- for block in section.blocks -%}
                   {%- if block.type == 'nav_item' -%}
-                    <li class="header2__dropdown-item">
-                      <a href="{{ block.settings.link }}" class="header2__dropdown-link">
-                        {{ block.settings.text }}
-                      </a>
-                    </li>
+                    {%- if block.settings.show_in_dropdown -%}
+                      <li class="header2__dropdown-item">
+                        <a href="{{ block.settings.link }}" class="header2__dropdown-link">
+                          {{ block.settings.text }}
+                        </a>
+                      </li>
+                    {%- endif -%}
                   {%- endif -%}
                 {%- endfor -%}
               </ul>
@@ -1526,6 +1528,13 @@
           "label": "Show in navigation bar",
           "default": true,
           "info": "When disabled, this navigation item will be hidden from the main navigation bar"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_in_dropdown",
+          "label": "Show in Shop All dropdown",
+          "default": true,
+          "info": "When disabled, this navigation item will be hidden from the Shop All dropdown menu"
         }
       ]
     },
