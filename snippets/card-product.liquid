@@ -30,28 +30,21 @@
 
 {%- if card_product and card_product != empty -%}
   {%- liquid
+    # Force all product card images to use square containers
     assign ratio = 1
-    if card_product.featured_media and media_aspect_ratio == 'portrait'
-      assign ratio = 0.8
-    elsif card_product.featured_media and media_aspect_ratio == 'adapt'
-      assign ratio = card_product.featured_media.aspect_ratio
-    endif
-    if ratio == 0 or ratio == null
-      assign ratio = 1
-    endif
-    
+
     # Check if product price is one dollar (100 cents)
     assign is_one_dollar_price = false
     if card_product.price == 100
       assign is_one_dollar_price = true
     endif
-    
+
     # Check if one dollar price RFQ is enabled in section settings
     assign show_one_dollar_rfq = false
     if section.settings.enable_zero_price_rfq and is_one_dollar_price
       assign show_one_dollar_rfq = true
     endif
-    
+
     # Determine RFQ link for one dollar price products
     assign zero_rfq_link = section.settings.zero_price_rfq_link
     if zero_rfq_link == blank
