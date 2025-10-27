@@ -186,9 +186,13 @@
                 </div>
                 
               {%- else -%}
-                {%- comment -%} Regular Price {%- endcomment -%}
+                {%- comment -%} Regular Price (no compare price) - use same formatting as on-sale {%- endcomment -%}
                 <div class="custom-price-line">
-                  <span class="custom-price custom-price--bold">{{ price }}</span>
+                  {%- assign price_dollars = card_product.price | divided_by: 100 -%}
+                  {%- assign price_cents = card_product.price | modulo: 100 -%}
+                  <span class="custom-price custom-price--bold">
+                    {{ price_dollars }}<span class="price-cents">.{%- if price_cents < 10 -%}0{%- endif -%}{{ price_cents }}</span>
+                  </span>
                 </div>
               {%- endif -%}
             </div>
