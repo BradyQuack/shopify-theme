@@ -5,6 +5,17 @@
   text-decoration: none;
 }
 
+/* Add subtle outline and shadow to product cards */
+.product-card-wrapper .card {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+
+.product-card-wrapper .card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
 .card {
   text-decoration: none;
   text-align: var(--text-alignment);
@@ -291,7 +302,7 @@
 
 .card__media .media img {
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center center;
   width: 100%;
 }
