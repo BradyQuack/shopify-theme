@@ -976,7 +976,7 @@
                   {%- comment -%} Use dropdowns for products with more than 9 variants {%- endcomment -%}
                   {%- if variant_count > 9 -%}
                     {%- for option in product.options_with_values -%}
-                      <div class="amazon-variant-dropdown-wrapper" style="margin-bottom: 15px;">
+                      <div class="amazon-variant-dropdown-wrapper" style="margin-bottom: 250px; position: relative;">
                         <label class="amazon-variant-label" for="Option{{ option.position }}-{{ section.id }}">{{ option.name }}:</label>
                         <select
                           class="amazon-variant-dropdown"
@@ -984,7 +984,7 @@
                           name="options[{{ option.name | escape }}]"
                           data-option-position="{{ option.position }}"
                           data-section-id="{{ section.id }}"
-                          style="width: 100%; padding: 10px 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; margin-top: 5px;">
+                          style="width: 100%; padding: 10px 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; margin-top: 5px; position: relative;">
                           <option value="">Select {{ option.name }}</option>
                           {%- for value in option.values -%}
                             <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>
@@ -1192,7 +1192,7 @@
             {%- if variant_count > 9 -%}
               {%- comment -%} Use dropdowns for products with more than 9 variants {%- endcomment -%}
               {%- for option in product.options_with_values -%}
-                <div class="amazon-variant-dropdown-wrapper" style="margin-bottom: 15px;">
+                <div class="amazon-variant-dropdown-wrapper" style="margin-bottom: 250px; position: relative;">
                   <label class="amazon-variant-label" for="Option{{ option.position }}-{{ section.id }}-below">{{ option.name }}:</label>
                   <select
                     class="amazon-variant-dropdown"
@@ -1200,7 +1200,7 @@
                     name="options[{{ option.name | escape }}]"
                     data-option-position="{{ option.position }}"
                     data-section-id="{{ section.id }}"
-                    style="width: 100%; padding: 10px 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; margin-top: 5px;">
+                    style="width: 100%; padding: 10px 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; margin-top: 5px; position: relative;">
                     <option value="">Select {{ option.name }}</option>
                     {%- for value in option.values -%}
                       <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>
