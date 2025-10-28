@@ -971,10 +971,10 @@
             {%- unless section.settings.variant_picker_below -%}
               {%- unless product.has_only_default_variant -%}
                 <div class="amazon-variant-picker" {{ block.shopify_attributes }} data-section-id="{{ section.id }}">
-                  {%- assign option_count = product.options_with_values.size -%}
+                  {%- assign variant_count = product.variants.size -%}
 
-                  {%- comment -%} Use dropdowns for products with 2+ variant options {%- endcomment -%}
-                  {%- if option_count >= 2 -%}
+                  {%- comment -%} Use dropdowns for products with more than 9 variants {%- endcomment -%}
+                  {%- if variant_count > 9 -%}
                     {%- for option in product.options_with_values -%}
                       <div class="amazon-variant-dropdown-wrapper" style="margin-bottom: 15px;">
                         <label class="amazon-variant-label" for="Option{{ option.position }}-{{ section.id }}">{{ option.name }}:</label>
@@ -995,7 +995,7 @@
                       </div>
                     {%- endfor -%}
                   {%- else -%}
-                    {%- comment -%} Use buttons/swatches for single option {%- endcomment -%}
+                    {%- comment -%} Use buttons/swatches for 9 or fewer variants {%- endcomment -%}
                     {%- for option in product.options_with_values -%}
                       <div>
                         <span class="amazon-variant-label">{{ option.name }}:</span>
@@ -1187,10 +1187,10 @@
       {%- if variant_picker_block -%}
         <div class="amazon-variant-picker-below" style="max-width: 1200px; margin: 40px auto; padding: 30px; background: #fff; border: 1px solid #ddd; border-radius: 8px;">
           <div class="amazon-variant-picker" {{ variant_picker_block.shopify_attributes }} data-section-id="{{ section.id }}">
-            {%- assign option_count = product.options_with_values.size -%}
+            {%- assign variant_count = product.variants.size -%}
 
-            {%- if option_count >= 2 -%}
-              {%- comment -%} Use dropdowns for 2+ options {%- endcomment -%}
+            {%- if variant_count > 9 -%}
+              {%- comment -%} Use dropdowns for products with more than 9 variants {%- endcomment -%}
               {%- for option in product.options_with_values -%}
                 <div class="amazon-variant-dropdown-wrapper" style="margin-bottom: 15px;">
                   <label class="amazon-variant-label" for="Option{{ option.position }}-{{ section.id }}-below">{{ option.name }}:</label>
@@ -1212,7 +1212,7 @@
               {%- endfor -%}
 
             {%- else -%}
-              {%- comment -%} Use buttons/swatches for single option {%- endcomment -%}
+              {%- comment -%} Use buttons/swatches for 9 or fewer variants {%- endcomment -%}
               {%- for option in product.options_with_values -%}
                 <div>
                   <span class="amazon-variant-label">{{ option.name }}:</span>
