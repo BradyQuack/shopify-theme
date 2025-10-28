@@ -503,6 +503,114 @@
       display: block;
     }
 
+    /* Custom Dropdown Styles */
+    .custom-dropdown-wrapper {
+      position: relative;
+    }
+
+    .custom-dropdown-trigger {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s;
+      margin-top: 5px;
+    }
+
+    .custom-dropdown-trigger:hover {
+      border-color: #007185;
+    }
+
+    .custom-dropdown-trigger.active {
+      border-color: #007185;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .custom-dropdown-selected {
+      flex: 1;
+      color: #0f1111;
+    }
+
+    .custom-dropdown-arrow {
+      color: #565959;
+      font-size: 12px;
+      transition: transform 0.2s;
+    }
+
+    .custom-dropdown-trigger.active .custom-dropdown-arrow {
+      transform: rotate(180deg);
+    }
+
+    .custom-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid #007185;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      max-height: 300px;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-dropdown-menu.open {
+      display: block;
+    }
+
+    .custom-dropdown-option {
+      padding: 10px 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.2s;
+      border-bottom: 1px solid #e7e7e7;
+    }
+
+    .custom-dropdown-option:last-child {
+      border-bottom: none;
+    }
+
+    .custom-dropdown-option:hover {
+      background-color: #f7f7f7;
+    }
+
+    .custom-dropdown-option.selected {
+      background-color: #e7f7ff;
+    }
+
+    .option-value {
+      flex: 1;
+      color: #0f1111;
+      font-size: 14px;
+    }
+
+    .option-stock {
+      font-size: 12px;
+      font-weight: 600;
+      text-align: right;
+      margin-left: 20px;
+    }
+
+    .option-stock.in-stock {
+      color: #007600;
+    }
+
+    .option-stock.out-of-stock {
+      color: #B12704;
+    }
+
     .amazon-variant-options {
       display: grid;
       gap: 12px;
@@ -976,22 +1084,37 @@
                   {%- comment -%} Use dropdowns for products with more than 9 variants {%- endcomment -%}
                   {%- if variant_count > 9 -%}
                     {%- for option in product.options_with_values -%}
-                      <div class="amazon-variant-dropdown-wrapper" style="margin-bottom: 15px;">
-                        <label class="amazon-variant-label" for="Option{{ option.position }}-{{ section.id }}">{{ option.name }}:</label>
-                        <select
-                          class="amazon-variant-dropdown"
-                          id="Option{{ option.position }}-{{ section.id }}"
-                          name="options[{{ option.name | escape }}]"
-                          data-option-position="{{ option.position }}"
-                          data-section-id="{{ section.id }}"
-                          style="width: 100%; padding: 10px 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; margin-top: 5px;">
-                          <option value="">Select {{ option.name }}</option>
+                      <div class="amazon-variant-dropdown-wrapper custom-dropdown-wrapper" style="margin-bottom: 15px;" data-option-position="{{ option.position }}" data-section-id="{{ section.id }}">
+                        <label class="amazon-variant-label">{{ option.name }}:</label>
+
+                        {%- comment -%} Custom Dropdown Trigger {%- endcomment -%}
+                        <div class="custom-dropdown-trigger" data-option-name="{{ option.name | escape }}">
+                          <span class="custom-dropdown-selected">Select {{ option.name }}</span>
+                          <span class="custom-dropdown-arrow">▼</span>
+                        </div>
+
+                        {%- comment -%} Custom Dropdown Menu {%- endcomment -%}
+                        <div class="custom-dropdown-menu">
                           {%- for value in option.values -%}
-                            <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>
-                              {{ value }}
-                            </option>
+                            {%- comment -%} Check if any variant with this option value is available {%- endcomment -%}
+                            {%- assign is_available = false -%}
+                            {%- for variant in product.variants -%}
+                              {%- if variant.option1 == value or variant.option2 == value or variant.option3 == value -%}
+                                {%- if variant.available -%}
+                                  {%- assign is_available = true -%}
+                                  {%- break -%}
+                                {%- endif -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+
+                            <div class="custom-dropdown-option" data-value="{{ value | escape }}" data-available="{{ is_available }}">
+                              <span class="option-value">{{ value }}</span>
+                              <span class="option-stock {% if is_available %}in-stock{% else %}out-of-stock{% endif %}">
+                                {% if is_available %}In Stock{% else %}Out of Stock{% endif %}
+                              </span>
+                            </div>
                           {%- endfor -%}
-                        </select>
+                        </div>
                       </div>
                     {%- endfor -%}
                   {%- else -%}
@@ -1192,22 +1315,37 @@
             {%- if variant_count > 9 -%}
               {%- comment -%} Use dropdowns for products with more than 9 variants {%- endcomment -%}
               {%- for option in product.options_with_values -%}
-                <div class="amazon-variant-dropdown-wrapper" style="margin-bottom: 15px;">
-                  <label class="amazon-variant-label" for="Option{{ option.position }}-{{ section.id }}-below">{{ option.name }}:</label>
-                  <select
-                    class="amazon-variant-dropdown"
-                    id="Option{{ option.position }}-{{ section.id }}-below"
-                    name="options[{{ option.name | escape }}]"
-                    data-option-position="{{ option.position }}"
-                    data-section-id="{{ section.id }}"
-                    style="width: 100%; padding: 10px 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; margin-top: 5px;">
-                    <option value="">Select {{ option.name }}</option>
+                <div class="amazon-variant-dropdown-wrapper custom-dropdown-wrapper" style="margin-bottom: 15px;" data-option-position="{{ option.position }}" data-section-id="{{ section.id }}">
+                  <label class="amazon-variant-label">{{ option.name }}:</label>
+
+                  {%- comment -%} Custom Dropdown Trigger {%- endcomment -%}
+                  <div class="custom-dropdown-trigger" data-option-name="{{ option.name | escape }}">
+                    <span class="custom-dropdown-selected">Select {{ option.name }}</span>
+                    <span class="custom-dropdown-arrow">▼</span>
+                  </div>
+
+                  {%- comment -%} Custom Dropdown Menu {%- endcomment -%}
+                  <div class="custom-dropdown-menu">
                     {%- for value in option.values -%}
-                      <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>
-                        {{ value }}
-                      </option>
+                      {%- comment -%} Check if any variant with this option value is available {%- endcomment -%}
+                      {%- assign is_available = false -%}
+                      {%- for variant in product.variants -%}
+                        {%- if variant.option1 == value or variant.option2 == value or variant.option3 == value -%}
+                          {%- if variant.available -%}
+                            {%- assign is_available = true -%}
+                            {%- break -%}
+                          {%- endif -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+
+                      <div class="custom-dropdown-option" data-value="{{ value | escape }}" data-available="{{ is_available }}">
+                        <span class="option-value">{{ value }}</span>
+                        <span class="option-stock {% if is_available %}in-stock{% else %}out-of-stock{% endif %}">
+                          {% if is_available %}In Stock{% else %}Out of Stock{% endif %}
+                        </span>
+                      </div>
                     {%- endfor -%}
-                  </select>
+                  </div>
                 </div>
               {%- endfor -%}
 
@@ -1551,6 +1689,129 @@
       });
     };
 
+    // Custom Dropdown Handler
+    const initCustomDropdowns = () => {
+      const productVariants = {{ product.variants | json }};
+      const customDropdowns = document.querySelectorAll('.custom-dropdown-wrapper');
+
+      if (customDropdowns.length === 0) return;
+
+      console.log('[Custom Dropdowns] Found', customDropdowns.length, 'custom dropdowns');
+
+      // Close all dropdowns when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.custom-dropdown-wrapper')) {
+          document.querySelectorAll('.custom-dropdown-trigger.active').forEach(trigger => {
+            trigger.classList.remove('active');
+            trigger.nextElementSibling.classList.remove('open');
+          });
+        }
+      });
+
+      customDropdowns.forEach(wrapper => {
+        const trigger = wrapper.querySelector('.custom-dropdown-trigger');
+        const menu = wrapper.querySelector('.custom-dropdown-menu');
+        const selectedSpan = trigger.querySelector('.custom-dropdown-selected');
+        const options = menu.querySelectorAll('.custom-dropdown-option');
+
+        // Toggle dropdown on trigger click
+        trigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+
+          // Close other dropdowns
+          document.querySelectorAll('.custom-dropdown-trigger.active').forEach(otherTrigger => {
+            if (otherTrigger !== trigger) {
+              otherTrigger.classList.remove('active');
+              otherTrigger.nextElementSibling.classList.remove('open');
+            }
+          });
+
+          // Toggle this dropdown
+          trigger.classList.toggle('active');
+          menu.classList.toggle('open');
+        });
+
+        // Handle option selection
+        options.forEach(option => {
+          option.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            const value = option.dataset.value;
+
+            // Update selected text
+            selectedSpan.textContent = value;
+
+            // Update selected state
+            options.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+
+            // Close dropdown
+            trigger.classList.remove('active');
+            menu.classList.remove('open');
+
+            // Store selected value
+            wrapper.dataset.selectedValue = value;
+
+            // Try to find matching variant
+            findAndUpdateVariant();
+          });
+        });
+      });
+
+      const findAndUpdateVariant = () => {
+        // Get selected values from all custom dropdowns
+        const selectedOptions = {};
+        let allSelected = true;
+
+        customDropdowns.forEach(wrapper => {
+          const position = wrapper.dataset.optionPosition;
+          const selectedValue = wrapper.dataset.selectedValue;
+
+          if (!selectedValue) {
+            allSelected = false;
+          } else {
+            selectedOptions[`option${position}`] = selectedValue;
+          }
+        });
+
+        console.log('[Custom Dropdowns] Selected options:', selectedOptions, 'All selected:', allSelected);
+
+        // Only search for variant if all options are selected
+        if (!allSelected) {
+          console.log('[Custom Dropdowns] Not all options selected yet');
+          return;
+        }
+
+        // Find matching variant
+        const matchingVariant = productVariants.find(variant => {
+          return Object.keys(selectedOptions).every(key => {
+            return variant[key] === selectedOptions[key];
+          });
+        });
+
+        console.log('[Custom Dropdowns] Matching variant:', matchingVariant);
+
+        if (matchingVariant) {
+          // Update price display
+          updatePriceDisplay(matchingVariant.price, matchingVariant.compare_at_price, matchingVariant.available);
+
+          // Update form input
+          document.querySelectorAll(`#MainProduct-${sectionId} input[name="id"]`).forEach(input => {
+            input.value = matchingVariant.id;
+          });
+
+          // Update URL
+          const url = new URL(window.location.href);
+          url.searchParams.set('variant', matchingVariant.id);
+          window.history.replaceState({}, '', url);
+
+          // Dispatch change event
+          const event = new Event('change', { bubbles: true });
+          document.querySelector(`#MainProduct-${sectionId} input[name="id"]`)?.dispatchEvent(event);
+        }
+      };
+    };
+
     // Dropdown Variant Selection Handler (for 2+ options)
     const initDropdownVariantSelection = () => {
       const productVariants = {{ product.variants | json }};
@@ -1634,6 +1895,7 @@
         initThumbnails();
         initVariantSelection();
         initDropdownVariantSelection();
+        initCustomDropdowns();
       });
     } else {
       initShippingTimer();
@@ -1641,6 +1903,7 @@
       initThumbnails();
       initVariantSelection();
       initDropdownVariantSelection();
+      initCustomDropdowns();
     }
   })();
   </script>
