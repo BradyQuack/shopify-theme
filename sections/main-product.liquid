@@ -1795,6 +1795,26 @@
           // Update price display
           updatePriceDisplay(matchingVariant.price, matchingVariant.compare_at_price, matchingVariant.available);
 
+          // Update main image if variant has featured image
+          if (matchingVariant.featured_image) {
+            const mainImage = document.querySelector(`#MainImageSrc-${sectionId}`);
+            if (mainImage) {
+              mainImage.src = matchingVariant.featured_image.src.replace(/\.(jpg|jpeg|png|gif|webp)/, '_800x.$1');
+              mainImage.dataset.fullSrc = matchingVariant.featured_image.src;
+              console.log('[Custom Dropdowns] Updated main image to:', matchingVariant.featured_image.src);
+            }
+
+            // Update thumbnail active state
+            const thumbnails = document.querySelectorAll('.amazon-thumbnail');
+            thumbnails.forEach(thumb => {
+              const mediaId = thumb.dataset.mediaId;
+              if (mediaId && matchingVariant.featured_image.id && mediaId == matchingVariant.featured_image.id) {
+                thumbnails.forEach(t => t.classList.remove('active'));
+                thumb.classList.add('active');
+              }
+            });
+          }
+
           // Update form input
           document.querySelectorAll(`#MainProduct-${sectionId} input[name="id"]`).forEach(input => {
             input.value = matchingVariant.id;
