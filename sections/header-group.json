@@ -257,7 +257,7 @@
         "search_button_hover_color": "#1e40af",
         "nav_full_width": false,
         "shop_all_text": "Shop All",
-        "shop_all_link": "shopify://collections",
+        "shop_all_link": "shopify://collections/all",
         "shop_all_bg_color": "#ffffff",
         "shop_all_text_color": "#374151",
         "shop_all_hover_color": "#e5e7eb",
