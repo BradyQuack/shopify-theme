@@ -65,7 +65,8 @@
   align-items: center;
 }
 
-.debug-modal__refresh {
+.debug-modal__refresh,
+.debug-modal__copy {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -79,14 +80,25 @@
   transition: all 0.2s;
 }
 
-.debug-modal__refresh:hover {
+.debug-modal__refresh:hover,
+.debug-modal__copy:hover {
   background: #3D4A60;
   color: #F1F5F9;
 }
 
-.debug-modal__refresh svg {
+.debug-modal__refresh svg,
+.debug-modal__copy svg {
   width: 14px;
   height: 14px;
+}
+
+.debug-modal__copy--success {
+  background: #39B47E !important;
+  color: #FFFFFF !important;
+}
+
+.debug-modal__copy--success svg {
+  stroke: #FFFFFF;
 }
 
 .debug-modal__close {

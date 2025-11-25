@@ -239,6 +239,13 @@
         <div class="debug-modal__header">
           <h2>Style Debug Inspector</h2>
           <div class="debug-modal__actions">
+            <button type="button" class="debug-modal__copy" title="Copy all to clipboard">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span class="debug-modal__copy-text">Copy All</span>
+            </button>
             <button type="button" class="debug-modal__refresh" title="Refresh scan">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
@@ -271,6 +278,7 @@
     modal.querySelector('.debug-modal__close').addEventListener('click', hideModal);
     modal.querySelector('.debug-modal__overlay').addEventListener('click', hideModal);
     modal.querySelector('.debug-modal__refresh').addEventListener('click', refreshScan);
+    modal.querySelector('.debug-modal__copy').addEventListener('click', copyAllToClipboard);
 
     modal.querySelectorAll('.debug-modal__tab').forEach(tab => {
       tab.addEventListener('click', () => {
@@ -282,6 +290,115 @@
     });
 
     return modal;
+  }
+
+  // Format data for clipboard
+  function formatDataForClipboard(data) {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const lines = [];
+
+    lines.push('='.repeat(60));
+    lines.push('STYLE DEBUG REPORT');
+    lines.push('Generated: ' + new Date().toLocaleString());
+    lines.push('Theme Mode: ' + (isDark ? 'Dark' : 'Light'));
+    lines.push('Page URL: ' + window.location.href);
+    lines.push('='.repeat(60));
+    lines.push('');
+
+    // Font Families
+    lines.push('FONT FAMILIES');
+    lines.push('-'.repeat(40));
+    if (data.fontFamily.length === 0) {
+      lines.push('✓ All fonts use system sans-serif (consistent)');
+    } else {
+      lines.push('⚠ Found ' + data.fontFamily.length + ' non-standard font families:');
+      data.fontFamily.forEach(item => {
+        lines.push('  • ' + item.value);
+        lines.push('    Elements: ' + item.elements.join(', '));
+      });
+    }
+    lines.push('');
+
+    // Font Sizes
+    lines.push('FONT SIZES (' + data.fontSize.length + ' unique sizes)');
+    lines.push('-'.repeat(40));
+    data.fontSize.forEach(item => {
+      lines.push('  • ' + item.value + ' — ' + item.elements.slice(0, 3).join(', '));
+    });
+    lines.push('');
+
+    // Font Weights
+    lines.push('FONT WEIGHTS (' + data.fontWeight.length + ' unique weights)');
+    lines.push('-'.repeat(40));
+    data.fontWeight.forEach(item => {
+      lines.push('  • ' + item.value + ' — ' + item.elements.slice(0, 3).join(', '));
+    });
+    lines.push('');
+
+    // Colors
+    const nonThemeColors = data.color.filter(c => !c.isTheme);
+    const themeColors = data.color.filter(c => c.isTheme);
+
+    lines.push('COLORS');
+    lines.push('-'.repeat(40));
+
+    if (nonThemeColors.length > 0) {
+      lines.push('⚠ Non-theme colors (' + nonThemeColors.length + '):');
+      nonThemeColors.forEach(item => {
+        lines.push('  • ' + item.value + ' — ' + item.elements.slice(0, 3).join(', '));
+      });
+      lines.push('');
+    } else {
+      lines.push('✓ All colors match theme palette');
+      lines.push('');
+    }
+
+    lines.push('Theme colors in use (' + themeColors.length + '):');
+    themeColors.forEach(item => {
+      lines.push('  • ' + item.value);
+    });
+    lines.push('');
+    lines.push('='.repeat(60));
+
+    return lines.join('\n');
+  }
+
+  // Copy all data to clipboard
+  function copyAllToClipboard() {
+    const data = scanStyles();
+    const text = formatDataForClipboard(data);
+
+    const copyBtn = document.querySelector('.debug-modal__copy');
+    const copyText = copyBtn.querySelector('.debug-modal__copy-text');
+
+    navigator.clipboard.writeText(text).then(() => {
+      // Show success feedback
+      copyText.textContent = 'Copied!';
+      copyBtn.classList.add('debug-modal__copy--success');
+
+      setTimeout(() => {
+        copyText.textContent = 'Copy All';
+        copyBtn.classList.remove('debug-modal__copy--success');
+      }, 2000);
+    }).catch(err => {
+      // Fallback for older browsers
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+
+      copyText.textContent = 'Copied!';
+      copyBtn.classList.add('debug-modal__copy--success');
+
+      setTimeout(() => {
+        copyText.textContent = 'Copy All';
+        copyBtn.classList.remove('debug-modal__copy--success');
+      }, 2000);
+    });
   }
 
   // Render results into panels
