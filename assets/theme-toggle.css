@@ -71,6 +71,13 @@
    APPLY THEME COLORS TO ELEMENTS
    ============================================ */
 
+/* Override Shopify's color scheme variables in dark mode */
+[data-theme="dark"] {
+  --color-background: 15, 18, 21 !important;
+  --color-foreground: 245, 247, 250 !important;
+  --gradient-background: #0F1215 !important;
+}
+
 /* Body and main backgrounds */
 [data-theme="dark"] body,
 [data-theme="dark"] .shopify-section,
@@ -79,16 +86,25 @@
   color: var(--color-text-primary) !important;
 }
 
+/* Override all Shopify color scheme backgrounds */
+[data-theme="dark"] [class*="color-scheme"],
+[data-theme="dark"] [class*="color-"] {
+  background-color: var(--color-bg) !important;
+}
+
 /* Surface elements (cards, modals, etc.) */
 [data-theme="dark"] .card,
 [data-theme="dark"] .card__content,
 [data-theme="dark"] .card-wrapper,
 [data-theme="dark"] .product-card-wrapper,
-[data-theme="dark"] .card__inner {
+[data-theme="dark"] .card__inner,
+[data-theme="dark"] .card--card,
+[data-theme="dark"] .card--standard {
   background-color: var(--color-card-bg) !important;
+  background: var(--color-card-bg) !important;
 }
 
-/* Text colors */
+/* Text colors - with !important */
 [data-theme="dark"] h1,
 [data-theme="dark"] h2,
 [data-theme="dark"] h3,
@@ -108,29 +124,43 @@
 [data-theme="dark"] span,
 [data-theme="dark"] a,
 [data-theme="dark"] li {
-  color: var(--color-text-secondary);
+  color: var(--color-text-secondary) !important;
 }
 
-/* Product card specific */
-[data-theme="dark"] .custom-product-title,
-[data-theme="dark"] .custom-product-title a,
-[data-theme="dark"] .card__heading,
-[data-theme="dark"] .card__heading a {
-  color: var(--color-product-title) !important;
+/* Product card specific - PRICES */
+[data-theme="dark"] .custom-price--bold,
+[data-theme="dark"] .custom-price-line span,
+[data-theme="dark"] .price,
+[data-theme="dark"] .price-item,
+[data-theme="dark"] .price-item--regular,
+[data-theme="dark"] .price-item--sale,
+[data-theme="dark"] .price__regular,
+[data-theme="dark"] .price__sale {
+  color: var(--color-text-primary) !important;
 }
 
-[data-theme="dark"] .card__sku,
-[data-theme="dark"] .card__variant-count,
-[data-theme="dark"] .card__sku-variants {
-  color: var(--color-sku) !important;
-}
-
-[data-theme="dark"] .custom-price--compare {
+[data-theme="dark"] .custom-price--compare,
+[data-theme="dark"] .price-item--compare,
+[data-theme="dark"] .price__compare {
   color: var(--color-compare-price) !important;
 }
 
-[data-theme="dark"] .custom-price--bold {
-  color: var(--color-text-primary) !important;
+/* Product titles */
+[data-theme="dark"] .custom-product-title,
+[data-theme="dark"] .custom-product-title a,
+[data-theme="dark"] .card__heading,
+[data-theme="dark"] .card__heading a,
+[data-theme="dark"] .card-information__text,
+[data-theme="dark"] .card-information__text a {
+  color: var(--color-product-title) !important;
+}
+
+/* SKU and variant info */
+[data-theme="dark"] .card__sku,
+[data-theme="dark"] .card__variant-count,
+[data-theme="dark"] .card__sku-variants,
+[data-theme="dark"] .card__separator {
+  color: var(--color-sku) !important;
 }
 
 /* Borders */
@@ -154,7 +184,7 @@
   background-color: var(--color-primary-hover) !important;
 }
 
-/* Buttons - Secondary */
+/* Buttons - Secondary / Quick Add */
 [data-theme="dark"] .button--secondary,
 [data-theme="dark"] .quick-add__submit {
   background-color: transparent !important;
@@ -168,22 +198,35 @@
   color: #FFFFFF !important;
 }
 
+/* RFQ Button */
+[data-theme="dark"] .button--rfq {
+  background-color: var(--color-primary) !important;
+  color: #FFFFFF !important;
+}
+
 /* Header */
 [data-theme="dark"] .header,
-[data-theme="dark"] .section-header {
+[data-theme="dark"] .section-header,
+[data-theme="dark"] .header-wrapper {
   background-color: var(--color-surface) !important;
   border-color: var(--color-border) !important;
 }
 
 [data-theme="dark"] .header a,
-[data-theme="dark"] .header__menu-item {
+[data-theme="dark"] .header__menu-item,
+[data-theme="dark"] .header__icon {
   color: var(--color-text-primary) !important;
 }
 
 /* Footer */
-[data-theme="dark"] .footer,
+[data-theme="dark"] .footer {
+  background-color: var(--color-bg) !important;
+}
+
 [data-theme="dark"] .footer a,
-[data-theme="dark"] .footer__copyright {
+[data-theme="dark"] .footer__copyright,
+[data-theme="dark"] .footer-block__heading,
+[data-theme="dark"] .footer small {
   color: var(--color-text-secondary) !important;
 }
 
@@ -223,21 +266,48 @@
   color: var(--color-success) !important;
 }
 
+/* Sale badges */
+[data-theme="dark"] .badge {
+  background-color: var(--color-success) !important;
+  color: #FFFFFF !important;
+}
+
 /* Icons and SVGs */
 [data-theme="dark"] .icon,
-[data-theme="dark"] svg {
-  fill: var(--color-icon);
+[data-theme="dark"] svg:not(.theme-toggle__btn svg) {
+  fill: var(--color-icon) !important;
+  stroke: var(--color-icon) !important;
 }
 
 /* Collection/Product grid */
 [data-theme="dark"] .collection,
-[data-theme="dark"] .main-collection-product-grid {
+[data-theme="dark"] .main-collection-product-grid,
+[data-theme="dark"] .collection-hero,
+[data-theme="dark"] .template-collection {
+  background-color: var(--color-bg) !important;
+}
+
+/* Page backgrounds */
+[data-theme="dark"] main,
+[data-theme="dark"] #MainContent,
+[data-theme="dark"] .main-content {
+  background-color: var(--color-bg) !important;
+}
+
+/* Multicolumn / Featured collections */
+[data-theme="dark"] .multicolumn,
+[data-theme="dark"] .featured-collection {
   background-color: var(--color-bg) !important;
 }
 
 /* Announcement bar - keep brand color */
 [data-theme="dark"] .announcement-bar {
   background-color: var(--color-primary) !important;
+}
+
+/* Gradient overlays */
+[data-theme="dark"] .gradient {
+  background: var(--color-bg) !important;
 }
 
 /* ============================================
