@@ -1,1 +1,65 @@
-{"name":"t:sections.footer.name","type":"footer","sections":{"footer":{"type":"footer","blocks":{"link_list_xPXcyM":{"type":"link_list","settings":{"heading":"Products","menu":"footer-products"}},"link_list_k6dNrU":{"type":"link_list","settings":{"heading":"Customer Support","menu":"footer-support"}},"link_list_6eAcFW":{"type":"link_list","settings":{"heading":"Company","menu":"footer-company"}}},"block_order":["link_list_xPXcyM","link_list_k6dNrU","link_list_6eAcFW"],"settings":{"color_scheme":"scheme-2","newsletter_enable":false,"newsletter_heading":"Subscribe to our emails","enable_follow_on_shop":true,"show_social":true,"enable_country_selector":true,"enable_language_selector":true,"payment_enable":true,"show_policy":true,"margin_top":0,"padding_top":36,"padding_bottom":36}}},"order":["footer"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "link_list_xPXcyM": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Products",
+            "menu": "footer-products"
+          }
+        },
+        "link_list_k6dNrU": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Customer Support",
+            "menu": "footer-support"
+          }
+        },
+        "link_list_6eAcFW": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Company",
+            "menu": "footer-company"
+          }
+        }
+      },
+      "block_order": [
+        "link_list_xPXcyM",
+        "link_list_k6dNrU",
+        "link_list_6eAcFW"
+      ],
+      "settings": {
+        "color_scheme": "scheme-2",
+        "newsletter_enable": false,
+        "newsletter_heading": "Subscribe to our emails",
+        "enable_follow_on_shop": true,
+        "show_social": true,
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "payment_enable": true,
+        "show_policy": true,
+        "show_theme_toggle": true,
+        "show_style_debug": true,
+        "margin_top": 0,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}
