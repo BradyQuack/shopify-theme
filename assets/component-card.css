@@ -123,8 +123,8 @@
 }
 
 .card__content {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) max-content minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   padding: 1rem;
   width: 100%;
   flex-grow: 1;
@@ -135,12 +135,11 @@
 }
 
 .card__information {
-  grid-row-start: 2;
-  padding: 1.3rem 1rem;
+  padding: 0.5rem 0;
 }
 
 .card:not(.ratio) > .card__content {
-  grid-template-rows: max-content minmax(0, 1fr) max-content auto;
+  /* Using flexbox, no grid template needed */
 }
 
 .card-information .card__information-volume-pricing-note {
@@ -596,8 +595,7 @@
 
 /* Custom Product Card Styles */
 .custom-price-wrapper {
-  margin: 0.8rem 0;
-  order: 1;
+  margin: 0.5rem 0;
 }
 
 .custom-price-line {
