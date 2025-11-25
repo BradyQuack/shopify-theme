@@ -5,79 +5,225 @@
 /* Light Mode (Default) */
 :root,
 [data-theme="light"] {
+  /* ---- Base Colors ---- */
   --color-bg: #F5F7FA;
   --color-surface: #FFFFFF;
-  --color-text-primary: #2B2C2D;
-  --color-text-secondary: rgba(43, 44, 45, 0.75);
-  --color-border: #E1E5EA;
+  --color-surface-alt: #F0F2F5;
+  --color-overlay: rgba(0, 0, 0, 0.5);
 
+  /* ---- Text Colors ---- */
+  --color-text-primary: #2B2C2D;
+  --color-text-secondary: #6B7280;
+  --color-text-muted: #9CA3AF;
+  --color-text-inverse: #FFFFFF;
+
+  /* ---- Border Colors ---- */
+  --color-border: #E1E5EA;
+  --color-border-light: #F0F2F5;
+  --color-border-dark: #D1D5DB;
+
+  /* ---- Brand Colors ---- */
   --color-primary: #005496;
   --color-primary-hover: #003E70;
+  --color-primary-light: #E6F0F7;
 
   --color-secondary: #1D6AE5;
   --color-secondary-hover: #1550B0;
+  --color-secondary-light: #EBF2FC;
 
   --color-accent: #DD6727;
   --color-accent-hover: #BE531D;
+  --color-accent-light: #FDF3ED;
 
+  /* ---- Semantic Colors ---- */
   --color-success: #28A745;
+  --color-success-hover: #218838;
+  --color-success-light: #E8F5EC;
 
+  --color-warning: #F59E0B;
+  --color-warning-hover: #D97706;
+  --color-warning-light: #FEF7E6;
+
+  --color-error: #DC2626;
+  --color-error-hover: #B91C1C;
+  --color-error-light: #FEE8E8;
+
+  --color-info: #3B82F6;
+  --color-info-hover: #2563EB;
+  --color-info-light: #EFF6FF;
+
+  /* ---- Card Colors ---- */
   --color-card-bg: #FFFFFF;
+  --color-card-hover: #F9FAFB;
   --color-card-separator: #E1E5EA;
+  --color-card-shadow: rgba(0, 0, 0, 0.08);
 
-  --color-product-title: #333333;
-  --color-sku: #666666;
-  --color-compare-price: rgba(43, 44, 45, 0.6);
+  /* ---- Product Colors ---- */
+  --color-product-title: #2B2C2D;
+  --color-sku: #6B7280;
+  --color-compare-price: #9CA3AF;
+  --color-sale-price: #DC2626;
 
-  /* Button colors */
+  /* ---- Button Colors ---- */
   --color-button-text: #FFFFFF;
+  --color-button-disabled: #9CA3AF;
 
-  /* Icon colors */
-  --color-icon: #2B2C2D;
+  /* ---- Icon Colors ---- */
+  --color-icon: #6B7280;
   --color-icon-hover: #005496;
+  --color-icon-muted: #9CA3AF;
+
+  /* ---- Badge Colors ---- */
+  --color-badge-bg: #005496;
+  --color-badge-text: #FFFFFF;
+  --color-badge-secondary-bg: #E1E5EA;
+  --color-badge-secondary-text: #005496;
+
+  /* ---- Star Rating Colors ---- */
+  --color-star-filled: #FBBF24;
+  --color-star-unfilled: #E1E5EA;
+
+  /* ---- Quote/Decorative Colors ---- */
+  --color-quote: #E1E5EA;
+  --color-quote-text: #6B7280;
+
+  /* ---- Navigation Colors ---- */
+  --color-nav-bg: #005496;
+  --color-nav-text: #FFFFFF;
+  --color-nav-hover: #003E70;
+  --color-dot-active: #005496;
+  --color-dot-inactive: rgba(0, 84, 150, 0.3);
+
+  /* ---- Banner Colors ---- */
+  --color-banner-bg: #005496;
+  --color-banner-text: #FFFFFF;
+  --color-banner-button-bg: #28A745;
+  --color-banner-button-hover: #218838;
+
+  /* ---- Section Backgrounds ---- */
+  --color-section-light: #F5F7FA;
+  --color-section-alt: #FFFFFF;
+
+  /* ---- Link Colors ---- */
+  --color-link: #005496;
+  --color-link-hover: #003E70;
+  --color-link-visited: #1550B0;
+
+  /* ---- Focus States ---- */
+  --color-focus-ring: rgba(0, 84, 150, 0.5);
+  --color-focus-outline: #005496;
 }
 
 /* Dark Mode */
 [data-theme="dark"] {
+  /* ---- Base Colors ---- */
   --color-bg: #0F172A;
   --color-surface: #1E293B;
-  --color-surface-hover: #243045;
+  --color-surface-alt: #243045;
+  --color-surface-hover: #2D3A50;
+  --color-overlay: rgba(0, 0, 0, 0.7);
 
+  /* ---- Text Colors ---- */
   --color-text-primary: #F1F5F9;
-  --color-text-secondary: rgba(241, 245, 249, 0.65);
+  --color-text-secondary: #94A3B8;
+  --color-text-muted: #64748B;
+  --color-text-inverse: #0F172A;
+
+  /* ---- Border Colors ---- */
   --color-border: #2D3A50;
+  --color-border-light: #334155;
+  --color-border-dark: #1E293B;
 
-  /* Blue - Primary actions */
+  /* ---- Brand Colors ---- */
   --color-primary: #60A5FA;
-  --color-primary-hover: #7CB8FF;
-  --color-primary-active: #3F83F8;
+  --color-primary-hover: #93C5FD;
+  --color-primary-light: #1E3A5F;
 
-  /* Green - Success states */
-  --color-success: #39B47E;
-  --color-success-hover: #45C58F;
-  --color-success-dark: #24915F;
+  --color-secondary: #818CF8;
+  --color-secondary-hover: #A5B4FC;
+  --color-secondary-light: #2E3A59;
 
-  /* Orange - Accent */
   --color-accent: #F28C38;
-  --color-accent-hover: #FF9C4D;
-  --color-accent-dark: #C66D2B;
+  --color-accent-hover: #FB923C;
+  --color-accent-light: #3D2A1F;
 
-  /* Cards */
+  /* ---- Semantic Colors ---- */
+  --color-success: #4ADE80;
+  --color-success-hover: #86EFAC;
+  --color-success-light: #1A3D2E;
+
+  --color-warning: #FBBF24;
+  --color-warning-hover: #FCD34D;
+  --color-warning-light: #3D3520;
+
+  --color-error: #F87171;
+  --color-error-hover: #FCA5A5;
+  --color-error-light: #3D2020;
+
+  --color-info: #60A5FA;
+  --color-info-hover: #93C5FD;
+  --color-info-light: #1E3A5F;
+
+  /* ---- Card Colors ---- */
   --color-card-bg: #1E293B;
   --color-card-hover: #243045;
   --color-card-separator: #2D3A50;
+  --color-card-shadow: rgba(0, 0, 0, 0.3);
 
-  /* Product info */
+  /* ---- Product Colors ---- */
   --color-product-title: #F1F5F9;
-  --color-sku: rgba(241, 245, 249, 0.65);
-  --color-compare-price: rgba(241, 245, 249, 0.45);
+  --color-sku: #94A3B8;
+  --color-compare-price: #64748B;
+  --color-sale-price: #F87171;
 
-  /* Button colors */
+  /* ---- Button Colors ---- */
   --color-button-text: #FFFFFF;
+  --color-button-disabled: #475569;
 
-  /* Icon colors */
+  /* ---- Icon Colors ---- */
   --color-icon: #94A3B8;
   --color-icon-hover: #60A5FA;
+  --color-icon-muted: #64748B;
+
+  /* ---- Badge Colors ---- */
+  --color-badge-bg: #60A5FA;
+  --color-badge-text: #0F172A;
+  --color-badge-secondary-bg: #2D3A50;
+  --color-badge-secondary-text: #60A5FA;
+
+  /* ---- Star Rating Colors ---- */
+  --color-star-filled: #FBBF24;
+  --color-star-unfilled: #475569;
+
+  /* ---- Quote/Decorative Colors ---- */
+  --color-quote: #475569;
+  --color-quote-text: #94A3B8;
+
+  /* ---- Navigation Colors ---- */
+  --color-nav-bg: #60A5FA;
+  --color-nav-text: #0F172A;
+  --color-nav-hover: #93C5FD;
+  --color-dot-active: #60A5FA;
+  --color-dot-inactive: rgba(96, 165, 250, 0.3);
+
+  /* ---- Banner Colors ---- */
+  --color-banner-bg: #1E3A5F;
+  --color-banner-text: #F1F5F9;
+  --color-banner-button-bg: #4ADE80;
+  --color-banner-button-hover: #86EFAC;
+
+  /* ---- Section Backgrounds ---- */
+  --color-section-light: #1E293B;
+  --color-section-alt: #0F172A;
+
+  /* ---- Link Colors ---- */
+  --color-link: #60A5FA;
+  --color-link-hover: #93C5FD;
+  --color-link-visited: #A5B4FC;
+
+  /* ---- Focus States ---- */
+  --color-focus-ring: rgba(96, 165, 250, 0.5);
+  --color-focus-outline: #60A5FA;
 }
 
 /* ============================================
@@ -321,6 +467,432 @@
 /* Gradient overlays */
 [data-theme="dark"] .gradient {
   background: var(--color-bg) !important;
+}
+
+/* ============================================
+   PROMO BAR / ANNOUNCEMENT STYLES
+   ============================================ */
+
+[data-theme="dark"] .promo-bar {
+  background-color: var(--color-primary-light) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .promo-bar a,
+[data-theme="dark"] .promo-bar__links a {
+  color: var(--color-primary) !important;
+}
+
+/* ============================================
+   HEADER2 STYLES (Custom Header)
+   ============================================ */
+
+[data-theme="dark"] .header2-section,
+[data-theme="dark"] .header2__container {
+  background-color: var(--color-surface) !important;
+}
+
+[data-theme="dark"] .header2__nav-link,
+[data-theme="dark"] .header2__mobile-nav-link {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .header2__nav-link:hover,
+[data-theme="dark"] .header2__mobile-nav-link:hover {
+  color: var(--color-primary) !important;
+}
+
+[data-theme="dark"] .header2__store-info,
+[data-theme="dark"] .header2__store-details {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .header2__search-button {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+[data-theme="dark"] .header2__mobile-menu-header {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ============================================
+   PRODUCT CARD STYLES
+   ============================================ */
+
+[data-theme="dark"] .product-card,
+[data-theme="dark"] .product-card__inner {
+  background-color: var(--color-card-bg) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .product-card__image {
+  background-color: var(--color-surface-alt) !important;
+}
+
+[data-theme="dark"] .product-card__name,
+[data-theme="dark"] .product-card__name a {
+  color: var(--color-product-title) !important;
+}
+
+[data-theme="dark"] .product-card__price {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .product-card__compare-price {
+  color: var(--color-compare-price) !important;
+}
+
+[data-theme="dark"] .product-card__stars {
+  color: var(--color-star-filled) !important;
+}
+
+[data-theme="dark"] .product-card__reviews {
+  color: var(--color-primary) !important;
+}
+
+[data-theme="dark"] .product-card__badge {
+  background-color: var(--color-success) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* ============================================
+   SIGNATURE/FEATURE HIGHLIGHTS
+   ============================================ */
+
+[data-theme="dark"] .sig-title,
+[data-theme="dark"] h3.sig-title {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .sig-desc,
+[data-theme="dark"] p.sig-desc {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .features-highlight__item {
+  background-color: var(--color-card-bg) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .product-highlights__title {
+  color: var(--color-text-primary) !important;
+}
+
+/* ============================================
+   WHOLESALE BANNER STYLES
+   ============================================ */
+
+[data-theme="dark"] [class*="wholesale-banner"] {
+  background-color: var(--color-banner-bg) !important;
+  background: var(--color-banner-bg) !important;
+  color: var(--color-banner-text) !important;
+}
+
+[data-theme="dark"] .banner-title {
+  color: var(--color-banner-text) !important;
+}
+
+[data-theme="dark"] .banner-subtitle {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .banner-button {
+  background-color: var(--color-banner-button-bg) !important;
+  color: var(--color-text-inverse) !important;
+}
+
+[data-theme="dark"] .banner-button:hover {
+  background-color: var(--color-banner-button-hover) !important;
+}
+
+/* ============================================
+   CUSTOMER REVIEWS SECTION
+   ============================================ */
+
+[data-theme="dark"] .customer-reviews {
+  background-color: var(--color-bg) !important;
+}
+
+[data-theme="dark"] .customer-reviews__badge {
+  background-color: var(--color-badge-bg) !important;
+  color: var(--color-badge-text) !important;
+}
+
+[data-theme="dark"] .customer-reviews__heading {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .customer-reviews__description {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .customer-reviews__card {
+  background-color: var(--color-card-bg) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .customer-reviews__star {
+  color: var(--color-star-unfilled) !important;
+}
+
+[data-theme="dark"] .customer-reviews__star--filled {
+  color: var(--color-star-filled) !important;
+}
+
+[data-theme="dark"] .customer-reviews__quote-icon {
+  color: var(--color-quote) !important;
+}
+
+[data-theme="dark"] .customer-reviews__text {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .customer-reviews__customer-name {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .customer-reviews__customer-location {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="dark"] .customer-reviews__service-type {
+  background-color: var(--color-badge-secondary-bg) !important;
+  color: var(--color-badge-secondary-text) !important;
+}
+
+[data-theme="dark"] .customer-reviews__nav-btn {
+  background-color: var(--color-nav-bg) !important;
+  color: var(--color-nav-text) !important;
+}
+
+[data-theme="dark"] .customer-reviews__nav-btn:hover {
+  background-color: var(--color-nav-hover) !important;
+}
+
+[data-theme="dark"] .customer-reviews__dot {
+  background-color: var(--color-dot-inactive) !important;
+}
+
+[data-theme="dark"] .customer-reviews__dot--active {
+  background-color: var(--color-dot-active) !important;
+}
+
+/* ============================================
+   BANNER SECTION STYLES
+   ============================================ */
+
+[data-theme="dark"] .banner,
+[data-theme="dark"] .banner__box {
+  background-color: var(--color-surface) !important;
+}
+
+[data-theme="dark"] .banner__heading {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .banner__text,
+[data-theme="dark"] .banner__text p {
+  color: var(--color-text-secondary) !important;
+}
+
+/* ============================================
+   PILL/TAG STYLES
+   ============================================ */
+
+[data-theme="dark"] .pill-text,
+[data-theme="dark"] .tag,
+[data-theme="dark"] .label {
+  background-color: var(--color-badge-bg) !important;
+  color: var(--color-badge-text) !important;
+}
+
+/* ============================================
+   GENERAL LINK OVERRIDES
+   ============================================ */
+
+[data-theme="dark"] a:not(.button):not(.banner-button):not([class*="nav"]) {
+  color: var(--color-link) !important;
+}
+
+[data-theme="dark"] a:not(.button):not(.banner-button):not([class*="nav"]):hover {
+  color: var(--color-link-hover) !important;
+}
+
+/* ============================================
+   RICH TEXT EDITOR CONTENT
+   ============================================ */
+
+[data-theme="dark"] .rte,
+[data-theme="dark"] .rte p,
+[data-theme="dark"] .rte li {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .rte h1,
+[data-theme="dark"] .rte h2,
+[data-theme="dark"] .rte h3,
+[data-theme="dark"] .rte h4 {
+  color: var(--color-text-primary) !important;
+}
+
+/* ============================================
+   BLOCKQUOTES
+   ============================================ */
+
+[data-theme="dark"] blockquote {
+  border-color: var(--color-border) !important;
+  color: var(--color-quote-text) !important;
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+
+[data-theme="dark"] table,
+[data-theme="dark"] th,
+[data-theme="dark"] td {
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] th {
+  background-color: var(--color-surface-alt) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] td {
+  color: var(--color-text-secondary) !important;
+}
+
+/* ============================================
+   DROPDOWN/SELECT MENUS
+   ============================================ */
+
+[data-theme="dark"] .disclosure__list,
+[data-theme="dark"] .select__select,
+[data-theme="dark"] .dropdown__menu {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .disclosure__link,
+[data-theme="dark"] .dropdown__item {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .disclosure__link:hover,
+[data-theme="dark"] .dropdown__item:hover {
+  background-color: var(--color-surface-hover) !important;
+}
+
+/* ============================================
+   PAGINATION
+   ============================================ */
+
+[data-theme="dark"] .pagination__item {
+  color: var(--color-text-secondary) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .pagination__item--current {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+[data-theme="dark"] .pagination__item:hover:not(.pagination__item--current) {
+  background-color: var(--color-surface-hover) !important;
+}
+
+/* ============================================
+   MODAL/POPUP OVERLAYS
+   ============================================ */
+
+[data-theme="dark"] .modal,
+[data-theme="dark"] .popup,
+[data-theme="dark"] .modal__content {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ============================================
+   ACCORDION STYLES
+   ============================================ */
+
+[data-theme="dark"] .accordion,
+[data-theme="dark"] .accordion__content {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .accordion__title {
+  color: var(--color-text-primary) !important;
+}
+
+/* ============================================
+   SLIDER/CAROUSEL STYLES
+   ============================================ */
+
+[data-theme="dark"] .slider-button,
+[data-theme="dark"] .carousel-button {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-icon) !important;
+}
+
+[data-theme="dark"] .slider-button:hover,
+[data-theme="dark"] .carousel-button:hover {
+  background-color: var(--color-surface-hover) !important;
+  color: var(--color-icon-hover) !important;
+}
+
+/* ============================================
+   SEARCH RESULTS
+   ============================================ */
+
+[data-theme="dark"] .predictive-search,
+[data-theme="dark"] .predictive-search__results {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .predictive-search__item {
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .predictive-search__item:hover {
+  background-color: var(--color-surface-hover) !important;
+}
+
+/* ============================================
+   LOADING STATES
+   ============================================ */
+
+[data-theme="dark"] .loading-overlay,
+[data-theme="dark"] .skeleton {
+  background-color: var(--color-surface-alt) !important;
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+
+[data-theme="dark"] ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
 }
 
 /* ============================================
