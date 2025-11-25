@@ -41,28 +41,8 @@
       assign ratio = 1
     endif
     
-    # Check if product price is one dollar (100 cents)
-    assign is_one_dollar_price = false
-    if card_product.price == 100
-      assign is_one_dollar_price = true
-    endif
-    
-    # Check if one dollar price RFQ is enabled in section settings
-    assign show_one_dollar_rfq = false
-    if section.settings.enable_zero_price_rfq and is_one_dollar_price
-      assign show_one_dollar_rfq = true
-    endif
-    
-    # Determine RFQ link for one dollar price products
-    assign zero_rfq_link = section.settings.zero_price_rfq_link
-    if zero_rfq_link == blank
-      assign zero_rfq_link = section.settings.rfq_link
-    endif
-    if zero_rfq_link == blank
-      assign zero_rfq_link = '/pages/contact'
-    endif
   -%}
-  <div class="card-wrapper product-card-wrapper underline-links-hover{% if show_one_dollar_rfq %} price-zero{% endif %}">
+  <div class="card-wrapper product-card-wrapper underline-links-hover">
     <div
       class="
         card card--{{ settings.card_style }}
@@ -172,77 +152,52 @@
           </div>
         {%- endif -%}
 
-        <div class="card__information"{% if section.settings.show_card_debug %} style="border: 2px solid blue;"{% endif %}>
-          {%- comment -%} DEBUG: Show if one dollar price detected {%- endcomment -%}
-          {%- if section.settings.show_card_debug and is_one_dollar_price -%}
-            <div style="background: yellow; padding: 5px; margin: 5px 0;">
-              DEBUG: One dollar price detected! Price = {{ card_product.price }}
-              <br>RFQ Enabled: {{ section.settings.enable_zero_price_rfq }}
-              <br>Show RFQ: {{ show_one_dollar_rfq }}
-            </div>
-          {%- endif -%}
-          
+        <div class="card__information">
           {%- comment -%} Custom Price Layout {%- endcomment -%}
           {%- liquid
             assign price = card_product.price | money
             assign compare_at_price = card_product.compare_at_price | money
-            
+
             if settings.currency_code_enabled
               assign price = card_product.price | money_with_currency
               assign compare_at_price = card_product.compare_at_price | money_with_currency
             endif
           -%}
 
-          {%- comment -%} Request for Quote Button for $1 products (placed BEFORE title, inside card__information) {%- endcomment -%}
-          {%- if show_one_dollar_rfq -%}
-            {%- if section.settings.show_card_debug -%}
-              <div style="background: red; padding: 5px; margin: 5px 0;">
-                DEBUG: RFQ button INSIDE card__information (BEFORE title)
-                <br>Link: {{ card_product.url }}
-              </div>
-            {%- endif -%}
-            <a href="{{ card_product.url }}" class="rfq-button-zero-price rfq-button-top"{% if section.settings.show_card_debug %} style="border: 3px solid red;"{% endif %}>
-              View Parts
-            </a>
-          {%- endif -%}
+          <div class="custom-price-wrapper">
+            {%- if card_product.compare_at_price > card_product.price and card_product.available -%}
+              {%- comment -%} On Sale Layout {%- endcomment -%}
 
-          {%- unless show_one_dollar_rfq -%}
-            <div class="custom-price-wrapper">
-              {%- if card_product.compare_at_price > card_product.price and card_product.available -%}
-                {%- comment -%} On Sale Layout {%- endcomment -%}
-                
-                <div class="custom-price-line">
-                  {%- assign price_dollars = card_product.price | divided_by: 100 -%}
-                  {%- assign price_cents = card_product.price | modulo: 100 -%}
-                  <span class="custom-price custom-price--bold">
-                    {{ price_dollars }}<span class="price-cents">.{%- if price_cents < 10 -%}0{%- endif -%}{{ price_cents }}</span>
-                  </span>
-                  <span class="custom-price custom-price--compare">{{ compare_at_price }}</span>
-                </div>
-                {%- assign savings = card_product.compare_at_price | minus: card_product.price -%}
-                {%- assign savings_percent = savings | times: 100 | divided_by: card_product.compare_at_price -%}
-                <div class="custom-savings-badge">
-                  Save {{ savings | money }} ({{ savings_percent }}%)
-                </div>
-                
-              {%- else -%}
-                {%- comment -%} Regular Price {%- endcomment -%}
+              <div class="custom-price-line">
                 {%- assign price_dollars = card_product.price | divided_by: 100 -%}
                 {%- assign price_cents = card_product.price | modulo: 100 -%}
-                <div class="custom-price-line">
-                  <span class="custom-price custom-price--bold">
-                    {{ price_dollars }}<span class="price-cents">.{%- if price_cents < 10 -%}0{%- endif -%}{{ price_cents }}</span>
-                  </span>
-                </div>
-              {%- endif -%}
-            </div>
-          {%- endunless -%}
+                <span class="custom-price custom-price--bold">
+                  {{ price_dollars }}<span class="price-cents">.{%- if price_cents < 10 -%}0{%- endif -%}{{ price_cents }}</span>
+                </span>
+                <span class="custom-price custom-price--compare">{{ compare_at_price }}</span>
+              </div>
+              {%- assign savings = card_product.compare_at_price | minus: card_product.price -%}
+              {%- assign savings_percent = savings | times: 100 | divided_by: card_product.compare_at_price -%}
+              <div class="custom-savings-badge">
+                Save {{ savings | money }} ({{ savings_percent }}%)
+              </div>
+
+            {%- else -%}
+              {%- comment -%} Regular Price {%- endcomment -%}
+              {%- assign price_dollars = card_product.price | divided_by: 100 -%}
+              {%- assign price_cents = card_product.price | modulo: 100 -%}
+              <div class="custom-price-line">
+                <span class="custom-price custom-price--bold">
+                  {{ price_dollars }}<span class="price-cents">.{%- if price_cents < 10 -%}0{%- endif -%}{{ price_cents }}</span>
+                </span>
+              </div>
+            {%- endif -%}
+          </div>
         </div>
 
-        {%- comment -%} Quick Add Button (only for non-one-dollar price products) {%- endcomment -%}
-        {%- unless show_one_dollar_rfq -%}
-          {% assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id %}
-          {% if quick_add == 'standard' %}
+        {%- comment -%} Quick Add Button {%- endcomment -%}
+        {% assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id %}
+        {% if quick_add == 'standard' %}
             <div class="quick-add no-js-hidden">
               {%- liquid
                 assign qty_rules = false
@@ -322,8 +277,7 @@
                 </product-form>
               {%- endif -%}
             </div>
-          {% endif %}
-        {%- endunless -%}
+        {% endif %}
 
         {%- comment -%} Badges - Sold Out Only {%- endcomment -%}
         <div class="card__badge {{ settings.badge_position }}">
