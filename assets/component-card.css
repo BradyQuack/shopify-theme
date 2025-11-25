@@ -973,10 +973,18 @@
 
 .custom-product-title {
   font-size: 1.5em !important;
+  line-height: 1.3;
+  /* Fixed height for 3 lines to align star images across cards */
+  min-height: calc(1.5em * 1.3 * 3);
+  margin-bottom: 0.5rem;
 }
 
 .custom-product-title a {
-  display: block;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Star Image under product title */
