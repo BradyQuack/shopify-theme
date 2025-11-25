@@ -1,1 +1,280 @@
-{"name":"t:sections.header.name","type":"header","sections":{"announcement_bar_PGKKRL":{"type":"announcement-bar","blocks":{"announcement_FVnUpd":{"type":"announcement","settings":{"text":"Halloween is creeping up! Find scary-good favorites online. Shop Now >","link":"shopify:\/\/collections\/all"}}},"block_order":["announcement_FVnUpd"],"disabled":true,"name":"t:sections.announcement-bar.presets.name","settings":{"auto_rotate":false,"change_slides_speed":5,"color_scheme":"scheme-2","show_line_separator":true,"show_social":true,"enable_country_selector":false,"enable_language_selector":false}},"header":{"type":"header","disabled":true,"settings":{"logo_position":"middle-left","mobile_logo_position":"center","menu":"main-menu-1","menu_type_desktop":"mega","sticky_header_type":"on-scroll-up","show_line_separator":false,"color_scheme":"scheme-1","menu_color_scheme":"scheme-1","enable_country_selector":true,"enable_language_selector":true,"enable_customer_avatar":true,"margin_bottom":0,"padding_top":0,"padding_bottom":0}},"header2_WRTrXp":{"type":"header2","blocks":{"nav_item_3fMEa8":{"type":"nav_item","settings":{"text":"Wholesale","link":"shopify:\/\/pages\/wholesale","show_icon":true}},"nav_item_itbf9J":{"type":"nav_item","settings":{"text":"Deals","link":"shopify:\/\/collections","show_icon":true}},"nav_item_tH4xB6":{"type":"nav_item","settings":{"text":"Pumps","link":"shopify:\/\/collections\/pumps","show_icon":false}},"nav_item_pKiUV6":{"type":"nav_item","settings":{"text":"Pump Parts","link":"shopify:\/\/collections\/pump-parts","show_icon":false}},"nav_item_nNB3QA":{"type":"nav_item","settings":{"text":"PVC Pipe","link":"shopify:\/\/collections\/custom-pvc-pipe","show_icon":false}},"nav_item_7XUDQb":{"type":"nav_item","disabled":true,"settings":{"text":"Valves","link":"","show_icon":false}},"nav_item_9wULAV":{"type":"nav_item","disabled":true,"settings":{"text":"Filters","link":"","show_icon":false}},"nav_item_XUXbyX":{"type":"nav_item","settings":{"text":"Berkeley Parts","link":"shopify:\/\/collections\/berkeley-replacement-parts","show_icon":false}},"nav_item_kbChHY":{"type":"nav_item","settings":{"text":"About","link":"shopify:\/\/pages\/about-us","show_icon":false}},"nav_item_e46ACM":{"type":"nav_item","settings":{"text":"Contact","link":"shopify:\/\/pages\/contact","show_icon":false}},"recommendation_gkFc88":{"type":"recommendation","settings":{"text":"Centrifugal Pumps","link":"shopify:\/\/collections\/centrifugal-pumps"}},"recommendation_iHMGT9":{"type":"recommendation","settings":{"text":"Shallow Well Pumps","link":"shopify:\/\/collections\/shallow-well-pumps"}},"recommendation_FMCfrQ":{"type":"recommendation","settings":{"text":"Replacement Parts","link":"shopify:\/\/collections\/pump-parts"}},"recommendation_hjxBag":{"type":"recommendation","settings":{"text":"1-1\/2 Custom PVC","link":"shopify:\/\/products\/1-1-2-schedule-40-pvc-pipe-custom-length"}},"promo_link_KNeeER":{"type":"promo_link","settings":{"text":"(772) 302-9572","link":""}},"promo_link_BfYbcm":{"type":"promo_link","settings":{"text":"support@asiwsupply.com","link":""}}},"block_order":["nav_item_3fMEa8","nav_item_itbf9J","nav_item_tH4xB6","nav_item_pKiUV6","nav_item_nNB3QA","nav_item_7XUDQb","nav_item_9wULAV","nav_item_XUXbyX","nav_item_kbChHY","nav_item_e46ACM","recommendation_gkFc88","recommendation_iHMGT9","recommendation_FMCfrQ","recommendation_hjxBag","promo_link_KNeeER","promo_link_BfYbcm"],"name":"Header2","settings":{"header_full_width":true,"show_promo_bar":true,"promo_link":"shopify:\/\/collections\/all","promo_message":"🍂 Fall into savings! Enjoy cozy-season deals on your favorite products. Shop Now >","promo_bar_color":"#1e3a8a","promo_bar_text_color":"#ffffff","header_element_spacing":40,"header_padding_vertical":5,"header_padding_horizontal":25,"store_name":"Store Hours","store_hours":"7:30am - 4:30pm","logo_height":90,"mobile_logo_height":55,"search_placeholder":"What can we help you find?","search_max_width":600,"search_no_max_width":true,"search_border_color":"#d1d5db","search_button_color":"#1e3a8a","search_button_hover_color":"#1e40af","nav_full_width":false,"shop_all_text":"Shop All","shop_all_link":"shopify:\/\/collections","shop_all_bg_color":"#ffffff","shop_all_text_color":"#374151","shop_all_hover_color":"#e5e7eb","show_recommendations":false,"recommendations_title":"Recommended Searches for You","more_suggestions_text":"","more_suggestions_link":"","signin_icon":"shopify:\/\/shop_images\/user.png","signin_icon_size":30,"cart_icon":"shopify:\/\/shop_images\/shopping-bag.png","cart_icon_size":30,"header_bg_color":"#f5f7fa","nav_bg_color":"#ffffff","nav_hover_color":"#e5e7eb","nav_text_hover_color":"#333333","recommendation_hover_color":"#f0f8ff","accent_color":"#005496","margin_bottom":0}}},"order":["announcement_bar_PGKKRL","header","header2_WRTrXp"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement_bar_PGKKRL": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_FVnUpd": {
+          "type": "announcement",
+          "settings": {
+            "text": "Halloween is creeping up! Find scary-good favorites online. Shop Now >",
+            "link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "announcement_FVnUpd"
+      ],
+      "disabled": true,
+      "name": "t:sections.announcement-bar.presets.name",
+      "settings": {
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "color_scheme": "scheme-2",
+        "show_line_separator": true,
+        "show_social": true,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      }
+    },
+    "header": {
+      "type": "header",
+      "disabled": true,
+      "settings": {
+        "logo_position": "middle-left",
+        "mobile_logo_position": "center",
+        "menu": "main-menu-1",
+        "menu_type_desktop": "mega",
+        "sticky_header_type": "on-scroll-up",
+        "show_line_separator": false,
+        "color_scheme": "scheme-1",
+        "menu_color_scheme": "scheme-1",
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "enable_customer_avatar": true,
+        "margin_bottom": 0,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "header2_WRTrXp": {
+      "type": "header2",
+      "blocks": {
+        "nav_item_3fMEa8": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Wholesale",
+            "link": "shopify://pages/wholesale",
+            "show_icon": true,
+            "show_in_navbar": true,
+            "show_in_dropdown": false
+          }
+        },
+        "nav_item_itbf9J": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Deals",
+            "link": "shopify://collections",
+            "show_icon": true,
+            "show_in_navbar": true,
+            "show_in_dropdown": false
+          }
+        },
+        "nav_item_tH4xB6": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Pumps",
+            "link": "shopify://collections/pumps",
+            "show_icon": false,
+            "show_in_navbar": true,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_pKiUV6": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Pump Parts",
+            "link": "shopify://collections/pump-parts",
+            "show_icon": false,
+            "show_in_navbar": true,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_nNB3QA": {
+          "type": "nav_item",
+          "settings": {
+            "text": "PVC Pipe",
+            "link": "shopify://collections/custom-pvc-pipe",
+            "show_icon": false,
+            "show_in_navbar": true,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_7XUDQb": {
+          "type": "nav_item",
+          "disabled": true,
+          "settings": {
+            "text": "Valves",
+            "link": "",
+            "show_icon": false,
+            "show_in_navbar": true,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_9wULAV": {
+          "type": "nav_item",
+          "disabled": true,
+          "settings": {
+            "text": "Filters",
+            "link": "",
+            "show_icon": false,
+            "show_in_navbar": true,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_XUXbyX": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Berkeley Parts",
+            "link": "shopify://collections/berkeley-replacement-parts",
+            "show_icon": false,
+            "show_in_navbar": true,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_kbChHY": {
+          "type": "nav_item",
+          "settings": {
+            "text": "About",
+            "link": "shopify://pages/about-us",
+            "show_icon": false,
+            "show_in_navbar": true,
+            "show_in_dropdown": false
+          }
+        },
+        "nav_item_e46ACM": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Contact",
+            "link": "shopify://pages/contact",
+            "show_icon": false,
+            "show_in_navbar": true,
+            "show_in_dropdown": false
+          }
+        },
+        "recommendation_gkFc88": {
+          "type": "recommendation",
+          "settings": {
+            "text": "Centrifugal Pumps",
+            "link": "shopify://collections/centrifugal-pumps"
+          }
+        },
+        "recommendation_iHMGT9": {
+          "type": "recommendation",
+          "settings": {
+            "text": "Shallow Well Pumps",
+            "link": "shopify://collections/shallow-well-pumps"
+          }
+        },
+        "recommendation_FMCfrQ": {
+          "type": "recommendation",
+          "settings": {
+            "text": "Replacement Parts",
+            "link": "shopify://collections/pump-parts"
+          }
+        },
+        "recommendation_hjxBag": {
+          "type": "recommendation",
+          "settings": {
+            "text": "1-1/2 Custom PVC",
+            "link": "shopify://products/1-1-2-schedule-40-pvc-pipe-custom-length"
+          }
+        },
+        "promo_link_KNeeER": {
+          "type": "promo_link",
+          "settings": {
+            "text": "(772) 302-9572",
+            "link": ""
+          }
+        },
+        "promo_link_BfYbcm": {
+          "type": "promo_link",
+          "settings": {
+            "text": "support@asiwsupply.com",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "nav_item_3fMEa8",
+        "nav_item_itbf9J",
+        "nav_item_tH4xB6",
+        "nav_item_pKiUV6",
+        "nav_item_nNB3QA",
+        "nav_item_7XUDQb",
+        "nav_item_9wULAV",
+        "nav_item_XUXbyX",
+        "nav_item_kbChHY",
+        "nav_item_e46ACM",
+        "recommendation_gkFc88",
+        "recommendation_iHMGT9",
+        "recommendation_FMCfrQ",
+        "recommendation_hjxBag",
+        "promo_link_KNeeER",
+        "promo_link_BfYbcm"
+      ],
+      "name": "Header2",
+      "settings": {
+        "header_full_width": true,
+        "show_promo_bar": true,
+        "promo_link": "shopify://collections/all",
+        "promo_message": "🍂 Fall into savings! Enjoy cozy-season deals on your favorite products. Shop Now >",
+        "promo_bar_color": "#1e3a8a",
+        "promo_bar_text_color": "#ffffff",
+        "header_element_spacing": 40,
+        "header_padding_vertical": 5,
+        "header_padding_horizontal": 25,
+        "store_name": "Store Hours",
+        "store_hours": "7:30am - 4:30pm",
+        "logo_height": 90,
+        "mobile_logo_height": 55,
+        "search_placeholder": "What can we help you find?",
+        "search_max_width": 600,
+        "search_no_max_width": true,
+        "search_border_color": "#d1d5db",
+        "search_button_color": "#1e3a8a",
+        "search_button_hover_color": "#1e40af",
+        "nav_full_width": false,
+        "shop_all_text": "Shop All",
+        "shop_all_link": "shopify://collections",
+        "shop_all_bg_color": "#ffffff",
+        "shop_all_text_color": "#374151",
+        "shop_all_hover_color": "#e5e7eb",
+        "show_shop_all_dropdown": true,
+        "show_all_products_link": true,
+        "all_products_text": "All Products",
+        "all_products_link": "shopify://collections/all",
+        "show_recommendations": false,
+        "recommendations_title": "Recommended Searches for You",
+        "more_suggestions_text": "",
+        "more_suggestions_link": "",
+        "signin_icon": "shopify://shop_images/user.png",
+        "signin_icon_size": 30,
+        "cart_icon": "shopify://shop_images/shopping-bag.png",
+        "cart_icon_size": 30,
+        "header_bg_color": "#f5f7fa",
+        "nav_bg_color": "#ffffff",
+        "nav_hover_color": "#e5e7eb",
+        "nav_text_hover_color": "#333333",
+        "recommendation_hover_color": "#f0f8ff",
+        "accent_color": "#005496",
+        "margin_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "announcement_bar_PGKKRL",
+    "header",
+    "header2_WRTrXp"
+  ]
+}
