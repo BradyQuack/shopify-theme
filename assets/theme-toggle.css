@@ -393,18 +393,12 @@
   border-right-color: var(--color-border, #2A2E33);
 }
 
-/* Footer placement */
-.footer__theme-toggle {
+/* Footer top section placement - centered */
+.footer__theme-toggle-section {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  padding: 1rem 0;
-  border-top: 1px solid var(--color-border, rgba(var(--color-foreground), 0.08));
-  margin-top: 1rem;
-}
-
-@media screen and (min-width: 750px) {
-  .footer__theme-toggle {
-    justify-content: flex-end;
-  }
+  justify-content: center;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--color-border, rgba(var(--color-foreground), 0.08));
+  margin-bottom: 1.5rem;
 }
