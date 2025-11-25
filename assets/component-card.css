@@ -610,7 +610,7 @@
   font-size: 1.8em;
   color: var(--color-text-primary, #000);
   display: inline;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-family: var(--font-body-family);
   line-height: 1;
 }
 
@@ -784,7 +784,7 @@
   background-color: var(--color-primary, #000);
   transform: translateY(-1px);
   text-decoration: none;
-  color: #fff;
+  color: var(--color-button-text, #fff);
 }
 
 .rfq-button-zero-price:active {
@@ -1120,7 +1120,7 @@
 
 .button--rfq {
   background-color: var(--color-primary, #1e3a5f) !important;
-  color: #fff !important;
+  color: var(--color-button-text, #fff) !important;
   border: none !important;
   padding: 1rem 2rem;
   text-decoration: none;
@@ -1133,7 +1133,7 @@
 
 .button--rfq:hover {
   background-color: var(--color-primary-hover, #152a45) !important;
-  color: #fff !important;
+  color: var(--color-button-text, #fff) !important;
 }
 
 .button--rfq:after,

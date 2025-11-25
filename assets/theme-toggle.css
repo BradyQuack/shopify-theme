@@ -29,6 +29,9 @@
   --color-sku: #666666;
   --color-compare-price: rgba(43, 44, 45, 0.6);
 
+  /* Button colors */
+  --color-button-text: #FFFFFF;
+
   /* Icon colors */
   --color-icon: #2B2C2D;
   --color-icon-hover: #005496;
@@ -61,6 +64,9 @@
   --color-product-title: #FFFFFF;
   --color-sku: rgba(245, 247, 250, 0.65);
   --color-compare-price: rgba(245, 247, 250, 0.45);
+
+  /* Button colors */
+  --color-button-text: #FFFFFF;
 
   /* Icon colors */
   --color-icon: #F5F7FA;
@@ -176,7 +182,7 @@
 [data-theme="dark"] .button--primary,
 [data-theme="dark"] .shopify-payment-button button {
   background-color: var(--color-primary) !important;
-  color: #FFFFFF !important;
+  color: var(--color-button-text) !important;
 }
 
 [data-theme="dark"] .button--primary:hover,
@@ -195,13 +201,13 @@
 [data-theme="dark"] .button--secondary:hover,
 [data-theme="dark"] .quick-add__submit:hover {
   background-color: var(--color-primary) !important;
-  color: #FFFFFF !important;
+  color: var(--color-button-text) !important;
 }
 
 /* RFQ Button */
 [data-theme="dark"] .button--rfq {
   background-color: var(--color-primary) !important;
-  color: #FFFFFF !important;
+  color: var(--color-button-text) !important;
 }
 
 /* Header */
@@ -269,7 +275,7 @@
 /* Sale badges */
 [data-theme="dark"] .badge {
   background-color: var(--color-success) !important;
-  color: #FFFFFF !important;
+  color: var(--color-button-text) !important;
 }
 
 /* Icons and SVGs */
@@ -355,13 +361,13 @@
 [data-theme="light"] .theme-toggle__btn--light,
 :root:not([data-theme="dark"]) .theme-toggle__btn--light {
   background-color: var(--color-primary, #005496);
-  color: #FFFFFF;
+  color: var(--color-button-text);
 }
 
 /* Active state for dark mode */
 [data-theme="dark"] .theme-toggle__btn--dark {
   background-color: var(--color-primary, #1D6AE5);
-  color: #FFFFFF;
+  color: var(--color-button-text);
 }
 
 /* Hover states */
