@@ -155,24 +155,14 @@
           {%- unless is_one_dollar_price -%}
             {%- comment -%} Custom Price Layout - Hidden for $1 products {%- endcomment -%}
             {%- liquid
-              assign price = card_product.price | money
               assign compare_at_price = card_product.compare_at_price | money
-
-              if settings.currency_code_enabled
-                assign price = card_product.price | money_with_currency
-              endif
             -%}
 
             <div class="custom-price-wrapper">
               {%- if card_product.compare_at_price > card_product.price and card_product.available -%}
                 {%- comment -%} On Sale Layout {%- endcomment -%}
-
                 <div class="custom-price-line">
-                  {%- assign price_dollars = card_product.price | divided_by: 100 -%}
-                  {%- assign price_cents = card_product.price | modulo: 100 -%}
-                  <span class="custom-price custom-price--bold">
-                    {{ price_dollars }}<span class="price-cents">.{%- if price_cents < 10 -%}0{%- endif -%}{{ price_cents }}</span>
-                  </span>
+                  <span class="custom-price custom-price--bold">${% assign price_dollars = card_product.price | divided_by: 100 %}{% assign price_cents = card_product.price | modulo: 100 %}{{ price_dollars }}.{% if price_cents < 10 %}0{% endif %}{{ price_cents }}</span>
                   <span class="custom-price custom-price--compare">{{ compare_at_price }}</span>
                 </div>
                 {%- assign savings = card_product.compare_at_price | minus: card_product.price -%}
@@ -183,12 +173,8 @@
 
               {%- else -%}
                 {%- comment -%} Regular Price {%- endcomment -%}
-                {%- assign price_dollars = card_product.price | divided_by: 100 -%}
-                {%- assign price_cents = card_product.price | modulo: 100 -%}
                 <div class="custom-price-line">
-                  <span class="custom-price custom-price--bold">
-                    {{ price_dollars }}<span class="price-cents">.{%- if price_cents < 10 -%}0{%- endif -%}{{ price_cents }}</span>
-                  </span>
+                  <span class="custom-price custom-price--bold">${% assign price_dollars = card_product.price | divided_by: 100 %}{% assign price_cents = card_product.price | modulo: 100 %}{{ price_dollars }}.{% if price_cents < 10 %}0{% endif %}{{ price_cents }}</span>
                 </div>
               {%- endif -%}
             </div>

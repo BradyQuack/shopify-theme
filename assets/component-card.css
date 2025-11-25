@@ -607,30 +607,11 @@
 
 .custom-price--bold {
   font-weight: 700;
-  font-size: 2.2em;
+  font-size: 1.8em;
   color: #000;
-  position: relative;
-  display: inline-flex;
-  align-items: flex-start;
+  display: inline;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
   line-height: 1;
-}
-
-.custom-price--bold::before {
-  content: '$';
-  font-size: 0.45em;
-  position: relative;
-  top: 0.15em;
-  margin-right: 0.05em;
-  font-weight: 400;
-}
-
-.custom-price--bold .price-cents {
-  font-size: 0.45em;
-  position: relative;
-  top: 0.15em;
-  font-weight: 400;
-  margin-left: 0.02em;
 }
 
 .custom-price--compare {
