@@ -688,6 +688,24 @@
   margin-top: 1rem !important;
   font-size: 0.9em !important;
   transition: all 0.3s ease !important;
+  position: relative;
+  box-shadow: none !important;
+}
+
+/* Remove pseudo-elements that create double button effect */
+.quick-add__submit::before,
+.quick-add__submit::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Also hide pseudo-elements on parent button class */
+.quick-add .button::before,
+.quick-add .button::after,
+.quick-add button::before,
+.quick-add button::after {
+  display: none !important;
+  content: none !important;
 }
 
 /* ============================================
@@ -878,19 +896,18 @@
 
 .custom-price-line {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.75rem;
   margin-bottom: 0;
 }
 
 .custom-price--compare {
-  font-size: 0.85em;
+  font-size: 1em;
   color: #999;
   text-decoration: line-through;
   font-weight: normal;
   margin-left: 0;
-  order: 2;
 }
 
 .custom-price--bold {
@@ -922,19 +939,18 @@
 
 .custom-price-line {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.75rem;
   margin-bottom: 0;
 }
 
 .custom-price--compare {
-  font-size: 0.85em;
+  font-size: 1em;
   color: #999;
   text-decoration: line-through;
   font-weight: normal;
   margin-left: 0;
-  order: 2;
 }
 
 .custom-price--bold {
@@ -991,7 +1007,7 @@
 .card__star-image {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
-  width: 25%;
+  width: 40%;
 }
 
 .card__star-image img {
