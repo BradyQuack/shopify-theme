@@ -137,16 +137,18 @@
           assign product_sku = card_product.selected_or_first_available_variant.sku
           assign variant_count = card_product.variants.size
         -%}
-        {%- if product_sku != blank or variant_count > 1 -%}
+        {%- if product_sku != blank or variant_count >= 1 -%}
           <div class="card__sku-variants">
             {%- if product_sku != blank -%}
               <span class="card__sku">{{ product_sku }}</span>
             {%- endif -%}
-            {%- if product_sku != blank and variant_count > 1 -%}
+            {%- if product_sku != blank and variant_count >= 1 -%}
               <span class="card__separator">|</span>
             {%- endif -%}
             {%- if variant_count > 1 -%}
               <span class="card__variant-count">{{ variant_count }} Options</span>
+            {%- else -%}
+              <span class="card__variant-count">1 Option</span>
             {%- endif -%}
           </div>
         {%- endif -%}
