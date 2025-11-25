@@ -1065,3 +1065,45 @@
 .card__variant-count {
   font-weight: 400;
 }
+
+/* ============================================
+   CONSISTENT CARD HEIGHTS
+   ============================================ */
+
+/* Ensure grid items in a row have equal height */
+.grid {
+  align-items: stretch;
+}
+
+/* Make grid items use full height */
+.grid__item {
+  display: flex;
+}
+
+/* Ensure product card wrapper fills the grid item */
+.product-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+/* Ensure card fills the wrapper */
+.product-card-wrapper .card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
+}
+
+/* Ensure card content grows to fill available space */
+.product-card-wrapper .card__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Push the price/information section to the bottom */
+.product-card-wrapper .card__information {
+  margin-top: auto;
+}
