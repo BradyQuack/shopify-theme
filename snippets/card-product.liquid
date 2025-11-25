@@ -153,6 +153,18 @@
           </div>
         {%- endif -%}
 
+        {%- comment -%} Product Title (positioned under SKU/variants) {%- endcomment -%}
+        <h3 class="card__heading custom-product-title"{% if section.settings.show_card_debug %} style="border: 2px solid green;"{% endif %}>
+          <a
+            href="{{ card_product.url }}"
+            id="CardLink-{{ section_id }}-{{ card_product.id }}"
+            class="full-unstyled-link"
+            aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }}"
+          >
+            {{ card_product.title | escape }}
+          </a>
+        </h3>
+
         <div class="card__information"{% if section.settings.show_card_debug %} style="border: 2px solid blue;"{% endif %}>
           {%- comment -%} DEBUG: Show if one dollar price detected {%- endcomment -%}
           {%- if section.settings.show_card_debug and is_one_dollar_price -%}
@@ -214,18 +226,6 @@
               {%- endif -%}
             </div>
           {%- endunless -%}
-
-          {%- comment -%} Product Title {%- endcomment -%}
-          <h3 class="card__heading custom-product-title"{% if section.settings.show_card_debug %} style="border: 2px solid green;"{% endif %}>
-            <a
-              href="{{ card_product.url }}"
-              id="CardLink-{{ section_id }}-{{ card_product.id }}"
-              class="full-unstyled-link"
-              aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }}"
-            >
-              {{ card_product.title | escape }}
-            </a>
-          </h3>
         </div>
 
         {%- comment -%} Quick Add Button (only for non-one-dollar price products) {%- endcomment -%}
