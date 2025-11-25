@@ -608,7 +608,7 @@
 .custom-price--bold {
   font-weight: 700;
   font-size: 1.8em;
-  color: #000;
+  color: var(--color-text-primary, #000);
   display: inline;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
   line-height: 1;
@@ -616,7 +616,7 @@
 
 .custom-price--compare {
   font-size: 0.8em;
-  color: rgba(var(--color-foreground), 0.6);
+  color: var(--color-compare-price, rgba(var(--color-foreground), 0.6));
   text-decoration: line-through;
   font-weight: normal;
   margin-left: 0.8rem;
@@ -624,7 +624,7 @@
 }
 
 .custom-savings-badge {
-  color: #28a745;
+  color: var(--color-success, #28a745);
   font-weight: 500;
   font-size: 0.85em;
   margin-bottom: 0.25rem;
@@ -639,13 +639,13 @@
 }
 
 .custom-product-title a {
-  color: #333;
+  color: var(--color-product-title, #333);
   text-decoration: none;
   display: block;
 }
 
 .custom-product-title a:hover {
-  color: #000;
+  color: var(--color-text-primary, #000);
 }
 
 .card__information {
@@ -660,8 +660,8 @@
 
 .quick-add__submit {
   background-color: transparent !important;
-  border: 2px solid #005496 !important;
-  color: #005496 !important;
+  border: 2px solid var(--color-primary, #005496) !important;
+  color: var(--color-primary, #005496) !important;
   border-radius: 8px !important;
   padding: 12px 20px !important;
   font-weight: 500 !important;
@@ -767,24 +767,24 @@
   display: block !important;
   width: 100%;
   padding: 12px 20px;
-  background-color: #333;
-  color: white;
+  background-color: var(--color-surface, #333);
+  color: var(--color-text-primary, white);
   text-align: center;
   text-decoration: none;
   border-radius: 8px;
   font-weight: 500;
   font-size: 0.9em;
   transition: background-color 0.3s ease, transform 0.1s ease;
-  border: none;
+  border: 1px solid var(--color-border, #333);
   position: relative;
   box-sizing: border-box;
 }
 
 .rfq-button-zero-price:hover {
-  background-color: #000;
+  background-color: var(--color-primary, #000);
   transform: translateY(-1px);
   text-decoration: none;
-  color: white;
+  color: #fff;
 }
 
 .rfq-button-zero-price:active {
@@ -792,14 +792,14 @@
 }
 
 .custom-savings-badge {
-  color: #28a745;
+  color: var(--color-success, #28a745);
   font-weight: 500;
   font-size: 0.85em;
   margin-bottom: 0.25rem;
 }
 
 .custom-stock-status {
-  color: #28a745;
+  color: var(--color-success, #28a745);
   font-weight: 500;
   font-size: 0.85em;
   margin-bottom: 0.5rem;
@@ -885,7 +885,7 @@
 
 .custom-price--compare {
   font-size: 1em;
-  color: rgba(var(--color-foreground), 0.6);
+  color: var(--color-compare-price, rgba(var(--color-foreground), 0.6));
   text-decoration: line-through;
   font-weight: normal;
   margin-left: 0;
@@ -928,7 +928,7 @@
 
 .custom-price--compare {
   font-size: 1em;
-  color: rgba(var(--color-foreground), 0.6);
+  color: var(--color-compare-price, rgba(var(--color-foreground), 0.6));
   text-decoration: line-through;
   font-weight: normal;
   margin-left: 0;
@@ -1015,7 +1015,7 @@
 
 /* Ensure the card content has the right background */
 .card__content {
-  background: white;
+  background: var(--color-card-bg, white);
 }
 
 /* ============================================
@@ -1054,7 +1054,7 @@
 
 .card__sku-variants {
   font-size: 0.75em;
-  color: #666;
+  color: var(--color-sku, #666);
   margin-bottom: 0.5rem;
   line-height: 1.3;
 }
@@ -1065,7 +1065,7 @@
 
 .card__separator {
   margin: 0 0.4em;
-  color: #999;
+  color: var(--color-text-secondary, #999);
 }
 
 .card__variant-count {
@@ -1119,8 +1119,8 @@
    ============================================ */
 
 .button--rfq {
-  background-color: #1e3a5f !important;
-  color: white !important;
+  background-color: var(--color-primary, #1e3a5f) !important;
+  color: #fff !important;
   border: none !important;
   padding: 1rem 2rem;
   text-decoration: none;
@@ -1132,8 +1132,8 @@
 }
 
 .button--rfq:hover {
-  background-color: #152a45 !important;
-  color: white !important;
+  background-color: var(--color-primary-hover, #152a45) !important;
+  color: #fff !important;
 }
 
 .button--rfq:after,
