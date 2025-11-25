@@ -31,7 +31,7 @@
         "show_vendor": false,
         "show_rating": false,
         "star_image": "shopify://shop_images/Screenshot_2025-11-25_142751.png",
-        "show_quick_add": false,
+        "show_quick_add": true,
         "quick_add": "standard",
         "enable_zero_price_rfq": true,
         "zero_price_rfq_link": "",
