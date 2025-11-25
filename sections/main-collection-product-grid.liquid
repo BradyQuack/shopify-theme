@@ -183,7 +183,8 @@
                     lazy_load: lazy_load,
                     skip_styles: skip_card_product_styles,
                     quick_add: section.settings.quick_add,
-                    section_id: section.id
+                    section_id: section.id,
+                    star_image: section.settings.star_image
                   %}
                 </li>
                 {%- assign skip_card_product_styles = true -%}
@@ -331,6 +332,16 @@
       "default": false,
       "label": "t:sections.main-collection-product-grid.settings.show_rating.label",
       "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
+    },
+    {
+      "type": "header",
+      "content": "Product Card"
+    },
+    {
+      "type": "image_picker",
+      "id": "star_image",
+      "label": "Star Image",
+      "info": "This image will display under the product title on all product cards"
     },
     {
       "type": "checkbox",

@@ -972,11 +972,22 @@
    ============================================ */
 
 .custom-product-title {
-  font-size: 1em !important;
+  font-size: 1.5em !important;
 }
 
 .custom-product-title a {
   display: block;
+}
+
+/* Star Image under product title */
+.card__star-image {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.card__star-image img {
+  max-width: 100%;
+  height: auto;
 }
 
 /* If you're also using standard card heading */

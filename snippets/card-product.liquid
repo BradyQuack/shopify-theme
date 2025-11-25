@@ -16,6 +16,7 @@
   - horizontal_class: {Boolean} Add a card--horizontal class if set to true. Default: false (optional)
   - horizontal_quick_add: {Boolean} Changes the quick add button styles when set to true. Default: false (optional)
   - placeholder_image: {String} The placeholder image to use when no product exists. Default: 'product-apparel-2' (optional)
+  - star_image: {Object} Image to display under the product title. (optional)
 
   Usage:
   {% render 'card-product', show_vendor: section.settings.show_vendor %}
@@ -164,6 +165,12 @@
             {{ card_product.title | escape }}
           </a>
         </h3>
+
+        {%- if star_image -%}
+          <div class="card__star-image">
+            {{ star_image | image_url: width: 200 | image_tag }}
+          </div>
+        {%- endif -%}
 
         <div class="card__information"{% if section.settings.show_card_debug %} style="border: 2px solid blue;"{% endif %}>
           {%- comment -%} DEBUG: Show if one dollar price detected {%- endcomment -%}
