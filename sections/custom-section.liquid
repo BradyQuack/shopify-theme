@@ -103,8 +103,8 @@
     align-items: center;
     justify-content: center;
     padding: 8px 16px;
-    background-color: #007bff;
-    color: #ffffff;
+    background-color: var(--color-primary, #007bff);
+    color: var(--color-button-text, #ffffff);
     border-radius: 20px;
     font-weight: 500;
   }
@@ -118,7 +118,7 @@
   }
 
   .customer-reviews__text {
-    color: rgb(113, 128, 150);
+    color: var(--color-text-secondary, rgb(113, 128, 150));
   }
 
   .customer-reviews__text * {
@@ -171,11 +171,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--color-border, #e5e7eb);
     border-radius: 12px;
     padding: 2px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px var(--color-card-shadow, rgba(0, 0, 0, 0.05));
     transition: all 0.3s ease;
     aspect-ratio: 1;
   }
