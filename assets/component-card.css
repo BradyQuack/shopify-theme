@@ -1036,3 +1036,27 @@
   border-bottom-left-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
 }
+
+/* ============================================
+   SKU AND VARIANT COUNT DISPLAY
+   ============================================ */
+
+.card__sku-variants {
+  font-size: 0.75em;
+  color: #666;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.card__sku {
+  font-weight: 400;
+}
+
+.card__separator {
+  margin: 0 0.4em;
+  color: #999;
+}
+
+.card__variant-count {
+  font-weight: 400;
+}
