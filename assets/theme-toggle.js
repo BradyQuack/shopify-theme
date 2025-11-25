@@ -1,6 +1,7 @@
 /**
  * Theme Toggle - Light/Dark Mode
  * Handles theme switching and persists user preference in localStorage
+ * Similar to next-themes pattern
  */
 
 (function() {
@@ -34,10 +35,11 @@
    * Apply theme to the document
    */
   function setTheme(theme) {
+    // Set data-theme attribute on HTML element (similar to next-themes class approach)
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem(STORAGE_KEY, theme);
 
-    // Update all toggle buttons
+    // Update button states
     updateToggleButtons(theme);
 
     // Dispatch custom event for other scripts to listen to
@@ -45,22 +47,19 @@
   }
 
   /**
-   * Toggle between light and dark themes
-   */
-  function toggleTheme() {
-    const currentTheme = document.documentElement.getAttribute('data-theme') || THEME_LIGHT;
-    const newTheme = currentTheme === THEME_LIGHT ? THEME_DARK : THEME_LIGHT;
-    setTheme(newTheme);
-  }
-
-  /**
    * Update all toggle button states
    */
   function updateToggleButtons(theme) {
-    const toggles = document.querySelectorAll('.theme-toggle__switch');
-    toggles.forEach(toggle => {
-      toggle.setAttribute('aria-pressed', theme === THEME_DARK);
-      toggle.setAttribute('aria-label', `Switch to ${theme === THEME_DARK ? 'light' : 'dark'} mode`);
+    // Update aria-pressed states on buttons
+    const lightBtns = document.querySelectorAll('.theme-toggle__btn--light');
+    const darkBtns = document.querySelectorAll('.theme-toggle__btn--dark');
+
+    lightBtns.forEach(btn => {
+      btn.setAttribute('aria-pressed', theme === THEME_LIGHT);
+    });
+
+    darkBtns.forEach(btn => {
+      btn.setAttribute('aria-pressed', theme === THEME_DARK);
     });
   }
 
@@ -72,11 +71,15 @@
     const savedTheme = getThemePreference();
     setTheme(savedTheme);
 
-    // Set up toggle button click handlers
+    // Set up click handlers for theme buttons
     document.addEventListener('click', function(e) {
-      if (e.target.closest('.theme-toggle__switch') || e.target.closest('.theme-toggle')) {
+      const btn = e.target.closest('.theme-toggle__btn');
+      if (btn) {
         e.preventDefault();
-        toggleTheme();
+        const themeValue = btn.getAttribute('data-theme-value');
+        if (themeValue) {
+          setTheme(themeValue);
+        }
       }
     });
 
@@ -102,12 +105,15 @@
   const savedTheme = getThemePreference();
   document.documentElement.setAttribute('data-theme', savedTheme);
 
-  // Expose functions globally for external use
+  // Expose functions globally for external use (similar to next-themes useTheme hook)
   window.ThemeToggle = {
-    toggle: toggleTheme,
-    set: setTheme,
-    get: function() {
+    setTheme: setTheme,
+    getTheme: function() {
       return document.documentElement.getAttribute('data-theme') || THEME_LIGHT;
+    },
+    toggle: function() {
+      const currentTheme = this.getTheme();
+      setTheme(currentTheme === THEME_LIGHT ? THEME_DARK : THEME_LIGHT);
     }
   };
 })();
