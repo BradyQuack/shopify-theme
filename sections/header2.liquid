@@ -770,6 +770,14 @@
             {{ section.settings.shop_all_text | default: 'Shop All' }}
           </a>
         </li>
+        <!-- All Products -->
+        {%- if section.settings.show_all_products_link -%}
+          <li class="header2__mobile-nav-item">
+            <a href="{{ section.settings.all_products_link | default: '/collections/all' }}" class="header2__mobile-nav-link">
+              {{ section.settings.all_products_text | default: 'All Products' }}
+            </a>
+          </li>
+        {%- endif -%}
         <!-- Navigation Links -->
         {%- for block in section.blocks -%}
           {%- if block.type == 'nav_item' -%}
@@ -893,6 +901,15 @@
             {{ section.settings.shop_all_text | default: 'Shop All' }}
           </a>
         </li>
+
+        <!-- All Products -->
+        {%- if section.settings.show_all_products_link -%}
+          <li class="header2__nav-item">
+            <a href="{{ section.settings.all_products_link | default: '/collections/all' }}" class="header2__nav-link">
+              {{ section.settings.all_products_text | default: 'All Products' }}
+            </a>
+          </li>
+        {%- endif -%}
 
         <!-- Navigation Links -->
         {%- for block in section.blocks -%}
@@ -1274,6 +1291,29 @@
       "id": "shop_all_hover_color",
       "label": "Shop all hover color",
       "default": "#e5e7eb"
+    },
+    {
+      "type": "header",
+      "content": "All Products Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_all_products_link",
+      "label": "Show All Products link",
+      "default": true,
+      "info": "Display an 'All Products' link in the navigation bar"
+    },
+    {
+      "type": "text",
+      "id": "all_products_text",
+      "label": "All Products text",
+      "default": "All Products"
+    },
+    {
+      "type": "url",
+      "id": "all_products_link",
+      "label": "All Products link",
+      "default": "/collections/all"
     },
     {
       "type": "header",
