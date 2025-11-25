@@ -4,6 +4,7 @@
 {{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
 {{ 'component-list-payment.css' | asset_url | stylesheet_tag }}
 {{ 'component-list-social.css' | asset_url | stylesheet_tag }}
+{{ 'theme-toggle.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   .footer {
@@ -317,6 +318,19 @@
           </ul>
         {%- endif -%}
       </div>
+      {%- if section.settings.show_theme_toggle -%}
+        <div class="footer__theme-toggle">
+          <div class="theme-toggle" role="group" aria-label="Theme toggle">
+            <span class="theme-toggle__label">{{ section.settings.theme_toggle_label | default: 'Dark Mode' }}</span>
+            <button
+              type="button"
+              class="theme-toggle__switch"
+              aria-pressed="false"
+              aria-label="Toggle dark mode"
+            ></button>
+          </div>
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </footer>
@@ -491,6 +505,22 @@
       "default": true,
       "label": "t:sections.footer.settings.show_policy.label",
       "info": "t:sections.footer.settings.show_policy.info"
+    },
+    {
+      "type": "header",
+      "content": "Theme Toggle"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_theme_toggle",
+      "default": true,
+      "label": "Show light/dark mode toggle"
+    },
+    {
+      "type": "text",
+      "id": "theme_toggle_label",
+      "default": "Dark Mode",
+      "label": "Toggle label"
     },
     {
       "type": "header",

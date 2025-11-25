@@ -1,0 +1,337 @@
+/* ============================================
+   LIGHT / DARK MODE COLOR SCHEME
+   ============================================ */
+
+/* Light Mode (Default) */
+:root,
+[data-theme="light"] {
+  --color-bg: #F5F7FA;
+  --color-surface: #FFFFFF;
+  --color-text-primary: #2B2C2D;
+  --color-text-secondary: rgba(43, 44, 45, 0.75);
+  --color-border: #E1E5EA;
+
+  --color-primary: #005496;
+  --color-primary-hover: #003E70;
+
+  --color-secondary: #1D6AE5;
+  --color-secondary-hover: #1550B0;
+
+  --color-accent: #DD6727;
+  --color-accent-hover: #BE531D;
+
+  --color-success: #28A745;
+
+  --color-card-bg: #FFFFFF;
+  --color-card-separator: #E1E5EA;
+
+  --color-product-title: #333333;
+  --color-sku: #666666;
+  --color-compare-price: rgba(43, 44, 45, 0.6);
+
+  /* Icon colors */
+  --color-icon: #2B2C2D;
+  --color-icon-hover: #005496;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+  --color-bg: #0F1215;
+  --color-surface: #1A1D21;
+  --color-surface-hover: #202428;
+
+  --color-text-primary: #F5F7FA;
+  --color-text-secondary: rgba(245, 247, 250, 0.65);
+  --color-border: #2A2E33;
+
+  --color-primary: #1D6AE5;
+  --color-primary-hover: #3A7FF0;
+
+  --color-secondary: #3B8AFF;
+  --color-secondary-hover: #66A4FF;
+
+  --color-accent: #DD6727;
+  --color-accent-hover: #F07A3A;
+
+  --color-success: #28A745;
+
+  --color-card-bg: #1A1D21;
+  --color-card-separator: #2A2E33;
+
+  --color-product-title: #FFFFFF;
+  --color-sku: rgba(245, 247, 250, 0.65);
+  --color-compare-price: rgba(245, 247, 250, 0.45);
+
+  /* Icon colors */
+  --color-icon: #F5F7FA;
+  --color-icon-hover: #3B8AFF;
+}
+
+/* ============================================
+   APPLY THEME COLORS TO ELEMENTS
+   ============================================ */
+
+/* Body and main backgrounds */
+[data-theme="dark"] body,
+[data-theme="dark"] .shopify-section,
+[data-theme="dark"] .footer {
+  background-color: var(--color-bg) !important;
+  color: var(--color-text-primary) !important;
+}
+
+/* Surface elements (cards, modals, etc.) */
+[data-theme="dark"] .card,
+[data-theme="dark"] .card__content,
+[data-theme="dark"] .card-wrapper,
+[data-theme="dark"] .product-card-wrapper,
+[data-theme="dark"] .card__inner {
+  background-color: var(--color-card-bg) !important;
+}
+
+/* Text colors */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6,
+[data-theme="dark"] .h1,
+[data-theme="dark"] .h2,
+[data-theme="dark"] .h3,
+[data-theme="dark"] .h4,
+[data-theme="dark"] .h5,
+[data-theme="dark"] .h6 {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] p,
+[data-theme="dark"] span,
+[data-theme="dark"] a,
+[data-theme="dark"] li {
+  color: var(--color-text-secondary);
+}
+
+/* Product card specific */
+[data-theme="dark"] .custom-product-title,
+[data-theme="dark"] .custom-product-title a,
+[data-theme="dark"] .card__heading,
+[data-theme="dark"] .card__heading a {
+  color: var(--color-product-title) !important;
+}
+
+[data-theme="dark"] .card__sku,
+[data-theme="dark"] .card__variant-count,
+[data-theme="dark"] .card__sku-variants {
+  color: var(--color-sku) !important;
+}
+
+[data-theme="dark"] .custom-price--compare {
+  color: var(--color-compare-price) !important;
+}
+
+[data-theme="dark"] .custom-price--bold {
+  color: var(--color-text-primary) !important;
+}
+
+/* Borders */
+[data-theme="dark"] .card,
+[data-theme="dark"] .card__inner,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  border-color: var(--color-border) !important;
+}
+
+/* Buttons - Primary */
+[data-theme="dark"] .button--primary,
+[data-theme="dark"] .shopify-payment-button button {
+  background-color: var(--color-primary) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .button--primary:hover,
+[data-theme="dark"] .shopify-payment-button button:hover {
+  background-color: var(--color-primary-hover) !important;
+}
+
+/* Buttons - Secondary */
+[data-theme="dark"] .button--secondary,
+[data-theme="dark"] .quick-add__submit {
+  background-color: transparent !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary) !important;
+}
+
+[data-theme="dark"] .button--secondary:hover,
+[data-theme="dark"] .quick-add__submit:hover {
+  background-color: var(--color-primary) !important;
+  color: #FFFFFF !important;
+}
+
+/* Header */
+[data-theme="dark"] .header,
+[data-theme="dark"] .section-header {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .header a,
+[data-theme="dark"] .header__menu-item {
+  color: var(--color-text-primary) !important;
+}
+
+/* Footer */
+[data-theme="dark"] .footer,
+[data-theme="dark"] .footer a,
+[data-theme="dark"] .footer__copyright {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .footer a:hover {
+  color: var(--color-primary) !important;
+}
+
+/* Form inputs */
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] .field__input {
+  background-color: var(--color-surface) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Menu drawer */
+[data-theme="dark"] .menu-drawer,
+[data-theme="dark"] .menu-drawer__inner-container {
+  background-color: var(--color-surface) !important;
+}
+
+/* Cart drawer */
+[data-theme="dark"] .cart-drawer,
+[data-theme="dark"] .cart-notification {
+  background-color: var(--color-surface) !important;
+}
+
+/* Savings badge stays green */
+[data-theme="dark"] .custom-savings-badge {
+  color: var(--color-success) !important;
+}
+
+/* Icons and SVGs */
+[data-theme="dark"] .icon,
+[data-theme="dark"] svg {
+  fill: var(--color-icon);
+}
+
+/* Collection/Product grid */
+[data-theme="dark"] .collection,
+[data-theme="dark"] .main-collection-product-grid {
+  background-color: var(--color-bg) !important;
+}
+
+/* Announcement bar - keep brand color */
+[data-theme="dark"] .announcement-bar {
+  background-color: var(--color-primary) !important;
+}
+
+/* ============================================
+   THEME TOGGLE BUTTON STYLES
+   ============================================ */
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.theme-toggle__label {
+  font-size: 0.875rem;
+  color: inherit;
+}
+
+.theme-toggle__switch {
+  position: relative;
+  width: 50px;
+  height: 26px;
+  background-color: var(--color-border, #E1E5EA);
+  border-radius: 13px;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.theme-toggle__switch::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Sun icon */
+.theme-toggle__switch::after {
+  content: '☀️';
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+[data-theme="dark"] .theme-toggle__switch {
+  background-color: var(--color-primary);
+}
+
+[data-theme="dark"] .theme-toggle__switch::before {
+  transform: translateX(24px);
+}
+
+/* Moon icon for dark mode */
+[data-theme="dark"] .theme-toggle__switch::after {
+  content: '🌙';
+  left: auto;
+  right: 6px;
+}
+
+/* Hover state */
+.theme-toggle__switch:hover {
+  opacity: 0.9;
+}
+
+.theme-toggle__switch:focus {
+  outline: 2px solid var(--color-primary, #005496);
+  outline-offset: 2px;
+}
+
+/* Footer placement */
+.footer__theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem 0;
+  border-top: 1px solid var(--color-border, rgba(var(--color-foreground), 0.08));
+  margin-top: 1rem;
+}
+
+@media screen and (min-width: 750px) {
+  .footer__theme-toggle {
+    justify-content: flex-end;
+  }
+}
