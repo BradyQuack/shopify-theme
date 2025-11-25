@@ -650,23 +650,16 @@
 }
 
 .custom-product-title {
-  font-size: 0.9em;
+  font-size: 1em;
   font-weight: normal;
   line-height: 1.4;
   margin-top: 0.25rem;
   margin-bottom: 0.5rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
 }
 
 .custom-product-title a {
   color: #333;
   text-decoration: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   display: block;
 }
 
@@ -975,21 +968,14 @@
 }
 
 /* ============================================
-   SMALLER PRODUCT TITLE FONT SIZE
+   PRODUCT TITLE STYLING
    ============================================ */
 
 .custom-product-title {
-  font-size: 0.75em !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
+  font-size: 1em !important;
 }
 
 .custom-product-title a {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   display: block;
 }
 
