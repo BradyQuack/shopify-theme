@@ -146,12 +146,6 @@
           </a>
         </h3>
 
-        {%- if star_image -%}
-          <div class="card__star-image">
-            {{ star_image | image_url: width: 200 | image_tag }}
-          </div>
-        {%- endif -%}
-
         <div class="card__information">
           {%- comment -%} Custom Price Layout {%- endcomment -%}
           {%- liquid
@@ -194,6 +188,12 @@
             {%- endif -%}
           </div>
         </div>
+
+        {%- if star_image -%}
+          <div class="card__star-image">
+            {{ star_image | image_url: width: 200 | image_tag }}
+          </div>
+        {%- endif -%}
 
         {%- comment -%} Quick Add Button {%- endcomment -%}
         {% assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id %}
