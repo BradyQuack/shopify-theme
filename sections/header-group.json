@@ -251,7 +251,7 @@
         "shop_all_text_color": "#374151",
         "shop_all_hover_color": "#e5e7eb",
         "show_shop_all_dropdown": true,
-        "show_all_products_link": true,
+        "show_all_products_link": false,
         "all_products_text": "All Products",
         "all_products_link": "shopify://collections/all",
         "show_recommendations": false,
