@@ -616,7 +616,7 @@
 
 .custom-price--compare {
   font-size: 0.8em;
-  color: #666;
+  color: rgba(var(--color-foreground), 0.6);
   text-decoration: line-through;
   font-weight: normal;
   margin-left: 0.8rem;
@@ -885,7 +885,7 @@
 
 .custom-price--compare {
   font-size: 1em;
-  color: #999;
+  color: rgba(var(--color-foreground), 0.6);
   text-decoration: line-through;
   font-weight: normal;
   margin-left: 0;
@@ -928,7 +928,7 @@
 
 .custom-price--compare {
   font-size: 1em;
-  color: #999;
+  color: rgba(var(--color-foreground), 0.6);
   text-decoration: line-through;
   font-weight: normal;
   margin-left: 0;
