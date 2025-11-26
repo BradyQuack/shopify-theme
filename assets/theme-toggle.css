@@ -418,7 +418,7 @@ p.sig-desc {
   color: #FFFFFF !important;
 }
 
-/* Home Video Hero */
+/* Home Video Hero / Video Banner - White text for video overlays */
 .home-video-hero__text-block,
 .home-video-hero__brand,
 .home-video-hero__headline,
@@ -426,6 +426,17 @@ p.sig-desc {
 .home-video-hero h1,
 .home-video-hero h2,
 .home-video-hero p {
+  color: #FFFFFF !important;
+}
+
+/* Video Banner sections - override general banner rules for video contexts */
+[id^="VideoBanner"] .banner__heading,
+[id^="VideoBanner"] .banner__text,
+[id^="VideoBanner"] .banner__text p,
+[class*="video-banner"] .banner__heading,
+[class*="video-banner"] .banner__text,
+.section-video-hero .banner__heading,
+.section-video-hero .banner__text {
   color: #FFFFFF !important;
 }
 
