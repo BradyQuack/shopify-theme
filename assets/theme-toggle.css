@@ -1387,8 +1387,8 @@ a:not([class]):not([style]):hover {
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 0.5rem 0;
+  padding: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   box-sizing: border-box;
 }
