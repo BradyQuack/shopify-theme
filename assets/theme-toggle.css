@@ -440,6 +440,34 @@ p.sig-desc {
   color: #FFFFFF !important;
 }
 
+/* Video Banner buttons - ensure visibility on dark overlay */
+[id^="VideoBanner"] .button--primary,
+[id^="VideoBanner"] .button.button--primary {
+  background-color: #84cc16 !important;
+  color: #000000 !important;
+  border-color: #84cc16 !important;
+}
+
+[id^="VideoBanner"] .button--primary:hover,
+[id^="VideoBanner"] .button.button--primary:hover {
+  background-color: #65a30d !important;
+  border-color: #65a30d !important;
+}
+
+[id^="VideoBanner"] .button--secondary,
+[id^="VideoBanner"] .button.button--secondary {
+  background-color: transparent !important;
+  color: #FFFFFF !important;
+  border: 2px solid rgba(255, 255, 255, 0.5) !important;
+}
+
+[id^="VideoBanner"] .button--secondary:hover,
+[id^="VideoBanner"] .button.button--secondary:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
 /* Footer - Blue background with white text in light mode */
 .footer {
   background-color: #005496 !important;
