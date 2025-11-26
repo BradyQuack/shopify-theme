@@ -335,16 +335,32 @@
         const hexColor = rgbToHex(computedValue);
 
         // Check if element has inline style that might override theme
-        if (el.style[prop === 'background-color' ? 'backgroundColor' : prop]) {
-          const inlineVal = el.style[prop === 'background-color' ? 'backgroundColor' : prop];
+        const jsProp = prop === 'background-color' ? 'backgroundColor' : prop;
+        if (el.style[jsProp]) {
+          const inlineVal = el.style[jsProp];
           if (inlineVal && !inlineVal.includes('var(')) {
-            conflicts.push({
-              element: selector,
-              type: 'inline-override',
-              detail: `Inline ${prop} override`,
-              expected: 'theme variable',
-              actual: inlineVal
-            });
+            // Convert inline value to hex for comparison
+            const inlineHex = rgbToHex(inlineVal) || inlineVal.toUpperCase();
+            const computedHex = hexColor;
+
+            // Check if inline style is being overridden by CSS !important
+            if (inlineHex && computedHex && inlineHex !== computedHex) {
+              conflicts.push({
+                element: selector,
+                type: 'css-override',
+                detail: `CSS !important overriding inline ${prop}`,
+                expected: inlineHex + ' (inline)',
+                actual: computedHex + ' (computed)'
+              });
+            } else {
+              conflicts.push({
+                element: selector,
+                type: 'inline-override',
+                detail: `Inline ${prop} override`,
+                expected: 'theme variable',
+                actual: inlineVal
+              });
+            }
           }
         }
 
