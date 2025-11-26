@@ -1,5 +1,15 @@
 /* ============================================
    LIGHT / DARK MODE COLOR SCHEME
+   ============================================
+
+   Section Naming Convention:
+   - hero-video (formerly home-video-hero2)
+   - content-block (formerly custom-section)
+   - testimonials (formerly customerreview)
+   - product-grid (formerly product-highlights)
+   - features-bar (formerly feature-highlights)
+   - cta-banner (formerly banner1)
+
    ============================================ */
 
 /* Light Mode (Default) */
@@ -270,7 +280,7 @@
   color: var(--color-text-secondary) !important;
 }
 
-/* Customer Reviews - Let section handle its own colors */
+/* Testimonials (formerly Customer Reviews / customerreview) */
 .customer-reviews__heading {
   color: var(--color-text-primary) !important;
 }
@@ -360,10 +370,11 @@ span.pill-text,
   background-color: var(--color-success-hover) !important;
 }
 
-/* Wholesale Banner */
+/* CTA Banner (formerly Wholesale Pricing Banner / banner1) */
 .wholesale-banner-template--25620003651873__banner1_8wY8Ft,
 .wholesale-banner-template--25620003651873__banner1_9VebfT,
-[class*="wholesale-banner"] {
+[class*="wholesale-banner"],
+[class*="cta-banner"] {
   background-color: var(--color-primary) !important;
 }
 
@@ -379,8 +390,9 @@ a.button.button--primary:hover {
   background-color: var(--color-primary-hover) !important;
 }
 
-/* Feature Highlights */
-.features-highlight__item {
+/* Features Bar (formerly Feature Highlights / feature-highlights) */
+.features-highlight__item,
+.features-bar__item {
   background-color: var(--color-surface) !important;
   border-color: var(--color-border) !important;
 }
