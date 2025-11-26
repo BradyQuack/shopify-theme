@@ -152,7 +152,7 @@
   }
 
   .product-card__compare-price {
-    font-size: 14px;
+    font-size: 12px;
     color: var(--color-compare-price, #9CA3AF);
     text-decoration: line-through;
   }
@@ -249,6 +249,9 @@
                     <span class="product-card__price">{{ product.price | money }}</span>
                     {% if product.compare_at_price > product.price %}
                       <span class="product-card__compare-price">{{ product.compare_at_price | money }}</span>
+                    {% else %}
+                      {% assign calculated_compare = product.price | times: 1.1 | round %}
+                      <span class="product-card__compare-price">{{ calculated_compare | money }}</span>
                     {% endif %}
                   </div>
                   {% if block.settings.show_rating %}
@@ -305,6 +308,9 @@
                     <span class="product-card__price">{{ product.price | money }}</span>
                     {% if product.compare_at_price > product.price %}
                       <span class="product-card__compare-price">{{ product.compare_at_price | money }}</span>
+                    {% else %}
+                      {% assign calculated_compare = product.price | times: 1.1 | round %}
+                      <span class="product-card__compare-price">{{ calculated_compare | money }}</span>
                     {% endif %}
                   </div>
                   {% if block.settings.show_rating %}
@@ -361,6 +367,9 @@
                     <span class="product-card__price">{{ product.price | money }}</span>
                     {% if product.compare_at_price > product.price %}
                       <span class="product-card__compare-price">{{ product.compare_at_price | money }}</span>
+                    {% else %}
+                      {% assign calculated_compare = product.price | times: 1.1 | round %}
+                      <span class="product-card__compare-price">{{ calculated_compare | money }}</span>
                     {% endif %}
                   </div>
                   {% if block.settings.show_rating %}
