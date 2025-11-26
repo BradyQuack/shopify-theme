@@ -719,6 +719,7 @@
             <button type="button" class="debug-modal__tab" data-tab="spacing">Spacing</button>
             <button type="button" class="debug-modal__tab" data-tab="conflicts">Conflicts</button>
             <button type="button" class="debug-modal__tab" data-tab="variables">Variables</button>
+            <button type="button" class="debug-modal__tab" data-tab="pageinfo">Page Info</button>
             <button type="button" class="debug-modal__tab" data-tab="inspector">Inspector</button>
           </div>
           <div class="debug-modal__panels">
@@ -729,6 +730,7 @@
             <div class="debug-modal__panel" data-panel="spacing"></div>
             <div class="debug-modal__panel" data-panel="conflicts"></div>
             <div class="debug-modal__panel" data-panel="variables"></div>
+            <div class="debug-modal__panel" data-panel="pageinfo"></div>
             <div class="debug-modal__panel" data-panel="inspector"></div>
           </div>
         </div>
@@ -758,6 +760,9 @@
   // Format data for clipboard
   function formatDataForClipboard(data) {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const shopifyDebug = window.ShopifyDebug || {};
+    const templateInfo = shopifyDebug.template || {};
+    const sectionsInfo = shopifyDebug.sections || [];
     const lines = [];
 
     lines.push('='.repeat(60));
@@ -766,6 +771,17 @@
     lines.push('Theme Mode: ' + (isDark ? 'Dark' : 'Light'));
     lines.push('Page URL: ' + window.location.href);
     lines.push('='.repeat(60));
+    lines.push('');
+
+    // Page/Template Info
+    lines.push('PAGE & TEMPLATE INFO');
+    lines.push('-'.repeat(40));
+    lines.push('Template Name: ' + (templateInfo.name || 'N/A'));
+    lines.push('Template Suffix: ' + (templateInfo.suffix || 'none'));
+    lines.push('Full Template: ' + (templateInfo.full || 'N/A'));
+    if (sectionsInfo.length > 0) {
+      lines.push('Sections (' + sectionsInfo.length + '): ' + sectionsInfo.join(', '));
+    }
     lines.push('');
 
     // Font Families
@@ -1143,6 +1159,123 @@
       ` : ''}
     `;
 
+    // Page Info Panel
+    const pageinfoPanel = modal.querySelector('[data-panel="pageinfo"]');
+    const shopifyDebug = window.ShopifyDebug || {};
+    const templateInfo = shopifyDebug.template || {};
+    const pageInfo = shopifyDebug.page || {};
+    const requestInfo = shopifyDebug.request || {};
+    const productInfo = shopifyDebug.product || null;
+    const collectionInfo = shopifyDebug.collection || null;
+    const sectionsInfo = shopifyDebug.sections || [];
+
+    pageinfoPanel.innerHTML = `
+      <div class="debug-modal__info">Current Page & Template Information</div>
+
+      <div class="debug-modal__var-section">
+        <div class="debug-section-title">Template</div>
+        <div class="debug-modal__list debug-modal__list--vars">
+          <div class="debug-modal__var-item">
+            <span class="debug-modal__var-name">Template Name</span>
+            <span class="debug-modal__var-value">${templateInfo.name || 'N/A'}</span>
+          </div>
+          <div class="debug-modal__var-item">
+            <span class="debug-modal__var-name">Template Suffix</span>
+            <span class="debug-modal__var-value">${templateInfo.suffix || 'none'}</span>
+          </div>
+          <div class="debug-modal__var-item">
+            <span class="debug-modal__var-name">Template Directory</span>
+            <span class="debug-modal__var-value">${templateInfo.directory || 'N/A'}</span>
+          </div>
+          <div class="debug-modal__var-item">
+            <span class="debug-modal__var-name">Full Template</span>
+            <span class="debug-modal__var-value">${templateInfo.full || 'N/A'}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="debug-modal__var-section">
+        <div class="debug-section-title">Page</div>
+        <div class="debug-modal__list debug-modal__list--vars">
+          <div class="debug-modal__var-item">
+            <span class="debug-modal__var-name">Page Title</span>
+            <span class="debug-modal__var-value">${pageInfo.title || 'N/A'}</span>
+          </div>
+          <div class="debug-modal__var-item">
+            <span class="debug-modal__var-name">URL Path</span>
+            <span class="debug-modal__var-value">${pageInfo.url || window.location.pathname}</span>
+          </div>
+          <div class="debug-modal__var-item">
+            <span class="debug-modal__var-name">Page Type</span>
+            <span class="debug-modal__var-value">${requestInfo.pageType || 'N/A'}</span>
+          </div>
+          <div class="debug-modal__var-item">
+            <span class="debug-modal__var-name">Locale</span>
+            <span class="debug-modal__var-value">${requestInfo.locale || 'N/A'}</span>
+          </div>
+        </div>
+      </div>
+
+      ${productInfo ? `
+        <div class="debug-modal__var-section">
+          <div class="debug-section-title">Product Context</div>
+          <div class="debug-modal__list debug-modal__list--vars">
+            <div class="debug-modal__var-item">
+              <span class="debug-modal__var-name">Product Title</span>
+              <span class="debug-modal__var-value">${productInfo.title || 'N/A'}</span>
+            </div>
+            <div class="debug-modal__var-item">
+              <span class="debug-modal__var-name">Handle</span>
+              <span class="debug-modal__var-value">${productInfo.handle || 'N/A'}</span>
+            </div>
+            <div class="debug-modal__var-item">
+              <span class="debug-modal__var-name">Type</span>
+              <span class="debug-modal__var-value">${productInfo.type || 'N/A'}</span>
+            </div>
+            <div class="debug-modal__var-item">
+              <span class="debug-modal__var-name">Vendor</span>
+              <span class="debug-modal__var-value">${productInfo.vendor || 'N/A'}</span>
+            </div>
+          </div>
+        </div>
+      ` : ''}
+
+      ${collectionInfo ? `
+        <div class="debug-modal__var-section">
+          <div class="debug-section-title">Collection Context</div>
+          <div class="debug-modal__list debug-modal__list--vars">
+            <div class="debug-modal__var-item">
+              <span class="debug-modal__var-name">Collection Title</span>
+              <span class="debug-modal__var-value">${collectionInfo.title || 'N/A'}</span>
+            </div>
+            <div class="debug-modal__var-item">
+              <span class="debug-modal__var-name">Handle</span>
+              <span class="debug-modal__var-value">${collectionInfo.handle || 'N/A'}</span>
+            </div>
+          </div>
+        </div>
+      ` : ''}
+
+      <div class="debug-modal__var-section">
+        <div class="debug-section-title">Sections on Page (${sectionsInfo.length})</div>
+        ${sectionsInfo.length > 0 ? `
+          <div class="debug-modal__list debug-modal__list--vars">
+            ${sectionsInfo.map((section, idx) => `
+              <div class="debug-modal__var-item">
+                <span class="debug-modal__var-name">#${idx + 1}</span>
+                <span class="debug-modal__var-value">${section}</span>
+              </div>
+            `).join('')}
+          </div>
+        ` : '<div class="debug-modal__note">No section data available (may require Shopify context)</div>'}
+      </div>
+
+      <div class="debug-modal__divider"></div>
+      <div class="debug-modal__note">
+        ${shopifyDebug.template ? '✓ ShopifyDebug data loaded successfully' : '⚠ ShopifyDebug data not available. Ensure theme.liquid includes the debug script.'}
+      </div>
+    `;
+
     // Inspector Panel
     const inspectorPanel = modal.querySelector('[data-panel="inspector"]');
     inspectorPanel.innerHTML = `
@@ -1211,6 +1344,15 @@
     }
   }
 
+  // Get page/template info
+  function getPageInfo() {
+    return window.ShopifyDebug || {
+      template: { name: 'N/A', suffix: null, directory: null, full: null },
+      page: { title: document.title, url: window.location.pathname },
+      sections: []
+    };
+  }
+
   // Expose to global scope
   window.StyleDebug = {
     show: showModal,
@@ -1219,6 +1361,7 @@
     scan: scanStyles,
     scanConflicts: scanConflicts,
     scanVariables: scanThemeVariables,
+    getPageInfo: getPageInfo,
     inspect: enableInspector,
     stopInspect: disableInspector
   };
