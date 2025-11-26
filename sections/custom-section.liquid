@@ -117,15 +117,16 @@
     color: inherit !important;
   }
 
-  .customer-reviews__text {
+  .custom-section__description {
     color: var(--color-text-secondary, rgb(113, 128, 150));
+    font-style: normal;
   }
 
-  .customer-reviews__text * {
+  .custom-section__description * {
     color: inherit !important;
   }
 
-  .customer-reviews__text p {
+  .custom-section__description p {
     margin: 0;
   }
 
@@ -347,7 +348,7 @@
             {%- when 'description_body' -%}
               <div
                 id="block-{{ block.id }}"
-                class="customer-reviews__text rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                class="custom-section__description rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
                 {{ block.shopify_attributes }}
                 {% if settings.animations_reveal_on_scroll %}
                   data-cascade
