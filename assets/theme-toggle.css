@@ -404,6 +404,21 @@ p.sig-desc {
   color: var(--color-text-secondary) !important;
 }
 
+/* Default browser link color override */
+a:not([class]):not([style]) {
+  color: var(--color-link) !important;
+}
+
+a:not([class]):not([style]):hover {
+  color: var(--color-link-hover) !important;
+}
+
+/* Footer background - override Shopify color schemes */
+.footer.color-scheme-2,
+.footer[class*="color-scheme"] {
+  background-color: var(--color-bg) !important;
+}
+
 /* Generic text overrides for common non-theme colors */
 [style*="color: #007BFF"],
 [style*="color:#007BFF"],
