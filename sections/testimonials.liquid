@@ -10,6 +10,25 @@
     --testimonial-bg-color: {{ section.settings.background_color }};
     --testimonial-padding-top: {{ section.settings.padding_top }}px;
     --testimonial-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --testimonial-badge-bg: {{ section.settings.badge_bg_color }};
+    --testimonial-badge-color: {{ section.settings.badge_text_color }};
+    --testimonial-heading-size: {{ section.settings.heading_size }}px;
+    --testimonial-heading-weight: {{ section.settings.heading_weight }};
+    --testimonial-heading-color: {{ section.settings.heading_color }};
+    --testimonial-description-size: {{ section.settings.description_size }}px;
+    --testimonial-description-color: {{ section.settings.description_color }};
+    --testimonial-star-color: {{ section.settings.star_color }};
+    --testimonial-quote-color: {{ section.settings.quote_icon_color }};
+    --testimonial-text-size: {{ section.settings.review_text_size }}px;
+    --testimonial-text-color: {{ section.settings.review_text_color }};
+    --testimonial-name-weight: {{ section.settings.name_weight }};
+    --testimonial-name-color: {{ section.settings.name_color }};
+    --testimonial-location-color: {{ section.settings.location_color }};
+    --testimonial-service-bg: {{ section.settings.service_badge_bg }};
+    --testimonial-service-color: {{ section.settings.service_badge_color }};
+    --testimonial-button-bg: {{ section.settings.button_bg_color }};
+    --testimonial-button-color: {{ section.settings.button_text_color }};
+    --testimonial-dot-color: {{ section.settings.dot_color }};
   "
   {% if request.visual_preview_mode %}
     data-shopify-visual-preview
@@ -22,31 +41,21 @@
       
       <!-- Badge -->
       {% if section.settings.show_badge and section.settings.badge_text != blank %}
-        <div class="testimonial__badge" style="
-          background-color: {{ section.settings.badge_bg_color }};
-          color: {{ section.settings.badge_text_color }};
-        ">
+        <div class="testimonial__badge">
           {{ section.settings.badge_text }}
         </div>
       {% endif %}
 
       <!-- Main Heading -->
       {% if section.settings.heading != blank %}
-        <h2 class="testimonial__heading" style="
-          font-size: {{ section.settings.heading_size }}px;
-          font-weight: {{ section.settings.heading_weight }};
-          color: {{ section.settings.heading_color }};
-        ">
+        <h2 class="testimonial__heading">
           {{ section.settings.heading }}
         </h2>
       {% endif %}
 
       <!-- Description -->
       {% if section.settings.description != blank %}
-        <p class="testimonial__description" style="
-          font-size: {{ section.settings.description_size }}px;
-          color: {{ section.settings.description_color }};
-        ">
+        <p class="testimonial__description">
           {{ section.settings.description }}
         </p>
       {% endif %}
@@ -66,54 +75,43 @@
               <div class="testimonial__rating">
                 {% assign rating = block.settings.rating | plus: 0 %}
                 {% for i in (1..5) %}
-                  <span class="testimonial__star {% if i <= rating %}testimonial__star--filled{% endif %}" style="color: {{ section.settings.star_color }};">
+                  <span class="testimonial__star {% if i <= rating %}testimonial__star--filled{% endif %}">
                     ★
                   </span>
                 {% endfor %}
               </div>
 
               <!-- Quote Icon -->
-              <div class="testimonial__quote-icon" style="color: {{ section.settings.quote_icon_color }};">
+              <div class="testimonial__quote-icon">
                 {{ section.settings.quote_icon }}
               </div>
 
               <!-- Review Text -->
               {% if block.settings.review_text != blank %}
-                <blockquote class="testimonial__text" style="
-                  font-size: {{ section.settings.review_text_size }}px;
-                  color: {{ section.settings.review_text_color }};
-                ">
+                <blockquote class="testimonial__text">
                   "{{ block.settings.review_text }}"
                 </blockquote>
               {% endif %}
 
               <!-- Customer Info -->
               <div class="testimonial__customer-info">
-                
+
                 <div class="testimonial__customer-details">
                   {% if block.settings.customer_name != blank %}
-                    <div class="testimonial__customer-name" style="
-                      font-weight: {{ section.settings.name_weight }};
-                      color: {{ section.settings.name_color }};
-                    ">
+                    <div class="testimonial__customer-name">
                       {{ block.settings.customer_name }}
                     </div>
                   {% endif %}
-                  
+
                   {% if block.settings.customer_location != blank %}
-                    <div class="testimonial__customer-location" style="
-                      color: {{ section.settings.location_color }};
-                    ">
+                    <div class="testimonial__customer-location">
                       {{ block.settings.customer_location }}
                     </div>
                   {% endif %}
                 </div>
 
                 {% if block.settings.service_type != blank %}
-                  <div class="testimonial__service-type" style="
-                    background-color: {{ section.settings.service_badge_bg }};
-                    color: {{ section.settings.service_badge_color }};
-                  ">
+                  <div class="testimonial__service-type">
                     {{ block.settings.service_type }}
                   </div>
                 {% endif %}
@@ -127,25 +125,17 @@
 
       <!-- Navigation Buttons (Mobile/Tablet Only) -->
       <div class="testimonial__nav">
-        <button 
-          class="testimonial__nav-btn testimonial__nav-btn--prev" 
+        <button
+          class="testimonial__nav-btn testimonial__nav-btn--prev"
           id="prev-btn-{{ section.id }}"
           aria-label="Previous review"
-          style="
-            background-color: {{ section.settings.button_bg_color }};
-            color: {{ section.settings.button_text_color }};
-          "
         >
           ‹
         </button>
-        <button 
-          class="testimonial__nav-btn testimonial__nav-btn--next" 
+        <button
+          class="testimonial__nav-btn testimonial__nav-btn--next"
           id="next-btn-{{ section.id }}"
           aria-label="Next review"
-          style="
-            background-color: {{ section.settings.button_bg_color }};
-            color: {{ section.settings.button_text_color }};
-          "
         >
           ›
         </button>
@@ -155,10 +145,9 @@
       <div class="testimonial__dots" id="dots-{{ section.id }}">
         {% for block in section.blocks %}
           {% if block.type == 'review' %}
-            <span 
-              class="testimonial__dot {% if forloop.first %}testimonial__dot--active{% endif %}" 
+            <span
+              class="testimonial__dot {% if forloop.first %}testimonial__dot--active{% endif %}"
               data-index="{{ forloop.index0 }}"
-              style="background-color: {{ section.settings.dot_color }};"
             ></span>
           {% endif %}
         {% endfor %}
@@ -201,18 +190,25 @@
     font-weight: 500;
     font-style: normal;
     margin-bottom: 20px;
+    background-color: var(--testimonial-badge-bg);
+    color: var(--testimonial-badge-color);
   }
 
   .testimonial__heading {
     margin: 0 0 16px 0;
     font-family: var(--font-heading-family);
     line-height: 1.3;
+    font-size: var(--testimonial-heading-size);
+    font-weight: var(--testimonial-heading-weight);
+    color: var(--testimonial-heading-color);
   }
 
   .testimonial__description {
     margin: 20px auto 0 auto;
     line-height: 1.6;
     max-width: 600px;
+    font-size: var(--testimonial-description-size);
+    color: var(--testimonial-description-color);
   }
 
   /* Carousel Wrapper */
@@ -254,7 +250,7 @@
   }
 
   .testimonial__star--filled {
-    color: inherit;
+    color: var(--testimonial-star-color);
   }
 
   .testimonial__quote-icon {
@@ -263,6 +259,7 @@
     right: 24px;
     font-size: 24px;
     opacity: 0.3;
+    color: var(--testimonial-quote-color);
   }
 
   .testimonial__text {
@@ -278,6 +275,8 @@
     text-overflow: ellipsis;
     word-wrap: break-word;
     hyphens: auto;
+    font-size: var(--testimonial-text-size);
+    color: var(--testimonial-text-color);
   }
 
   .testimonial__customer-info {
@@ -294,11 +293,14 @@
   .testimonial__customer-name {
     font-size: 16px;
     margin-bottom: 4px;
+    font-weight: var(--testimonial-name-weight);
+    color: var(--testimonial-name-color);
   }
 
   .testimonial__customer-location {
     font-size: 13px;
     opacity: 0.7;
+    color: var(--testimonial-location-color);
   }
 
   .testimonial__service-type {
@@ -308,6 +310,8 @@
     font-weight: 600;
     white-space: nowrap;
     text-align: center;
+    background-color: var(--testimonial-service-bg);
+    color: var(--testimonial-service-color);
   }
 
   /* Navigation & Dots - Hidden on Desktop */
@@ -357,6 +361,8 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
       transition: all 0.3s ease;
       font-weight: 300;
+      background-color: var(--testimonial-button-bg);
+      color: var(--testimonial-button-color);
     }
 
     .testimonial__nav-btn:active {
@@ -383,6 +389,7 @@
       opacity: 0.3;
       transition: all 0.3s ease;
       cursor: pointer;
+      background-color: var(--testimonial-dot-color);
     }
 
     .testimonial__dot--active {
@@ -457,6 +464,8 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
       transition: all 0.3s ease;
       font-weight: 300;
+      background-color: var(--testimonial-button-bg);
+      color: var(--testimonial-button-color);
     }
 
     .testimonial__nav-btn:active {
@@ -483,6 +492,7 @@
       opacity: 0.3;
       transition: all 0.3s ease;
       cursor: pointer;
+      background-color: var(--testimonial-dot-color);
     }
 
     .testimonial__dot--active {
