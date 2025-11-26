@@ -433,6 +433,7 @@ p.sig-desc {
 .footer {
   background-color: #005496 !important;
   color: #FFFFFF !important;
+  padding-top: 0 !important;
 }
 
 .footer a,
