@@ -154,8 +154,9 @@
       display: inline-grid;
       place-items: center;
       border-radius: var(--features-bar__radius);
-      background: transparent;
-      transition: transform .18s ease;
+      background: linear-gradient(180deg, var(--features-bar__blue-start), var(--features-bar__blue-end));
+      box-shadow: 0 6px 14px rgba(0,0,0,.08);
+      transition: transform .18s ease, box-shadow .18s ease;
       margin: 0 auto 12px auto;
       overflow: hidden;
     }
@@ -166,8 +167,10 @@
     }
     .features-bar--{{ section.id }} .features-bar__item:hover .features-bar__icon{
       transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0,0,0,.10);
     }
     .features-bar--{{ section.id }} .features-bar__focusable:focus-visible .features-bar__icon{
+      box-shadow: 0 0 0 3px rgba(30,136,229,.35), 0 6px 14px rgba(0,0,0,.08);
       transform: translateY(-1px);
     }
 
