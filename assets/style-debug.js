@@ -15,6 +15,9 @@
     fontSizes: [10, 12, 13, 14, 15, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64, 72],
     // Common font weights
     fontWeights: [400, 500, 600, 700],
+    // Expected spacing values in px (based on rem: 0, 8, 12, 16, 24, 32, 48, 64, 96)
+    // 1rem = 16px typically
+    spacingValues: [0, 4, 8, 12, 16, 20, 24, 28, 32, 40, 48, 56, 64, 80, 96, 112, 128],
     // Theme colors (light mode)
     lightColors: {
       bg: '#F5F7FA',
@@ -42,8 +45,24 @@
     fontFamily: [],
     fontSize: [],
     fontWeight: [],
-    color: []
+    color: [],
+    spacing: []
   };
+
+  // Check if spacing value is consistent with expected values
+  function isConsistentSpacing(value) {
+    const rounded = Math.round(value);
+    // Allow values that are close to expected (within 2px tolerance)
+    return EXPECTED.spacingValues.some(expected => Math.abs(rounded - expected) <= 2);
+  }
+
+  // Parse spacing value to pixels
+  function parseSpacingValue(value) {
+    if (!value || value === 'auto' || value === 'normal') return null;
+    const num = parseFloat(value);
+    if (isNaN(num) || num === 0) return null;
+    return num;
+  }
 
   // Normalize font family string for comparison
   function normalizeFontFamily(fontFamily) {
@@ -115,13 +134,15 @@
       fontFamily: [],
       fontSize: [],
       fontWeight: [],
-      color: []
+      color: [],
+      spacing: []
     };
 
     const seenFontFamilies = new Map();
     const seenFontSizes = new Map();
     const seenFontWeights = new Map();
     const seenColors = new Map();
+    const seenSpacing = new Map();
 
     // Get all visible elements
     const elements = document.querySelectorAll('body *:not(script):not(style):not(svg):not(path):not(circle):not(line):not(rect):not(polygon)');
@@ -191,6 +212,43 @@
           seenColors.get(key).elements.push(selector);
         }
       }
+
+      // Check spacing (margin, padding, gap)
+      const spacingProps = [
+        { prop: 'marginTop', label: 'margin-top' },
+        { prop: 'marginBottom', label: 'margin-bottom' },
+        { prop: 'marginLeft', label: 'margin-left' },
+        { prop: 'marginRight', label: 'margin-right' },
+        { prop: 'paddingTop', label: 'padding-top' },
+        { prop: 'paddingBottom', label: 'padding-bottom' },
+        { prop: 'paddingLeft', label: 'padding-left' },
+        { prop: 'paddingRight', label: 'padding-right' },
+        { prop: 'gap', label: 'gap' },
+        { prop: 'rowGap', label: 'row-gap' },
+        { prop: 'columnGap', label: 'column-gap' }
+      ];
+
+      spacingProps.forEach(({ prop, label }) => {
+        const value = parseSpacingValue(styles[prop]);
+        if (value !== null && value > 0) {
+          const rounded = Math.round(value);
+          const key = rounded + 'px';
+          const isConsistent = isConsistentSpacing(value);
+
+          if (!seenSpacing.has(key)) {
+            seenSpacing.set(key, {
+              elements: [],
+              properties: new Set(),
+              isConsistent: isConsistent
+            });
+          }
+          const data = seenSpacing.get(key);
+          data.properties.add(label);
+          if (data.elements.length < 3) {
+            data.elements.push(selector);
+          }
+        }
+      });
     });
 
     // Convert to array format
@@ -222,6 +280,15 @@
         isBg: data.isBg
       }))
       .sort((a, b) => (a.isTheme === b.isTheme ? 0 : a.isTheme ? 1 : -1));
+
+    inconsistencies.spacing = Array.from(seenSpacing.entries())
+      .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+      .map(([size, data]) => ({
+        value: size,
+        elements: data.elements,
+        properties: Array.from(data.properties),
+        isConsistent: data.isConsistent
+      }));
 
     return inconsistencies;
   }
@@ -261,12 +328,14 @@
             <button type="button" class="debug-modal__tab" data-tab="sizes">Font Sizes</button>
             <button type="button" class="debug-modal__tab" data-tab="weights">Font Weights</button>
             <button type="button" class="debug-modal__tab" data-tab="colors">Colors</button>
+            <button type="button" class="debug-modal__tab" data-tab="spacing">Spacing</button>
           </div>
           <div class="debug-modal__panels">
             <div class="debug-modal__panel active" data-panel="fonts"></div>
             <div class="debug-modal__panel" data-panel="sizes"></div>
             <div class="debug-modal__panel" data-panel="weights"></div>
             <div class="debug-modal__panel" data-panel="colors"></div>
+            <div class="debug-modal__panel" data-panel="spacing"></div>
           </div>
         </div>
       </div>
@@ -356,6 +425,28 @@
     lines.push('Theme colors in use (' + themeColors.length + '):');
     themeColors.forEach(item => {
       lines.push('  • ' + item.value);
+    });
+    lines.push('');
+
+    // Spacing
+    const inconsistentSpacing = data.spacing.filter(s => !s.isConsistent);
+    const consistentSpacing = data.spacing.filter(s => s.isConsistent);
+
+    lines.push('SPACING (' + data.spacing.length + ' unique values)');
+    lines.push('-'.repeat(40));
+
+    if (inconsistentSpacing.length > 0) {
+      lines.push('⚠ Non-standard spacing values (' + inconsistentSpacing.length + '):');
+      inconsistentSpacing.forEach(item => {
+        lines.push('  • ' + item.value + ' — ' + item.properties.join(', '));
+        lines.push('    Elements: ' + item.elements.slice(0, 3).join(', '));
+      });
+      lines.push('');
+    }
+
+    lines.push('Consistent spacing values (' + consistentSpacing.length + '):');
+    consistentSpacing.forEach(item => {
+      lines.push('  • ' + item.value + ' — ' + item.properties.join(', '));
     });
     lines.push('');
     lines.push('='.repeat(60));
@@ -481,6 +572,41 @@
           </div>
         `).join('')}
       </div>
+    `;
+
+    // Spacing Panel
+    const spacingPanel = modal.querySelector('[data-panel="spacing"]');
+    const inconsistentSpacing = data.spacing.filter(s => !s.isConsistent);
+    const consistentSpacing = data.spacing.filter(s => s.isConsistent);
+
+    spacingPanel.innerHTML = `
+      ${inconsistentSpacing.length > 0 ? `
+        <div class="debug-modal__warning">Found ${inconsistentSpacing.length} non-standard spacing values:</div>
+        <div class="debug-modal__list">
+          ${inconsistentSpacing.map(item => `
+            <div class="debug-modal__item debug-modal__item--error">
+              <div class="debug-modal__item-value">${item.value}</div>
+              <div class="debug-modal__item-props">${item.properties.join(', ')}</div>
+              <div class="debug-modal__item-elements">${item.elements.slice(0, 2).join(', ')}</div>
+            </div>
+          `).join('')}
+        </div>
+      ` : '<div class="debug-modal__success">All spacing values are consistent</div>'}
+
+      <div class="debug-modal__divider"></div>
+      <div class="debug-modal__info">Consistent spacing values (${consistentSpacing.length}):</div>
+      <div class="debug-modal__list debug-modal__list--grid">
+        ${consistentSpacing.map(item => `
+          <div class="debug-modal__item">
+            <div class="debug-modal__item-value">${item.value}</div>
+            <div class="debug-modal__item-props">${item.properties.slice(0, 3).join(', ')}</div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="debug-modal__divider"></div>
+      <div class="debug-modal__info">Expected spacing scale:</div>
+      <div class="debug-modal__note">0, 4, 8, 12, 16, 20, 24, 28, 32, 40, 48, 56, 64, 80, 96, 112, 128px</div>
     `;
   }
 
