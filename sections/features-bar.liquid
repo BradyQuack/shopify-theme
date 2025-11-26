@@ -30,11 +30,12 @@
   assign pad_bottom       = section.settings.padding_bottom | default: 64
   assign align            = section.settings.align | default: 'center'
   assign show_dividers    = section.settings.show_dividers
+  assign debug_mode       = section.settings.debug_mode
 
   assign png_wh = icon_size | times: 2
 -%}
 
-<section class="features-bar features-bar--{{ section.id }}"
+<section class="features-bar features-bar--{{ section.id }}{% if debug_mode %} debug-mode{% endif %}"
   aria-labelledby="{% if heading != blank %}features-title-{{ section.id }}{% else %}features-label-{{ section.id }}{% endif %}"
   role="region">
 
@@ -221,6 +222,139 @@
     .features-bar--{{ section.id }} .features-bar__item{ text-align: left; }
     .features-bar--{{ section.id }} .features-bar__icon{ margin-left: 0; }
     {% endif %}
+
+    {% if debug_mode %}
+    /* Debug Mode Styles */
+    .features-bar--{{ section.id }}.debug-mode {
+      position: relative;
+      outline: 3px dashed #ff0000;
+      outline-offset: -3px;
+    }
+    .features-bar--{{ section.id }}.debug-mode::before {
+      content: 'SECTION BG: {{ bg }}';
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      background: #ff0000;
+      color: white;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      z-index: 1000;
+      font-family: monospace;
+    }
+    .features-bar--{{ section.id }}.debug-mode .features-bar__wrap {
+      outline: 2px dashed #00ff00;
+      outline-offset: -2px;
+      position: relative;
+    }
+    .features-bar--{{ section.id }}.debug-mode .features-bar__wrap::before {
+      content: 'WRAP: max-width {{ max_width }}px';
+      position: absolute;
+      top: -18px;
+      left: 0;
+      background: #00ff00;
+      color: black;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      z-index: 1000;
+      font-family: monospace;
+    }
+    .features-bar--{{ section.id }}.debug-mode .features-bar__grid {
+      outline: 2px dashed #0066ff;
+      outline-offset: -2px;
+      position: relative;
+    }
+    .features-bar--{{ section.id }}.debug-mode .features-bar__grid::before {
+      content: 'GRID: gap {{ gap_desktop }}px';
+      position: absolute;
+      top: -18px;
+      right: 0;
+      background: #0066ff;
+      color: white;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      z-index: 1000;
+      font-family: monospace;
+    }
+    .features-bar--{{ section.id }}.debug-mode .features-bar__item {
+      outline: 2px solid #ff9900;
+      outline-offset: -2px;
+      position: relative;
+    }
+    .features-bar--{{ section.id }}.debug-mode .features-bar__item::before {
+      content: 'CONTAINER BG: {{ item_bg }}';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      background: #ff9900;
+      color: black;
+      font-size: 9px;
+      padding: 2px 4px;
+      border-radius: 3px;
+      z-index: 1000;
+      font-family: monospace;
+      white-space: nowrap;
+    }
+    .features-bar--{{ section.id }}.debug-mode .features-bar__icon {
+      outline: 2px solid #9900ff;
+      outline-offset: -2px;
+      position: relative;
+    }
+    .features-bar--{{ section.id }}.debug-mode .features-bar__icon::after {
+      content: 'ICON: {{ blue_start }} → {{ blue_end }}';
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #9900ff;
+      color: white;
+      font-size: 8px;
+      padding: 2px 4px;
+      border-radius: 3px;
+      z-index: 1000;
+      font-family: monospace;
+      white-space: nowrap;
+    }
+    .features-bar--{{ section.id }}.debug-mode .features-bar__title {
+      outline: 2px solid #00cccc;
+      outline-offset: -1px;
+      position: relative;
+    }
+    .features-bar--{{ section.id }}.debug-mode .features-bar__title::after {
+      content: 'TITLE: {{ head_color }}';
+      position: absolute;
+      top: -16px;
+      left: 0;
+      background: #00cccc;
+      color: black;
+      font-size: 8px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      z-index: 1000;
+      font-family: monospace;
+    }
+    .features-bar--{{ section.id }}.debug-mode .features-bar__desc {
+      outline: 2px solid #cc6600;
+      outline-offset: -1px;
+      position: relative;
+    }
+    .features-bar--{{ section.id }}.debug-mode .features-bar__desc::after {
+      content: 'DESC: {{ text_color }}';
+      position: absolute;
+      bottom: -16px;
+      left: 0;
+      background: #cc6600;
+      color: white;
+      font-size: 8px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      z-index: 1000;
+      font-family: monospace;
+    }
+    {% endif %}
   </style>
 
   <div class="features-bar__wrap">
@@ -337,7 +471,8 @@
 
     { "type": "select", "id": "align", "label": "Text alignment", "options": [ { "value": "center", "label": "Center" }, { "value": "left", "label": "Left" } ], "default": "center" },
 
-    { "type": "checkbox", "id": "show_dividers", "label": "Show faint top/bottom dividers", "default": false }
+    { "type": "checkbox", "id": "show_dividers", "label": "Show faint top/bottom dividers", "default": false },
+    { "type": "checkbox", "id": "debug_mode", "label": "🔧 Debug Mode (show element colors)", "default": false }
   ],
   "blocks": [
     {
