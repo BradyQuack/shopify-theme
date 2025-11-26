@@ -15,8 +15,8 @@
     {%- if block.type == 'title_pill' -%}
       #shopify-block-{{ block.id }} .pill-text,
       #block-{{ block.id }} .pill-text {
-        font-size: {{ block.settings.pill_font_size }}px !important;
-        background-color: {{ block.settings.pill_bg_color }} !important;
+        font-size: {{ block.settings.pill_font_size }}px;
+        background-color: var(--color-primary, {{ block.settings.pill_bg_color }});
       }
     {%- endif -%}
     {%- if block.type == 'description_title' -%}
@@ -26,7 +26,7 @@
       #block-{{ block.id }} h2,
       #block-{{ block.id }} h2 *,
       #block-{{ block.id }} h2 span {
-        color: {{ block.settings.title_text_color }} !important;
+        color: var(--color-text-primary, {{ block.settings.title_text_color }});
       }
     {%- endif -%}
     {%- if block.type == 'description_body' -%}
@@ -38,7 +38,7 @@
       #block-{{ block.id }} *,
       #block-{{ block.id }} p,
       #block-{{ block.id }} span {
-        color: {{ block.settings.body_text_color }} !important;
+        color: var(--color-text-secondary, {{ block.settings.body_text_color }});
       }
     {%- endif -%}
     {%- if block.type == 'features_highlight' -%}
