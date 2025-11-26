@@ -309,7 +309,7 @@ div.customer-reviews__text.rte p,
 
 .customer-reviews__service-type {
   background-color: var(--color-surface-alt) !important;
-  color: var(--color-primary) !important;
+  color: var(--color-text-primary) !important;
 }
 
 .customer-reviews__star {
@@ -399,10 +399,104 @@ p.sig-desc {
   color: var(--color-text-muted) !important;
 }
 
-/* Footer */
-.footer,
+/* Premium Brands / Our Brands Section - ensure readable text */
+.premium-brands,
+[class*="premium-brands"] {
+  color: var(--color-text-primary) !important;
+}
+
+[class*="premium-brands"] h2,
+[class*="premium-brands"] .pb-title,
+[class*="premium-brands"] [class*="title"] {
+  color: var(--color-text-primary) !important;
+}
+
+[class*="premium-brands"] p,
+[class*="premium-brands"] span,
+[class*="premium-brands"] div {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Brand Spotlight Section */
+.brand-spotlight,
+[class*="brand-spotlight"] {
+  color: var(--color-text-primary) !important;
+}
+
+.brand-spotlight__title,
+.brand-spotlight h2 {
+  color: var(--color-text-primary) !important;
+}
+
+.brand-spotlight__description,
+.brand-spotlight p {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Video Hero Section - White text for overlay on video */
+.video-hero__text-block,
+.video-hero__brand,
+.video-hero__headline,
+.video-hero__body {
+  color: #FFFFFF !important;
+}
+
+.video-hero h1,
+.video-hero h2,
+.video-hero p {
+  color: #FFFFFF !important;
+}
+
+/* Home Video Hero */
+.home-video-hero__text-block,
+.home-video-hero__brand,
+.home-video-hero__headline,
+.home-video-hero__body,
+.home-video-hero h1,
+.home-video-hero h2,
+.home-video-hero p {
+  color: #FFFFFF !important;
+}
+
+/* Footer - Blue background with white text in light mode */
+.footer {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+.footer a,
+.footer p,
+.footer span,
+.footer h2,
+.footer h3,
+.footer h4,
+.footer li,
+.footer__copyright,
+.footer-block__heading,
+.footer small {
+  color: var(--color-button-text) !important;
+}
+
+.footer a:hover {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
 .footer__theme-toggle-section {
-  background-color: var(--color-bg) !important;
+  background-color: var(--color-primary) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.footer__theme-toggle-section .theme-toggle {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.footer__theme-toggle-section .theme-toggle__btn {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.footer__theme-toggle-section .theme-toggle__btn:first-child {
+  border-right-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 /* RTE Content */
