@@ -60,12 +60,46 @@
     "header2_WRTrXp": {
       "type": "header2",
       "blocks": {
+        "promo_link_BfYbcm": {
+          "type": "promo_link",
+          "settings": {
+            "text": "support@asiwsupply.com",
+            "link": ""
+          }
+        },
+        "promo_link_KNeeER": {
+          "type": "promo_link",
+          "settings": {
+            "text": "(772) 302-9572",
+            "link": ""
+          }
+        },
         "nav_item_3fMEa8": {
           "type": "nav_item",
           "settings": {
             "text": "Wholesale",
             "link": "shopify://pages/wholesale",
             "show_icon": true,
+            "show_in_navbar": true,
+            "show_in_dropdown": false
+          }
+        },
+        "nav_item_kbChHY": {
+          "type": "nav_item",
+          "settings": {
+            "text": "About",
+            "link": "shopify://pages/about-us",
+            "show_icon": false,
+            "show_in_navbar": true,
+            "show_in_dropdown": false
+          }
+        },
+        "nav_item_e46ACM": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Contact",
+            "link": "shopify://pages/contact",
+            "show_icon": false,
             "show_in_navbar": true,
             "show_in_dropdown": false
           }
@@ -86,7 +120,7 @@
             "text": "Pumps",
             "link": "shopify://collections/pumps",
             "show_icon": false,
-            "show_in_navbar": true,
+            "show_in_navbar": false,
             "show_in_dropdown": true
           }
         },
@@ -96,7 +130,7 @@
             "text": "Pump Parts",
             "link": "shopify://collections/pump-parts",
             "show_icon": false,
-            "show_in_navbar": true,
+            "show_in_navbar": false,
             "show_in_dropdown": true
           }
         },
@@ -106,7 +140,7 @@
             "text": "PVC Pipe",
             "link": "shopify://collections/custom-pvc-pipe",
             "show_icon": false,
-            "show_in_navbar": true,
+            "show_in_navbar": false,
             "show_in_dropdown": true
           }
         },
@@ -138,28 +172,8 @@
             "text": "Berkeley Parts",
             "link": "shopify://collections/berkeley-replacement-parts",
             "show_icon": false,
-            "show_in_navbar": true,
+            "show_in_navbar": false,
             "show_in_dropdown": true
-          }
-        },
-        "nav_item_kbChHY": {
-          "type": "nav_item",
-          "settings": {
-            "text": "About",
-            "link": "shopify://pages/about-us",
-            "show_icon": false,
-            "show_in_navbar": true,
-            "show_in_dropdown": false
-          }
-        },
-        "nav_item_e46ACM": {
-          "type": "nav_item",
-          "settings": {
-            "text": "Contact",
-            "link": "shopify://pages/contact",
-            "show_icon": false,
-            "show_in_navbar": true,
-            "show_in_dropdown": false
           }
         },
         "recommendation_gkFc88": {
@@ -189,24 +203,14 @@
             "text": "1-1/2 Custom PVC",
             "link": "shopify://products/1-1-2-schedule-40-pvc-pipe-custom-length"
           }
-        },
-        "promo_link_KNeeER": {
-          "type": "promo_link",
-          "settings": {
-            "text": "(772) 302-9572",
-            "link": ""
-          }
-        },
-        "promo_link_BfYbcm": {
-          "type": "promo_link",
-          "settings": {
-            "text": "support@asiwsupply.com",
-            "link": ""
-          }
         }
       },
       "block_order": [
+        "promo_link_BfYbcm",
+        "promo_link_KNeeER",
         "nav_item_3fMEa8",
+        "nav_item_kbChHY",
+        "nav_item_e46ACM",
         "nav_item_itbf9J",
         "nav_item_tH4xB6",
         "nav_item_pKiUV6",
@@ -214,14 +218,10 @@
         "nav_item_7XUDQb",
         "nav_item_9wULAV",
         "nav_item_XUXbyX",
-        "nav_item_kbChHY",
-        "nav_item_e46ACM",
         "recommendation_gkFc88",
         "recommendation_iHMGT9",
         "recommendation_FMCfrQ",
-        "recommendation_hjxBag",
-        "promo_link_KNeeER",
-        "promo_link_BfYbcm"
+        "recommendation_hjxBag"
       ],
       "name": "Header2",
       "settings": {
