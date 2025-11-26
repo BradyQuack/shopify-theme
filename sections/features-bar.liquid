@@ -1,5 +1,5 @@
 {% comment %}
-  Section: features-icons-grid (PNG version)
+  Section: features-bar (PNG version)
   Purpose: 4-up features with PNG image uploads instead of SVG icons.
   Notes:
   - Per-block PNG via image_picker
@@ -33,24 +33,24 @@
   assign png_wh = icon_size | times: 2
 -%}
 
-<section class="features-icons-grid features-icons-grid--{{ section.id }}"
+<section class="features-bar features-bar--{{ section.id }}"
   aria-labelledby="{% if heading != blank %}features-title-{{ section.id }}{% else %}features-label-{{ section.id }}{% endif %}"
   role="region">
 
   <style>
-    .features-icons-grid--{{ section.id }}{
-      --sig-bg: {{ bg }};
-      --sig-head: {{ head_color }};
-      --sig-text: {{ text_color }};
-      --sig-blue-start: {{ blue_start }};
-      --sig-blue-end: {{ blue_end }};
-      --sig-radius: {{ radius }}px;
-      --sig-icon-size: {{ icon_size }}px;
-      --sig-gap: {{ gap_desktop }}px;
-      --sig-gap-mobile: {{ gap_mobile }}px;
-      --sig-container: {{ max_width }}px;
+    .features-bar--{{ section.id }}{
+      --features-bar__bg: {{ bg }};
+      --features-bar__head: {{ head_color }};
+      --features-bar__text: {{ text_color }};
+      --features-bar__blue-start: {{ blue_start }};
+      --features-bar__blue-end: {{ blue_end }};
+      --features-bar__radius: {{ radius }}px;
+      --features-bar__icon-size: {{ icon_size }}px;
+      --features-bar__gap: {{ gap_desktop }}px;
+      --features-bar__gap-mobile: {{ gap_mobile }}px;
+      --features-bar__container: {{ max_width }}px;
 
-      background: var(--sig-bg);
+      background: var(--features-bar__bg);
       padding-top: {{ pad_top }}px;
       padding-bottom: {{ pad_bottom }}px;
       font-family: inherit; /* Inherit theme fonts */
@@ -60,14 +60,14 @@
       {% endif %}
     }
 
-    .features-icons-grid--{{ section.id }} .sig-wrap{
-      max-width: var(--sig-container);
+    .features-bar--{{ section.id }} .features-bar__wrap{
+      max-width: var(--features-bar__container);
       margin: 0 auto;
       padding-inline: 16px;
     }
 
-    .features-icons-grid--{{ section.id }} .sig-heading{
-      color: var(--sig-head);
+    .features-bar--{{ section.id }} .features-bar__heading{
+      color: var(--features-bar__head);
       font-family: var(--font-heading-family, inherit); /* Use theme's heading font */
       font-weight: 700;
       letter-spacing: -0.01em;
@@ -77,113 +77,113 @@
       line-height: 1.2;
     }
 
-    .features-icons-grid--{{ section.id }} .sig-subheading{
-      color: var(--sig-text);
+    .features-bar--{{ section.id }} .features-bar__subheading{
+      color: var(--features-bar__text);
       font-family: var(--font-body-family, inherit); /* Use theme's body font */
       text-align: {{ align }};
       margin: 0 0 28px 0;
       line-height: 1.6;
     }
 
-    .features-icons-grid--{{ section.id }} .sig-grid{
+    .features-bar--{{ section.id }} .features-bar__grid{
       display: grid;
-      gap: var(--sig-gap);
+      gap: var(--features-bar__gap);
       align-items: start;
       justify-items: center;
       grid-template-columns: repeat({{ cols_desktop }}, minmax(0,1fr));
     }
     @media (max-width: 1024px){
-      .features-icons-grid--{{ section.id }} .sig-grid{
+      .features-bar--{{ section.id }} .features-bar__grid{
         grid-template-columns: repeat({{ cols_tablet }}, minmax(0,1fr));
       }
     }
     @media (max-width: 640px){
-      .features-icons-grid--{{ section.id }} .sig-grid{
+      .features-bar--{{ section.id }} .features-bar__grid{
         grid-template-columns: repeat({{ cols_mobile }}, minmax(0,1fr));
-        gap: var(--sig-gap-mobile);
+        gap: var(--features-bar__gap-mobile);
       }
-      .features-icons-grid--{{ section.id }} .sig-subheading{ margin-bottom: 20px; }
+      .features-bar--{{ section.id }} .features-bar__subheading{ margin-bottom: 20px; }
       
       /* Hide individual features on mobile based on block setting */
-      .features-icons-grid--{{ section.id }} .sig-item[data-hide-mobile="true"]{
+      .features-bar--{{ section.id }} .features-bar__item[data-hide-mobile="true"]{
         display: none;
       }
       
       /* Adjust icon and text sizing for 3-4 column mobile layouts */
       {% if cols_mobile == '3' or cols_mobile == '4' %}
-      .features-icons-grid--{{ section.id }} .sig-icon{
+      .features-bar--{{ section.id }} .features-bar__icon{
         width: 48px;
         height: 48px;
       }
-      .features-icons-grid--{{ section.id }} .sig-icon img{
-        width: calc(var(--sig-icon-size) * 1.5);
+      .features-bar--{{ section.id }} .features-bar__icon img{
+        width: calc(var(--features-bar__icon-size) * 1.5);
       }
-      .features-icons-grid--{{ section.id }} .sig-title{
+      .features-bar--{{ section.id }} .features-bar__title{
         font-size: 1rem;
       }
-      .features-icons-grid--{{ section.id }} .sig-desc{
+      .features-bar--{{ section.id }} .features-bar__desc{
         font-size: 0.875rem;
       }
       {% endif %}
     }
 
-    .features-icons-grid--{{ section.id }} .sig-item{
+    .features-bar--{{ section.id }} .features-bar__item{
       width: 100%;
       text-align: {{ align }};
       font-family: inherit; /* Ensure font inheritance */
     }
 
-    .features-icons-grid--{{ section.id }} .sig-link{
+    .features-bar--{{ section.id }} .features-bar__link{
       display: inline-flex;
       align-items: center;
       gap: 8px;
       font-family: var(--font-body-family, inherit); /* Use theme's body font for links */
       font-weight: 600;
       text-decoration: none;
-      color: var(--sig-head);
+      color: var(--features-bar__head);
       outline: none;
       border-radius: 10px;
       padding: 2px 4px;
     }
-    .features-icons-grid--{{ section.id }} .sig-link:focus-visible{
+    .features-bar--{{ section.id }} .features-bar__link:focus-visible{
       box-shadow: 0 0 0 3px rgba(30,136,229,.35);
     }
 
-    .features-icons-grid--{{ section.id }} .sig-icon{
+    .features-bar--{{ section.id }} .features-bar__icon{
       width: 64px; height: 64px;
       display: inline-grid;
       place-items: center;
-      border-radius: var(--sig-radius);
-      background: linear-gradient(180deg, var(--sig-blue-start), var(--sig-blue-end));
+      border-radius: var(--features-bar__radius);
+      background: linear-gradient(180deg, var(--features-bar__blue-start), var(--features-bar__blue-end));
       box-shadow: 0 6px 14px rgba(0,0,0,.08);
       transition: transform .18s ease, box-shadow .18s ease;
       margin: 0 auto 12px auto;
       overflow: hidden;
     }
-    .features-icons-grid--{{ section.id }} .sig-icon img{
-      width: calc(var(--sig-icon-size) * 2);
+    .features-bar--{{ section.id }} .features-bar__icon img{
+      width: calc(var(--features-bar__icon-size) * 2);
       height: auto;
       display: block;
     }
-    .features-icons-grid--{{ section.id }} .sig-item:hover .sig-icon{
+    .features-bar--{{ section.id }} .features-bar__item:hover .features-bar__icon{
       transform: translateY(-2px);
       box-shadow: 0 10px 20px rgba(0,0,0,.10);
     }
-    .features-icons-grid--{{ section.id }} .sig-focusable:focus-visible .sig-icon{
+    .features-bar--{{ section.id }} .features-bar__focusable:focus-visible .features-bar__icon{
       box-shadow: 0 0 0 3px rgba(30,136,229,.35), 0 6px 14px rgba(0,0,0,.08);
       transform: translateY(-1px);
     }
 
-    .features-icons-grid--{{ section.id }} .sig-title{
-      color: var(--sig-head);
+    .features-bar--{{ section.id }} .features-bar__title{
+      color: var(--features-bar__head);
       font-family: var(--font-heading-family, inherit); /* Use theme's heading font for feature titles */
       font-weight: 600;
       margin: 0 0 6px 0;
       font-size: 1.2rem;
       line-height: 1.35;
     }
-    .features-icons-grid--{{ section.id }} .sig-desc{
-      color: var(--sig-text);
+    .features-bar--{{ section.id }} .features-bar__desc{
+      color: var(--features-bar__text);
       font-family: var(--font-body-family, inherit); /* Use theme's body font for descriptions */
       margin: 0;
       font-size: 1rem;
@@ -191,47 +191,47 @@
     }
 
     /* Ensure all elements inherit theme typography */
-    .features-icons-grid--{{ section.id }} *{
+    .features-bar--{{ section.id }} *{
       font-family: inherit;
     }
 
     /* Override specific elements with theme font variables */
-    .features-icons-grid--{{ section.id }} h2,
-    .features-icons-grid--{{ section.id }} h3,
-    .features-icons-grid--{{ section.id }} .sig-heading,
-    .features-icons-grid--{{ section.id }} .sig-title{
+    .features-bar--{{ section.id }} h2,
+    .features-bar--{{ section.id }} h3,
+    .features-bar--{{ section.id }} .features-bar__heading,
+    .features-bar--{{ section.id }} .features-bar__title{
       font-family: var(--font-heading-family, inherit);
     }
 
-    .features-icons-grid--{{ section.id }} p,
-    .features-icons-grid--{{ section.id }} div,
-    .features-icons-grid--{{ section.id }} a,
-    .features-icons-grid--{{ section.id }} .sig-subheading,
-    .features-icons-grid--{{ section.id }} .sig-desc,
-    .features-icons-grid--{{ section.id }} .sig-link{
+    .features-bar--{{ section.id }} p,
+    .features-bar--{{ section.id }} div,
+    .features-bar--{{ section.id }} a,
+    .features-bar--{{ section.id }} .features-bar__subheading,
+    .features-bar--{{ section.id }} .features-bar__desc,
+    .features-bar--{{ section.id }} .features-bar__link{
       font-family: var(--font-body-family, inherit);
     }
 
     {% if align == 'left' %}
-    .features-icons-grid--{{ section.id }} .sig-item{ text-align: left; }
-    .features-icons-grid--{{ section.id }} .sig-icon{ margin-left: 0; }
+    .features-bar--{{ section.id }} .features-bar__item{ text-align: left; }
+    .features-bar--{{ section.id }} .features-bar__icon{ margin-left: 0; }
     {% endif %}
   </style>
 
-  <div class="sig-wrap">
+  <div class="features-bar__wrap">
     {% if heading != blank %}
-      <h2 id="features-title-{{ section.id }}" class="sig-heading">{{ heading | escape }}</h2>
+      <h2 id="features-title-{{ section.id }}" class="features-bar__heading">{{ heading | escape }}</h2>
     {% else %}
       <span id="features-label-{{ section.id }}" class="visually-hidden">Features</span>
     {% endif %}
 
     {% if subheading != blank %}
-      <div class="sig-subheading">{{ subheading }}</div>
+      <div class="features-bar__subheading">{{ subheading }}</div>
     {% endif %}
 
     <div
-        id="sig-grid-{{ section.id }}"
-        class="sig-grid"
+        id="features-bar__grid-{{ section.id }}"
+        class="features-bar__grid"
         role="list"
         aria-roledescription="list"
         aria-label="{{ heading | default: 'Features' | escape }}"
@@ -251,7 +251,7 @@
         -%}
 
         {%- capture icon_markup -%}
-          <div class="sig-icon" style="{% if icon_bg_custom != blank %}background: {{ icon_bg_custom }};{% endif %}">
+          <div class="features-bar__icon" style="{% if icon_bg_custom != blank %}background: {{ icon_bg_custom }};{% endif %}">
             {%- if img != blank -%}
               <img
                 srcset="{{ img | image_url: width: 64 }} 64w, {{ img | image_url: width: 96 }} 96w, {{ img | image_url: width: 128 }} 128w"
@@ -265,12 +265,12 @@
           </div>
         {%- endcapture -%}
 
-        <div class="sig-item" role="listitem" data-hide-mobile="{{ hide_mobile }}" {{ block.shopify_attributes }}>
+        <div class="features-bar__item" role="listitem" data-hide-mobile="{{ hide_mobile }}" {{ block.shopify_attributes }}>
           {%- assign link_open = '' -%}
           {%- assign link_close = '' -%}
           {%- if link_url != blank -%}
             {%- assign computed_label = aria_label | default: title -%}
-            {%- capture link_open -%}<a class="sig-link sig-focusable" href="{{ link_url }}" aria-label="{{ computed_label | escape }}">{%- endcapture -%}
+            {%- capture link_open -%}<a class="features-bar__link features-bar__focusable" href="{{ link_url }}" aria-label="{{ computed_label | escape }}">{%- endcapture -%}
             {%- assign link_close = '</a>' -%}
           {%- endif -%}
 
@@ -278,14 +278,14 @@
             {{ icon_markup }}
             {%- unless icon_only -%}
               {%- if title != blank -%}
-                <h3 class="sig-title">{{ title | escape }}</h3>
+                <h3 class="features-bar__title">{{ title | escape }}</h3>
               {%- endif -%}
             {%- endunless -%}
           {{ link_close }}
 
           {%- unless icon_only -%}
             {%- if desc != blank -%}
-              <p class="sig-desc">{{ desc | escape }}</p>
+              <p class="features-bar__desc">{{ desc | escape }}</p>
             {%- endif -%}
           {%- endunless -%}
         </div>
@@ -298,7 +298,7 @@
 {
   "name": "Features Bar",
   "tag": "section",
-  "class": "section features-icons-grid",
+  "class": "section features-bar",
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "Wholesale program benefits" },
     { "type": "richtext", "id": "subheading", "label": "Subheading", "default": "<p>Access exclusive savings and support designed for growing businesses.</p>" },

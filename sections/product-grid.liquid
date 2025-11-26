@@ -4,31 +4,31 @@
 {% endcomment %}
 
 <style>
-  .product-highlights {
+  .product-grid {
     padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
     background-color: {{ section.settings.background_color }};
   }
 
-  .product-highlights__container {
+  .product-grid__container {
     max-width: {{ section.settings.container_width }}px;
     margin: 0 auto;
     padding: 0 20px;
   }
 
-  .product-highlights__grid {
+  .product-grid__grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 24px;
   }
 
-  .product-highlights__column {
+  .product-grid__column {
     background: var(--color-card-bg, white);
     border: 1px solid var(--color-border, #e5e5e5);
     border-radius: 8px;
     padding: 24px;
   }
 
-  .product-highlights__header {
+  .product-grid__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -37,30 +37,30 @@
     border-bottom: 1px solid var(--color-border, #e5e5e5);
   }
 
-  .product-highlights__title {
+  .product-grid__title {
     font-size: 20px;
     font-weight: 600;
     color: var(--color-text-primary, #000);
     margin: 0;
   }
 
-  .product-highlights__view-all {
+  .product-grid__view-all {
     color: var(--color-link, #0066c0);
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
   }
 
-  .product-highlights__view-all:hover {
+  .product-grid__view-all:hover {
     text-decoration: underline;
   }
 
-  .product-highlights__items {
+  .product-grid__items {
     display: grid;
     gap: 20px;
   }
 
-  .product-highlights__items--grid {
+  .product-grid__items--grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
@@ -171,15 +171,15 @@
 
 
   @media (max-width: 768px) {
-    .product-highlights__grid {
+    .product-grid__grid {
       grid-template-columns: 1fr;
     }
 
-    .product-highlights__column--mobile-hidden {
+    .product-grid__column--mobile-hidden {
       display: none;
     }
 
-    .product-highlights__items--grid {
+    .product-grid__items--grid {
       grid-template-columns: repeat(2, 1fr);
     }
 
@@ -201,22 +201,22 @@
   }
 </style>
 
-<div class="product-highlights">
-  <div class="product-highlights__container">
-    <div class="product-highlights__grid">
+<div class="product-grid">
+  <div class="product-grid__container">
+    <div class="product-grid__grid">
       
       {% comment %} Column 1 {% endcomment %}
       {% if section.blocks.size > 0 %}
-      <div class="product-highlights__column {% unless section.settings.show_column1_mobile %}product-highlights__column--mobile-hidden{% endunless %}">
-        <div class="product-highlights__header">
-          <h2 class="product-highlights__title">{{ section.settings.column1_title }}</h2>
+      <div class="product-grid__column {% unless section.settings.show_column1_mobile %}product-grid__column--mobile-hidden{% endunless %}">
+        <div class="product-grid__header">
+          <h2 class="product-grid__title">{{ section.settings.column1_title }}</h2>
           {% if section.settings.column1_link != blank %}
-            <a href="{{ section.settings.column1_link }}" class="product-highlights__view-all">
+            <a href="{{ section.settings.column1_link }}" class="product-grid__view-all">
               {{ section.settings.view_all_text }}
             </a>
           {% endif %}
         </div>
-        <div class="product-highlights__items product-highlights__items--grid">
+        <div class="product-grid__items product-grid__items--grid">
           {% for block in section.blocks %}
             {% if block.settings.column == 'column1' and block.settings.product != blank %}
               {% assign product = block.settings.product %}
@@ -263,16 +263,16 @@
 
       {% comment %} Column 2 {% endcomment %}
       {% if section.blocks.size > 0 %}
-      <div class="product-highlights__column {% unless section.settings.show_column2_mobile %}product-highlights__column--mobile-hidden{% endunless %}">
-        <div class="product-highlights__header">
-          <h2 class="product-highlights__title">{{ section.settings.column2_title }}</h2>
+      <div class="product-grid__column {% unless section.settings.show_column2_mobile %}product-grid__column--mobile-hidden{% endunless %}">
+        <div class="product-grid__header">
+          <h2 class="product-grid__title">{{ section.settings.column2_title }}</h2>
           {% if section.settings.column2_link != blank %}
-            <a href="{{ section.settings.column2_link }}" class="product-highlights__view-all">
+            <a href="{{ section.settings.column2_link }}" class="product-grid__view-all">
               {{ section.settings.view_all_text }}
             </a>
           {% endif %}
         </div>
-        <div class="product-highlights__items">
+        <div class="product-grid__items">
           {% for block in section.blocks %}
             {% if block.settings.column == 'column2' and block.settings.product != blank %}
               {% assign product = block.settings.product %}
@@ -319,16 +319,16 @@
 
       {% comment %} Column 3 {% endcomment %}
       {% if section.blocks.size > 0 %}
-      <div class="product-highlights__column {% unless section.settings.show_column3_mobile %}product-highlights__column--mobile-hidden{% endunless %}">
-        <div class="product-highlights__header">
-          <h2 class="product-highlights__title">{{ section.settings.column3_title }}</h2>
+      <div class="product-grid__column {% unless section.settings.show_column3_mobile %}product-grid__column--mobile-hidden{% endunless %}">
+        <div class="product-grid__header">
+          <h2 class="product-grid__title">{{ section.settings.column3_title }}</h2>
           {% if section.settings.column3_link != blank %}
-            <a href="{{ section.settings.column3_link }}" class="product-highlights__view-all">
+            <a href="{{ section.settings.column3_link }}" class="product-grid__view-all">
               {{ section.settings.view_all_text }}
             </a>
           {% endif %}
         </div>
-        <div class="product-highlights__items product-highlights__items--grid">
+        <div class="product-grid__items product-grid__items--grid">
           {% for block in section.blocks %}
             {% if block.settings.column == 'column3' and block.settings.product != blank %}
               {% assign product = block.settings.product %}
@@ -381,7 +381,7 @@
 {
   "name": "Product Grid",
   "tag": "section",
-  "class": "section-product-highlights",
+  "class": "section-product-grid",
   "settings": [
     {
       "type": "header",
