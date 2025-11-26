@@ -390,7 +390,7 @@ CONTAINER BACKGROUND ISSUE
 Setting: item_bg_color
 Value: {{ section.settings.item_bg_color | default: 'NOT SET' }}
 Processed: {{ item_bg }}
-Is Blank: {{ item_bg == blank }}
+Is Blank: {% if item_bg == blank %}true{% else %}false{% endif %}
 Length: {{ item_bg | size }} chars
 
 CSS VARIABLES
