@@ -270,12 +270,7 @@
   color: var(--color-text-secondary) !important;
 }
 
-/* Customer Reviews - Force theme colors */
-.customer-reviews__badge {
-  background-color: var(--color-primary) !important;
-  color: var(--color-button-text) !important;
-}
-
+/* Customer Reviews - Let section handle its own colors */
 .customer-reviews__heading {
   color: var(--color-text-primary) !important;
 }
@@ -309,7 +304,7 @@ div.customer-reviews__text.rte p,
 
 .customer-reviews__service-type {
   background-color: var(--color-surface-alt) !important;
-  color: var(--color-text-primary) !important;
+  color: var(--color-primary) !important;
 }
 
 .customer-reviews__star {
@@ -399,38 +394,14 @@ p.sig-desc {
   color: var(--color-text-muted) !important;
 }
 
-/* Premium Brands / Our Brands Section - ensure readable text */
-.premium-brands,
-[class*="premium-brands"] {
+/* Premium Brands Section - only target specific elements */
+.premium-brands h2 {
   color: var(--color-text-primary) !important;
 }
 
-[class*="premium-brands"] h2,
-[class*="premium-brands"] .pb-title,
-[class*="premium-brands"] [class*="title"] {
+/* Brand Spotlight Section - only target specific elements */
+.brand-spotlight__title {
   color: var(--color-text-primary) !important;
-}
-
-[class*="premium-brands"] p,
-[class*="premium-brands"] span,
-[class*="premium-brands"] div {
-  color: var(--color-text-secondary) !important;
-}
-
-/* Brand Spotlight Section */
-.brand-spotlight,
-[class*="brand-spotlight"] {
-  color: var(--color-text-primary) !important;
-}
-
-.brand-spotlight__title,
-.brand-spotlight h2 {
-  color: var(--color-text-primary) !important;
-}
-
-.brand-spotlight__description,
-.brand-spotlight p {
-  color: var(--color-text-secondary) !important;
 }
 
 /* Video Hero Section - White text for overlay on video */
@@ -460,8 +431,8 @@ p.sig-desc {
 
 /* Footer - Blue background with white text in light mode */
 .footer {
-  background-color: var(--color-primary) !important;
-  color: var(--color-button-text) !important;
+  background-color: #005496 !important;
+  color: #FFFFFF !important;
 }
 
 .footer a,
@@ -474,15 +445,17 @@ p.sig-desc {
 .footer__copyright,
 .footer-block__heading,
 .footer small {
-  color: var(--color-button-text) !important;
+  color: #FFFFFF !important;
+  text-decoration: none !important;
 }
 
 .footer a:hover {
   color: rgba(255, 255, 255, 0.8) !important;
+  text-decoration: none !important;
 }
 
 .footer__theme-toggle-section {
-  background-color: var(--color-primary) !important;
+  background-color: #005496 !important;
   border-bottom-color: rgba(255, 255, 255, 0.2) !important;
 }
 
