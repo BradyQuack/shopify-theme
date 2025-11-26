@@ -487,10 +487,25 @@ a:not([class]):not([style]):hover {
   color: var(--color-link-hover) !important;
 }
 
-/* Footer background - override Shopify color schemes */
+/* Footer background - force blue for all color schemes */
 .footer.color-scheme-2,
 .footer[class*="color-scheme"] {
-  background-color: var(--color-bg) !important;
+  background-color: #005496 !important;
+  color: #FFFFFF !important;
+}
+
+/* Ensure white text on non-white/colored backgrounds */
+.promo-bar,
+.promo-bar *,
+[class*="wholesale-banner"],
+[class*="wholesale-banner"] * {
+  color: #FFFFFF !important;
+}
+
+/* Customer Reviews badge - use theme color */
+.customer-reviews__badge {
+  background-color: #005496 !important;
+  color: #FFFFFF !important;
 }
 
 /* Generic text overrides for common non-theme colors */
