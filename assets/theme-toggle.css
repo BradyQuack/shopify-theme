@@ -700,8 +700,26 @@ p.sig-desc {
    ============================================ */
 
 [data-theme="dark"] .header2-section,
-[data-theme="dark"] .header2__container {
+[data-theme="dark"] .header2__container,
+[data-theme="dark"] .header2,
+[data-theme="dark"] .header2__main,
+[data-theme="dark"] .header2__nav {
   background-color: var(--color-surface) !important;
+}
+
+[data-theme="dark"] .header2__nav-link--shop-all,
+[data-theme="dark"] .header2__mobile-nav-link--shop-all {
+  background-color: var(--color-surface-alt) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .header2__mobile-nav-item {
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .header2__mobile-nav-item,
+[data-theme="dark"] .header2__mobile-nav-link {
+  color: var(--color-text-primary) !important;
 }
 
 [data-theme="dark"] .header2__nav-link,
@@ -788,17 +806,49 @@ p.sig-desc {
   border-color: var(--color-border) !important;
 }
 
+[data-theme="dark"] .product-highlights,
+[data-theme="dark"] .product-highlights__container {
+  background-color: var(--color-bg) !important;
+}
+
+[data-theme="dark"] .product-highlights__column {
+  background-color: var(--color-card-bg) !important;
+  border-color: var(--color-border) !important;
+}
+
 [data-theme="dark"] .product-highlights__title {
   color: var(--color-text-primary) !important;
+}
+
+/* Features Icons Grid */
+[data-theme="dark"] .features-icons-grid,
+[data-theme="dark"] [class*="features-icons-grid"] {
+  background-color: var(--color-bg) !important;
+}
+
+/* ============================================
+   SKIP TO CONTENT LINK
+   ============================================ */
+
+[data-theme="dark"] .skip-to-content-link,
+[data-theme="dark"] a.skip-to-content-link {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
 }
 
 /* ============================================
    WHOLESALE BANNER STYLES
    ============================================ */
 
+[data-theme="dark"] .wholesale-banner-section,
+[data-theme="dark"] [class*="wholesale-banner-section"],
+[data-theme="dark"] [class*="wholesale-banner-template"] {
+  background-color: var(--color-primary) !important;
+}
+
 [data-theme="dark"] [class*="wholesale-banner"] {
-  background-color: var(--color-banner-bg) !important;
-  background: var(--color-banner-bg) !important;
+  background-color: var(--color-primary) !important;
+  background: var(--color-primary) !important;
   color: var(--color-banner-text) !important;
 }
 
@@ -857,7 +907,10 @@ p.sig-desc {
   color: var(--color-quote) !important;
 }
 
-[data-theme="dark"] .customer-reviews__text {
+[data-theme="dark"] .customer-reviews__text,
+[data-theme="dark"] .customer-reviews__text.rte,
+[data-theme="dark"] .customer-reviews__text.rte p,
+[data-theme="dark"] .customer-reviews__text p {
   color: var(--color-text-secondary) !important;
 }
 
@@ -896,8 +949,16 @@ p.sig-desc {
    ============================================ */
 
 [data-theme="dark"] .banner,
-[data-theme="dark"] .banner__box {
+[data-theme="dark"] .banner__box,
+[data-theme="dark"] .banner__content {
   background-color: var(--color-surface) !important;
+}
+
+[data-theme="dark"] .banner__box,
+[data-theme="dark"] .banner__box *,
+[data-theme="dark"] .banner__buttons,
+[data-theme="dark"] .banner__buttons * {
+  color: var(--color-text-primary) !important;
 }
 
 [data-theme="dark"] .banner__heading {
