@@ -16,6 +16,7 @@
   - horizontal_class: {Boolean} Add a card--horizontal class if set to true. Default: false (optional)
   - horizontal_quick_add: {Boolean} Changes the quick add button styles when set to true. Default: false (optional)
   - placeholder_image: {String} The placeholder image to use when no product exists. Default: 'product-apparel-2' (optional)
+  - star_image: {Object} Image to display under the product title. (optional)
 
   Usage:
   {% render 'card-product', show_vendor: section.settings.show_vendor %}
@@ -39,29 +40,14 @@
     if ratio == 0 or ratio == null
       assign ratio = 1
     endif
-    
+
     # Check if product price is one dollar (100 cents)
     assign is_one_dollar_price = false
     if card_product.price == 100
       assign is_one_dollar_price = true
     endif
-    
-    # Check if one dollar price RFQ is enabled in section settings
-    assign show_one_dollar_rfq = false
-    if section.settings.enable_zero_price_rfq and is_one_dollar_price
-      assign show_one_dollar_rfq = true
-    endif
-    
-    # Determine RFQ link for one dollar price products
-    assign zero_rfq_link = section.settings.zero_price_rfq_link
-    if zero_rfq_link == blank
-      assign zero_rfq_link = section.settings.rfq_link
-    endif
-    if zero_rfq_link == blank
-      assign zero_rfq_link = '/pages/contact'
-    endif
   -%}
-  <div class="card-wrapper product-card-wrapper underline-links-hover{% if show_one_dollar_rfq %} price-zero{% endif %}">
+  <div class="card-wrapper product-card-wrapper underline-links-hover{% if is_one_dollar_price %} card--one-dollar{% endif %}">
     <div
       class="
         card card--{{ settings.card_style }}
@@ -132,51 +118,51 @@
       </div>
 
       <div class="card__content">
-        <div class="card__information"{% if section.settings.show_card_debug %} style="border: 2px solid blue;"{% endif %}>
-          {%- comment -%} DEBUG: Show if one dollar price detected {%- endcomment -%}
-          {%- if section.settings.show_card_debug and is_one_dollar_price -%}
-            <div style="background: yellow; padding: 5px; margin: 5px 0;">
-              DEBUG: One dollar price detected! Price = {{ card_product.price }}
-              <br>RFQ Enabled: {{ section.settings.enable_zero_price_rfq }}
-              <br>Show RFQ: {{ show_one_dollar_rfq }}
-            </div>
-          {%- endif -%}
-          
-          {%- comment -%} Custom Price Layout {%- endcomment -%}
-          {%- liquid
-            assign price = card_product.price | money
-            assign compare_at_price = card_product.compare_at_price | money
-            
-            if settings.currency_code_enabled
-              assign price = card_product.price | money_with_currency
-              assign compare_at_price = card_product.compare_at_price | money_with_currency
-            endif
-          -%}
-
-          {%- comment -%} Request for Quote Button for $1 products (placed BEFORE title, inside card__information) {%- endcomment -%}
-          {%- if show_one_dollar_rfq -%}
-            {%- if section.settings.show_card_debug -%}
-              <div style="background: red; padding: 5px; margin: 5px 0;">
-                DEBUG: RFQ button INSIDE card__information (BEFORE title)
-                <br>Link: {{ card_product.url }}
-              </div>
+        {%- comment -%} SKU and Variant Count Display {%- endcomment -%}
+        {%- liquid
+          assign product_sku = card_product.selected_or_first_available_variant.sku
+          assign variant_count = card_product.variants.size
+        -%}
+        {%- if product_sku != blank or variant_count >= 1 -%}
+          <div class="card__sku-variants">
+            {%- if product_sku != blank -%}
+              <span class="card__sku">{{ product_sku }}</span>
             {%- endif -%}
-            <a href="{{ card_product.url }}" class="rfq-button-zero-price rfq-button-top"{% if section.settings.show_card_debug %} style="border: 3px solid red;"{% endif %}>
-              View Parts
-            </a>
-          {%- endif -%}
+            {%- if product_sku != blank and variant_count >= 1 -%}
+              <span class="card__separator">|</span>
+            {%- endif -%}
+            {%- if variant_count > 1 -%}
+              <span class="card__variant-count">{{ variant_count }} Options</span>
+            {%- else -%}
+              <span class="card__variant-count">1 Option</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
 
-          {%- unless show_one_dollar_rfq -%}
+        {%- comment -%} Product Title (positioned under SKU/variants) {%- endcomment -%}
+        <h3 class="card__heading custom-product-title"{% if section.settings.show_card_debug %} style="border: 2px solid green;"{% endif %}>
+          <a
+            href="{{ card_product.url }}"
+            id="CardLink-{{ section_id }}-{{ card_product.id }}"
+            class="full-unstyled-link"
+            aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }}"
+          >
+            {{ card_product.title | escape }}
+          </a>
+        </h3>
+
+        <div class="card__information">
+          {%- unless is_one_dollar_price -%}
+            {%- comment -%} Custom Price Layout - Hidden for $1 products {%- endcomment -%}
+            {%- liquid
+              assign compare_at_price = card_product.compare_at_price | money
+            -%}
+
             <div class="custom-price-wrapper">
               {%- if card_product.compare_at_price > card_product.price and card_product.available -%}
                 {%- comment -%} On Sale Layout {%- endcomment -%}
-                
                 <div class="custom-price-line">
-                  {%- assign price_dollars = card_product.price | divided_by: 100 -%}
-                  {%- assign price_cents = card_product.price | modulo: 100 -%}
-                  <span class="custom-price custom-price--bold">
-                    {{ price_dollars }}<span class="price-cents">.{%- if price_cents < 10 -%}0{%- endif -%}{{ price_cents }}</span>
-                  </span>
+                  <span class="custom-price custom-price--bold">${% assign price_dollars = card_product.price | divided_by: 100 %}{% assign price_cents = card_product.price | modulo: 100 %}{{ price_dollars }}.{% if price_cents < 10 %}0{% endif %}{{ price_cents }}</span>
                   <span class="custom-price custom-price--compare">{{ compare_at_price }}</span>
                 </div>
                 {%- assign savings = card_product.compare_at_price | minus: card_product.price -%}
@@ -184,114 +170,112 @@
                 <div class="custom-savings-badge">
                   Save {{ savings | money }} ({{ savings_percent }}%)
                 </div>
-                
+
               {%- else -%}
                 {%- comment -%} Regular Price {%- endcomment -%}
                 <div class="custom-price-line">
-                  <span class="custom-price custom-price--bold">{{ price }}</span>
+                  <span class="custom-price custom-price--bold">${% assign price_dollars = card_product.price | divided_by: 100 %}{% assign price_cents = card_product.price | modulo: 100 %}{{ price_dollars }}.{% if price_cents < 10 %}0{% endif %}{{ price_cents }}</span>
                 </div>
               {%- endif -%}
             </div>
           {%- endunless -%}
-
-          {%- comment -%} Product Title {%- endcomment -%}
-          <h3 class="card__heading custom-product-title"{% if section.settings.show_card_debug %} style="border: 2px solid green;"{% endif %}>
-            <a
-              href="{{ card_product.url }}"
-              id="CardLink-{{ section_id }}-{{ card_product.id }}"
-              class="full-unstyled-link"
-              aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }}"
-            >
-              {{ card_product.title | escape }}
-            </a>
-          </h3>
         </div>
 
-        {%- comment -%} Quick Add Button (only for non-one-dollar price products) {%- endcomment -%}
-        {%- unless show_one_dollar_rfq -%}
+        {%- if star_image -%}
+          <div class="card__star-image">
+            {{ star_image | image_url: width: 200 | image_tag }}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Button - Request a Quote for $1 products, Quick Add for others {%- endcomment -%}
+        {%- if is_one_dollar_price -%}
+          <div class="quick-add no-js-hidden">
+            <a href="{{ card_product.url }}" class="button button--full-width button--rfq">
+              Request a Quote
+            </a>
+          </div>
+        {%- elsif quick_add == 'standard' -%}
           {% assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id %}
-          {% if quick_add == 'standard' %}
-            <div class="quick-add no-js-hidden">
-              {%- liquid
-                assign qty_rules = false
-                if card_product.selected_or_first_available_variant.quantity_rule.min > 1 or card_product.selected_or_first_available_variant.quantity_rule.max != null or card_product.selected_or_first_available_variant.quantity_rule.increment > 1
-                  assign qty_rules = true
-                endif
-              -%}
-              {%- if card_product.variants_count > 1 or qty_rules -%}
-                <modal-opener data-modal="#QuickAdd-{{ card_product.id }}">
+          <div class="quick-add no-js-hidden">
+            {%- liquid
+              assign qty_rules = false
+              if card_product.selected_or_first_available_variant.quantity_rule.min > 1 or card_product.selected_or_first_available_variant.quantity_rule.max != null or card_product.selected_or_first_available_variant.quantity_rule.increment > 1
+                assign qty_rules = true
+              endif
+            -%}
+            {%- if card_product.variants_count > 1 or qty_rules -%}
+              <modal-opener data-modal="#QuickAdd-{{ card_product.id }}">
+                <button
+                  id="{{ product_form_id }}-submit"
+                  type="submit"
+                  name="add"
+                  class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add animate-arrow{% endif %}"
+                  aria-haspopup="dialog"
+                  aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
+                  data-product-url="{{ card_product.url }}"
+                >
+                  {{ 'products.product.choose_options' | t }}
+                  {%- if horizontal_quick_add -%}
+                    <span class="icon-wrap">
+                      {{- 'icon-arrow.svg' | inline_asset_content -}}
+                    </span>
+                  {%- endif -%}
+                  {%- render 'loading-spinner' -%}
+                </button>
+              </modal-opener>
+            {%- else -%}
+              <product-form data-section-id="{{ section.id }}">
+                {%- form 'product',
+                  card_product,
+                  id: product_form_id,
+                  class: 'form',
+                  novalidate: 'novalidate',
+                  data-type: 'add-to-cart-form'
+                -%}
+                  <input
+                    type="hidden"
+                    name="id"
+                    value="{{ card_product.selected_or_first_available_variant.id }}"
+                    class="product-variant-id"
+                    {% if card_product.selected_or_first_available_variant.available == false %}
+                      disabled
+                    {% endif %}
+                  >
                   <button
                     id="{{ product_form_id }}-submit"
                     type="submit"
                     name="add"
-                    class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add animate-arrow{% endif %}"
+                    class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}"
                     aria-haspopup="dialog"
                     aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
-                    data-product-url="{{ card_product.url }}"
+                    aria-live="polite"
+                    data-sold-out-message="true"
+                    {% if card_product.selected_or_first_available_variant.available == false %}
+                      disabled
+                    {% endif %}
                   >
-                    {{ 'products.product.choose_options' | t }}
+                    <span>
+                      {%- if card_product.selected_or_first_available_variant.available -%}
+                        {{ 'products.product.add_to_cart' | t }}
+                      {%- else -%}
+                        {{ 'products.product.sold_out' | t }}
+                      {%- endif -%}
+                    </span>
+                    <span class="sold-out-message hidden">
+                      {{ 'products.product.sold_out' | t }}
+                    </span>
                     {%- if horizontal_quick_add -%}
                       <span class="icon-wrap">
-                        {{- 'icon-arrow.svg' | inline_asset_content -}}
+                        {{- 'icon-plus.svg' | inline_asset_content -}}
                       </span>
                     {%- endif -%}
                     {%- render 'loading-spinner' -%}
                   </button>
-                </modal-opener>
-              {%- else -%}
-                <product-form data-section-id="{{ section.id }}">
-                  {%- form 'product',
-                    card_product,
-                    id: product_form_id,
-                    class: 'form',
-                    novalidate: 'novalidate',
-                    data-type: 'add-to-cart-form'
-                  -%}
-                    <input
-                      type="hidden"
-                      name="id"
-                      value="{{ card_product.selected_or_first_available_variant.id }}"
-                      class="product-variant-id"
-                      {% if card_product.selected_or_first_available_variant.available == false %}
-                        disabled
-                      {% endif %}
-                    >
-                    <button
-                      id="{{ product_form_id }}-submit"
-                      type="submit"
-                      name="add"
-                      class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}"
-                      aria-haspopup="dialog"
-                      aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
-                      aria-live="polite"
-                      data-sold-out-message="true"
-                      {% if card_product.selected_or_first_available_variant.available == false %}
-                        disabled
-                      {% endif %}
-                    >
-                      <span>
-                        {%- if card_product.selected_or_first_available_variant.available -%}
-                          {{ 'products.product.add_to_cart' | t }}
-                        {%- else -%}
-                          {{ 'products.product.sold_out' | t }}
-                        {%- endif -%}
-                      </span>
-                      <span class="sold-out-message hidden">
-                        {{ 'products.product.sold_out' | t }}
-                      </span>
-                      {%- if horizontal_quick_add -%}
-                        <span class="icon-wrap">
-                          {{- 'icon-plus.svg' | inline_asset_content -}}
-                        </span>
-                      {%- endif -%}
-                      {%- render 'loading-spinner' -%}
-                    </button>
-                  {%- endform -%}
-                </product-form>
-              {%- endif -%}
-            </div>
-          {% endif %}
-        {%- endunless -%}
+                {%- endform -%}
+              </product-form>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
 
         {%- comment -%} Badges - Sold Out Only {%- endcomment -%}
         <div class="card__badge {{ settings.badge_position }}">

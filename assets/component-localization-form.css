@@ -100,7 +100,7 @@
 }
 
 .localization-selector option {
-  color: #000000;
+  color: var(--color-text-primary, #000000);
 }
 
 .localization-selector + .disclosure__list-wrapper {

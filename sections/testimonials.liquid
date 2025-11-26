@@ -1,52 +1,61 @@
 {% comment %}
-  CustomerReviews Section
+  Testimonial Section
   Responsive grid on desktop, swipeable carousel on mobile/tablet
 {% endcomment %}
 
 <div
-  id="CustomerReviews-{{ section.id }}"
-  class="customer-reviews color-{{ section.settings.color_scheme }}"
+  id="Testimonial-{{ section.id }}"
+  class="testimonial color-{{ section.settings.color_scheme }}"
   style="
-    --customer-reviews-bg-color: {{ section.settings.background_color }};
-    --customer-reviews-padding-top: {{ section.settings.padding_top }}px;
-    --customer-reviews-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --testimonial-bg-color: {{ section.settings.background_color }};
+    --testimonial-padding-top: {{ section.settings.padding_top }}px;
+    --testimonial-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --testimonial-badge-bg: {{ section.settings.badge_bg_color }};
+    --testimonial-badge-color: {{ section.settings.badge_text_color }};
+    --testimonial-heading-size: {{ section.settings.heading_size }}px;
+    --testimonial-heading-weight: {{ section.settings.heading_weight }};
+    --testimonial-heading-color: {{ section.settings.heading_color }};
+    --testimonial-description-size: {{ section.settings.description_size }}px;
+    --testimonial-description-color: {{ section.settings.description_color }};
+    --testimonial-star-color: {{ section.settings.star_color }};
+    --testimonial-quote-color: {{ section.settings.quote_icon_color }};
+    --testimonial-text-size: {{ section.settings.review_text_size }}px;
+    --testimonial-text-color: {{ section.settings.review_text_color }};
+    --testimonial-name-weight: {{ section.settings.name_weight }};
+    --testimonial-name-color: {{ section.settings.name_color }};
+    --testimonial-location-color: {{ section.settings.location_color }};
+    --testimonial-service-bg: {{ section.settings.service_badge_bg }};
+    --testimonial-service-color: {{ section.settings.service_badge_color }};
+    --testimonial-button-bg: {{ section.settings.button_bg_color }};
+    --testimonial-button-color: {{ section.settings.button_text_color }};
+    --testimonial-dot-color: {{ section.settings.dot_color }};
   "
   {% if request.visual_preview_mode %}
     data-shopify-visual-preview
   {% endif %}
 >
-  <div class="customer-reviews__container {{ section.settings.container_width }}">
+  <div class="testimonial__container {{ section.settings.container_width }}">
     
     <!-- Header Content -->
-    <div class="customer-reviews__header">
+    <div class="testimonial__header">
       
       <!-- Badge -->
       {% if section.settings.show_badge and section.settings.badge_text != blank %}
-        <div class="customer-reviews__badge" style="
-          background-color: {{ section.settings.badge_bg_color }};
-          color: {{ section.settings.badge_text_color }};
-        ">
+        <div class="testimonial__badge">
           {{ section.settings.badge_text }}
         </div>
       {% endif %}
 
       <!-- Main Heading -->
       {% if section.settings.heading != blank %}
-        <h2 class="customer-reviews__heading" style="
-          font-size: {{ section.settings.heading_size }}px;
-          font-weight: {{ section.settings.heading_weight }};
-          color: {{ section.settings.heading_color }};
-        ">
+        <h2 class="testimonial__heading">
           {{ section.settings.heading }}
         </h2>
       {% endif %}
 
       <!-- Description -->
       {% if section.settings.description != blank %}
-        <p class="customer-reviews__description" style="
-          font-size: {{ section.settings.description_size }}px;
-          color: {{ section.settings.description_color }};
-        ">
+        <p class="testimonial__description">
           {{ section.settings.description }}
         </p>
       {% endif %}
@@ -54,66 +63,55 @@
     </div>
 
     <!-- Carousel Wrapper (Mobile/Tablet) -->
-    <div class="customer-reviews__carousel-wrapper">
+    <div class="testimonial__carousel-wrapper">
       
       <!-- Reviews Grid/Track -->
-      <div class="customer-reviews__grid" id="carousel-track-{{ section.id }}">
+      <div class="testimonial__grid" id="carousel-track-{{ section.id }}">
         {% for block in section.blocks %}
           {% if block.type == 'review' %}
-            <div class="customer-reviews__card" {{ block.shopify_attributes }}>
+            <div class="testimonial__card" {{ block.shopify_attributes }}>
               
               <!-- Star Rating -->
-              <div class="customer-reviews__rating">
+              <div class="testimonial__rating">
                 {% assign rating = block.settings.rating | plus: 0 %}
                 {% for i in (1..5) %}
-                  <span class="customer-reviews__star {% if i <= rating %}customer-reviews__star--filled{% endif %}" style="color: {{ section.settings.star_color }};">
+                  <span class="testimonial__star {% if i <= rating %}testimonial__star--filled{% endif %}">
                     ★
                   </span>
                 {% endfor %}
               </div>
 
               <!-- Quote Icon -->
-              <div class="customer-reviews__quote-icon" style="color: {{ section.settings.quote_icon_color }};">
+              <div class="testimonial__quote-icon">
                 {{ section.settings.quote_icon }}
               </div>
 
               <!-- Review Text -->
               {% if block.settings.review_text != blank %}
-                <blockquote class="customer-reviews__text" style="
-                  font-size: {{ section.settings.review_text_size }}px;
-                  color: {{ section.settings.review_text_color }};
-                ">
+                <blockquote class="testimonial__text">
                   "{{ block.settings.review_text }}"
                 </blockquote>
               {% endif %}
 
               <!-- Customer Info -->
-              <div class="customer-reviews__customer-info">
-                
-                <div class="customer-reviews__customer-details">
+              <div class="testimonial__customer-info">
+
+                <div class="testimonial__customer-details">
                   {% if block.settings.customer_name != blank %}
-                    <div class="customer-reviews__customer-name" style="
-                      font-weight: {{ section.settings.name_weight }};
-                      color: {{ section.settings.name_color }};
-                    ">
+                    <div class="testimonial__customer-name">
                       {{ block.settings.customer_name }}
                     </div>
                   {% endif %}
-                  
+
                   {% if block.settings.customer_location != blank %}
-                    <div class="customer-reviews__customer-location" style="
-                      color: {{ section.settings.location_color }};
-                    ">
+                    <div class="testimonial__customer-location">
                       {{ block.settings.customer_location }}
                     </div>
                   {% endif %}
                 </div>
 
                 {% if block.settings.service_type != blank %}
-                  <div class="customer-reviews__service-type" style="
-                    background-color: {{ section.settings.service_badge_bg }};
-                    color: {{ section.settings.service_badge_color }};
-                  ">
+                  <div class="testimonial__service-type">
                     {{ block.settings.service_type }}
                   </div>
                 {% endif %}
@@ -126,39 +124,30 @@
       </div>
 
       <!-- Navigation Buttons (Mobile/Tablet Only) -->
-      <div class="customer-reviews__nav">
-        <button 
-          class="customer-reviews__nav-btn customer-reviews__nav-btn--prev" 
+      <div class="testimonial__nav">
+        <button
+          class="testimonial__nav-btn testimonial__nav-btn--prev"
           id="prev-btn-{{ section.id }}"
           aria-label="Previous review"
-          style="
-            background-color: {{ section.settings.button_bg_color }};
-            color: {{ section.settings.button_text_color }};
-          "
         >
           ‹
         </button>
-        <button 
-          class="customer-reviews__nav-btn customer-reviews__nav-btn--next" 
+        <button
+          class="testimonial__nav-btn testimonial__nav-btn--next"
           id="next-btn-{{ section.id }}"
           aria-label="Next review"
-          style="
-            background-color: {{ section.settings.button_bg_color }};
-            color: {{ section.settings.button_text_color }};
-          "
         >
           ›
         </button>
       </div>
 
       <!-- Dots Indicator (Mobile/Tablet Only) -->
-      <div class="customer-reviews__dots" id="dots-{{ section.id }}">
+      <div class="testimonial__dots" id="dots-{{ section.id }}">
         {% for block in section.blocks %}
           {% if block.type == 'review' %}
-            <span 
-              class="customer-reviews__dot {% if forloop.first %}customer-reviews__dot--active{% endif %}" 
+            <span
+              class="testimonial__dot {% if forloop.first %}testimonial__dot--active{% endif %}"
               data-index="{{ forloop.index0 }}"
-              style="background-color: {{ section.settings.dot_color }};"
             ></span>
           {% endif %}
         {% endfor %}
@@ -170,28 +159,28 @@
 </div>
 
 {% stylesheet %}
-  .customer-reviews {
-    background-color: var(--customer-reviews-bg-color);
-    padding: var(--customer-reviews-padding-top) 0 var(--customer-reviews-padding-bottom);
+  .testimonial {
+    background-color: var(--testimonial-bg-color);
+    padding: var(--testimonial-padding-top) 0 var(--testimonial-padding-bottom);
   }
 
-  .customer-reviews__container {
+  .testimonial__container {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
   }
 
-  .customer-reviews__container.full-width {
+  .testimonial__container.full-width {
     max-width: 100%;
   }
 
-  .customer-reviews__header {
+  .testimonial__header {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
   }
 
-  .customer-reviews__badge {
+  .testimonial__badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -199,37 +188,43 @@
     border-radius: 20px;
     font-size: 14px;
     font-weight: 500;
+    font-style: normal;
     margin-bottom: 20px;
+    background-color: var(--testimonial-badge-bg);
+    color: var(--testimonial-badge-color);
   }
 
-  .customer-reviews__heading {
+  .testimonial__heading {
     margin: 0 0 16px 0;
     font-family: var(--font-heading-family);
     line-height: 1.3;
+    font-size: var(--testimonial-heading-size);
+    font-weight: var(--testimonial-heading-weight);
+    color: var(--testimonial-heading-color);
   }
 
-  .customer-reviews__description {
-    margin: 0;
+  .testimonial__description {
+    margin: 20px auto 0 auto;
     line-height: 1.6;
     max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    font-size: var(--testimonial-description-size);
+    color: var(--testimonial-description-color);
   }
 
   /* Carousel Wrapper */
-  .customer-reviews__carousel-wrapper {
+  .testimonial__carousel-wrapper {
     position: relative;
   }
 
-  .customer-reviews__grid {
+  .testimonial__grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
   }
 
-  .customer-reviews__card {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
+  .testimonial__card {
+    background: var(--color-card-bg, #ffffff);
+    border: 1px solid var(--color-border, #e5e7eb);
     border-radius: 12px;
     padding: 24px;
     position: relative;
@@ -237,36 +232,37 @@
     transition: all 0.3s ease;
   }
 
-  .customer-reviews__card:hover {
+  .testimonial__card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   }
 
-  .customer-reviews__rating {
+  .testimonial__rating {
     display: flex;
     gap: 2px;
     margin-bottom: 16px;
   }
 
-  .customer-reviews__star {
+  .testimonial__star {
     font-size: 16px;
-    color: #d1d5db;
+    color: var(--color-border, #d1d5db);
     transition: color 0.2s ease;
   }
 
-  .customer-reviews__star--filled {
-    color: inherit;
+  .testimonial__star--filled {
+    color: var(--testimonial-star-color);
   }
 
-  .customer-reviews__quote-icon {
+  .testimonial__quote-icon {
     position: absolute;
     top: 20px;
     right: 24px;
     font-size: 24px;
     opacity: 0.3;
+    color: var(--testimonial-quote-color);
   }
 
-  .customer-reviews__text {
+  .testimonial__text {
     margin: 0 0 24px 0;
     font-style: italic;
     line-height: 1.6;
@@ -279,73 +275,80 @@
     text-overflow: ellipsis;
     word-wrap: break-word;
     hyphens: auto;
+    font-size: var(--testimonial-text-size);
+    color: var(--testimonial-text-color);
   }
 
-  .customer-reviews__customer-info {
+  .testimonial__customer-info {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
     gap: 16px;
   }
 
-  .customer-reviews__customer-details {
+  .testimonial__customer-details {
     flex: 1;
   }
 
-  .customer-reviews__customer-name {
+  .testimonial__customer-name {
     font-size: 16px;
     margin-bottom: 4px;
+    font-weight: var(--testimonial-name-weight);
+    color: var(--testimonial-name-color);
   }
 
-  .customer-reviews__customer-location {
+  .testimonial__customer-location {
     font-size: 13px;
     opacity: 0.7;
+    color: var(--testimonial-location-color);
   }
 
-  .customer-reviews__service-type {
+  .testimonial__service-type {
     padding: 6px 12px;
     border-radius: 16px;
     font-size: 11px;
     font-weight: 600;
     white-space: nowrap;
     text-align: center;
+    background-color: var(--testimonial-service-bg);
+    color: var(--testimonial-service-color);
   }
 
   /* Navigation & Dots - Hidden on Desktop */
-  .customer-reviews__nav,
-  .customer-reviews__dots {
+  .testimonial__nav,
+  .testimonial__dots {
     display: none;
   }
 
   /* Tablet Responsive (769px - 1024px) */
   @media screen and (min-width: 769px) and (max-width: 1024px) {
-    .customer-reviews__carousel-wrapper {
+    .testimonial__carousel-wrapper {
       overflow: hidden;
-      padding-bottom: 60px;
+      padding-bottom: 48px;
     }
 
-    .customer-reviews__grid {
+    .testimonial__grid {
       display: flex;
       transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       touch-action: pan-y pinch-zoom;
       gap: 20px;
     }
 
-    .customer-reviews__card {
+    .testimonial__card {
       min-width: calc(50% - 10px);
       width: calc(50% - 10px);
       flex-shrink: 0;
     }
 
     /* Show Navigation */
-    .customer-reviews__nav {
+    .testimonial__nav {
       display: flex;
       gap: 12px;
       justify-content: center;
       margin-top: 24px;
     }
 
-    .customer-reviews__nav-btn {
+    .testimonial__nav-btn {
       width: 48px;
       height: 48px;
       border-radius: 50%;
@@ -358,35 +361,38 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
       transition: all 0.3s ease;
       font-weight: 300;
+      background-color: var(--testimonial-button-bg);
+      color: var(--testimonial-button-color);
     }
 
-    .customer-reviews__nav-btn:active {
+    .testimonial__nav-btn:active {
       transform: scale(0.95);
     }
 
-    .customer-reviews__nav-btn:disabled {
+    .testimonial__nav-btn:disabled {
       opacity: 0.3;
       cursor: not-allowed;
     }
 
     /* Show Dots */
-    .customer-reviews__dots {
+    .testimonial__dots {
       display: flex;
       justify-content: center;
       gap: 8px;
       margin-top: 20px;
     }
 
-    .customer-reviews__dot {
+    .testimonial__dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
       opacity: 0.3;
       transition: all 0.3s ease;
       cursor: pointer;
+      background-color: var(--testimonial-dot-color);
     }
 
-    .customer-reviews__dot--active {
+    .testimonial__dot--active {
       opacity: 1;
       width: 24px;
       border-radius: 4px;
@@ -395,23 +401,23 @@
 
   /* Mobile Responsive (max 768px) */
   @media screen and (max-width: 768px) {
-    .customer-reviews__header {
+    .testimonial__header {
       margin-bottom: 40px;
     }
 
-    .customer-reviews__carousel-wrapper {
+    .testimonial__carousel-wrapper {
       overflow: hidden;
-      padding-bottom: 60px;
+      padding-bottom: 48px;
     }
 
-    .customer-reviews__grid {
+    .testimonial__grid {
       display: flex;
       transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       touch-action: pan-y pinch-zoom;
       gap: 0;
     }
 
-    .customer-reviews__card {
+    .testimonial__card {
       min-width: 100%;
       width: 100%;
       padding: 20px;
@@ -419,33 +425,33 @@
       box-sizing: border-box;
     }
 
-    .customer-reviews__heading {
+    .testimonial__heading {
       font-size: clamp(24px, 6vw, 32px) !important;
     }
 
-    .customer-reviews__description {
+    .testimonial__description {
       font-size: 15px !important;
     }
 
-    .customer-reviews__customer-info {
+    .testimonial__customer-info {
       flex-direction: column;
       align-items: flex-start;
       gap: 12px;
     }
 
-    .customer-reviews__text {
+    .testimonial__text {
       -webkit-line-clamp: 6;
     }
 
     /* Show Navigation */
-    .customer-reviews__nav {
+    .testimonial__nav {
       display: flex;
       gap: 12px;
       justify-content: center;
       margin-top: 24px;
     }
 
-    .customer-reviews__nav-btn {
+    .testimonial__nav-btn {
       width: 48px;
       height: 48px;
       border-radius: 50%;
@@ -458,35 +464,38 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
       transition: all 0.3s ease;
       font-weight: 300;
+      background-color: var(--testimonial-button-bg);
+      color: var(--testimonial-button-color);
     }
 
-    .customer-reviews__nav-btn:active {
+    .testimonial__nav-btn:active {
       transform: scale(0.95);
     }
 
-    .customer-reviews__nav-btn:disabled {
+    .testimonial__nav-btn:disabled {
       opacity: 0.3;
       cursor: not-allowed;
     }
 
     /* Show Dots */
-    .customer-reviews__dots {
+    .testimonial__dots {
       display: flex;
       justify-content: center;
       gap: 8px;
       margin-top: 20px;
     }
 
-    .customer-reviews__dot {
+    .testimonial__dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
       opacity: 0.3;
       transition: all 0.3s ease;
       cursor: pointer;
+      background-color: var(--testimonial-dot-color);
     }
 
-    .customer-reviews__dot--active {
+    .testimonial__dot--active {
       opacity: 1;
       width: 24px;
       border-radius: 4px;
@@ -494,7 +503,7 @@
   }
 
   @media screen and (max-width: 480px) {
-    .customer-reviews__container {
+    .testimonial__container {
       padding: 0 16px;
     }
   }
@@ -510,8 +519,8 @@
     
     if (!track || !prevBtn || !nextBtn || !dotsContainer) return;
     
-    const cards = track.querySelectorAll('.customer-reviews__card');
-    const dots = dotsContainer.querySelectorAll('.customer-reviews__dot');
+    const cards = track.querySelectorAll('.testimonial__card');
+    const dots = dotsContainer.querySelectorAll('.testimonial__dot');
     
     let currentIndex = 0;
     let startX = 0;
@@ -551,7 +560,7 @@
       
       // Update dots
       dots.forEach((dot, index) => {
-        dot.classList.toggle('customer-reviews__dot--active', index === currentIndex);
+        dot.classList.toggle('testimonial__dot--active', index === currentIndex);
       });
       
       // Update button states
@@ -629,9 +638,9 @@
 
 {% schema %}
 {
-  "name": "Customer Reviews",
+  "name": "Testimonials",
   "tag": "section",
-  "class": "customer-reviews-wrapper section-wrapper",
+  "class": "testimonial-wrapper section-wrapper",
   "settings": [
     {
       "type": "header",
@@ -667,7 +676,7 @@
       "type": "color",
       "id": "background_color",
       "label": "Background Color",
-      "default": "#f8f9fa"
+      "default": "#F5F7FA"
     },
     {
       "type": "header",
@@ -689,7 +698,7 @@
       "type": "color",
       "id": "badge_bg_color",
       "label": "Badge Background Color",
-      "default": "#007bff"
+      "default": "#005496"
     },
     {
       "type": "color",
@@ -711,7 +720,7 @@
       "type": "color",
       "id": "heading_color",
       "label": "Heading Color",
-      "default": "#1a2332"
+      "default": "#2B2C2D"
     },
     {
       "type": "range",
@@ -753,7 +762,7 @@
       "type": "color",
       "id": "description_color",
       "label": "Description Color",
-      "default": "#666666"
+      "default": "#6B7280"
     },
     {
       "type": "range",
@@ -785,7 +794,7 @@
       "type": "color",
       "id": "quote_icon_color",
       "label": "Quote Icon Color",
-      "default": "#e5e7eb"
+      "default": "#E1E5EA"
     },
     {
       "type": "range",
@@ -801,7 +810,7 @@
       "type": "color",
       "id": "review_text_color",
       "label": "Review Text Color",
-      "default": "#333333"
+      "default": "#2B2C2D"
     },
     {
       "type": "select",
@@ -827,25 +836,25 @@
       "type": "color",
       "id": "name_color",
       "label": "Customer Name Color",
-      "default": "#1a2332"
+      "default": "#2B2C2D"
     },
     {
       "type": "color",
       "id": "location_color",
       "label": "Location Color",
-      "default": "#666666"
+      "default": "#6B7280"
     },
     {
       "type": "color",
       "id": "service_badge_bg",
       "label": "Service Badge Background",
-      "default": "#e3f2fd"
+      "default": "#E1E5EA"
     },
     {
       "type": "color",
       "id": "service_badge_color",
       "label": "Service Badge Text Color",
-      "default": "#1976d2"
+      "default": "#005496"
     },
     {
       "type": "header",
@@ -855,7 +864,7 @@
       "type": "color",
       "id": "button_bg_color",
       "label": "Button Background Color",
-      "default": "#007bff"
+      "default": "#005496"
     },
     {
       "type": "color",
@@ -867,7 +876,7 @@
       "type": "color",
       "id": "dot_color",
       "label": "Dot Indicator Color",
-      "default": "#007bff"
+      "default": "#005496"
     },
     {
       "type": "header",
@@ -937,7 +946,7 @@
   ],
   "presets": [
     {
-      "name": "Customer Reviews",
+      "name": "Testimonials",
       "category": "Custom",
       "blocks": [
         {

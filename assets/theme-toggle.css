@@ -1,0 +1,1447 @@
+/* ============================================
+   LIGHT / DARK MODE COLOR SCHEME
+   ============================================
+
+   Section Naming Convention:
+   - hero-video (formerly home-video-hero2)
+   - content-block (formerly custom-section)
+   - testimonials (formerly customerreview)
+   - product-grid (formerly product-highlights)
+   - features-bar (formerly feature-highlights)
+   - cta-banner (formerly banner1)
+
+   CSS Class Naming (BEM):
+   - .testimonial__* (formerly .customer-reviews__*)
+   - .content-block__* (formerly .customer-reviews__* in content-block)
+   - .product-grid__* (formerly .product-highlights__*)
+   - .features-bar__* (formerly .sig-* and .features-highlight__*)
+
+   ============================================ */
+
+/* Light Mode (Default) */
+:root,
+[data-theme="light"] {
+  /* ---- Base Colors ---- */
+  --color-bg: #F5F7FA;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #F0F2F5;
+  --color-overlay: rgba(0, 0, 0, 0.5);
+
+  /* ---- Text Colors ---- */
+  --color-text-primary: #2B2C2D;
+  --color-text-secondary: #6B7280;
+  --color-text-muted: #9CA3AF;
+  --color-text-inverse: #FFFFFF;
+
+  /* ---- Border Colors ---- */
+  --color-border: #E1E5EA;
+  --color-border-light: #F0F2F5;
+  --color-border-dark: #D1D5DB;
+
+  /* ---- Brand Colors ---- */
+  --color-primary: #005496;
+  --color-primary-hover: #003E70;
+  --color-primary-light: #E6F0F7;
+
+  --color-secondary: #1D6AE5;
+  --color-secondary-hover: #1550B0;
+  --color-secondary-light: #EBF2FC;
+
+  --color-accent: #DD6727;
+  --color-accent-hover: #BE531D;
+  --color-accent-light: #FDF3ED;
+
+  /* ---- Semantic Colors ---- */
+  --color-success: #28A745;
+  --color-success-hover: #218838;
+  --color-success-light: #E8F5EC;
+
+  --color-warning: #F59E0B;
+  --color-warning-hover: #D97706;
+  --color-warning-light: #FEF7E6;
+
+  --color-error: #DC2626;
+  --color-error-hover: #B91C1C;
+  --color-error-light: #FEE8E8;
+
+  --color-info: #3B82F6;
+  --color-info-hover: #2563EB;
+  --color-info-light: #EFF6FF;
+
+  /* ---- Card Colors ---- */
+  --color-card-bg: #FFFFFF;
+  --color-card-hover: #F9FAFB;
+  --color-card-separator: #E1E5EA;
+  --color-card-shadow: rgba(0, 0, 0, 0.08);
+
+  /* ---- Product Colors ---- */
+  --color-product-title: #2B2C2D;
+  --color-sku: #6B7280;
+  --color-compare-price: #9CA3AF;
+  --color-sale-price: #DC2626;
+
+  /* ---- Button Colors ---- */
+  --color-button-text: #FFFFFF;
+  --color-button-disabled: #9CA3AF;
+
+  /* ---- Icon Colors ---- */
+  --color-icon: #6B7280;
+  --color-icon-hover: #005496;
+  --color-icon-muted: #9CA3AF;
+
+  /* ---- Badge Colors ---- */
+  --color-badge-bg: #005496;
+  --color-badge-text: #FFFFFF;
+  --color-badge-secondary-bg: #E1E5EA;
+  --color-badge-secondary-text: #005496;
+
+  /* ---- Star Rating Colors ---- */
+  --color-star-filled: #FBBF24;
+  --color-star-unfilled: #E1E5EA;
+
+  /* ---- Quote/Decorative Colors ---- */
+  --color-quote: #E1E5EA;
+  --color-quote-text: #6B7280;
+
+  /* ---- Navigation Colors ---- */
+  --color-nav-bg: #005496;
+  --color-nav-text: #FFFFFF;
+  --color-nav-hover: #003E70;
+  --color-dot-active: #005496;
+  --color-dot-inactive: rgba(0, 84, 150, 0.3);
+
+  /* ---- Banner Colors ---- */
+  --color-banner-bg: #005496;
+  --color-banner-text: #FFFFFF;
+  --color-banner-button-bg: #28A745;
+  --color-banner-button-hover: #218838;
+
+  /* ---- Section Backgrounds ---- */
+  --color-section-light: #F5F7FA;
+  --color-section-alt: #FFFFFF;
+
+  /* ---- Link Colors ---- */
+  --color-link: #005496;
+  --color-link-hover: #003E70;
+  --color-link-visited: #1550B0;
+
+  /* ---- Focus States ---- */
+  --color-focus-ring: rgba(0, 84, 150, 0.5);
+  --color-focus-outline: #005496;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+  /* ---- Base Colors ---- */
+  --color-bg: #0F172A;
+  --color-surface: #1E293B;
+  --color-surface-alt: #243045;
+  --color-surface-hover: #2D3A50;
+  --color-overlay: rgba(0, 0, 0, 0.7);
+
+  /* ---- Text Colors ---- */
+  --color-text-primary: #F1F5F9;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted: #64748B;
+  --color-text-inverse: #0F172A;
+
+  /* ---- Border Colors ---- */
+  --color-border: #2D3A50;
+  --color-border-light: #334155;
+  --color-border-dark: #1E293B;
+
+  /* ---- Brand Colors ---- */
+  --color-primary: #60A5FA;
+  --color-primary-hover: #93C5FD;
+  --color-primary-light: #1E3A5F;
+
+  --color-secondary: #818CF8;
+  --color-secondary-hover: #A5B4FC;
+  --color-secondary-light: #2E3A59;
+
+  --color-accent: #F28C38;
+  --color-accent-hover: #FB923C;
+  --color-accent-light: #3D2A1F;
+
+  /* ---- Semantic Colors ---- */
+  --color-success: #4ADE80;
+  --color-success-hover: #86EFAC;
+  --color-success-light: #1A3D2E;
+
+  --color-warning: #FBBF24;
+  --color-warning-hover: #FCD34D;
+  --color-warning-light: #3D3520;
+
+  --color-error: #F87171;
+  --color-error-hover: #FCA5A5;
+  --color-error-light: #3D2020;
+
+  --color-info: #60A5FA;
+  --color-info-hover: #93C5FD;
+  --color-info-light: #1E3A5F;
+
+  /* ---- Card Colors ---- */
+  --color-card-bg: #1E293B;
+  --color-card-hover: #243045;
+  --color-card-separator: #2D3A50;
+  --color-card-shadow: rgba(0, 0, 0, 0.3);
+
+  /* ---- Product Colors ---- */
+  --color-product-title: #F1F5F9;
+  --color-sku: #94A3B8;
+  --color-compare-price: #64748B;
+  --color-sale-price: #F87171;
+
+  /* ---- Button Colors ---- */
+  --color-button-text: #FFFFFF;
+  --color-button-disabled: #475569;
+
+  /* ---- Icon Colors ---- */
+  --color-icon: #94A3B8;
+  --color-icon-hover: #60A5FA;
+  --color-icon-muted: #64748B;
+
+  /* ---- Badge Colors ---- */
+  --color-badge-bg: #60A5FA;
+  --color-badge-text: #0F172A;
+  --color-badge-secondary-bg: #2D3A50;
+  --color-badge-secondary-text: #60A5FA;
+
+  /* ---- Star Rating Colors ---- */
+  --color-star-filled: #FBBF24;
+  --color-star-unfilled: #475569;
+
+  /* ---- Quote/Decorative Colors ---- */
+  --color-quote: #475569;
+  --color-quote-text: #94A3B8;
+
+  /* ---- Navigation Colors ---- */
+  --color-nav-bg: #60A5FA;
+  --color-nav-text: #0F172A;
+  --color-nav-hover: #93C5FD;
+  --color-dot-active: #60A5FA;
+  --color-dot-inactive: rgba(96, 165, 250, 0.3);
+
+  /* ---- Banner Colors ---- */
+  --color-banner-bg: #1E3A5F;
+  --color-banner-text: #F1F5F9;
+  --color-banner-button-bg: #4ADE80;
+  --color-banner-button-hover: #86EFAC;
+
+  /* ---- Section Backgrounds ---- */
+  --color-section-light: #1E293B;
+  --color-section-alt: #0F172A;
+
+  /* ---- Link Colors ---- */
+  --color-link: #60A5FA;
+  --color-link-hover: #93C5FD;
+  --color-link-visited: #A5B4FC;
+
+  /* ---- Focus States ---- */
+  --color-focus-ring: rgba(96, 165, 250, 0.5);
+  --color-focus-outline: #60A5FA;
+}
+
+/* ============================================
+   FORCED THEME CONSISTENCY (BOTH MODES)
+   Override saved schema values to ensure theme unity
+   ============================================ */
+
+/* Promo Bar - Force primary color */
+.promo-bar {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+.promo-bar a,
+.promo-bar__links a {
+  color: var(--color-button-text) !important;
+}
+
+/* Search Button */
+.header2__search-button {
+  background-color: var(--color-primary) !important;
+}
+
+.header2__search-button:hover {
+  background-color: var(--color-primary-hover) !important;
+}
+
+/* Navigation Links */
+.header2__nav-link,
+.header2__mobile-nav-link {
+  color: var(--color-text-primary) !important;
+}
+
+.header2__nav-link--shop-all,
+.header2__mobile-nav-link--shop-all {
+  background-color: var(--color-surface-alt) !important;
+  color: var(--color-text-primary) !important;
+}
+
+/* Store Info */
+.header2__store-info,
+.header2__store-icon,
+.header2__store-details {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Testimonials (formerly Customer Reviews / customerreview) */
+.testimonial__heading {
+  color: var(--color-text-primary) !important;
+}
+
+.testimonial__description {
+  color: var(--color-text-secondary) !important;
+}
+
+.testimonial__text,
+.testimonial__text blockquote,
+blockquote.testimonial__text,
+.testimonial__text.rte,
+.testimonial__text.rte p,
+div.testimonial__text.rte,
+div.testimonial__text.rte p,
+[class*="testimonial__text"] p {
+  color: var(--color-text-primary) !important;
+}
+
+.testimonial__customer-name {
+  color: var(--color-text-primary) !important;
+}
+
+.testimonial__customer-location {
+  color: var(--color-text-muted) !important;
+}
+
+.testimonial__quote-icon {
+  color: var(--color-border) !important;
+}
+
+.testimonial__service-type {
+  background-color: var(--color-surface-alt) !important;
+  color: var(--color-primary) !important;
+}
+
+.testimonial__star {
+  color: var(--color-star-unfilled) !important;
+}
+
+.testimonial__star--filled {
+  color: var(--color-star-filled) !important;
+}
+
+/* Pill/Badge Text - Force white text on primary background */
+.pill-text,
+span.pill-text,
+[class*="pill-text"],
+.testimonial__pill .pill-text {
+  background-color: var(--color-primary) !important;
+  color: #FFFFFF !important;
+}
+
+/* Product Cards */
+.product-card__stars {
+  color: var(--color-star-filled) !important;
+}
+
+.product-card__compare-price {
+  color: var(--color-text-muted) !important;
+}
+
+.product-card__image {
+  background-color: var(--color-surface-alt) !important;
+}
+
+.product-card__name {
+  color: var(--color-link) !important;
+}
+
+/* Banners */
+.banner__heading {
+  color: var(--color-text-primary) !important;
+}
+
+.banner__text,
+.banner__text p {
+  color: var(--color-text-secondary) !important;
+}
+
+.banner-button {
+  background-color: var(--color-success) !important;
+  color: var(--color-button-text) !important;
+}
+
+.banner-button:hover {
+  background-color: var(--color-success-hover) !important;
+}
+
+/* CTA Banner (formerly Wholesale Pricing Banner / banner1) */
+.wholesale-banner-template--25620003651873__banner1_8wY8Ft,
+.wholesale-banner-template--25620003651873__banner1_9VebfT,
+[class*="wholesale-banner"],
+[class*="cta-banner"] {
+  background-color: var(--color-primary) !important;
+}
+
+/* Primary Buttons */
+.button--primary,
+a.button.button--primary {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+.button--primary:hover,
+a.button.button--primary:hover {
+  background-color: var(--color-primary-hover) !important;
+}
+
+/* Features Bar (formerly Feature Highlights / feature-highlights) */
+.features-bar__item,
+.features-bar__item {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+.features-bar__title,
+h3.features-bar__title {
+  color: var(--color-text-primary) !important;
+}
+
+.features-bar__desc,
+p.features-bar__desc {
+  color: var(--color-text-muted) !important;
+}
+
+/* Premium Brands Section - only target specific elements */
+.premium-brands h2 {
+  color: var(--color-text-primary) !important;
+}
+
+/* Brand Spotlight Section - only target specific elements */
+.brand-spotlight__title {
+  color: var(--color-text-primary) !important;
+}
+
+/* Video Hero Section - White text for overlay on video */
+.video-hero__text-block,
+.video-hero__brand,
+.video-hero__headline,
+.video-hero__body {
+  color: #FFFFFF !important;
+}
+
+.video-hero h1,
+.video-hero h2,
+.video-hero p {
+  color: #FFFFFF !important;
+}
+
+/* Home Video Hero / Video Banner - White text for video overlays */
+.home-video-hero__text-block,
+.home-video-hero__brand,
+.home-video-hero__headline,
+.home-video-hero__body,
+.home-video-hero h1,
+.home-video-hero h2,
+.home-video-hero p {
+  color: #FFFFFF !important;
+}
+
+/* Video Banner sections - override general banner rules for video contexts */
+[id^="VideoBanner"] .banner__heading,
+[id^="VideoBanner"] .banner__text,
+[id^="VideoBanner"] .banner__text p,
+[class*="video-banner"] .banner__heading,
+[class*="video-banner"] .banner__text,
+.section-video-hero .banner__heading,
+.section-video-hero .banner__text {
+  color: #FFFFFF !important;
+}
+
+/* Video Banner buttons - blue background with white text */
+[id^="VideoBanner"] .button--primary,
+[id^="VideoBanner"] .button.button--primary,
+[id^="VideoBanner"] .button--secondary,
+[id^="VideoBanner"] .button.button--secondary,
+[id^="VideoBanner"] .button {
+  background-color: #005496 !important;
+  color: #FFFFFF !important;
+  border-color: #005496 !important;
+}
+
+[id^="VideoBanner"] .button--primary:hover,
+[id^="VideoBanner"] .button.button--primary:hover,
+[id^="VideoBanner"] .button--secondary:hover,
+[id^="VideoBanner"] .button.button--secondary:hover,
+[id^="VideoBanner"] .button:hover {
+  background-color: #003E70 !important;
+  border-color: #003E70 !important;
+  color: #FFFFFF !important;
+}
+
+/* Footer - Blue background with white text in light mode */
+.footer {
+  background-color: #005496 !important;
+  color: #FFFFFF !important;
+  padding: 1.5rem !important;
+  padding-top: 1.5rem !important;
+}
+
+.footer a,
+.footer p,
+.footer span,
+.footer h2,
+.footer h3,
+.footer h4,
+.footer li,
+.footer__copyright,
+.footer-block__heading,
+.footer small {
+  color: #FFFFFF !important;
+  text-decoration: none !important;
+}
+
+.footer a:hover {
+  color: rgba(255, 255, 255, 0.8) !important;
+  text-decoration: none !important;
+}
+
+.footer__theme-toggle-section {
+  background-color: #005496 !important;
+  border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.footer__theme-toggle-section .theme-toggle {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.footer__theme-toggle-section .theme-toggle__btn {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.footer__theme-toggle-section .theme-toggle__btn:first-child {
+  border-right-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* RTE Content */
+.rte,
+.rte p {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Default browser link color override */
+a:not([class]):not([style]) {
+  color: var(--color-link) !important;
+}
+
+a:not([class]):not([style]):hover {
+  color: var(--color-link-hover) !important;
+}
+
+/* Footer background - force blue for all color schemes */
+.footer.color-scheme-2,
+.footer[class*="color-scheme"] {
+  background-color: #005496 !important;
+  color: #FFFFFF !important;
+}
+
+/* Ensure white text on non-white/colored backgrounds */
+.promo-bar,
+.promo-bar *,
+[class*="wholesale-banner"],
+[class*="wholesale-banner"] * {
+  color: #FFFFFF !important;
+}
+
+/* Customer Reviews badge - use theme color */
+.testimonial__badge {
+  background-color: #005496 !important;
+  color: #FFFFFF !important;
+}
+
+/* Generic text overrides for common non-theme colors */
+[style*="color: #007BFF"],
+[style*="color:#007BFF"],
+[style*="color: #1976D2"],
+[style*="color:#1976D2"] {
+  color: var(--color-primary) !important;
+}
+
+[style*="background-color: #007BFF"],
+[style*="background:#007BFF"],
+[style*="background-color: #1976D2"],
+[style*="background:#1976D2"] {
+  background-color: var(--color-primary) !important;
+}
+
+[style*="color: #333333"],
+[style*="color:#333333"],
+[style*="color: #1A2332"],
+[style*="color:#1A2332"] {
+  color: var(--color-text-primary) !important;
+}
+
+[style*="color: #666666"],
+[style*="color:#666666"],
+[style*="color: #718096"],
+[style*="color:#718096"] {
+  color: var(--color-text-secondary) !important;
+}
+
+[style*="background-color: #E3F2FD"],
+[style*="background:#E3F2FD"] {
+  background-color: var(--color-surface-alt) !important;
+}
+
+/* ============================================
+   APPLY THEME COLORS TO ELEMENTS
+   ============================================ */
+
+/* Override Shopify's color scheme variables in dark mode */
+[data-theme="dark"] {
+  --color-background: 15, 23, 42 !important;
+  --color-foreground: 241, 245, 249 !important;
+  --gradient-background: #0F172A !important;
+}
+
+/* Body and main backgrounds */
+[data-theme="dark"] body,
+[data-theme="dark"] .shopify-section,
+[data-theme="dark"] .footer {
+  background-color: var(--color-bg) !important;
+  color: var(--color-text-primary) !important;
+}
+
+/* Override all Shopify color scheme backgrounds */
+[data-theme="dark"] [class*="color-scheme"],
+[data-theme="dark"] [class*="color-"] {
+  background-color: var(--color-bg) !important;
+}
+
+/* Surface elements (cards, modals, etc.) */
+[data-theme="dark"] .card,
+[data-theme="dark"] .card__content,
+[data-theme="dark"] .card-wrapper,
+[data-theme="dark"] .product-card-wrapper,
+[data-theme="dark"] .card__inner,
+[data-theme="dark"] .card--card,
+[data-theme="dark"] .card--standard {
+  background-color: var(--color-card-bg) !important;
+  background: var(--color-card-bg) !important;
+}
+
+/* Text colors - with !important */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6,
+[data-theme="dark"] .h1,
+[data-theme="dark"] .h2,
+[data-theme="dark"] .h3,
+[data-theme="dark"] .h4,
+[data-theme="dark"] .h5,
+[data-theme="dark"] .h6 {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] p,
+[data-theme="dark"] span,
+[data-theme="dark"] a,
+[data-theme="dark"] li {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Product card specific - PRICES */
+[data-theme="dark"] .custom-price--bold,
+[data-theme="dark"] .custom-price-line span,
+[data-theme="dark"] .price,
+[data-theme="dark"] .price-item,
+[data-theme="dark"] .price-item--regular,
+[data-theme="dark"] .price-item--sale,
+[data-theme="dark"] .price__regular,
+[data-theme="dark"] .price__sale {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .custom-price--compare,
+[data-theme="dark"] .price-item--compare,
+[data-theme="dark"] .price__compare {
+  color: var(--color-compare-price) !important;
+}
+
+/* Product titles */
+[data-theme="dark"] .custom-product-title,
+[data-theme="dark"] .custom-product-title a,
+[data-theme="dark"] .card__heading,
+[data-theme="dark"] .card__heading a,
+[data-theme="dark"] .card-information__text,
+[data-theme="dark"] .card-information__text a {
+  color: var(--color-product-title) !important;
+}
+
+/* SKU and variant info */
+[data-theme="dark"] .card__sku,
+[data-theme="dark"] .card__variant-count,
+[data-theme="dark"] .card__sku-variants,
+[data-theme="dark"] .card__separator {
+  color: var(--color-sku) !important;
+}
+
+/* Borders */
+[data-theme="dark"] .card,
+[data-theme="dark"] .card__inner,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  border-color: var(--color-border) !important;
+}
+
+/* Buttons - Primary */
+[data-theme="dark"] .button--primary,
+[data-theme="dark"] .shopify-payment-button button {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+[data-theme="dark"] .button--primary:hover,
+[data-theme="dark"] .shopify-payment-button button:hover {
+  background-color: var(--color-primary-hover) !important;
+}
+
+/* Buttons - Secondary / Quick Add */
+[data-theme="dark"] .button--secondary,
+[data-theme="dark"] .quick-add__submit {
+  background-color: transparent !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary) !important;
+}
+
+[data-theme="dark"] .button--secondary:hover,
+[data-theme="dark"] .quick-add__submit:hover {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* RFQ Button */
+[data-theme="dark"] .button--rfq {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* Header */
+[data-theme="dark"] .header,
+[data-theme="dark"] .section-header,
+[data-theme="dark"] .header-wrapper {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .header a,
+[data-theme="dark"] .header__menu-item,
+[data-theme="dark"] .header__icon {
+  color: var(--color-text-primary) !important;
+}
+
+/* Footer */
+[data-theme="dark"] .footer {
+  background-color: var(--color-bg) !important;
+}
+
+[data-theme="dark"] .footer a,
+[data-theme="dark"] .footer__copyright,
+[data-theme="dark"] .footer-block__heading,
+[data-theme="dark"] .footer small {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .footer a:hover {
+  color: var(--color-primary) !important;
+}
+
+/* Form inputs */
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] .field__input {
+  background-color: var(--color-surface) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Menu drawer */
+[data-theme="dark"] .menu-drawer,
+[data-theme="dark"] .menu-drawer__inner-container {
+  background-color: var(--color-surface) !important;
+}
+
+/* Cart drawer */
+[data-theme="dark"] .cart-drawer,
+[data-theme="dark"] .cart-notification {
+  background-color: var(--color-surface) !important;
+}
+
+/* Savings badge stays green */
+[data-theme="dark"] .custom-savings-badge {
+  color: var(--color-success) !important;
+}
+
+/* Sale badges */
+[data-theme="dark"] .badge {
+  background-color: var(--color-success) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* Icons and SVGs */
+[data-theme="dark"] .icon,
+[data-theme="dark"] svg:not(.theme-toggle__btn svg) {
+  fill: var(--color-icon) !important;
+  stroke: var(--color-icon) !important;
+}
+
+/* Collection/Product grid */
+[data-theme="dark"] .collection,
+[data-theme="dark"] .main-collection-product-grid,
+[data-theme="dark"] .collection-hero,
+[data-theme="dark"] .template-collection {
+  background-color: var(--color-bg) !important;
+}
+
+/* Page backgrounds */
+[data-theme="dark"] main,
+[data-theme="dark"] #MainContent,
+[data-theme="dark"] .main-content {
+  background-color: var(--color-bg) !important;
+}
+
+/* Multicolumn / Featured collections */
+[data-theme="dark"] .multicolumn,
+[data-theme="dark"] .featured-collection {
+  background-color: var(--color-bg) !important;
+}
+
+/* Announcement bar - keep brand color */
+[data-theme="dark"] .announcement-bar {
+  background-color: var(--color-primary) !important;
+}
+
+/* Gradient overlays */
+[data-theme="dark"] .gradient {
+  background: var(--color-bg) !important;
+}
+
+/* ============================================
+   PROMO BAR / ANNOUNCEMENT STYLES
+   ============================================ */
+
+[data-theme="dark"] .promo-bar {
+  background-color: var(--color-primary-light) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .promo-bar a,
+[data-theme="dark"] .promo-bar__links a {
+  color: var(--color-primary) !important;
+}
+
+/* ============================================
+   HEADER2 STYLES (Custom Header)
+   ============================================ */
+
+[data-theme="dark"] .header2-section,
+[data-theme="dark"] .header2__container,
+[data-theme="dark"] .header2,
+[data-theme="dark"] .header2__main,
+[data-theme="dark"] .header2__nav {
+  background-color: var(--color-surface) !important;
+}
+
+[data-theme="dark"] .header2__nav-link--shop-all,
+[data-theme="dark"] .header2__mobile-nav-link--shop-all {
+  background-color: var(--color-surface-alt) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .header2__mobile-nav-item {
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .header2__mobile-nav-item,
+[data-theme="dark"] .header2__mobile-nav-link {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .header2__nav-link,
+[data-theme="dark"] .header2__mobile-nav-link {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .header2__nav-link:hover,
+[data-theme="dark"] .header2__mobile-nav-link:hover {
+  color: var(--color-primary) !important;
+}
+
+[data-theme="dark"] .header2__store-info,
+[data-theme="dark"] .header2__store-details {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .header2__search-button {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+[data-theme="dark"] .header2__mobile-menu-header {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ============================================
+   PRODUCT CARD STYLES
+   ============================================ */
+
+[data-theme="dark"] .product-card,
+[data-theme="dark"] .product-card__inner {
+  background-color: var(--color-card-bg) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .product-card__image {
+  background-color: var(--color-surface-alt) !important;
+}
+
+[data-theme="dark"] .product-card__name,
+[data-theme="dark"] .product-card__name a {
+  color: var(--color-product-title) !important;
+}
+
+[data-theme="dark"] .product-card__price {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .product-card__compare-price {
+  color: var(--color-compare-price) !important;
+}
+
+[data-theme="dark"] .product-card__stars {
+  color: var(--color-star-filled) !important;
+}
+
+[data-theme="dark"] .product-card__reviews {
+  color: var(--color-primary) !important;
+}
+
+[data-theme="dark"] .product-card__badge {
+  background-color: var(--color-success) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* ============================================
+   SIGNATURE/FEATURE HIGHLIGHTS
+   ============================================ */
+
+[data-theme="dark"] .features-bar__title,
+[data-theme="dark"] h3.features-bar__title {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .features-bar__desc,
+[data-theme="dark"] p.features-bar__desc {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .features-bar__item {
+  background-color: var(--color-card-bg) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .product-highlights,
+[data-theme="dark"] .product-grid__container {
+  background-color: var(--color-bg) !important;
+}
+
+[data-theme="dark"] .product-grid__column {
+  background-color: var(--color-card-bg) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .product-grid__title {
+  color: var(--color-text-primary) !important;
+}
+
+/* Features Icons Grid */
+[data-theme="dark"] .features-icons-grid,
+[data-theme="dark"] [class*="features-icons-grid"] {
+  background-color: var(--color-bg) !important;
+}
+
+/* ============================================
+   SKIP TO CONTENT LINK
+   ============================================ */
+
+[data-theme="dark"] .skip-to-content-link,
+[data-theme="dark"] a.skip-to-content-link {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* ============================================
+   WHOLESALE BANNER STYLES
+   ============================================ */
+
+[data-theme="dark"] .wholesale-banner-section,
+[data-theme="dark"] [class*="wholesale-banner-section"],
+[data-theme="dark"] [class*="wholesale-banner-template"] {
+  background-color: var(--color-primary) !important;
+}
+
+[data-theme="dark"] [class*="wholesale-banner"] {
+  background-color: var(--color-primary) !important;
+  background: var(--color-primary) !important;
+  color: var(--color-banner-text) !important;
+}
+
+[data-theme="dark"] .banner-title {
+  color: var(--color-banner-text) !important;
+}
+
+[data-theme="dark"] .banner-subtitle {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .banner-button {
+  background-color: var(--color-banner-button-bg) !important;
+  color: var(--color-text-inverse) !important;
+}
+
+[data-theme="dark"] .banner-button:hover {
+  background-color: var(--color-banner-button-hover) !important;
+}
+
+/* ============================================
+   CUSTOMER REVIEWS SECTION
+   ============================================ */
+
+[data-theme="dark"] .customer-reviews {
+  background-color: var(--color-bg) !important;
+}
+
+[data-theme="dark"] .testimonial__badge {
+  background-color: var(--color-badge-bg) !important;
+  color: var(--color-badge-text) !important;
+}
+
+[data-theme="dark"] .testimonial__heading {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .testimonial__description {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .testimonial__card {
+  background-color: var(--color-card-bg) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .testimonial__star {
+  color: var(--color-star-unfilled) !important;
+}
+
+[data-theme="dark"] .testimonial__star--filled {
+  color: var(--color-star-filled) !important;
+}
+
+[data-theme="dark"] .testimonial__quote-icon {
+  color: var(--color-quote) !important;
+}
+
+[data-theme="dark"] .testimonial__text,
+[data-theme="dark"] .testimonial__text.rte,
+[data-theme="dark"] .testimonial__text.rte p,
+[data-theme="dark"] .testimonial__text p {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .testimonial__customer-name {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .testimonial__customer-location {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="dark"] .testimonial__service-type {
+  background-color: var(--color-badge-secondary-bg) !important;
+  color: var(--color-badge-secondary-text) !important;
+}
+
+[data-theme="dark"] .testimonial__nav-btn {
+  background-color: var(--color-nav-bg) !important;
+  color: var(--color-nav-text) !important;
+}
+
+[data-theme="dark"] .testimonial__nav-btn:hover {
+  background-color: var(--color-nav-hover) !important;
+}
+
+[data-theme="dark"] .testimonial__dot {
+  background-color: var(--color-dot-inactive) !important;
+}
+
+[data-theme="dark"] .testimonial__dot--active {
+  background-color: var(--color-dot-active) !important;
+}
+
+/* ============================================
+   BANNER SECTION STYLES
+   ============================================ */
+
+[data-theme="dark"] .banner,
+[data-theme="dark"] .banner__box,
+[data-theme="dark"] .banner__content {
+  background-color: var(--color-surface) !important;
+}
+
+[data-theme="dark"] .banner__box,
+[data-theme="dark"] .banner__box *,
+[data-theme="dark"] .banner__buttons,
+[data-theme="dark"] .banner__buttons * {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .banner__heading {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .banner__text,
+[data-theme="dark"] .banner__text p {
+  color: var(--color-text-secondary) !important;
+}
+
+/* ============================================
+   PILL/TAG STYLES
+   ============================================ */
+
+[data-theme="dark"] .pill-text,
+[data-theme="dark"] .tag,
+[data-theme="dark"] .label {
+  background-color: var(--color-badge-bg) !important;
+  color: var(--color-badge-text) !important;
+}
+
+/* ============================================
+   GENERAL LINK OVERRIDES
+   ============================================ */
+
+[data-theme="dark"] a:not(.button):not(.banner-button):not([class*="nav"]) {
+  color: var(--color-link) !important;
+}
+
+[data-theme="dark"] a:not(.button):not(.banner-button):not([class*="nav"]):hover {
+  color: var(--color-link-hover) !important;
+}
+
+/* ============================================
+   RICH TEXT EDITOR CONTENT
+   ============================================ */
+
+[data-theme="dark"] .rte,
+[data-theme="dark"] .rte p,
+[data-theme="dark"] .rte li {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .rte h1,
+[data-theme="dark"] .rte h2,
+[data-theme="dark"] .rte h3,
+[data-theme="dark"] .rte h4 {
+  color: var(--color-text-primary) !important;
+}
+
+/* ============================================
+   BLOCKQUOTES
+   ============================================ */
+
+[data-theme="dark"] blockquote {
+  border-color: var(--color-border) !important;
+  color: var(--color-quote-text) !important;
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+
+[data-theme="dark"] table,
+[data-theme="dark"] th,
+[data-theme="dark"] td {
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] th {
+  background-color: var(--color-surface-alt) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] td {
+  color: var(--color-text-secondary) !important;
+}
+
+/* ============================================
+   DROPDOWN/SELECT MENUS
+   ============================================ */
+
+[data-theme="dark"] .disclosure__list,
+[data-theme="dark"] .select__select,
+[data-theme="dark"] .dropdown__menu {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .disclosure__link,
+[data-theme="dark"] .dropdown__item {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .disclosure__link:hover,
+[data-theme="dark"] .dropdown__item:hover {
+  background-color: var(--color-surface-hover) !important;
+}
+
+/* ============================================
+   PAGINATION
+   ============================================ */
+
+[data-theme="dark"] .pagination__item {
+  color: var(--color-text-secondary) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .pagination__item--current {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+[data-theme="dark"] .pagination__item:hover:not(.pagination__item--current) {
+  background-color: var(--color-surface-hover) !important;
+}
+
+/* ============================================
+   MODAL/POPUP OVERLAYS
+   ============================================ */
+
+[data-theme="dark"] .modal,
+[data-theme="dark"] .popup,
+[data-theme="dark"] .modal__content {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ============================================
+   ACCORDION STYLES
+   ============================================ */
+
+[data-theme="dark"] .accordion,
+[data-theme="dark"] .accordion__content {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .accordion__title {
+  color: var(--color-text-primary) !important;
+}
+
+/* ============================================
+   SLIDER/CAROUSEL STYLES
+   ============================================ */
+
+[data-theme="dark"] .slider-button,
+[data-theme="dark"] .carousel-button {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-icon) !important;
+}
+
+[data-theme="dark"] .slider-button:hover,
+[data-theme="dark"] .carousel-button:hover {
+  background-color: var(--color-surface-hover) !important;
+  color: var(--color-icon-hover) !important;
+}
+
+/* ============================================
+   SEARCH RESULTS
+   ============================================ */
+
+[data-theme="dark"] .predictive-search,
+[data-theme="dark"] .predictive-search__results {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .predictive-search__item {
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .predictive-search__item:hover {
+  background-color: var(--color-surface-hover) !important;
+}
+
+/* ============================================
+   LOADING STATES
+   ============================================ */
+
+[data-theme="dark"] .loading-overlay,
+[data-theme="dark"] .skeleton {
+  background-color: var(--color-surface-alt) !important;
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+
+[data-theme="dark"] ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* ============================================
+   THEME TOGGLE BUTTON STYLES
+   ============================================ */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  user-select: none;
+  background-color: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #E1E5EA);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.theme-toggle__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 1.25rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--color-text-muted, #9CA3AF);
+  transition: all 0.2s ease;
+  position: relative;
+  opacity: 0.6;
+}
+
+.theme-toggle__btn:first-child {
+  border-right: 1px solid var(--color-border, #E1E5EA);
+}
+
+.theme-toggle__btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* Active state for light mode */
+[data-theme="light"] .theme-toggle__btn--light,
+:root:not([data-theme="dark"]) .theme-toggle__btn--light {
+  background-color: var(--color-primary, #005496);
+  color: var(--color-button-text);
+  opacity: 1;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 84, 150, 0.3);
+}
+
+/* Active state for dark mode */
+[data-theme="dark"] .theme-toggle__btn--dark {
+  background-color: var(--color-primary, #60A5FA);
+  color: var(--color-text-inverse, #0F172A);
+  opacity: 1;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(96, 165, 250, 0.3);
+}
+
+/* Inactive button styling - make it look selectable */
+[data-theme="light"] .theme-toggle__btn--dark,
+:root:not([data-theme="dark"]) .theme-toggle__btn--dark {
+  color: var(--color-text-muted, #9CA3AF);
+  opacity: 0.7;
+}
+
+[data-theme="dark"] .theme-toggle__btn--light {
+  color: var(--color-text-muted, #64748B);
+  opacity: 0.7;
+}
+
+/* Hover states for inactive buttons */
+.theme-toggle__btn:hover {
+  opacity: 1;
+}
+
+[data-theme="light"] .theme-toggle__btn--dark:hover,
+:root:not([data-theme="dark"]) .theme-toggle__btn--dark:hover {
+  background-color: var(--color-surface-alt, #F0F2F5);
+  color: var(--color-text-primary, #2B2C2D);
+}
+
+[data-theme="dark"] .theme-toggle__btn--light:hover {
+  background-color: var(--color-surface-hover, #2D3A50);
+  color: var(--color-text-primary, #F1F5F9);
+}
+
+/* Focus state */
+.theme-toggle__btn:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--color-primary, #005496);
+}
+
+/* Dark mode container adjustments */
+[data-theme="dark"] .theme-toggle {
+  background-color: var(--color-surface, #1A1D21);
+  border-color: var(--color-border, #2A2E33);
+}
+
+[data-theme="dark"] .theme-toggle__btn {
+  color: var(--color-text-secondary, rgba(245, 247, 250, 0.65));
+}
+
+[data-theme="dark"] .theme-toggle__btn:first-child {
+  border-right-color: var(--color-border, #2A2E33);
+}
+
+/* Footer top section placement - centered */
+.footer__theme-toggle-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 3rem;
+  box-sizing: border-box;
+}

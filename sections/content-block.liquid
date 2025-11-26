@@ -15,8 +15,8 @@
     {%- if block.type == 'title_pill' -%}
       #shopify-block-{{ block.id }} .pill-text,
       #block-{{ block.id }} .pill-text {
-        font-size: {{ block.settings.pill_font_size }}px !important;
-        background-color: {{ block.settings.pill_bg_color }} !important;
+        font-size: {{ block.settings.pill_font_size }}px;
+        background-color: var(--color-primary, {{ block.settings.pill_bg_color }});
       }
     {%- endif -%}
     {%- if block.type == 'description_title' -%}
@@ -26,7 +26,7 @@
       #block-{{ block.id }} h2,
       #block-{{ block.id }} h2 *,
       #block-{{ block.id }} h2 span {
-        color: {{ block.settings.title_text_color }} !important;
+        color: var(--color-text-primary, {{ block.settings.title_text_color }});
       }
     {%- endif -%}
     {%- if block.type == 'description_body' -%}
@@ -38,7 +38,7 @@
       #block-{{ block.id }} *,
       #block-{{ block.id }} p,
       #block-{{ block.id }} span {
-        color: {{ block.settings.body_text_color }} !important;
+        color: var(--color-text-secondary, {{ block.settings.body_text_color }});
       }
     {%- endif -%}
     {%- if block.type == 'features_highlight' -%}
@@ -58,74 +58,75 @@
     {%- endif -%}
   {%- endfor -%}
 
-  .customer-reviews {
+  .content-block {
     margin-top: 0;
   }
 
-  .customer-reviews__wrapper {
+  .content-block__wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .customer-reviews__wrapper--left {
+  .content-block__wrapper--left {
     justify-content: flex-start;
   }
 
-  .customer-reviews__wrapper--right {
+  .content-block__wrapper--right {
     justify-content: flex-end;
   }
 
-  .customer-reviews__blocks {
+  .content-block__blocks {
     max-width: 80rem;
     width: 100%;
   }
 
-  .customer-reviews__blocks.left {
+  .content-block__blocks.left {
     text-align: left;
   }
 
-  .customer-reviews__blocks.center {
+  .content-block__blocks.center {
     text-align: center;
   }
 
-  .customer-reviews__blocks.right {
+  .content-block__blocks.right {
     text-align: right;
   }
 
-  .customer-reviews__pill {
+  .content-block__pill {
     display: inline-block;
     margin-bottom: 20px;
   }
 
-  .customer-reviews__pill .pill-text {
+  .content-block__pill .pill-text {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 8px 16px;
-    background-color: #007bff;
-    color: #ffffff;
+    background-color: var(--color-primary, #007bff);
+    color: var(--color-button-text, #ffffff);
     border-radius: 20px;
     font-weight: 500;
   }
 
-  .customer-reviews__heading {
+  .content-block__heading {
     word-break: break-word;
   }
 
-  .customer-reviews__heading * {
+  .content-block__heading * {
     color: inherit !important;
   }
 
-  .customer-reviews__text {
-    color: rgb(113, 128, 150);
+  .custom-section__description {
+    color: var(--color-text-secondary, rgb(113, 128, 150));
+    font-style: normal;
   }
 
-  .customer-reviews__text * {
+  .custom-section__description * {
     color: inherit !important;
   }
 
-  .customer-reviews__text p {
+  .custom-section__description p {
     margin: 0;
   }
 
@@ -171,11 +172,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--color-border, #e5e7eb);
     border-radius: 12px;
     padding: 2px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px var(--color-card-shadow, rgba(0, 0, 0, 0.05));
     transition: all 0.3s ease;
     aspect-ratio: 1;
   }
@@ -301,11 +302,11 @@
   }
 
   @media screen and (max-width: 749px) {
-    .customer-reviews__heading {
+    .content-block__heading {
       font-size: 2.8rem;
     }
     
-    .customer-reviews__pill .pill-text {
+    .content-block__pill .pill-text {
       font-size: 12px;
       padding: 6px 14px;
     }
@@ -313,14 +314,14 @@
 {%- endstyle -%}
 
 <div class="isolate{% unless section.settings.full_width %} page-width{% endunless %}">
-  <div class="customer-reviews content-container color-{{ section.settings.color_scheme }} gradient{% if section.settings.full_width %} customer-reviews--full-width content-container--full-width{% endif %} section-{{ section.id }}-padding">
-    <div class="customer-reviews__wrapper customer-reviews__wrapper--{{ section.settings.desktop_content_position }}{% if section.settings.full_width %} page-width{% endif %}">
-      <div class="customer-reviews__blocks {{ section.settings.content_alignment }}">
+  <div class="content-block content-container color-{{ section.settings.color_scheme }} gradient{% if section.settings.full_width %} content-block--full-width content-container--full-width{% endif %} section-{{ section.id }}-padding">
+    <div class="content-block__wrapper content-block__wrapper--{{ section.settings.desktop_content_position }}{% if section.settings.full_width %} page-width{% endif %}">
+      <div class="content-block__blocks {{ section.settings.content_alignment }}">
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'title_pill' -%}
               <div
-                class="customer-reviews__pill{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                class="content-block__pill{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
                 id="block-{{ block.id }}"
                 {{ block.shopify_attributes }}
                 {% if settings.animations_reveal_on_scroll %}
@@ -334,7 +335,7 @@
             {%- when 'description_title' -%}
               <h2
                 id="block-{{ block.id }}"
-                class="customer-reviews__heading rte inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                class="content-block__heading rte inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
                 {{ block.shopify_attributes }}
                 {% if settings.animations_reveal_on_scroll %}
                   data-cascade
@@ -347,7 +348,7 @@
             {%- when 'description_body' -%}
               <div
                 id="block-{{ block.id }}"
-                class="customer-reviews__text rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                class="custom-section__description rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
                 {{ block.shopify_attributes }}
                 {% if settings.animations_reveal_on_scroll %}
                   data-cascade
@@ -447,7 +448,7 @@
 
 {% schema %}
 {
-  "name": "Custom Section",
+  "name": "Content Block",
   "tag": "section",
   "class": "section",
   "disabled_on": {
@@ -947,7 +948,7 @@
   ],
   "presets": [
     {
-      "name": "Custom Section",
+      "name": "Content Block",
       "blocks": [
         {
           "type": "title_pill"

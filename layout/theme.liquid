@@ -28,6 +28,7 @@
 
     {% render 'meta-tags' %}
 
+    <script src="{{ 'theme-toggle.js' | asset_url }}"></script>
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
@@ -256,6 +257,7 @@
     {% endstyle %}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'theme-toggle.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
     {%- if settings.cart_type == 'drawer' -%}
@@ -372,5 +374,45 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+
+    <!-- Debug Info: Expose template/page data for style debug tool -->
+    <script>
+      window.ShopifyDebug = {
+        template: {
+          name: {{ template.name | json }},
+          suffix: {{ template.suffix | json }},
+          directory: {{ template.directory | json }},
+          full: {{ template | json }}
+        },
+        page: {
+          title: {{ page_title | json }},
+          url: {{ request.path | json }},
+          host: {{ request.host | json }}
+        },
+        request: {
+          pageType: {{ request.page_type | json }},
+          locale: {{ request.locale.iso_code | json }}
+        },
+        {%- if product -%}
+        product: {
+          title: {{ product.title | json }},
+          handle: {{ product.handle | json }},
+          type: {{ product.type | json }},
+          vendor: {{ product.vendor | json }}
+        },
+        {%- endif -%}
+        {%- if collection -%}
+        collection: {
+          title: {{ collection.title | json }},
+          handle: {{ collection.handle | json }}
+        },
+        {%- endif -%}
+        sections: [
+          {%- for section in content_for_layout.sections -%}
+            {{ section.type | json }}{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      };
+    </script>
   </body>
 </html>

@@ -123,8 +123,8 @@
 }
 
 .card__content {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) max-content minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   padding: 1rem;
   width: 100%;
   flex-grow: 1;
@@ -135,12 +135,11 @@
 }
 
 .card__information {
-  grid-row-start: 2;
-  padding: 1.3rem 1rem;
+  padding: 0.5rem 0;
 }
 
 .card:not(.ratio) > .card__content {
-  grid-template-rows: max-content minmax(0, 1fr) max-content auto;
+  /* Using flexbox, no grid template needed */
 }
 
 .card-information .card__information-volume-pricing-note {
@@ -596,8 +595,7 @@
 
 /* Custom Product Card Styles */
 .custom-price-wrapper {
-  margin: 0.8rem 0;
-  order: 1;
+  margin: 0.5rem 0;
 }
 
 .custom-price-line {
@@ -609,35 +607,16 @@
 
 .custom-price--bold {
   font-weight: 700;
-  font-size: 2.2em;
-  color: #000;
-  position: relative;
-  display: inline-flex;
-  align-items: flex-start;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 1.8em;
+  color: var(--color-text-primary, #000);
+  display: inline;
+  font-family: var(--font-body-family);
   line-height: 1;
-}
-
-.custom-price--bold::before {
-  content: '$';
-  font-size: 0.45em;
-  position: relative;
-  top: 0.15em;
-  margin-right: 0.05em;
-  font-weight: 400;
-}
-
-.custom-price--bold .price-cents {
-  font-size: 0.45em;
-  position: relative;
-  top: 0.15em;
-  font-weight: 400;
-  margin-left: 0.02em;
 }
 
 .custom-price--compare {
   font-size: 0.8em;
-  color: #666;
+  color: var(--color-compare-price, rgba(var(--color-foreground), 0.6));
   text-decoration: line-through;
   font-weight: normal;
   margin-left: 0.8rem;
@@ -645,36 +624,28 @@
 }
 
 .custom-savings-badge {
-  color: #28a745;
+  color: var(--color-success, #28a745);
   font-weight: 500;
   font-size: 0.85em;
   margin-bottom: 0.25rem;
 }
 
 .custom-product-title {
-  font-size: 0.9em;
+  font-size: 1em;
   font-weight: normal;
   line-height: 1.4;
-  margin-top: 0.5rem;
-  order: 2;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .custom-product-title a {
-  color: #333;
+  color: var(--color-product-title, #333);
   text-decoration: none;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  display: block;
 }
 
 .custom-product-title a:hover {
-  color: #000;
+  color: var(--color-text-primary, #000);
 }
 
 .card__information {
@@ -689,8 +660,8 @@
 
 .quick-add__submit {
   background-color: transparent !important;
-  border: 2px solid #005496 !important;
-  color: #005496 !important;
+  border: 2px solid var(--color-primary, #005496) !important;
+  color: var(--color-primary, #005496) !important;
   border-radius: 8px !important;
   padding: 12px 20px !important;
   font-weight: 500 !important;
@@ -698,6 +669,24 @@
   margin-top: 1rem !important;
   font-size: 0.9em !important;
   transition: all 0.3s ease !important;
+  position: relative;
+  box-shadow: none !important;
+}
+
+/* Remove pseudo-elements that create double button effect */
+.quick-add__submit::before,
+.quick-add__submit::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Also hide pseudo-elements on parent button class */
+.quick-add .button::before,
+.quick-add .button::after,
+.quick-add button::before,
+.quick-add button::after {
+  display: none !important;
+  content: none !important;
 }
 
 /* ============================================
@@ -778,24 +767,24 @@
   display: block !important;
   width: 100%;
   padding: 12px 20px;
-  background-color: #333;
-  color: white;
+  background-color: var(--color-surface, #333);
+  color: var(--color-text-primary, white);
   text-align: center;
   text-decoration: none;
   border-radius: 8px;
   font-weight: 500;
   font-size: 0.9em;
   transition: background-color 0.3s ease, transform 0.1s ease;
-  border: none;
+  border: 1px solid var(--color-border, #333);
   position: relative;
   box-sizing: border-box;
 }
 
 .rfq-button-zero-price:hover {
-  background-color: #000;
+  background-color: var(--color-primary, #000);
   transform: translateY(-1px);
   text-decoration: none;
-  color: white;
+  color: var(--color-button-text, #fff);
 }
 
 .rfq-button-zero-price:active {
@@ -803,14 +792,14 @@
 }
 
 .custom-savings-badge {
-  color: #28a745;
+  color: var(--color-success, #28a745);
   font-weight: 500;
   font-size: 0.85em;
   margin-bottom: 0.25rem;
 }
 
 .custom-stock-status {
-  color: #28a745;
+  color: var(--color-success, #28a745);
   font-weight: 500;
   font-size: 0.85em;
   margin-bottom: 0.5rem;
@@ -888,19 +877,18 @@
 
 .custom-price-line {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.75rem;
   margin-bottom: 0;
 }
 
 .custom-price--compare {
-  font-size: 0.85em;
-  color: #999;
+  font-size: 1em;
+  color: var(--color-compare-price, rgba(var(--color-foreground), 0.6));
   text-decoration: line-through;
   font-weight: normal;
   margin-left: 0;
-  order: 2;
 }
 
 .custom-price--bold {
@@ -932,19 +920,18 @@
 
 .custom-price-line {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.75rem;
   margin-bottom: 0;
 }
 
 .custom-price--compare {
-  font-size: 0.85em;
-  color: #999;
+  font-size: 1em;
+  color: var(--color-compare-price, rgba(var(--color-foreground), 0.6));
   text-decoration: line-through;
   font-weight: normal;
   margin-left: 0;
-  order: 2;
 }
 
 .custom-price--bold {
@@ -978,11 +965,35 @@
 }
 
 /* ============================================
-   SMALLER PRODUCT TITLE FONT SIZE
+   PRODUCT TITLE STYLING
    ============================================ */
 
 .custom-product-title {
-  font-size: 0.75em !important;
+  font-size: 1.5em !important;
+  line-height: 1.3;
+  /* Fixed height for 3 lines to align star images across cards */
+  min-height: calc(1.5em * 1.3 * 3);
+  margin-bottom: 0.5rem;
+}
+
+.custom-product-title a {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Star Image under product title */
+.card__star-image {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  width: 40%;
+}
+
+.card__star-image img {
+  width: 100%;
+  height: auto;
 }
 
 /* If you're also using standard card heading */
@@ -1004,7 +1015,7 @@
 
 /* Ensure the card content has the right background */
 .card__content {
-  background: white;
+  background: var(--color-card-bg, white);
 }
 
 /* ============================================
@@ -1035,4 +1046,97 @@
 .card__content .rfq-button-zero-price:last-child {
   border-bottom-left-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
+}
+
+/* ============================================
+   SKU AND VARIANT COUNT DISPLAY
+   ============================================ */
+
+.card__sku-variants {
+  font-size: 0.75em;
+  color: var(--color-sku, #666);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.card__sku {
+  font-weight: 400;
+}
+
+.card__separator {
+  margin: 0 0.4em;
+  color: var(--color-text-secondary, #999);
+}
+
+.card__variant-count {
+  font-weight: 400;
+}
+
+/* ============================================
+   CONSISTENT CARD HEIGHTS
+   ============================================ */
+
+/* Ensure grid items in a row have equal height */
+.grid {
+  align-items: stretch;
+}
+
+/* Make grid items use full height */
+.grid__item {
+  display: flex;
+}
+
+/* Ensure product card wrapper fills the grid item */
+.product-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+/* Ensure card fills the wrapper */
+.product-card-wrapper .card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
+}
+
+/* Ensure card content grows to fill available space */
+.product-card-wrapper .card__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Push the price/information section to the bottom */
+.product-card-wrapper .card__information {
+  margin-top: auto;
+}
+
+/* ============================================
+   REQUEST A QUOTE BUTTON (Navy)
+   ============================================ */
+
+.button--rfq {
+  background-color: var(--color-primary, #1e3a5f) !important;
+  color: var(--color-button-text, #fff) !important;
+  border: none !important;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.button--rfq:hover {
+  background-color: var(--color-primary-hover, #152a45) !important;
+  color: var(--color-button-text, #fff) !important;
+}
+
+.button--rfq:after,
+.button--rfq:before {
+  display: none !important;
 }

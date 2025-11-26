@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASIW Supply - Color Scheme Reference</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f7fa;
+      color: #2b2c2d;
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    header h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+      color: #005496;
+    }
+
+    header p {
+      color: #6b7280;
+      font-size: 16px;
+    }
+
+    .mode-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .mode-toggle button {
+      padding: 12px 32px;
+      border: 2px solid #005496;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .mode-toggle button.active {
+      background: #005496;
+      color: white;
+    }
+
+    .mode-toggle button:not(.active) {
+      background: white;
+      color: #005496;
+    }
+
+    .mode-toggle button:hover:not(.active) {
+      background: #e6f0f7;
+    }
+
+    section {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    section h2 {
+      font-size: 20px;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #f0f2f5;
+      color: #2b2c2d;
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .color-card {
+      border: 1px solid #e1e5ea;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .color-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .color-swatch {
+      height: 80px;
+      position: relative;
+    }
+
+    .color-swatch::after {
+      content: attr(data-hex);
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      font-size: 11px;
+      font-family: monospace;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.9);
+      color: #2b2c2d;
+    }
+
+    .color-info {
+      padding: 12px 16px;
+      background: #fafbfc;
+    }
+
+    .color-name {
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: #2b2c2d;
+    }
+
+    .color-use {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid #e1e5ea;
+    }
+
+    .comparison-table th {
+      background: #f5f7fa;
+      font-weight: 600;
+      font-size: 13px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .comparison-table td {
+      font-size: 14px;
+    }
+
+    .swatch-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .swatch-inline .swatch {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.1);
+      flex-shrink: 0;
+    }
+
+    .swatch-inline .hex {
+      font-family: monospace;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .scheme-preview {
+      display: flex;
+      gap: 24px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .scheme-card {
+      flex: 1;
+      min-width: 280px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e1e5ea;
+    }
+
+    .scheme-header {
+      padding: 24px;
+      text-align: center;
+    }
+
+    .scheme-header h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .scheme-header p {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .scheme-header .btn {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .scheme-footer {
+      padding: 16px 24px;
+      background: #fafbfc;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-family: monospace;
+    }
+
+    /* Dark mode styles */
+    body.dark-mode {
+      background: #0f172a;
+      color: #f1f5f9;
+    }
+
+    body.dark-mode section {
+      background: #1e293b;
+    }
+
+    body.dark-mode section h2 {
+      color: #f1f5f9;
+      border-bottom-color: #2d3a50;
+    }
+
+    body.dark-mode .color-card {
+      border-color: #2d3a50;
+    }
+
+    body.dark-mode .color-info {
+      background: #243045;
+    }
+
+    body.dark-mode .color-name {
+      color: #f1f5f9;
+    }
+
+    body.dark-mode .color-use {
+      color: #94a3b8;
+    }
+
+    body.dark-mode .comparison-table th {
+      background: #243045;
+      color: #94a3b8;
+    }
+
+    body.dark-mode .comparison-table td {
+      border-color: #2d3a50;
+    }
+
+    body.dark-mode .scheme-footer {
+      background: #243045;
+    }
+
+    body.dark-mode .mode-toggle button.active {
+      background: #60a5fa;
+      border-color: #60a5fa;
+      color: #0f172a;
+    }
+
+    body.dark-mode .mode-toggle button:not(.active) {
+      background: #1e293b;
+      border-color: #60a5fa;
+      color: #60a5fa;
+    }
+
+    body.dark-mode header h1 {
+      color: #60a5fa;
+    }
+
+    body.dark-mode header p {
+      color: #94a3b8;
+    }
+
+    .dark-only { display: none; }
+    .light-only { display: block; }
+    body.dark-mode .dark-only { display: block; }
+    body.dark-mode .light-only { display: none; }
+
+    @media print {
+      body { background: white; padding: 20px; }
+      section { box-shadow: none; border: 1px solid #e1e5ea; }
+      .mode-toggle { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>ASIW Supply Color Scheme</h1>
+      <p>Complete color reference for light and dark mode themes</p>
+      <div class="mode-toggle">
+        <button class="active" onclick="setMode('light')">Light Mode</button>
+        <button onclick="setMode('dark')">Dark Mode</button>
+      </div>
+    </header>
+
+    <!-- PRIMARY COLORS -->
+    <section>
+      <h2>Primary Brand Colors</h2>
+      <div class="light-only">
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background: #005496;" data-hex="#005496"></div>
+            <div class="color-info">
+              <div class="color-name">Primary Blue</div>
+              <div class="color-use">Main brand color, CTAs, navigation</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #003E70;" data-hex="#003E70"></div>
+            <div class="color-info">
+              <div class="color-name">Primary Blue Hover</div>
+              <div class="color-use">Hover states, active elements</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #E6F0F7;" data-hex="#E6F0F7"></div>
+            <div class="color-info">
+              <div class="color-name">Primary Blue Light</div>
+              <div class="color-use">Light backgrounds, selected states</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #1D6AE5;" data-hex="#1D6AE5"></div>
+            <div class="color-info">
+              <div class="color-name">Secondary Blue</div>
+              <div class="color-use">Alternative actions, links</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dark-only">
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background: #60A5FA;" data-hex="#60A5FA"></div>
+            <div class="color-info">
+              <div class="color-name">Primary Light Blue</div>
+              <div class="color-use">Main brand color for dark mode</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #93C5FD;" data-hex="#93C5FD"></div>
+            <div class="color-info">
+              <div class="color-name">Primary Light Hover</div>
+              <div class="color-use">Hover states in dark mode</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #1E3A5F;" data-hex="#1E3A5F"></div>
+            <div class="color-info">
+              <div class="color-name">Primary Background</div>
+              <div class="color-use">Accent backgrounds in dark mode</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #818CF8;" data-hex="#818CF8"></div>
+            <div class="color-info">
+              <div class="color-name">Secondary Indigo</div>
+              <div class="color-use">Alternative actions in dark mode</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACCENT COLORS -->
+    <section>
+      <h2>Accent Colors</h2>
+      <div class="light-only">
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background: #DD6727;" data-hex="#DD6727"></div>
+            <div class="color-info">
+              <div class="color-name">Accent Orange</div>
+              <div class="color-use">Highlights, promotions</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #BE531D;" data-hex="#BE531D"></div>
+            <div class="color-info">
+              <div class="color-name">Accent Orange Hover</div>
+              <div class="color-use">Orange button hover states</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #FDF3ED;" data-hex="#FDF3ED"></div>
+            <div class="color-info">
+              <div class="color-name">Accent Orange Light</div>
+              <div class="color-use">Light orange backgrounds</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #FBBF24;" data-hex="#FBBF24"></div>
+            <div class="color-info">
+              <div class="color-name">Star Gold</div>
+              <div class="color-use">Ratings, stars</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dark-only">
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background: #F28C38;" data-hex="#F28C38"></div>
+            <div class="color-info">
+              <div class="color-name">Accent Orange</div>
+              <div class="color-use">Highlights in dark mode</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #FB923C;" data-hex="#FB923C"></div>
+            <div class="color-info">
+              <div class="color-name">Accent Orange Hover</div>
+              <div class="color-use">Orange hover in dark mode</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #3D2A1F;" data-hex="#3D2A1F"></div>
+            <div class="color-info">
+              <div class="color-name">Accent Background</div>
+              <div class="color-use">Accent backgrounds dark mode</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #FBBF24;" data-hex="#FBBF24"></div>
+            <div class="color-info">
+              <div class="color-name">Star Gold</div>
+              <div class="color-use">Ratings, stars (same)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BACKGROUND COLORS -->
+    <section>
+      <h2>Background Colors</h2>
+      <div class="light-only">
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background: #FFFFFF; border: 1px solid #e1e5ea;" data-hex="#FFFFFF"></div>
+            <div class="color-info">
+              <div class="color-name">White</div>
+              <div class="color-use">Primary surface, cards</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #F5F7FA;" data-hex="#F5F7FA"></div>
+            <div class="color-info">
+              <div class="color-name">Light Gray</div>
+              <div class="color-use">Page background, sections</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #F0F2F5;" data-hex="#F0F2F5"></div>
+            <div class="color-info">
+              <div class="color-name">Light Gray Alt</div>
+              <div class="color-use">Surface variations</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #F9FAFB;" data-hex="#F9FAFB"></div>
+            <div class="color-info">
+              <div class="color-name">Card Hover</div>
+              <div class="color-use">Subtle hover states</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #E8ECF0;" data-hex="#E8ECF0"></div>
+            <div class="color-info">
+              <div class="color-name">Feature Container</div>
+              <div class="color-use">Feature bar containers</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dark-only">
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background: #0F172A;" data-hex="#0F172A"></div>
+            <div class="color-info">
+              <div class="color-name">Dark Navy</div>
+              <div class="color-use">Main background</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #1E293B;" data-hex="#1E293B"></div>
+            <div class="color-info">
+              <div class="color-name">Dark Surface</div>
+              <div class="color-use">Cards, modals</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #243045;" data-hex="#243045"></div>
+            <div class="color-info">
+              <div class="color-name">Dark Surface Alt</div>
+              <div class="color-use">Section backgrounds</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #2D3A50;" data-hex="#2D3A50"></div>
+            <div class="color-info">
+              <div class="color-name">Dark Surface Hover</div>
+              <div class="color-use">Interactive states</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEXT COLORS -->
+    <section>
+      <h2>Text Colors</h2>
+      <div class="light-only">
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background: #2B2C2D;" data-hex="#2B2C2D"></div>
+            <div class="color-info">
+              <div class="color-name">Primary Text</div>
+              <div class="color-use">Headings, main content</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #6B7280;" data-hex="#6B7280"></div>
+            <div class="color-info">
+              <div class="color-name">Secondary Text</div>
+              <div class="color-use">Descriptions, meta info</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #9CA3AF;" data-hex="#9CA3AF"></div>
+            <div class="color-info">
+              <div class="color-name">Muted Text</div>
+              <div class="color-use">Disabled, placeholders</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #111827;" data-hex="#111827"></div>
+            <div class="color-info">
+              <div class="color-name">Heading Dark</div>
+              <div class="color-use">Feature headings</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #64748B;" data-hex="#64748B"></div>
+            <div class="color-info">
+              <div class="color-name">Feature Description</div>
+              <div class="color-use">Feature bar text</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dark-only">
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background: #F1F5F9;" data-hex="#F1F5F9"></div>
+            <div class="color-info">
+              <div class="color-name">Primary Text</div>
+              <div class="color-use">Headings, main content</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #94A3B8;" data-hex="#94A3B8"></div>
+            <div class="color-info">
+              <div class="color-name">Secondary Text</div>
+              <div class="color-use">Descriptions, meta info</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #64748B;" data-hex="#64748B"></div>
+            <div class="color-info">
+              <div class="color-name">Muted Text</div>
+              <div class="color-use">Disabled, placeholders</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #E2E8F0;" data-hex="#E2E8F0"></div>
+            <div class="color-info">
+              <div class="color-name">Heading Light</div>
+              <div class="color-use">Feature headings dark mode</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATUS COLORS -->
+    <section>
+      <h2>Status Colors</h2>
+      <div class="light-only">
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background: #28A745;" data-hex="#28A745"></div>
+            <div class="color-info">
+              <div class="color-name">Success Green</div>
+              <div class="color-use">Success states, confirmations</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #4CAF50;" data-hex="#4CAF50"></div>
+            <div class="color-info">
+              <div class="color-name">CTA Green</div>
+              <div class="color-use">Banner action buttons</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #F59E0B;" data-hex="#F59E0B"></div>
+            <div class="color-info">
+              <div class="color-name">Warning Amber</div>
+              <div class="color-use">Caution, alerts</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #DC2626;" data-hex="#DC2626"></div>
+            <div class="color-info">
+              <div class="color-name">Error Red</div>
+              <div class="color-use">Errors, sale prices</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #3B82F6;" data-hex="#3B82F6"></div>
+            <div class="color-info">
+              <div class="color-name">Info Blue</div>
+              <div class="color-use">Informational content</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dark-only">
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background: #4ADE80;" data-hex="#4ADE80"></div>
+            <div class="color-info">
+              <div class="color-name">Success Green</div>
+              <div class="color-use">Success states dark mode</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #86EFAC;" data-hex="#86EFAC"></div>
+            <div class="color-info">
+              <div class="color-name">Success Hover</div>
+              <div class="color-use">Success hover dark mode</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #FBBF24;" data-hex="#FBBF24"></div>
+            <div class="color-info">
+              <div class="color-name">Warning Amber</div>
+              <div class="color-use">Caution dark mode</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #F87171;" data-hex="#F87171"></div>
+            <div class="color-info">
+              <div class="color-name">Error Red</div>
+              <div class="color-use">Errors dark mode</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #60A5FA;" data-hex="#60A5FA"></div>
+            <div class="color-info">
+              <div class="color-name">Info Blue</div>
+              <div class="color-use">Informational dark mode</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BORDER COLORS -->
+    <section>
+      <h2>Border & Divider Colors</h2>
+      <div class="light-only">
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background: #E1E5EA;" data-hex="#E1E5EA"></div>
+            <div class="color-info">
+              <div class="color-name">Standard Border</div>
+              <div class="color-use">Card borders, dividers</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #F0F2F5;" data-hex="#F0F2F5"></div>
+            <div class="color-info">
+              <div class="color-name">Light Border</div>
+              <div class="color-use">Subtle dividers</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #D1D5DB;" data-hex="#D1D5DB"></div>
+            <div class="color-info">
+              <div class="color-name">Dark Border</div>
+              <div class="color-use">Stronger definition</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dark-only">
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background: #2D3A50;" data-hex="#2D3A50"></div>
+            <div class="color-info">
+              <div class="color-name">Standard Border</div>
+              <div class="color-use">Card borders dark mode</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #334155;" data-hex="#334155"></div>
+            <div class="color-info">
+              <div class="color-name">Light Border</div>
+              <div class="color-use">Subtle dividers dark mode</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #1E293B;" data-hex="#1E293B"></div>
+            <div class="color-info">
+              <div class="color-name">Dark Border</div>
+              <div class="color-use">Stronger definition dark</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUTTON & UI ELEMENT COLORS -->
+    <section>
+      <h2>Button & UI Element Colors</h2>
+      <div class="light-only">
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background: linear-gradient(135deg, #1976D2, #1E88E5);" data-hex="#1976D2"></div>
+            <div class="color-info">
+              <div class="color-name">Icon Gradient</div>
+              <div class="color-use">Feature bar icons</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #007BFF;" data-hex="#007BFF"></div>
+            <div class="color-info">
+              <div class="color-name">Badge Blue</div>
+              <div class="color-use">Pills, badges</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #E3F2FD;" data-hex="#E3F2FD"></div>
+            <div class="color-info">
+              <div class="color-name">Service Badge BG</div>
+              <div class="color-use">Service type badges</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #1976D2;" data-hex="#1976D2"></div>
+            <div class="color-info">
+              <div class="color-name">Service Badge Text</div>
+              <div class="color-use">Service type text</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dark-only">
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background: linear-gradient(135deg, #3B82F6, #60A5FA);" data-hex="#3B82F6"></div>
+            <div class="color-info">
+              <div class="color-name">Icon Gradient</div>
+              <div class="color-use">Feature bar icons dark</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #60A5FA;" data-hex="#60A5FA"></div>
+            <div class="color-info">
+              <div class="color-name">Badge Blue</div>
+              <div class="color-use">Pills, badges dark mode</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #1E3A5F;" data-hex="#1E3A5F"></div>
+            <div class="color-info">
+              <div class="color-name">Service Badge BG</div>
+              <div class="color-use">Service badges dark</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background: #93C5FD;" data-hex="#93C5FD"></div>
+            <div class="color-info">
+              <div class="color-name">Service Badge Text</div>
+              <div class="color-use">Service text dark mode</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIDE BY SIDE COMPARISON -->
+    <section>
+      <h2>Light vs Dark Mode Comparison</h2>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Element</th>
+            <th>Light Mode</th>
+            <th>Dark Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Page Background</td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #F5F7FA;"></div>
+                <span class="hex">#F5F7FA</span>
+              </div>
+            </td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #0F172A;"></div>
+                <span class="hex">#0F172A</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Card Background</td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #FFFFFF; border: 1px solid #e1e5ea;"></div>
+                <span class="hex">#FFFFFF</span>
+              </div>
+            </td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #1E293B;"></div>
+                <span class="hex">#1E293B</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Primary Text</td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #2B2C2D;"></div>
+                <span class="hex">#2B2C2D</span>
+              </div>
+            </td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #F1F5F9;"></div>
+                <span class="hex">#F1F5F9</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Secondary Text</td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #6B7280;"></div>
+                <span class="hex">#6B7280</span>
+              </div>
+            </td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #94A3B8;"></div>
+                <span class="hex">#94A3B8</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Primary Button</td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #005496;"></div>
+                <span class="hex">#005496</span>
+              </div>
+            </td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #60A5FA;"></div>
+                <span class="hex">#60A5FA</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Border Color</td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #E1E5EA;"></div>
+                <span class="hex">#E1E5EA</span>
+              </div>
+            </td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #2D3A50;"></div>
+                <span class="hex">#2D3A50</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Success Color</td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #28A745;"></div>
+                <span class="hex">#28A745</span>
+              </div>
+            </td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #4ADE80;"></div>
+                <span class="hex">#4ADE80</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Error/Sale Color</td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #DC2626;"></div>
+                <span class="hex">#DC2626</span>
+              </div>
+            </td>
+            <td>
+              <div class="swatch-inline">
+                <div class="swatch" style="background: #F87171;"></div>
+                <span class="hex">#F87171</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- THEME SCHEMES PREVIEW -->
+    <section>
+      <h2>Active Theme Color Schemes</h2>
+      <div class="scheme-preview">
+        <div class="scheme-card">
+          <div class="scheme-header" style="background: #f5f7fa; color: #2b2c2d;">
+            <h3>Scheme 1 - Light</h3>
+            <p>Default light scheme</p>
+            <a class="btn" style="background: #005496; color: #ffffff;">Button</a>
+          </div>
+          <div class="scheme-footer">
+            <span>BG: #f5f7fa</span>
+            <span>Text: #2b2c2d</span>
+            <span>Btn: #005496</span>
+          </div>
+        </div>
+        <div class="scheme-card">
+          <div class="scheme-header" style="background: #005496; color: #f4f4f4;">
+            <h3>Scheme 2 - Brand</h3>
+            <p>Primary brand scheme</p>
+            <a class="btn" style="background: #f4f4f4; color: #010101;">Button</a>
+          </div>
+          <div class="scheme-footer">
+            <span>BG: #005496</span>
+            <span>Text: #f4f4f4</span>
+            <span>Btn: #f4f4f4</span>
+          </div>
+        </div>
+        <div class="scheme-card">
+          <div class="scheme-header" style="background: #dd6727; color: #000000;">
+            <h3>Scheme 3 - Accent</h3>
+            <p>Orange accent scheme</p>
+            <a class="btn" style="background: #ffffff; color: #000000;">Button</a>
+          </div>
+          <div class="scheme-footer">
+            <span>BG: #dd6727</span>
+            <span>Text: #000000</span>
+            <span>Btn: #ffffff</span>
+          </div>
+        </div>
+        <div class="scheme-card">
+          <div class="scheme-header" style="background: #1d6ae5; color: #ffffff;">
+            <h3>Scheme 5 - Blue</h3>
+            <p>Secondary blue scheme</p>
+            <a class="btn" style="background: #f5f7fa; color: #1d6ae5;">Button</a>
+          </div>
+          <div class="scheme-footer">
+            <span>BG: #1d6ae5</span>
+            <span>Text: #ffffff</span>
+            <span>Btn: #f5f7fa</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUICK REFERENCE -->
+    <section>
+      <h2>Quick Reference - Most Used Colors</h2>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Color</th>
+            <th>Hex</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="swatch-inline"><div class="swatch" style="background: #005496;"></div></div></td>
+            <td style="font-family: monospace;">#005496</td>
+            <td>Primary brand blue - navigation, CTAs, links</td>
+          </tr>
+          <tr>
+            <td><div class="swatch-inline"><div class="swatch" style="background: #1D6AE5;"></div></div></td>
+            <td style="font-family: monospace;">#1D6AE5</td>
+            <td>Banner backgrounds, secondary blue</td>
+          </tr>
+          <tr>
+            <td><div class="swatch-inline"><div class="swatch" style="background: #F5F7FA;"></div></div></td>
+            <td style="font-family: monospace;">#F5F7FA</td>
+            <td>Page background, section backgrounds</td>
+          </tr>
+          <tr>
+            <td><div class="swatch-inline"><div class="swatch" style="background: #2B2C2D;"></div></div></td>
+            <td style="font-family: monospace;">#2B2C2D</td>
+            <td>Primary text, headings</td>
+          </tr>
+          <tr>
+            <td><div class="swatch-inline"><div class="swatch" style="background: #6B7280;"></div></div></td>
+            <td style="font-family: monospace;">#6B7280</td>
+            <td>Secondary text, descriptions</td>
+          </tr>
+          <tr>
+            <td><div class="swatch-inline"><div class="swatch" style="background: #4CAF50;"></div></div></td>
+            <td style="font-family: monospace;">#4CAF50</td>
+            <td>CTA buttons (green), success actions</td>
+          </tr>
+          <tr>
+            <td><div class="swatch-inline"><div class="swatch" style="background: #007BFF;"></div></div></td>
+            <td style="font-family: monospace;">#007BFF</td>
+            <td>Badges, pills, testimonial elements</td>
+          </tr>
+          <tr>
+            <td><div class="swatch-inline"><div class="swatch" style="background: #FBBF24;"></div></div></td>
+            <td style="font-family: monospace;">#FBBF24</td>
+            <td>Star ratings, gold accents</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </div>
+
+  <script>
+    function setMode(mode) {
+      const body = document.body;
+      const buttons = document.querySelectorAll('.mode-toggle button');
+
+      if (mode === 'dark') {
+        body.classList.add('dark-mode');
+        buttons[0].classList.remove('active');
+        buttons[1].classList.add('active');
+      } else {
+        body.classList.remove('dark-mode');
+        buttons[0].classList.add('active');
+        buttons[1].classList.remove('active');
+      }
+    }
+  </script>
+</body>
+</html>
