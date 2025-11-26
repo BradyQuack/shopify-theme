@@ -355,7 +355,228 @@
       font-family: monospace;
     }
     {% endif %}
+
+    /* Debug Info Panel */
+    {% if debug_mode %}
+    .features-bar--{{ section.id }} .debug-info-panel {
+      background: #1a1a2e;
+      color: #eee;
+      padding: 16px;
+      margin: 0 auto 20px;
+      max-width: var(--features-bar__container);
+      border-radius: 8px;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      position: relative;
+    }
+    .features-bar--{{ section.id }} .debug-info-panel h4 {
+      color: #ff6b6b;
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .features-bar--{{ section.id }} .debug-info-panel .debug-section {
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #333;
+    }
+    .features-bar--{{ section.id }} .debug-info-panel .debug-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .features-bar--{{ section.id }} .debug-info-panel .debug-label {
+      color: #888;
+      display: inline-block;
+      width: 180px;
+    }
+    .features-bar--{{ section.id }} .debug-info-panel .debug-value {
+      color: #4ecdc4;
+    }
+    .features-bar--{{ section.id }} .debug-info-panel .debug-value.error {
+      color: #ff6b6b;
+    }
+    .features-bar--{{ section.id }} .debug-info-panel .debug-value.success {
+      color: #a8e6cf;
+    }
+    .features-bar--{{ section.id }} .debug-info-panel .color-swatch {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      margin-right: 6px;
+      vertical-align: middle;
+      border: 1px solid #555;
+    }
+    .features-bar--{{ section.id }} .debug-info-panel .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #4ecdc4;
+      color: #1a1a2e;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: bold;
+    }
+    .features-bar--{{ section.id }} .debug-info-panel .copy-btn:hover {
+      background: #45b7aa;
+    }
+    .features-bar--{{ section.id }} .debug-info-panel .css-output {
+      background: #0d0d1a;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 8px;
+      overflow-x: auto;
+      white-space: pre;
+      color: #f8f8f2;
+    }
+    .features-bar--{{ section.id }} .debug-info-panel .css-prop {
+      color: #66d9ef;
+    }
+    .features-bar--{{ section.id }} .debug-info-panel .css-val {
+      color: #a6e22e;
+    }
+    {% endif %}
   </style>
+
+  {% if debug_mode %}
+  <div class="debug-info-panel" id="debug-panel-{{ section.id }}">
+    <h4>🔧 Features Bar Debug Info</h4>
+    <button class="copy-btn" onclick="copyDebugInfo('{{ section.id }}')">📋 Copy Debug Info</button>
+
+    <div class="debug-section">
+      <strong style="color: #ff9900;">Container Background Issue Diagnostics:</strong><br>
+      <span class="debug-label">Setting ID:</span>
+      <span class="debug-value">item_bg_color</span><br>
+
+      <span class="debug-label">Raw Value:</span>
+      <span class="debug-value">{{ section.settings.item_bg_color | default: 'NOT SET' }}</span><br>
+
+      <span class="debug-label">Processed Value:</span>
+      <span class="debug-value">
+        <span class="color-swatch" style="background-color: {{ item_bg }};"></span>
+        {{ item_bg }}
+      </span><br>
+
+      <span class="debug-label">Is Blank:</span>
+      <span class="debug-value {% if item_bg == blank %}error{% else %}success{% endif %}">
+        {{ item_bg == blank }}
+      </span><br>
+
+      <span class="debug-label">Value Size:</span>
+      <span class="debug-value">{{ item_bg | size }} characters</span>
+    </div>
+
+    <div class="debug-section">
+      <strong style="color: #00ff00;">All CSS Variables:</strong><br>
+      <span class="debug-label">--features-bar__bg:</span>
+      <span class="debug-value"><span class="color-swatch" style="background-color: {{ bg }};"></span>{{ bg }}</span><br>
+
+      <span class="debug-label">--features-bar__head:</span>
+      <span class="debug-value"><span class="color-swatch" style="background-color: {{ head_color }};"></span>{{ head_color }}</span><br>
+
+      <span class="debug-label">--features-bar__text:</span>
+      <span class="debug-value"><span class="color-swatch" style="background-color: {{ text_color }};"></span>{{ text_color }}</span><br>
+
+      <span class="debug-label">--features-bar__item-bg:</span>
+      <span class="debug-value"><span class="color-swatch" style="background-color: {{ item_bg }};"></span>{{ item_bg }}</span><br>
+
+      <span class="debug-label">--features-bar__blue-start:</span>
+      <span class="debug-value"><span class="color-swatch" style="background-color: {{ blue_start }};"></span>{{ blue_start }}</span><br>
+
+      <span class="debug-label">--features-bar__blue-end:</span>
+      <span class="debug-value"><span class="color-swatch" style="background-color: {{ blue_end }};"></span>{{ blue_end }}</span>
+    </div>
+
+    <div class="debug-section">
+      <strong style="color: #0066ff;">Generated CSS (for .features-bar__item):</strong>
+      <div class="css-output"><span class="css-prop">background-color</span>: <span class="css-val">var(--features-bar__item-bg)</span>;
+<span class="css-prop">padding</span>: <span class="css-val">20px</span>;
+<span class="css-prop">border-radius</span>: <span class="css-val">12px</span>;
+
+<span style="color: #888;">/* CSS Variable resolves to: */</span>
+<span class="css-prop">--features-bar__item-bg</span>: <span class="css-val">{{ item_bg }}</span>;</div>
+    </div>
+
+    <div class="debug-section">
+      <strong style="color: #9900ff;">Test: Inline Style Applied</strong><br>
+      <span class="debug-label">Test Element:</span>
+      <span class="debug-value">
+        <span style="display: inline-block; width: 50px; height: 20px; background-color: {{ item_bg }}; border: 1px solid #555; border-radius: 3px;"></span>
+        {% if item_bg != blank %}<span class="success"> ✓ Color renders</span>{% else %}<span class="error"> ✗ No color</span>{% endif %}
+      </span>
+    </div>
+
+    <textarea id="debug-copy-{{ section.id }}" style="position: absolute; left: -9999px;">FEATURES-BAR DEBUG REPORT
+========================
+Section ID: {{ section.id }}
+Generated: {{ 'now' | date: '%Y-%m-%d %H:%M:%S' }}
+
+CONTAINER BACKGROUND DIAGNOSTICS
+--------------------------------
+Setting ID: item_bg_color
+Raw Value: {{ section.settings.item_bg_color | default: 'NOT SET' }}
+Processed Value: {{ item_bg }}
+Is Blank: {{ item_bg == blank }}
+Value Size: {{ item_bg | size }} characters
+
+ALL CSS VARIABLES
+-----------------
+--features-bar__bg: {{ bg }}
+--features-bar__head: {{ head_color }}
+--features-bar__text: {{ text_color }}
+--features-bar__item-bg: {{ item_bg }}
+--features-bar__blue-start: {{ blue_start }}
+--features-bar__blue-end: {{ blue_end }}
+--features-bar__radius: {{ radius }}px
+--features-bar__icon-size: {{ icon_size }}px
+--features-bar__gap: {{ gap_desktop }}px
+--features-bar__container: {{ max_width }}px
+
+GENERATED CSS RULE
+------------------
+.features-bar--{{ section.id }} .features-bar__item {
+  background-color: var(--features-bar__item-bg);
+  padding: 20px;
+  border-radius: 12px;
+}
+
+CSS VARIABLE DEFINITION
+-----------------------
+.features-bar--{{ section.id }} {
+  --features-bar__item-bg: {{ item_bg }};
+}
+
+EXPECTED RESULT
+---------------
+The .features-bar__item elements should have:
+background-color: {{ item_bg }}
+    </textarea>
+  </div>
+
+  <script>
+    function copyDebugInfo(sectionId) {
+      var textarea = document.getElementById('debug-copy-' + sectionId);
+      textarea.style.left = '0';
+      textarea.select();
+      document.execCommand('copy');
+      textarea.style.left = '-9999px';
+
+      var btn = event.target;
+      var originalText = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      btn.style.background = '#a8e6cf';
+      setTimeout(function() {
+        btn.textContent = originalText;
+        btn.style.background = '#4ecdc4';
+      }, 2000);
+    }
+  </script>
+  {% endif %}
 
   <div class="features-bar__wrap">
     {% if heading != blank %}
