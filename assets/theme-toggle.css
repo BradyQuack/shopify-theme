@@ -315,12 +315,13 @@ div.customer-reviews__text.rte p,
   color: var(--color-star-filled) !important;
 }
 
-/* Pill/Badge Text - Force primary */
+/* Pill/Badge Text - Force white text on primary background */
 .pill-text,
 span.pill-text,
-[class*="pill-text"] {
+[class*="pill-text"],
+.customer-reviews__pill .pill-text {
   background-color: var(--color-primary) !important;
-  color: var(--color-button-text) !important;
+  color: #FFFFFF !important;
 }
 
 /* Product Cards */
