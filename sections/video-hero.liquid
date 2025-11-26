@@ -107,7 +107,7 @@
 .video-hero__text-block {
   max-width: 500px;
   padding: 0 64px;
-  color: {{ section.settings.text_color | default: '#ffffff' }};
+  color: #FFFFFF;
 }
 
 .video-hero__brand {
@@ -125,7 +125,7 @@
   line-height: 1.1;
   margin-bottom: 24px;
   font-family: inherit;
-  color: {{ section.settings.headline_color | default: '#ffffff' }};
+  color: #FFFFFF;
 }
 
 .video-hero__body {
@@ -166,13 +166,13 @@
 
 .video-hero__btn--secondary {
   background-color: transparent;
-  color: {{ section.settings.text_color | default: '#ffffff' }};
-  border-color: {{ section.settings.text_color | default: '#ffffff' | color_modify: 'alpha', 0.3 }};
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .video-hero__btn--secondary:hover {
-  background-color: {{ section.settings.text_color | default: '#ffffff' | color_modify: 'alpha', 0.1 }};
-  border-color: {{ section.settings.text_color | default: '#ffffff' | color_modify: 'alpha', 0.5 }};
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 /* Mobile Responsiveness */
