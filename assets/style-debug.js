@@ -46,8 +46,14 @@
     fontSize: [],
     fontWeight: [],
     color: [],
-    spacing: []
+    spacing: [],
+    conflicts: [],
+    variables: []
   };
+
+  // Inspector mode state
+  let inspectorMode = false;
+  let inspectorOverlay = null;
 
   // Check if spacing value is consistent with expected values
   function isConsistentSpacing(value) {
@@ -293,6 +299,325 @@
     return inconsistencies;
   }
 
+  // Scan for CSS conflicts (overridden styles)
+  function scanConflicts() {
+    const conflicts = [];
+    const elements = document.querySelectorAll('body *:not(script):not(style):not(svg):not(path)');
+
+    elements.forEach(el => {
+      if (el.closest('#' + DEBUG_MODAL_ID)) return;
+      if (el.offsetParent === null && el.tagName !== 'BODY') return;
+
+      const selector = getElementSelector(el);
+      const computed = window.getComputedStyle(el);
+
+      // Check for !important overrides by looking at inline styles vs computed
+      const inlineStyle = el.getAttribute('style');
+      if (inlineStyle && inlineStyle.includes('!important')) {
+        conflicts.push({
+          element: selector,
+          type: 'inline-important',
+          detail: 'Inline !important override detected',
+          style: inlineStyle.substring(0, 100) + (inlineStyle.length > 100 ? '...' : '')
+        });
+      }
+
+      // Check for color conflicts (computed differs from CSS variable)
+      const colorProps = ['color', 'background-color', 'border-color'];
+      colorProps.forEach(prop => {
+        const computedValue = computed.getPropertyValue(prop);
+        const cssVarMatch = el.style.getPropertyValue(prop);
+
+        // Check if element has inline style that might override theme
+        if (el.style[prop === 'background-color' ? 'backgroundColor' : prop]) {
+          const inlineVal = el.style[prop === 'background-color' ? 'backgroundColor' : prop];
+          if (inlineVal && !inlineVal.includes('var(')) {
+            conflicts.push({
+              element: selector,
+              type: 'inline-override',
+              detail: `Inline ${prop} override`,
+              expected: 'theme variable',
+              actual: inlineVal
+            });
+          }
+        }
+      });
+    });
+
+    // Deduplicate and limit
+    const seen = new Set();
+    return conflicts.filter(c => {
+      const key = c.element + c.type + c.detail;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice(0, 50);
+  }
+
+  // Scan theme CSS variables
+  function scanThemeVariables() {
+    const variables = [];
+    const root = document.documentElement;
+    const computed = window.getComputedStyle(root);
+
+    // Common theme variable patterns to look for
+    const varPatterns = [
+      '--color-', '--font-', '--spacing-', '--border-', '--shadow-',
+      '--bg-', '--text-', '--primary', '--secondary', '--accent',
+      '--success', '--warning', '--error', '--surface'
+    ];
+
+    // Get all CSS custom properties from stylesheets
+    const allVars = new Set();
+
+    try {
+      for (const sheet of document.styleSheets) {
+        try {
+          for (const rule of sheet.cssRules || []) {
+            if (rule.style) {
+              for (let i = 0; i < rule.style.length; i++) {
+                const prop = rule.style[i];
+                if (prop.startsWith('--')) {
+                  allVars.add(prop);
+                }
+              }
+            }
+          }
+        } catch (e) {
+          // Cross-origin stylesheet, skip
+        }
+      }
+    } catch (e) {
+      // Fallback: check common variables
+    }
+
+    // Also check inline root styles
+    const rootStyles = root.getAttribute('style') || '';
+    const inlineVarMatches = rootStyles.match(/--[\w-]+/g) || [];
+    inlineVarMatches.forEach(v => allVars.add(v));
+
+    // Add common Shopify Dawn theme variables
+    const commonVars = [
+      '--color-base-text', '--color-base-background', '--color-base-solid-button-labels',
+      '--color-base-accent-1', '--color-base-accent-2', '--color-base-background-1',
+      '--color-base-background-2', '--color-foreground', '--color-background',
+      '--color-primary', '--color-secondary', '--color-accent', '--color-bg',
+      '--color-surface', '--color-text-primary', '--color-border',
+      '--font-body-family', '--font-heading-family', '--font-body-weight',
+      '--font-heading-weight', '--font-body-scale', '--font-heading-scale'
+    ];
+    commonVars.forEach(v => allVars.add(v));
+
+    // Get resolved values
+    allVars.forEach(varName => {
+      const value = computed.getPropertyValue(varName).trim();
+      if (value) {
+        // Categorize by type
+        let category = 'other';
+        if (varName.includes('color') || varName.includes('bg') || varName.includes('text')) {
+          category = 'color';
+        } else if (varName.includes('font')) {
+          category = 'font';
+        } else if (varName.includes('spacing') || varName.includes('gap') || varName.includes('margin') || varName.includes('padding')) {
+          category = 'spacing';
+        } else if (varName.includes('border') || varName.includes('radius')) {
+          category = 'border';
+        }
+
+        variables.push({
+          name: varName,
+          value: value,
+          category: category
+        });
+      }
+    });
+
+    // Sort by category then name
+    variables.sort((a, b) => {
+      if (a.category !== b.category) return a.category.localeCompare(b.category);
+      return a.name.localeCompare(b.name);
+    });
+
+    return variables;
+  }
+
+  // Element inspector functionality
+  function enableInspector() {
+    if (inspectorMode) return;
+    inspectorMode = true;
+
+    // Create overlay
+    inspectorOverlay = document.createElement('div');
+    inspectorOverlay.id = 'style-debug-inspector-overlay';
+    inspectorOverlay.innerHTML = `
+      <div class="inspector-tooltip"></div>
+    `;
+    document.body.appendChild(inspectorOverlay);
+
+    document.body.style.cursor = 'crosshair';
+
+    document.addEventListener('mouseover', inspectorMouseOver);
+    document.addEventListener('click', inspectorClick, true);
+    document.addEventListener('keydown', inspectorKeyDown);
+  }
+
+  function disableInspector() {
+    if (!inspectorMode) return;
+    inspectorMode = false;
+
+    if (inspectorOverlay) {
+      inspectorOverlay.remove();
+      inspectorOverlay = null;
+    }
+
+    document.body.style.cursor = '';
+    document.querySelectorAll('.style-debug-highlight').forEach(el => {
+      el.classList.remove('style-debug-highlight');
+    });
+
+    document.removeEventListener('mouseover', inspectorMouseOver);
+    document.removeEventListener('click', inspectorClick, true);
+    document.removeEventListener('keydown', inspectorKeyDown);
+  }
+
+  function inspectorMouseOver(e) {
+    if (!inspectorMode) return;
+    if (e.target.closest('#' + DEBUG_MODAL_ID)) return;
+    if (e.target.closest('#style-debug-inspector-overlay')) return;
+
+    // Remove previous highlights
+    document.querySelectorAll('.style-debug-highlight').forEach(el => {
+      el.classList.remove('style-debug-highlight');
+    });
+
+    // Highlight current element
+    e.target.classList.add('style-debug-highlight');
+
+    // Update tooltip
+    const tooltip = inspectorOverlay.querySelector('.inspector-tooltip');
+    const selector = getElementSelector(e.target);
+    const rect = e.target.getBoundingClientRect();
+
+    tooltip.textContent = selector;
+    tooltip.style.left = (rect.left + window.scrollX) + 'px';
+    tooltip.style.top = (rect.top + window.scrollY - 30) + 'px';
+    tooltip.style.display = 'block';
+  }
+
+  function inspectorClick(e) {
+    if (!inspectorMode) return;
+    if (e.target.closest('#' + DEBUG_MODAL_ID)) return;
+    if (e.target.closest('#style-debug-inspector-overlay')) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    showElementDetails(e.target);
+    disableInspector();
+  }
+
+  function inspectorKeyDown(e) {
+    if (e.key === 'Escape') {
+      disableInspector();
+    }
+  }
+
+  function showElementDetails(el) {
+    const modal = document.getElementById(DEBUG_MODAL_ID);
+    if (!modal) return;
+
+    const computed = window.getComputedStyle(el);
+    const selector = getElementSelector(el);
+
+    // Gather style information
+    const styleInfo = {
+      selector: selector,
+      tag: el.tagName.toLowerCase(),
+      classes: el.className ? el.className.split(' ').filter(c => c) : [],
+      id: el.id || null,
+      styles: {
+        // Typography
+        fontFamily: computed.fontFamily,
+        fontSize: computed.fontSize,
+        fontWeight: computed.fontWeight,
+        lineHeight: computed.lineHeight,
+        color: rgbToHex(computed.color),
+        // Box Model
+        width: computed.width,
+        height: computed.height,
+        padding: `${computed.paddingTop} ${computed.paddingRight} ${computed.paddingBottom} ${computed.paddingLeft}`,
+        margin: `${computed.marginTop} ${computed.marginRight} ${computed.marginBottom} ${computed.marginLeft}`,
+        // Background & Border
+        backgroundColor: rgbToHex(computed.backgroundColor),
+        border: computed.border,
+        borderRadius: computed.borderRadius,
+        // Layout
+        display: computed.display,
+        position: computed.position,
+        zIndex: computed.zIndex
+      },
+      inlineStyles: el.getAttribute('style') || 'none'
+    };
+
+    // Switch to a details view
+    const panel = modal.querySelector('[data-panel="inspector"]');
+    if (panel) {
+      panel.innerHTML = `
+        <div class="debug-modal__element-details">
+          <div class="debug-modal__element-header">
+            <strong>${styleInfo.selector}</strong>
+            ${styleInfo.id ? `<span class="debug-id">#${styleInfo.id}</span>` : ''}
+          </div>
+          ${styleInfo.classes.length ? `<div class="debug-classes">.${styleInfo.classes.join(' .')}</div>` : ''}
+
+          <div class="debug-modal__divider"></div>
+
+          <div class="debug-section">
+            <div class="debug-section-title">Typography</div>
+            <div class="debug-prop"><span>font-family:</span> ${styleInfo.styles.fontFamily}</div>
+            <div class="debug-prop"><span>font-size:</span> ${styleInfo.styles.fontSize}</div>
+            <div class="debug-prop"><span>font-weight:</span> ${styleInfo.styles.fontWeight}</div>
+            <div class="debug-prop"><span>line-height:</span> ${styleInfo.styles.lineHeight}</div>
+            <div class="debug-prop"><span>color:</span> <span class="debug-color-preview" style="background:${styleInfo.styles.color}"></span> ${styleInfo.styles.color}</div>
+          </div>
+
+          <div class="debug-section">
+            <div class="debug-section-title">Box Model</div>
+            <div class="debug-prop"><span>width:</span> ${styleInfo.styles.width}</div>
+            <div class="debug-prop"><span>height:</span> ${styleInfo.styles.height}</div>
+            <div class="debug-prop"><span>padding:</span> ${styleInfo.styles.padding}</div>
+            <div class="debug-prop"><span>margin:</span> ${styleInfo.styles.margin}</div>
+          </div>
+
+          <div class="debug-section">
+            <div class="debug-section-title">Background & Border</div>
+            <div class="debug-prop"><span>background:</span> <span class="debug-color-preview" style="background:${styleInfo.styles.backgroundColor}"></span> ${styleInfo.styles.backgroundColor || 'transparent'}</div>
+            <div class="debug-prop"><span>border:</span> ${styleInfo.styles.border}</div>
+            <div class="debug-prop"><span>border-radius:</span> ${styleInfo.styles.borderRadius}</div>
+          </div>
+
+          <div class="debug-section">
+            <div class="debug-section-title">Layout</div>
+            <div class="debug-prop"><span>display:</span> ${styleInfo.styles.display}</div>
+            <div class="debug-prop"><span>position:</span> ${styleInfo.styles.position}</div>
+            <div class="debug-prop"><span>z-index:</span> ${styleInfo.styles.zIndex}</div>
+          </div>
+
+          <div class="debug-section">
+            <div class="debug-section-title">Inline Styles</div>
+            <div class="debug-inline-styles">${styleInfo.inlineStyles}</div>
+          </div>
+        </div>
+      `;
+
+      // Switch to inspector tab
+      modal.querySelectorAll('.debug-modal__tab').forEach(t => t.classList.remove('active'));
+      modal.querySelectorAll('.debug-modal__panel').forEach(p => p.classList.remove('active'));
+      modal.querySelector('[data-tab="inspector"]').classList.add('active');
+      panel.classList.add('active');
+    }
+  }
+
   // Create the debug modal HTML
   function createModal() {
     const existingModal = document.getElementById(DEBUG_MODAL_ID);
@@ -324,11 +649,14 @@
         </div>
         <div class="debug-modal__body">
           <div class="debug-modal__tabs">
-            <button type="button" class="debug-modal__tab active" data-tab="fonts">Font Family</button>
-            <button type="button" class="debug-modal__tab" data-tab="sizes">Font Sizes</button>
-            <button type="button" class="debug-modal__tab" data-tab="weights">Font Weights</button>
+            <button type="button" class="debug-modal__tab active" data-tab="fonts">Fonts</button>
+            <button type="button" class="debug-modal__tab" data-tab="sizes">Sizes</button>
+            <button type="button" class="debug-modal__tab" data-tab="weights">Weights</button>
             <button type="button" class="debug-modal__tab" data-tab="colors">Colors</button>
             <button type="button" class="debug-modal__tab" data-tab="spacing">Spacing</button>
+            <button type="button" class="debug-modal__tab" data-tab="conflicts">Conflicts</button>
+            <button type="button" class="debug-modal__tab" data-tab="variables">Variables</button>
+            <button type="button" class="debug-modal__tab" data-tab="inspector">Inspector</button>
           </div>
           <div class="debug-modal__panels">
             <div class="debug-modal__panel active" data-panel="fonts"></div>
@@ -336,6 +664,9 @@
             <div class="debug-modal__panel" data-panel="weights"></div>
             <div class="debug-modal__panel" data-panel="colors"></div>
             <div class="debug-modal__panel" data-panel="spacing"></div>
+            <div class="debug-modal__panel" data-panel="conflicts"></div>
+            <div class="debug-modal__panel" data-panel="variables"></div>
+            <div class="debug-modal__panel" data-panel="inspector"></div>
           </div>
         </div>
       </div>
@@ -448,6 +779,45 @@
     consistentSpacing.forEach(item => {
       lines.push('  • ' + item.value + ' — ' + item.properties.join(', '));
     });
+    lines.push('');
+
+    // CSS Conflicts
+    const conflicts = scanConflicts();
+    lines.push('CSS CONFLICTS');
+    lines.push('-'.repeat(40));
+    if (conflicts.length === 0) {
+      lines.push('✓ No CSS conflicts detected');
+    } else {
+      lines.push('⚠ Found ' + conflicts.length + ' potential conflicts:');
+      conflicts.forEach(item => {
+        lines.push('  • ' + item.element + ' [' + item.type + ']');
+        lines.push('    ' + item.detail);
+        if (item.actual) lines.push('    Actual: ' + item.actual);
+      });
+    }
+    lines.push('');
+
+    // Theme Variables
+    const variables = scanThemeVariables();
+    lines.push('THEME VARIABLES (' + variables.length + ' found)');
+    lines.push('-'.repeat(40));
+    const colorVars = variables.filter(v => v.category === 'color');
+    const fontVars = variables.filter(v => v.category === 'font');
+
+    if (colorVars.length > 0) {
+      lines.push('Color Variables (' + colorVars.length + '):');
+      colorVars.slice(0, 10).forEach(v => {
+        lines.push('  • ' + v.name + ': ' + v.value);
+      });
+      if (colorVars.length > 10) lines.push('  ... and ' + (colorVars.length - 10) + ' more');
+    }
+    lines.push('');
+    if (fontVars.length > 0) {
+      lines.push('Font Variables (' + fontVars.length + '):');
+      fontVars.forEach(v => {
+        lines.push('  • ' + v.name + ': ' + v.value);
+      });
+    }
     lines.push('');
     lines.push('='.repeat(60));
 
@@ -608,6 +978,135 @@
       <div class="debug-modal__info">Expected spacing scale:</div>
       <div class="debug-modal__note">0, 4, 8, 12, 16, 20, 24, 28, 32, 40, 48, 56, 64, 80, 96, 112, 128px</div>
     `;
+
+    // Conflicts Panel
+    const conflictsPanel = modal.querySelector('[data-panel="conflicts"]');
+    const conflicts = scanConflicts();
+
+    conflictsPanel.innerHTML = `
+      ${conflicts.length > 0 ? `
+        <div class="debug-modal__warning">Found ${conflicts.length} potential CSS conflicts:</div>
+        <div class="debug-modal__list">
+          ${conflicts.map(item => `
+            <div class="debug-modal__item debug-modal__item--error">
+              <div class="debug-modal__item-value">${item.element}</div>
+              <div class="debug-modal__item-type">${item.type}</div>
+              <div class="debug-modal__item-detail">${item.detail}</div>
+              ${item.style ? `<div class="debug-modal__item-code">${item.style}</div>` : ''}
+              ${item.actual ? `<div class="debug-modal__item-actual">Actual: ${item.actual}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+      ` : '<div class="debug-modal__success">No CSS conflicts detected</div>'}
+
+      <div class="debug-modal__divider"></div>
+      <div class="debug-modal__info">What this checks:</div>
+      <div class="debug-modal__note">
+        • Inline !important overrides<br>
+        • Inline color overrides (not using theme variables)<br>
+        • Style specificity conflicts
+      </div>
+    `;
+
+    // Variables Panel
+    const variablesPanel = modal.querySelector('[data-panel="variables"]');
+    const variables = scanThemeVariables();
+
+    const colorVars = variables.filter(v => v.category === 'color');
+    const fontVars = variables.filter(v => v.category === 'font');
+    const spacingVars = variables.filter(v => v.category === 'spacing');
+    const otherVars = variables.filter(v => v.category === 'other' || v.category === 'border');
+
+    variablesPanel.innerHTML = `
+      <div class="debug-modal__info">Theme CSS Variables (${variables.length} found):</div>
+
+      ${colorVars.length > 0 ? `
+        <div class="debug-modal__var-section">
+          <div class="debug-section-title">Color Variables (${colorVars.length})</div>
+          <div class="debug-modal__list debug-modal__list--vars">
+            ${colorVars.map(v => `
+              <div class="debug-modal__var-item">
+                <span class="debug-modal__var-name">${v.name}</span>
+                <span class="debug-modal__var-value">
+                  ${v.value.includes('rgb') || v.value.startsWith('#') ? `<span class="debug-color-preview" style="background:${v.value}"></span>` : ''}
+                  ${v.value}
+                </span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${fontVars.length > 0 ? `
+        <div class="debug-modal__var-section">
+          <div class="debug-section-title">Font Variables (${fontVars.length})</div>
+          <div class="debug-modal__list debug-modal__list--vars">
+            ${fontVars.map(v => `
+              <div class="debug-modal__var-item">
+                <span class="debug-modal__var-name">${v.name}</span>
+                <span class="debug-modal__var-value">${v.value}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${spacingVars.length > 0 ? `
+        <div class="debug-modal__var-section">
+          <div class="debug-section-title">Spacing Variables (${spacingVars.length})</div>
+          <div class="debug-modal__list debug-modal__list--vars">
+            ${spacingVars.map(v => `
+              <div class="debug-modal__var-item">
+                <span class="debug-modal__var-name">${v.name}</span>
+                <span class="debug-modal__var-value">${v.value}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${otherVars.length > 0 ? `
+        <div class="debug-modal__var-section">
+          <div class="debug-section-title">Other Variables (${otherVars.length})</div>
+          <div class="debug-modal__list debug-modal__list--vars">
+            ${otherVars.map(v => `
+              <div class="debug-modal__var-item">
+                <span class="debug-modal__var-name">${v.name}</span>
+                <span class="debug-modal__var-value">${v.value}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+    `;
+
+    // Inspector Panel
+    const inspectorPanel = modal.querySelector('[data-panel="inspector"]');
+    inspectorPanel.innerHTML = `
+      <div class="debug-modal__inspector-intro">
+        <div class="debug-modal__info">Element Inspector</div>
+        <p>Click the button below, then click on any element on the page to inspect its computed styles.</p>
+        <button type="button" class="debug-modal__inspect-btn" id="start-inspector">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          Start Inspector
+        </button>
+        <div class="debug-modal__note" style="margin-top: 12px;">
+          Press <kbd>Esc</kbd> to cancel inspection mode
+        </div>
+      </div>
+    `;
+
+    // Add inspector button handler
+    const inspectBtn = inspectorPanel.querySelector('#start-inspector');
+    if (inspectBtn) {
+      inspectBtn.addEventListener('click', () => {
+        hideModal();
+        setTimeout(() => enableInspector(), 100);
+      });
+    }
   }
 
   // Show the modal
@@ -654,7 +1153,11 @@
     show: showModal,
     hide: hideModal,
     toggle: toggleModal,
-    scan: scanStyles
+    scan: scanStyles,
+    scanConflicts: scanConflicts,
+    scanVariables: scanThemeVariables,
+    inspect: enableInspector,
+    stopInspect: disableInspector
   };
 
   // Auto-show if debug button exists
