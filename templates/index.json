@@ -340,7 +340,8 @@
         "padding_bottom": 20,
         "align": "center",
         "show_dividers": false,
-        "debug_mode": true
+        "item_bg_color": "#e8ecf0",
+        "debug_mode": false
       }
     },
     "banner1_8wY8Ft": {
