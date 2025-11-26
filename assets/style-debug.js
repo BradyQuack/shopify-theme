@@ -304,6 +304,12 @@
     const conflicts = [];
     const elements = document.querySelectorAll('body *:not(script):not(style):not(svg):not(path)');
 
+    // Get theme colors for comparison
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const themeColors = isDark ? EXPECTED.darkColors : EXPECTED.lightColors;
+    const themeColorValues = Object.values(themeColors).map(c => c.toUpperCase());
+    const allowedColors = [...themeColorValues, '#FFFFFF', '#000000', '#FFF', '#000', 'TRANSPARENT'];
+
     elements.forEach(el => {
       if (el.closest('#' + DEBUG_MODAL_ID)) return;
       if (el.offsetParent === null && el.tagName !== 'BODY') return;
@@ -326,7 +332,7 @@
       const colorProps = ['color', 'background-color', 'border-color'];
       colorProps.forEach(prop => {
         const computedValue = computed.getPropertyValue(prop);
-        const cssVarMatch = el.style.getPropertyValue(prop);
+        const hexColor = rgbToHex(computedValue);
 
         // Check if element has inline style that might override theme
         if (el.style[prop === 'background-color' ? 'backgroundColor' : prop]) {
@@ -341,6 +347,47 @@
             });
           }
         }
+
+        // NEW: Check if computed color is hardcoded (not a theme color)
+        // This catches <style> block hardcoded colors, not just inline styles
+        if (hexColor && !allowedColors.includes(hexColor.toUpperCase())) {
+          // Check if this is a text element with non-theme color
+          const isTextElement = el.innerText && el.innerText.trim().length > 0;
+          const isColorProp = prop === 'color';
+          const isBgProp = prop === 'background-color';
+
+          // Only flag visible text colors or prominent backgrounds
+          if ((isColorProp && isTextElement) || (isBgProp && hexColor !== null)) {
+            // Check if any matching CSS rule uses var()
+            let usesVariable = false;
+            try {
+              for (const sheet of document.styleSheets) {
+                try {
+                  for (const rule of sheet.cssRules || []) {
+                    if (rule.selectorText && el.matches(rule.selectorText)) {
+                      const ruleValue = rule.style.getPropertyValue(prop);
+                      if (ruleValue && ruleValue.includes('var(')) {
+                        usesVariable = true;
+                        break;
+                      }
+                    }
+                  }
+                } catch (e) { /* cross-origin */ }
+                if (usesVariable) break;
+              }
+            } catch (e) { /* ignore */ }
+
+            if (!usesVariable) {
+              conflicts.push({
+                element: selector,
+                type: 'hardcoded-color',
+                detail: `Hardcoded ${prop} (not theme variable)`,
+                expected: 'var(--color-*)',
+                actual: hexColor
+              });
+            }
+          }
+        }
       });
     });
 
@@ -351,7 +398,7 @@
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
-    }).slice(0, 50);
+    }).slice(0, 100);
   }
 
   // Scan theme CSS variables
