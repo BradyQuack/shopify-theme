@@ -18,6 +18,7 @@
   assign text_color       = section.settings.text_color | default: '#64748B'
   assign blue_start       = section.settings.accent_blue_start | default: '#1976D2'
   assign blue_end         = section.settings.accent_blue_end | default: '#1E88E5'
+  assign item_bg          = section.settings.item_bg_color | default: 'transparent'
   assign radius           = section.settings.icon_bg_radius | default: 14
   assign icon_size        = section.settings.icon_size | default: 24
   assign cols_desktop     = section.settings.columns_desktop | default: '4'
@@ -44,6 +45,7 @@
       --features-bar__text: {{ text_color }};
       --features-bar__blue-start: {{ blue_start }};
       --features-bar__blue-end: {{ blue_end }};
+      --features-bar__item-bg: {{ item_bg }};
       --features-bar__radius: {{ radius }}px;
       --features-bar__icon-size: {{ icon_size }}px;
       --features-bar__gap: {{ gap_desktop }}px;
@@ -131,6 +133,9 @@
       width: 100%;
       text-align: {{ align }};
       font-family: inherit; /* Ensure font inheritance */
+      background-color: var(--features-bar__item-bg);
+      padding: 20px;
+      border-radius: 12px;
     }
 
     .features-bar--{{ section.id }} .features-bar__link{
@@ -310,6 +315,7 @@
 
     { "type": "color", "id": "accent_blue_start", "label": "Tile gradient start", "default": "#005496" },
     { "type": "color", "id": "accent_blue_end", "label": "Tile gradient end", "default": "#1D6AE5" },
+    { "type": "color", "id": "item_bg_color", "label": "Feature container background" },
 
     { "type": "range", "id": "icon_bg_radius", "min": 8, "max": 20, "step": 1, "unit": "px", "label": "Tile corner radius", "default": 14 },
     { "type": "range", "id": "icon_size", "min": 20, "max": 36, "step": 1, "unit": "px", "label": "PNG scale (base unit)", "default": 24 },
