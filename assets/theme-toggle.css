@@ -286,7 +286,12 @@
 
 .customer-reviews__text,
 .customer-reviews__text blockquote,
-blockquote.customer-reviews__text {
+blockquote.customer-reviews__text,
+.customer-reviews__text.rte,
+.customer-reviews__text.rte p,
+div.customer-reviews__text.rte,
+div.customer-reviews__text.rte p,
+[class*="customer-reviews__text"] p {
   color: var(--color-text-primary) !important;
 }
 
@@ -316,7 +321,9 @@ blockquote.customer-reviews__text {
 }
 
 /* Pill/Badge Text - Force primary */
-.pill-text {
+.pill-text,
+span.pill-text,
+[class*="pill-text"] {
   background-color: var(--color-primary) !important;
   color: var(--color-button-text) !important;
 }
