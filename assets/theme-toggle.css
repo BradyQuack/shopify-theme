@@ -227,6 +227,218 @@
 }
 
 /* ============================================
+   FORCED THEME CONSISTENCY (BOTH MODES)
+   Override saved schema values to ensure theme unity
+   ============================================ */
+
+/* Promo Bar - Force primary color */
+.promo-bar {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+.promo-bar a,
+.promo-bar__links a {
+  color: var(--color-button-text) !important;
+}
+
+/* Search Button */
+.header2__search-button {
+  background-color: var(--color-primary) !important;
+}
+
+.header2__search-button:hover {
+  background-color: var(--color-primary-hover) !important;
+}
+
+/* Navigation Links */
+.header2__nav-link,
+.header2__mobile-nav-link {
+  color: var(--color-text-primary) !important;
+}
+
+.header2__nav-link--shop-all,
+.header2__mobile-nav-link--shop-all {
+  background-color: var(--color-surface-alt) !important;
+  color: var(--color-text-primary) !important;
+}
+
+/* Store Info */
+.header2__store-info,
+.header2__store-icon,
+.header2__store-details {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Customer Reviews - Force theme colors */
+.customer-reviews__badge {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+.customer-reviews__heading {
+  color: var(--color-text-primary) !important;
+}
+
+.customer-reviews__description {
+  color: var(--color-text-secondary) !important;
+}
+
+.customer-reviews__text,
+.customer-reviews__text blockquote,
+blockquote.customer-reviews__text {
+  color: var(--color-text-primary) !important;
+}
+
+.customer-reviews__customer-name {
+  color: var(--color-text-primary) !important;
+}
+
+.customer-reviews__customer-location {
+  color: var(--color-text-muted) !important;
+}
+
+.customer-reviews__quote-icon {
+  color: var(--color-border) !important;
+}
+
+.customer-reviews__service-type {
+  background-color: var(--color-surface-alt) !important;
+  color: var(--color-primary) !important;
+}
+
+.customer-reviews__star {
+  color: var(--color-star-unfilled) !important;
+}
+
+.customer-reviews__star--filled {
+  color: var(--color-star-filled) !important;
+}
+
+/* Pill/Badge Text - Force primary */
+.pill-text {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* Product Cards */
+.product-card__stars {
+  color: var(--color-star-filled) !important;
+}
+
+.product-card__compare-price {
+  color: var(--color-text-muted) !important;
+}
+
+.product-card__image {
+  background-color: var(--color-surface-alt) !important;
+}
+
+.product-card__name {
+  color: var(--color-link) !important;
+}
+
+/* Banners */
+.banner__heading {
+  color: var(--color-text-primary) !important;
+}
+
+.banner__text,
+.banner__text p {
+  color: var(--color-text-secondary) !important;
+}
+
+.banner-button {
+  background-color: var(--color-success) !important;
+  color: var(--color-button-text) !important;
+}
+
+.banner-button:hover {
+  background-color: var(--color-success-hover) !important;
+}
+
+/* Wholesale Banner */
+.wholesale-banner-template--25620003651873__banner1_8wY8Ft,
+.wholesale-banner-template--25620003651873__banner1_9VebfT,
+[class*="wholesale-banner"] {
+  background-color: var(--color-primary) !important;
+}
+
+/* Primary Buttons */
+.button--primary,
+a.button.button--primary {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+.button--primary:hover,
+a.button.button--primary:hover {
+  background-color: var(--color-primary-hover) !important;
+}
+
+/* Feature Highlights */
+.features-highlight__item {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+.sig-title,
+h3.sig-title {
+  color: var(--color-text-primary) !important;
+}
+
+.sig-desc,
+p.sig-desc {
+  color: var(--color-text-muted) !important;
+}
+
+/* Footer */
+.footer,
+.footer__theme-toggle-section {
+  background-color: var(--color-bg) !important;
+}
+
+/* RTE Content */
+.rte,
+.rte p {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Generic text overrides for common non-theme colors */
+[style*="color: #007BFF"],
+[style*="color:#007BFF"],
+[style*="color: #1976D2"],
+[style*="color:#1976D2"] {
+  color: var(--color-primary) !important;
+}
+
+[style*="background-color: #007BFF"],
+[style*="background:#007BFF"],
+[style*="background-color: #1976D2"],
+[style*="background:#1976D2"] {
+  background-color: var(--color-primary) !important;
+}
+
+[style*="color: #333333"],
+[style*="color:#333333"],
+[style*="color: #1A2332"],
+[style*="color:#1A2332"] {
+  color: var(--color-text-primary) !important;
+}
+
+[style*="color: #666666"],
+[style*="color:#666666"],
+[style*="color: #718096"],
+[style*="color:#718096"] {
+  color: var(--color-text-secondary) !important;
+}
+
+[style*="background-color: #E3F2FD"],
+[style*="background:#E3F2FD"] {
+  background-color: var(--color-surface-alt) !important;
+}
+
+/* ============================================
    APPLY THEME COLORS TO ELEMENTS
    ============================================ */
 
