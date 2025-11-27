@@ -524,7 +524,7 @@
       }
     },
     "custom2_7XUC8B": {
-      "type": "custom2",
+      "type": "banner-image-hero",
       "blocks": {
         "heading_PebgWC": {
           "type": "heading",
@@ -711,7 +711,7 @@
       }
     },
     "richcustom2_tqRnBA": {
-      "type": "richcustom2",
+      "type": "reviews-summary",
       "disabled": true,
       "name": "Rich Custom 2",
       "settings": {
