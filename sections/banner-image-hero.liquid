@@ -1,3 +1,11 @@
+{% comment %}
+  Section: banner-image-hero.liquid
+  Purpose: Full-width image banner with overlay text, buttons, and icon features
+  Used on: Homepage (index.json)
+  Features: Adaptive height, dual buttons, dividers, icon-text rows
+  Note: Extended from Dawn's image-banner with additional block types
+{% endcomment %}
+
 {{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
 
 {%- if section.settings.image_height == 'adapt' and section.settings.image != blank -%}
