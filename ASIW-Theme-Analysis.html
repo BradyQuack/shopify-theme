@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASIW Supply Shopify Theme - Analysis Report</title>
+  <style>
+    :root {
+      --primary: #1d6ae5;
+      --success: #16734e;
+      --warning: #b45309;
+      --danger: #dc2626;
+      --text: #1f2937;
+      --text-muted: #6b7280;
+      --bg: #ffffff;
+      --bg-alt: #f9fafb;
+      --border: #e5e7eb;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .date {
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      color: var(--text);
+      margin: 48px 0 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      color: var(--text);
+      margin: 32px 0 16px;
+    }
+
+    h4 {
+      font-size: 1.1rem;
+      color: var(--text);
+      margin: 24px 0 12px;
+    }
+
+    p {
+      margin-bottom: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+
+    th {
+      background: var(--bg-alt);
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+      background: var(--bg-alt);
+    }
+
+    ul, ol {
+      margin: 16px 0;
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    .card {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .card-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--primary);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .badge-success {
+      background: #dcfce7;
+      color: var(--success);
+    }
+
+    .badge-warning {
+      background: #fef3c7;
+      color: var(--warning);
+    }
+
+    .badge-danger {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    .badge-info {
+      background: #dbeafe;
+      color: var(--primary);
+    }
+
+    .strength-item, .weakness-item {
+      padding: 16px;
+      margin: 12px 0;
+      border-radius: 8px;
+      border-left: 4px solid;
+    }
+
+    .strength-item {
+      background: #f0fdf4;
+      border-color: var(--success);
+    }
+
+    .weakness-item {
+      background: #fef2f2;
+      border-color: var(--danger);
+    }
+
+    .priority-high {
+      border-left: 4px solid var(--danger);
+      padding-left: 16px;
+      margin: 16px 0;
+    }
+
+    .priority-medium {
+      border-left: 4px solid var(--warning);
+      padding-left: 16px;
+      margin: 16px 0;
+    }
+
+    .priority-low {
+      border-left: 4px solid var(--text-muted);
+      padding-left: 16px;
+      margin: 16px 0;
+    }
+
+    code {
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.9em;
+    }
+
+    .toc {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 32px 0;
+    }
+
+    .toc h3 {
+      margin-top: 0;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .toc li {
+      margin-bottom: 8px;
+    }
+
+    .toc a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    .summary-box {
+      background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 32px 0;
+    }
+
+    .summary-box h3 {
+      margin-top: 0;
+      color: var(--primary);
+    }
+
+    footer {
+      margin-top: 64px;
+      padding-top: 32px;
+      border-top: 2px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    @media print {
+      body {
+        padding: 20px;
+      }
+
+      .toc {
+        page-break-after: always;
+      }
+
+      h2 {
+        page-break-before: always;
+      }
+
+      h2:first-of-type {
+        page-break-before: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>ASIW Supply Shopify Theme</h1>
+      <p class="subtitle">Comprehensive Analysis Report</p>
+      <p class="date">Generated: December 1, 2025</p>
+    </header>
+
+    <nav class="toc">
+      <h3>Table of Contents</h3>
+      <ul>
+        <li><a href="#overview">1. Overview</a></li>
+        <li><a href="#current-state">2. Current State</a></li>
+        <li><a href="#strengths">3. Strengths</a></li>
+        <li><a href="#weaknesses">4. Weaknesses</a></li>
+        <li><a href="#functionality">5. Functionality Analysis</a></li>
+        <li><a href="#future">6. Future Functionality Recommendations</a></li>
+        <li><a href="#technical-debt">7. Technical Debt Summary</a></li>
+        <li><a href="#conclusion">8. Conclusion</a></li>
+      </ul>
+    </nav>
+
+    <section id="overview">
+      <h2>1. Overview</h2>
+      <p>The ASIW Supply theme is a customized <strong>Dawn 15.2.0</strong> theme designed for a B2B/wholesale irrigation and water equipment supplier. The codebase has been recently refactored for improved maintainability.</p>
+
+      <div class="card">
+        <div class="card-title">Theme Foundation</div>
+        <ul>
+          <li><strong>Base Theme:</strong> Shopify Dawn 15.2.0</li>
+          <li><strong>Primary Use:</strong> B2B/Wholesale Irrigation Equipment</li>
+          <li><strong>Target Audience:</strong> Contractors, farms, municipalities</li>
+          <li><strong>Key Feature:</strong> Wholesale pricing application system</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="current-state">
+      <h2>2. Current State</h2>
+
+      <h3>Theme Architecture</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Count</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Sections</td>
+            <td>63</td>
+            <td><span class="badge badge-success">Clean (reduced from ~80)</span></td>
+          </tr>
+          <tr>
+            <td>Templates</td>
+            <td>21</td>
+            <td><span class="badge badge-success">Well-organized</span></td>
+          </tr>
+          <tr>
+            <td>Snippets</td>
+            <td>37</td>
+            <td><span class="badge badge-info">Dawn standard</span></td>
+          </tr>
+          <tr>
+            <td>Assets</td>
+            <td>~190</td>
+            <td><span class="badge badge-warning">Mixed (Dawn + custom)</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Active Custom Sections</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Section</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>header2.liquid</code></td><td>Custom header with promo bar, mega menu, search</td></tr>
+          <tr><td><code>hero-video.liquid</code></td><td>Video background hero with blocks</td></tr>
+          <tr><td><code>product-grid.liquid</code></td><td>Three-column product display</td></tr>
+          <tr><td><code>features-bar.liquid</code></td><td>Horizontal feature strip</td></tr>
+          <tr><td><code>cta-banner.liquid</code></td><td>Call-to-action banners</td></tr>
+          <tr><td><code>content-block.liquid</code></td><td>Flexible content with brand logos</td></tr>
+          <tr><td><code>testimonials.liquid</code></td><td>Customer review carousel</td></tr>
+          <tr><td><code>wholesale-hero.liquid</code></td><td>Wholesale landing hero</td></tr>
+          <tr><td><code>wholesale-form.liquid</code></td><td>B2B application form</td></tr>
+          <tr><td><code>brands-grid.liquid</code></td><td>Category/brand showcase cards</td></tr>
+          <tr><td><code>why-choose-us.liquid</code></td><td>Feature cards with icons</td></tr>
+          <tr><td><code>features-icons.liquid</code></td><td>4-up icon grid</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="strengths">
+      <h2>3. Strengths</h2>
+
+      <div class="strength-item">
+        <h4>1. Clean Section Naming</h4>
+        <p>All sections now use descriptive kebab-case names (<code>wholesale-form</code>, <code>features-bar</code>, <code>brands-grid</code>), making the codebase maintainable and self-documenting.</p>
+      </div>
+
+      <div class="strength-item">
+        <h4>2. B2B-Focused Design</h4>
+        <p>The theme strongly supports wholesale/B2B operations:</p>
+        <ul>
+          <li>Dedicated wholesale landing page with form</li>
+          <li>Wholesale pricing CTAs throughout homepage</li>
+          <li>Business-focused messaging ("contractors, farms, municipalities")</li>
+          <li>Clear wholesale application workflow</li>
+        </ul>
+      </div>
+
+      <div class="strength-item">
+        <h4>3. Dark/Light Mode Support</h4>
+        <p>The footer includes a theme toggle with proper CSS variable architecture in <code>theme-toggle.css</code>. This modern feature enhances accessibility and user preference.</p>
+      </div>
+
+      <div class="strength-item">
+        <h4>4. Custom Header with Full Functionality</h4>
+        <p><code>header2.liquid</code> provides:</p>
+        <ul>
+          <li>Promotional bar with customizable colors</li>
+          <li>Contact info display (email, phone, hours)</li>
+          <li>Full-width responsive search</li>
+          <li>Mega menu with recommendations</li>
+          <li>Mobile slide-out menu</li>
+          <li>Shop All dropdown with configurable links</li>
+        </ul>
+      </div>
+
+      <div class="strength-item">
+        <h4>5. Block-Based Sections</h4>
+        <p>Most custom sections use Shopify's block architecture, allowing merchants to add/remove/reorder content via the theme editor without code changes.</p>
+      </div>
+
+      <div class="strength-item">
+        <h4>6. Product Showcase Flexibility</h4>
+        <p><code>product-grid.liquid</code> displays products in three columns with configurable column titles, rating badges, mobile visibility toggles, and dynamic product links.</p>
+      </div>
+
+      <div class="strength-item">
+        <h4>7. Strong Brand Presence</h4>
+        <p>Multiple brand showcase options available: <code>brands-grid.liquid</code> for category cards, <code>content-block.liquid</code> for 12-logo grids, and <code>brandspotlight.liquid</code> for simple logo displays.</p>
+      </div>
+    </section>
+
+    <section id="weaknesses">
+      <h2>4. Weaknesses</h2>
+
+      <div class="weakness-item">
+        <h4>1. CSS Organization</h4>
+        <p><strong>Issue:</strong> Inline CSS in sections rather than external stylesheets.</p>
+        <p>Most custom sections embed 100-300+ lines of CSS in <code>&lt;style&gt;</code> tags. This increases page weight (CSS not cacheable), makes global style updates difficult, and creates specificity conflicts.</p>
+        <p><strong>Recommendation:</strong> Extract common styles to <code>section-*.css</code> files.</p>
+      </div>
+
+      <div class="weakness-item">
+        <h4>2. Duplicate Functionality</h4>
+        <p>Several sections serve similar purposes:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Section</th>
+              <th>Similar To</th>
+              <th>Difference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>features-bar.liquid</code></td>
+              <td><code>features-icons.liquid</code></td>
+              <td>Layout orientation only</td>
+            </tr>
+            <tr>
+              <td><code>content-block.liquid</code></td>
+              <td>Multiple blocks</td>
+              <td>Over-complex</td>
+            </tr>
+            <tr>
+              <td><code>brands-grid.liquid</code></td>
+              <td><code>content-block</code> features</td>
+              <td>Separate implementation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="weakness-item">
+        <h4>3. Template Proliferation</h4>
+        <p>Amazon product templates create maintenance overhead:</p>
+        <ul>
+          <li><code>product.amazon-pumps.json</code></li>
+          <li><code>product.amazon-pump-parts.json</code></li>
+          <li><code>product.amazon.json</code></li>
+        </ul>
+        <p>These could potentially be consolidated.</p>
+      </div>
+
+      <div class="weakness-item">
+        <h4>4. Missing Documentation in Sections</h4>
+        <p>Only some sections have header comments explaining their purpose. Many lack usage instructions, block descriptions, and setting explanations.</p>
+      </div>
+
+      <div class="weakness-item">
+        <h4>5. Disabled Sections in Templates</h4>
+        <p><code>index.json</code> contains disabled sections that add clutter:</p>
+        <ul>
+          <li><code>custom_section_aChJ3c</code> (content-block, disabled)</li>
+          <li><code>custom2_7XUC8B</code> (banner-image-hero, disabled)</li>
+          <li><code>richcustom2_tqRnBA</code> (reviews-summary, disabled)</li>
+        </ul>
+      </div>
+
+      <div class="weakness-item">
+        <h4>6. Debug Mode Left Enabled</h4>
+        <p><code>features-bar</code> has <code>"debug_mode": true</code> in production settings.</p>
+      </div>
+
+      <div class="weakness-item">
+        <h4>7. Hardcoded Instance Names</h4>
+        <p>Template JSON still uses legacy instance names like <code>customerreview_jDbTcx</code> for testimonials type. While functional, these mismatches can cause confusion.</p>
+      </div>
+    </section>
+
+    <section id="functionality">
+      <h2>5. Functionality Analysis</h2>
+
+      <h3>Homepage Flow</h3>
+      <div class="card">
+        <ol>
+          <li><strong>Video Hero</strong> - Engaging entry with CTAs</li>
+          <li><strong>Product Grid</strong> - Three product categories (Pumps, Parts, PVC)</li>
+          <li><strong>Features Bar</strong> - Trust indicators (Authorized Distributor, Support, etc.)</li>
+          <li><strong>Wholesale CTA</strong> - Banner driving B2B conversions</li>
+          <li><strong>Brand Logos</strong> - Trust signals with partner brands</li>
+          <li><strong>Berkeley CTA</strong> - Cross-sell banner for parts</li>
+          <li><strong>Testimonials</strong> - Social proof carousel</li>
+        </ol>
+      </div>
+
+      <h3>Wholesale Page Flow</h3>
+      <div class="card">
+        <ol>
+          <li><strong>Hero</strong> - Clear value proposition</li>
+          <li><strong>Brands Grid</strong> - Comprehensive brand/category display</li>
+          <li><strong>Why Choose Us</strong> - Feature benefits</li>
+          <li><strong>Application Form</strong> - Lead capture</li>
+        </ol>
+      </div>
+
+      <h3>Header Functionality</h3>
+      <ul>
+        <li>Search with predictive results</li>
+        <li>Mobile hamburger menu</li>
+        <li>Store hours display</li>
+        <li>Contact information</li>
+        <li>Promotional messaging</li>
+        <li>Category navigation with dropdown</li>
+      </ul>
+
+      <h3>Footer Functionality</h3>
+      <ul>
+        <li>Theme toggle (dark/light)</li>
+        <li>Link columns (Products, Support, Company)</li>
+        <li>Social icons</li>
+        <li>Country/language selectors</li>
+        <li>Payment icons</li>
+        <li>Policy links</li>
+      </ul>
+    </section>
+
+    <section id="future">
+      <h2>6. Future Functionality Recommendations</h2>
+
+      <h3><span class="badge badge-danger">High Priority</span></h3>
+
+      <div class="priority-high">
+        <h4>1. Quick Order/Bulk Order Enhancement</h4>
+        <p>The theme has <code>quick-order-list.liquid</code> and <code>bulk-quick-order-list.liquid</code> but they appear to be Dawn defaults. For a B2B site, consider:</p>
+        <ul>
+          <li>CSV bulk import</li>
+          <li>Quick reorder from order history</li>
+          <li>Saved order lists</li>
+        </ul>
+      </div>
+
+      <div class="priority-high">
+        <h4>2. Request for Quote (RFQ) System</h4>
+        <p><code>templates/product.rfq.json</code> and <code>page.request-to-quote.json</code> exist. Consider:</p>
+        <ul>
+          <li>RFQ button on products without prices</li>
+          <li>Quote request cart functionality</li>
+          <li>Quote-to-order conversion</li>
+        </ul>
+      </div>
+
+      <div class="priority-high">
+        <h4>3. Customer Account Enhancements</h4>
+        <ul>
+          <li>Wholesale pricing visibility for logged-in users</li>
+          <li>Order history with reorder functionality</li>
+          <li>Saved payment methods</li>
+          <li>Multiple shipping addresses</li>
+        </ul>
+      </div>
+
+      <h3><span class="badge badge-warning">Medium Priority</span></h3>
+
+      <div class="priority-medium">
+        <h4>4. Product Filtering Improvements</h4>
+        <p>Collection pages could benefit from:</p>
+        <ul>
+          <li>Brand filtering</li>
+          <li>Price range filters</li>
+          <li>Compatibility filters (pump model → parts)</li>
+          <li>Stock availability filter</li>
+        </ul>
+      </div>
+
+      <div class="priority-medium">
+        <h4>5. Search Enhancement</h4>
+        <p>The custom search in header2 could include:</p>
+        <ul>
+          <li>Category suggestions</li>
+          <li>Brand suggestions</li>
+          <li>Recent searches</li>
+          <li>Popular products</li>
+        </ul>
+      </div>
+
+      <div class="priority-medium">
+        <h4>6. Mobile Experience</h4>
+        <ul>
+          <li>Sticky mobile header</li>
+          <li>Bottom navigation bar</li>
+          <li>Quick add to cart on collection pages</li>
+          <li>Swipe gestures for testimonials</li>
+        </ul>
+      </div>
+
+      <div class="priority-medium">
+        <h4>7. Part Finder/Compatibility Tool</h4>
+        <p>For pump parts:</p>
+        <ul>
+          <li>"Find parts for my pump" wizard</li>
+          <li>Cross-reference by model number</li>
+          <li>Visual parts breakdown diagrams</li>
+        </ul>
+      </div>
+
+      <h3><span class="badge badge-info">Lower Priority</span></h3>
+
+      <div class="priority-low">
+        <h4>8. Inventory/Stock Indicators</h4>
+        <ul>
+          <li>Low stock warnings</li>
+          <li>Expected restock dates</li>
+          <li>Backorder capability</li>
+        </ul>
+      </div>
+
+      <div class="priority-low">
+        <h4>9. Calculator Tools</h4>
+        <ul>
+          <li>Pipe sizing calculator</li>
+          <li>Flow rate calculator</li>
+          <li>System design assistance</li>
+        </ul>
+      </div>
+
+      <div class="priority-low">
+        <h4>10. Content/Resource Hub</h4>
+        <ul>
+          <li>Installation guides</li>
+          <li>Technical specifications</li>
+          <li>Video tutorials</li>
+          <li>FAQ per product category</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="technical-debt">
+      <h2>7. Technical Debt Summary</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Issue</th>
+            <th>Severity</th>
+            <th>Effort</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Inline CSS in sections</td>
+            <td><span class="badge badge-warning">Medium</span></td>
+            <td><span class="badge badge-danger">High</span></td>
+          </tr>
+          <tr>
+            <td>Duplicate section functionality</td>
+            <td><span class="badge badge-info">Low</span></td>
+            <td><span class="badge badge-warning">Medium</span></td>
+          </tr>
+          <tr>
+            <td>Disabled sections in templates</td>
+            <td><span class="badge badge-info">Low</span></td>
+            <td><span class="badge badge-success">Low</span></td>
+          </tr>
+          <tr>
+            <td>Debug mode in production</td>
+            <td><span class="badge badge-info">Low</span></td>
+            <td><span class="badge badge-success">Low</span></td>
+          </tr>
+          <tr>
+            <td>Missing section documentation</td>
+            <td><span class="badge badge-info">Low</span></td>
+            <td><span class="badge badge-warning">Medium</span></td>
+          </tr>
+          <tr>
+            <td>Legacy instance names in JSON</td>
+            <td><span class="badge badge-info">Low</span></td>
+            <td><span class="badge badge-success">Low</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="conclusion">
+      <h2>8. Conclusion</h2>
+
+      <div class="summary-box">
+        <h3>Executive Summary</h3>
+        <p>The ASIW Supply theme is a <strong>well-structured, B2B-focused Shopify theme</strong> with strong wholesale features. The recent refactoring work has significantly improved codebase maintainability through consistent naming and removal of unused code.</p>
+      </div>
+
+      <h3>Key Strengths</h3>
+      <ul>
+        <li>B2B focus with wholesale application system</li>
+        <li>Dark/light mode support</li>
+        <li>Custom header with full functionality</li>
+        <li>Block-based section flexibility</li>
+      </ul>
+
+      <h3>Key Areas for Improvement</h3>
+      <ul>
+        <li>CSS architecture (extract inline styles)</li>
+        <li>Reducing duplicate functionality</li>
+        <li>Enhancing bulk ordering capabilities</li>
+      </ul>
+
+      <div class="card">
+        <div class="card-title">Final Assessment</div>
+        <p>The theme is <strong>production-ready</strong> with a solid foundation for future enhancements, particularly around the B2B purchasing experience (RFQ, bulk ordering, account features).</p>
+      </div>
+    </section>
+
+    <footer>
+      <p>ASIW Supply Theme Analysis Report</p>
+      <p>Generated by Claude Code Analysis | December 2025</p>
+    </footer>
+  </div>
+</body>
+</html>
