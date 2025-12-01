@@ -781,6 +781,47 @@
 
     <div class="section">
       <h3>Footer</h3>
+      <p>Footer uses dedicated tokens for consistent branding across modes</p>
+
+      <h4>Footer Tokens (New)</h4>
+      <table class="component-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Light Mode</th>
+            <th>Dark Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>--color-footer-bg</td>
+            <td><span class="color-dot" style="background: #005496;"></span>#005496 (branded blue)</td>
+            <td><span class="color-dot" style="background: #0F1A2E;"></span>#0F1A2E (branded dark blue)</td>
+          </tr>
+          <tr>
+            <td>--color-footer-surface</td>
+            <td><span class="color-dot" style="background: #005496;"></span>#005496</td>
+            <td><span class="color-dot" style="background: #1A2744;"></span>#1A2744 (elevated)</td>
+          </tr>
+          <tr>
+            <td>--color-footer-border</td>
+            <td>rgba(255,255,255, 0.2)</td>
+            <td><span class="color-dot" style="background: #2A3B55;"></span>#2A3B55</td>
+          </tr>
+          <tr>
+            <td>--color-footer-text</td>
+            <td><span class="color-dot" style="background: #FFFFFF;"></span>#FFFFFF</td>
+            <td><span class="color-dot" style="background: #A8B5C8;"></span>#A8B5C8</td>
+          </tr>
+          <tr>
+            <td>--color-footer-text-heading</td>
+            <td><span class="color-dot" style="background: #FFFFFF;"></span>#FFFFFF</td>
+            <td><span class="color-dot" style="background: #E0E7F0;"></span>#E0E7F0</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Component Mapping</h4>
       <table class="component-table">
         <thead>
           <tr>
@@ -792,45 +833,110 @@
         <tbody>
           <tr>
             <td>.footer</td>
-            <td>#005496 (blue brand)</td>
-            <td>#0C1322</td>
+            <td>--color-footer-bg</td>
+            <td>--color-footer-bg</td>
           </tr>
           <tr>
             <td>.footer text</td>
-            <td>#FFFFFF</td>
-            <td>--color-text-secondary</td>
+            <td>--color-footer-text</td>
+            <td>--color-footer-text</td>
           </tr>
           <tr>
-            <td>.footer__content-top</td>
-            <td>transparent</td>
-            <td>transparent</td>
+            <td>.footer headings</td>
+            <td>--color-footer-text-heading</td>
+            <td>--color-footer-text-heading</td>
+          </tr>
+          <tr>
+            <td>.footer a:hover</td>
+            <td>opacity: 0.8</td>
+            <td>--color-primary</td>
           </tr>
           <tr>
             <td>.footer__content-bottom</td>
             <td>transparent</td>
-            <td>transparent + border 0.06</td>
-          </tr>
-          <tr>
-            <td>.footer-block</td>
-            <td>transparent</td>
-            <td>transparent</td>
+            <td>transparent + --color-footer-border</td>
           </tr>
           <tr>
             <td>.footer__theme-toggle-section</td>
-            <td>#005496</td>
-            <td>rgba(255,255,255, 0.03)</td>
+            <td>--color-footer-surface</td>
+            <td>--color-footer-surface</td>
           </tr>
           <tr>
             <td>.theme-toggle (in footer)</td>
             <td>rgba(255,255,255, 0.15)</td>
-            <td>rgba(255,255,255, 0.08)</td>
+            <td>rgba(255,255,255, 0.1)</td>
           </tr>
         </tbody>
       </table>
+
+      <div class="usage-note">
+        <strong>Design Decision:</strong> Dark mode footer uses a branded dark blue (#0F1A2E) instead of blending with the page background (#0C1322). This maintains footer identity while providing visual separation.
+      </div>
     </div>
 
     <div class="section">
       <h3>Testimonials / Customer Reviews</h3>
+      <p>Cards use opacity-based backgrounds in dark mode for subtle separation</p>
+
+      <h4>Card Opacity Tokens (Dark Mode)</h4>
+      <table class="component-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Light Mode</th>
+            <th>Dark Mode</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>--card-bg-opacity</td>
+            <td>1 (solid)</td>
+            <td>0.05 (5%)</td>
+            <td>Card background</td>
+          </tr>
+          <tr>
+            <td>--card-border-opacity</td>
+            <td>1 (solid)</td>
+            <td>0.12 (12%)</td>
+            <td>Card border</td>
+          </tr>
+          <tr>
+            <td>--card-hover-opacity</td>
+            <td>1 (solid)</td>
+            <td>0.08 (8%)</td>
+            <td>Card hover state</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Text Hierarchy Tokens (Dark Mode)</h4>
+      <table class="component-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Light Mode</th>
+            <th>Dark Mode</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>--color-text-quote</td>
+            <td>--color-text-primary</td>
+            <td><span class="color-dot" style="background: #B8C4D4;"></span>#B8C4D4</td>
+            <td>Quote text (dimmer than name)</td>
+          </tr>
+          <tr>
+            <td>--color-text-label</td>
+            <td>--color-text-secondary</td>
+            <td><span class="color-dot" style="background: #6B7A8F;"></span>#6B7A8F</td>
+            <td>Labels, locations</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Component Mapping</h4>
       <table class="component-table">
         <thead>
           <tr>
@@ -848,7 +954,12 @@
           <tr>
             <td>.testimonial__card</td>
             <td>--color-card-bg</td>
-            <td>rgba(255,255,255, 0.03) + border 0.08</td>
+            <td>rgba(255,255,255, 5%) + border 12%</td>
+          </tr>
+          <tr>
+            <td>.testimonial__card:hover</td>
+            <td>--color-card-hover</td>
+            <td>rgba(255,255,255, 8%)</td>
           </tr>
           <tr>
             <td>.testimonial__heading</td>
@@ -863,22 +974,22 @@
           <tr>
             <td>.testimonial__text (quote)</td>
             <td>--color-text-primary</td>
-            <td>--color-text-primary</td>
+            <td>--color-text-quote (dimmer)</td>
           </tr>
           <tr>
             <td>.testimonial__customer-name</td>
             <td>--color-text-primary</td>
-            <td>--color-text-primary</td>
+            <td>--color-text-primary (brightest)</td>
           </tr>
           <tr>
             <td>.testimonial__customer-location</td>
             <td>--color-text-muted</td>
-            <td>--color-text-muted</td>
+            <td>--color-text-label</td>
           </tr>
           <tr>
             <td>.testimonial__service-type</td>
             <td>--color-surface-alt bg, --color-primary text</td>
-            <td>--color-badge-secondary-bg, --color-text-primary</td>
+            <td>Blue tint bg (15%), blue-300 text + border</td>
           </tr>
           <tr>
             <td>.testimonial__star--filled</td>
@@ -887,6 +998,10 @@
           </tr>
         </tbody>
       </table>
+
+      <div class="usage-note">
+        <strong>Text Hierarchy:</strong> In dark mode, quote text is slightly dimmer than customer names to create visual hierarchy. Names are brightest, quotes slightly dimmer, locations/labels dimmest.
+      </div>
     </div>
 
     <div class="section">
@@ -1051,21 +1166,124 @@
 --color-text-primary
 --color-text-secondary
 --color-text-muted
+--color-text-inverse
 --color-primary
 --color-primary-hover
 --color-border
 --color-card-bg
+--color-button-text
+
+/* Footer Tokens (Branded) */
+--color-footer-bg              /* Branded background */
+--color-footer-surface         /* Elevated areas */
+--color-footer-border          /* Borders/separators */
+--color-footer-text            /* Body text */
+--color-footer-text-heading    /* Headings */
+
+/* Card Opacity Tokens (Dark Mode) */
+--card-bg-opacity: 0.05;       /* 5% white overlay */
+--card-border-opacity: 0.12;   /* 12% border */
+--card-hover-opacity: 0.08;    /* 8% on hover */
+
+/* Text Hierarchy Tokens (Dark Mode) */
+--color-text-quote             /* Quotes (dimmer than name) */
+--color-text-label             /* Labels, locations */
 
 /* Opacity Patterns */
-rgba(255, 255, 255, 0.03)  /* Subtle card bg */
-rgba(255, 255, 255, 0.06)  /* Borders */
-rgba(255, 255, 255, 0.08)  /* Interactive containers */
-rgba(255, 255, 255, 0.12)  /* Prominent borders */</code></pre>
+rgba(255, 255, 255, 0.05)  /* Card backgrounds */
+rgba(255, 255, 255, 0.08)  /* Hover states */
+rgba(255, 255, 255, 0.10)  /* Toggle containers */
+rgba(255, 255, 255, 0.12)  /* Prominent borders */
+rgba(255, 255, 255, 0.15)  /* Light mode toggle in footer */</code></pre>
+    </div>
+
+    <!-- HOVER STATES REFERENCE -->
+    <h2>Hover States Reference</h2>
+
+    <div class="section">
+      <h3>Interactive Element Hover Patterns</h3>
+      <table class="component-table">
+        <thead>
+          <tr>
+            <th>Element Type</th>
+            <th>Normal State</th>
+            <th>Hover State</th>
+            <th>Pattern</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Primary Button</td>
+            <td>--color-primary</td>
+            <td>--color-primary-hover</td>
+            <td>Darker (light) / Lighter (dark)</td>
+          </tr>
+          <tr>
+            <td>Secondary Button</td>
+            <td>transparent + border</td>
+            <td>--color-primary bg + white text</td>
+            <td>Fill on hover</td>
+          </tr>
+          <tr>
+            <td>Links</td>
+            <td>--color-link</td>
+            <td>--color-link-hover</td>
+            <td>Darker (light) / Lighter (dark)</td>
+          </tr>
+          <tr>
+            <td>Cards (Dark Mode)</td>
+            <td>rgba(255,255,255, 5%)</td>
+            <td>rgba(255,255,255, 8%)</td>
+            <td>Increase opacity</td>
+          </tr>
+          <tr>
+            <td>Footer Links</td>
+            <td>--color-footer-text</td>
+            <td>opacity: 0.8 (light) / --color-primary (dark)</td>
+            <td>Dim or accent</td>
+          </tr>
+          <tr>
+            <td>Toggle (inactive)</td>
+            <td>--toggle-inactive-text</td>
+            <td>--toggle-hover-text</td>
+            <td>Text color change only</td>
+          </tr>
+          <tr>
+            <td>Surface elements</td>
+            <td>--color-surface</td>
+            <td>--color-surface-hover</td>
+            <td>Slight background shift</td>
+          </tr>
+          <tr>
+            <td>Icons</td>
+            <td>--color-icon</td>
+            <td>--color-icon-hover</td>
+            <td>Primary color on hover</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="usage-note">
+        <strong>Hover Principle:</strong> Light mode hovers go darker, dark mode hovers go lighter. Cards use opacity increase rather than color change for smoother transitions.
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Transition Timing</h3>
+      <p>All color transitions use consistent timing for a polished feel:</p>
+      <pre style="background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 8px; font-size: 0.8rem;"><code>/* Theme-ready transition */
+transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow;
+transition-duration: 200ms;
+transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+/* Button transitions */
+transition: all 300ms ease-in-out;</code></pre>
     </div>
 
     <div style="margin-top: 4rem; padding: 2rem; background: #f1f5f9; border-radius: 8px; text-align: center;">
       <p style="color: #64748b; font-size: 0.875rem;">
-        ASIW Supply Color Scheme Guide v1.0<br>
+        ASIW Supply Color Scheme Guide v1.1<br>
+        Updated with Footer Tokens, Card Opacity, Text Hierarchy, and Hover States<br>
         Generated for Shopify Theme Development
       </p>
     </div>
