@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASIW Supply - Color Scheme & Component Mapping Guide</title>
+  <style>
+    :root {
+      --doc-bg: #f8fafc;
+      --doc-surface: #ffffff;
+      --doc-text: #1e293b;
+      --doc-text-muted: #64748b;
+      --doc-border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--doc-bg);
+      color: var(--doc-text);
+      line-height: 1.6;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: #005496;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      margin: 3rem 0 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--doc-border);
+      color: #005496;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      margin: 2rem 0 1rem;
+      color: var(--doc-text);
+    }
+
+    h4 {
+      font-size: 1rem;
+      margin: 1.5rem 0 0.75rem;
+      color: var(--doc-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .subtitle {
+      color: var(--doc-text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .section {
+      background: var(--doc-surface);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .color-swatch {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--doc-border);
+    }
+
+    .color-swatch__preview {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .color-swatch__info {
+      padding: 0.75rem;
+      background: white;
+      font-size: 0.75rem;
+    }
+
+    .color-swatch__name {
+      font-weight: 600;
+      color: var(--doc-text);
+      margin-bottom: 0.25rem;
+    }
+
+    .color-swatch__value {
+      color: var(--doc-text-muted);
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 0.7rem;
+    }
+
+    .opacity-row {
+      display: flex;
+      gap: 0.5rem;
+      margin: 0.5rem 0;
+      align-items: center;
+    }
+
+    .opacity-swatch {
+      width: 60px;
+      height: 40px;
+      border-radius: 6px;
+      border: 1px solid var(--doc-border);
+    }
+
+    .opacity-label {
+      font-size: 0.75rem;
+      color: var(--doc-text-muted);
+      font-family: monospace;
+      min-width: 80px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    .mode-preview {
+      padding: 2rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+    }
+
+    .mode-preview--light {
+      background: #F5F7FA;
+      color: #1C2B41;
+    }
+
+    .mode-preview--dark {
+      background: #0C1322;
+      color: #F0F5FA;
+    }
+
+    .component-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      margin: 1rem 0;
+    }
+
+    .component-table th,
+    .component-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--doc-border);
+    }
+
+    .component-table th {
+      background: #f1f5f9;
+      font-weight: 600;
+      color: var(--doc-text);
+    }
+
+    .component-table td:first-child {
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 0.8rem;
+      color: #7c3aed;
+    }
+
+    .color-dot {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-right: 0.5rem;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .token-box {
+      background: #f1f5f9;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: #6366f1;
+    }
+
+    .tier-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+
+    .tier-badge--1 {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .tier-badge--2 {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .usage-note {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 1rem;
+      margin: 1rem 0;
+      font-size: 0.875rem;
+    }
+
+    code {
+      background: #f1f5f9;
+      padding: 0.125rem 0.375rem;
+      border-radius: 4px;
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 0.85em;
+    }
+
+    .hsl-breakdown {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 1rem 0;
+      font-size: 0.875rem;
+    }
+
+    .hsl-breakdown div {
+      background: #f8fafc;
+      padding: 0.75rem;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .hsl-breakdown strong {
+      display: block;
+      color: var(--doc-text-muted);
+      font-size: 0.75rem;
+      margin-bottom: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ASIW Supply Color Scheme Guide</h1>
+    <p class="subtitle">Two-Tier Token System Architecture with Component Mapping</p>
+
+    <!-- TIER 1: BASE COLORS -->
+    <h2><span class="tier-badge tier-badge--1">TIER 1</span> Base Color Variables (HSL)</h2>
+
+    <div class="section">
+      <h3>Blue Family</h3>
+      <p>Primary brand color family - used for actions, links, and brand identity</p>
+
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(204, 100%, 18%);">900</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-blue-900</div>
+            <div class="color-swatch__value">204 100% 18%</div>
+            <div class="color-swatch__value">#003052</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(204, 100%, 24%);">800</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-blue-800</div>
+            <div class="color-swatch__value">204 100% 24%</div>
+            <div class="color-swatch__value">#003E70</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(204, 100%, 29%);">700</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-blue-700</div>
+            <div class="color-swatch__value">204 100% 29%</div>
+            <div class="color-swatch__value">#005496</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(210, 90%, 40%);">600</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-blue-600</div>
+            <div class="color-swatch__value">210 90% 40%</div>
+            <div class="color-swatch__value">#0A5FC2</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(213, 90%, 52%);">500</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-blue-500</div>
+            <div class="color-swatch__value">213 90% 52%</div>
+            <div class="color-swatch__value">#2B7DE9</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(213, 94%, 68%);">400</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-blue-400</div>
+            <div class="color-swatch__value">213 94% 68%</div>
+            <div class="color-swatch__value">#5BA3F5</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(213, 94%, 78%); color: #333;">300</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-blue-300</div>
+            <div class="color-swatch__value">213 94% 78%</div>
+            <div class="color-swatch__value">#93C5F8</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(214, 95%, 88%); color: #333;">200</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-blue-200</div>
+            <div class="color-swatch__value">214 95% 88%</div>
+            <div class="color-swatch__value">#C5DFFB</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(214, 100%, 95%); color: #333;">100</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-blue-100</div>
+            <div class="color-swatch__value">214 100% 95%</div>
+            <div class="color-swatch__value">#E6F2FF</div>
+          </div>
+        </div>
+      </div>
+
+      <h4>Primary Blue - Key Values</h4>
+      <div class="two-col">
+        <div>
+          <strong>Light Mode Primary:</strong> <code>--base-blue-700</code>
+          <div class="hsl-breakdown">
+            <div><strong>Hue</strong>204°</div>
+            <div><strong>Saturation</strong>100%</div>
+            <div><strong>Lightness</strong>29%</div>
+          </div>
+          <p style="font-size: 0.875rem; color: var(--doc-text-muted);">Darker, muted blue that provides strong contrast on light backgrounds without being harsh.</p>
+        </div>
+        <div>
+          <strong>Dark Mode Primary:</strong> <code>--base-blue-400</code>
+          <div class="hsl-breakdown">
+            <div><strong>Hue</strong>213°</div>
+            <div><strong>Saturation</strong>94%</div>
+            <div><strong>Lightness</strong>68%</div>
+          </div>
+          <p style="font-size: 0.875rem; color: var(--doc-text-muted);">Brighter, more vibrant blue that pops against dark backgrounds.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Gray Family (Cool, Blue Undertone)</h3>
+      <p>Used for backgrounds, text, and borders - maintains visual harmony with blue primary</p>
+
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(222, 47%, 9%);">950</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-gray-950</div>
+            <div class="color-swatch__value">222 47% 9%</div>
+            <div class="color-swatch__value">#0C1322</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(217, 33%, 13%);">900</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-gray-900</div>
+            <div class="color-swatch__value">217 33% 13%</div>
+            <div class="color-swatch__value">#161D2B</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(217, 24%, 17%);">800</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-gray-800</div>
+            <div class="color-swatch__value">217 24% 17%</div>
+            <div class="color-swatch__value">#212936</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(215, 20%, 24%);">700</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-gray-700</div>
+            <div class="color-swatch__value">215 20% 24%</div>
+            <div class="color-swatch__value">#313B49</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(215, 16%, 35%);">600</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-gray-600</div>
+            <div class="color-swatch__value">215 16% 35%</div>
+            <div class="color-swatch__value">#4B5567</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(215, 14%, 47%);">500</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-gray-500</div>
+            <div class="color-swatch__value">215 14% 47%</div>
+            <div class="color-swatch__value">#67748A</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(214, 12%, 58%); color: #222;">400</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-gray-400</div>
+            <div class="color-swatch__value">214 12% 58%</div>
+            <div class="color-swatch__value">#8892A2</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(213, 12%, 70%); color: #222;">300</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-gray-300</div>
+            <div class="color-swatch__value">213 12% 70%</div>
+            <div class="color-swatch__value">#A8B0BC</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(214, 14%, 82%); color: #222;">200</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-gray-200</div>
+            <div class="color-swatch__value">214 14% 82%</div>
+            <div class="color-swatch__value">#C9CFD8</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(216, 20%, 96%); color: #222;">100</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-gray-100</div>
+            <div class="color-swatch__value">216 20% 96%</div>
+            <div class="color-swatch__value">#F0F2F5</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(0, 0%, 100%); color: #222;">50</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-gray-50</div>
+            <div class="color-swatch__value">0 0% 100%</div>
+            <div class="color-swatch__value">#FFFFFF</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Orange/Accent Family</h3>
+      <p>Secondary accent for highlights, warnings, and call-to-action emphasis</p>
+
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(24, 75%, 25%);">900</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-orange-900</div>
+            <div class="color-swatch__value">24 75% 25%</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(24, 72%, 51%);">700</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-orange-700</div>
+            <div class="color-swatch__value">24 72% 51%</div>
+            <div class="color-swatch__value">Light Mode Accent</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(27, 96%, 61%);">500</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-orange-500</div>
+            <div class="color-swatch__value">27 96% 61%</div>
+            <div class="color-swatch__value">Dark Mode Accent</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(40, 100%, 95%); color: #222;">100</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-orange-100</div>
+            <div class="color-swatch__value">40 100% 95%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Special Purpose Colors</h3>
+
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(213, 94%, 68%);">Ice Blue</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-ice-blue</div>
+            <div class="color-swatch__value">213 94% 68%</div>
+            <div class="color-swatch__value">#5BA3F5 - Toggle Active</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(142, 71%, 45%);">Success</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-success-light</div>
+            <div class="color-swatch__value">142 71% 45%</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(0, 72%, 51%);">Error</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-error-light</div>
+            <div class="color-swatch__value">0 72% 51%</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch__preview" style="background: hsl(45, 93%, 55%); color: #222;">Star</div>
+          <div class="color-swatch__info">
+            <div class="color-swatch__name">--base-star</div>
+            <div class="color-swatch__value">45 93% 55%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPACITY VARIANTS -->
+    <h2>Opacity Variants</h2>
+
+    <div class="section">
+      <h3>White Opacity Scale (Dark Mode Overlays)</h3>
+      <p>Used for creating subtle separation on dark backgrounds</p>
+
+      <div style="background: #0C1322; padding: 2rem; border-radius: 8px; margin: 1rem 0;">
+        <div class="opacity-row">
+          <div class="opacity-swatch" style="background: rgba(255,255,255,0.01);"></div>
+          <span class="opacity-label" style="color: #fff;">0.01 (1%)</span>
+          <span style="color: #94a3b8; font-size: 0.75rem;">Barely visible - footer content bottom</span>
+        </div>
+        <div class="opacity-row">
+          <div class="opacity-swatch" style="background: rgba(255,255,255,0.02);"></div>
+          <span class="opacity-label" style="color: #fff;">0.02 (2%)</span>
+          <span style="color: #94a3b8; font-size: 0.75rem;">Very subtle lift</span>
+        </div>
+        <div class="opacity-row">
+          <div class="opacity-swatch" style="background: rgba(255,255,255,0.03);"></div>
+          <span class="opacity-label" style="color: #fff;">0.03 (3%)</span>
+          <span style="color: #94a3b8; font-size: 0.75rem;">Cards, toggle section, testimonial cards</span>
+        </div>
+        <div class="opacity-row">
+          <div class="opacity-swatch" style="background: rgba(255,255,255,0.06);"></div>
+          <span class="opacity-label" style="color: #fff;">0.06 (6%)</span>
+          <span style="color: #94a3b8; font-size: 0.75rem;">Borders, separators</span>
+        </div>
+        <div class="opacity-row">
+          <div class="opacity-swatch" style="background: rgba(255,255,255,0.08);"></div>
+          <span class="opacity-label" style="color: #fff;">0.08 (8%)</span>
+          <span style="color: #94a3b8; font-size: 0.75rem;">Toggle container, card borders</span>
+        </div>
+        <div class="opacity-row">
+          <div class="opacity-swatch" style="background: rgba(255,255,255,0.12);"></div>
+          <span class="opacity-label" style="color: #fff;">0.12 (12%)</span>
+          <span style="color: #94a3b8; font-size: 0.75rem;">Toggle border, prominent borders</span>
+        </div>
+        <div class="opacity-row">
+          <div class="opacity-swatch" style="background: rgba(255,255,255,0.15);"></div>
+          <span class="opacity-label" style="color: #fff;">0.15 (15%)</span>
+          <span style="color: #94a3b8; font-size: 0.75rem;">Light mode footer toggle container</span>
+        </div>
+      </div>
+
+      <div class="usage-note">
+        <strong>Usage Principle:</strong> Use lower opacity (1-3%) for large areas, higher opacity (8-15%) for interactive elements that need more visual weight.
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Primary Blue Opacity Scale</h3>
+      <p>For focus rings, highlights, and decorative elements</p>
+
+      <div style="background: #F5F7FA; padding: 2rem; border-radius: 8px; margin: 1rem 0;">
+        <div class="opacity-row">
+          <div class="opacity-swatch" style="background: rgba(0,84,150,0.1); border-color: #005496;"></div>
+          <span class="opacity-label">0.10 (10%)</span>
+          <span style="color: #64748b; font-size: 0.75rem;">Subtle highlights</span>
+        </div>
+        <div class="opacity-row">
+          <div class="opacity-swatch" style="background: rgba(0,84,150,0.2); border-color: #005496;"></div>
+          <span class="opacity-label">0.20 (20%)</span>
+          <span style="color: #64748b; font-size: 0.75rem;">Dot inactive states</span>
+        </div>
+        <div class="opacity-row">
+          <div class="opacity-swatch" style="background: rgba(0,84,150,0.3); border-color: #005496;"></div>
+          <span class="opacity-label">0.30 (30%)</span>
+          <span style="color: #64748b; font-size: 0.75rem;">Focus ring shadow</span>
+        </div>
+        <div class="opacity-row">
+          <div class="opacity-swatch" style="background: rgba(0,84,150,0.5); border-color: #005496;"></div>
+          <span class="opacity-label">0.50 (50%)</span>
+          <span style="color: #64748b; font-size: 0.75rem;">Focus ring color</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIER 2: SEMANTIC TOKENS -->
+    <h2><span class="tier-badge tier-badge--2">TIER 2</span> Semantic Token Mapping</h2>
+
+    <div class="section">
+      <div class="two-col">
+        <div>
+          <h3>Light Mode</h3>
+          <div class="mode-preview mode-preview--light">
+            <h4 style="margin-top: 0;">Background Hierarchy</h4>
+            <table class="component-table">
+              <tr>
+                <td>--color-bg</td>
+                <td><span class="color-dot" style="background: #F0F2F5;"></span>#F0F2F5</td>
+                <td>Page background</td>
+              </tr>
+              <tr>
+                <td>--color-surface</td>
+                <td><span class="color-dot" style="background: #FFFFFF;"></span>#FFFFFF</td>
+                <td>Cards, modals</td>
+              </tr>
+              <tr>
+                <td>--color-surface-alt</td>
+                <td><span class="color-dot" style="background: #E8ECF0;"></span>#E8ECF0</td>
+                <td>Alternate surfaces</td>
+              </tr>
+            </table>
+
+            <h4>Text Hierarchy</h4>
+            <table class="component-table">
+              <tr>
+                <td>--color-text-primary</td>
+                <td><span class="color-dot" style="background: #1C2B41;"></span>#1C2B41</td>
+                <td>Headings, names</td>
+              </tr>
+              <tr>
+                <td>--color-text-secondary</td>
+                <td><span class="color-dot" style="background: #67748A;"></span>#67748A</td>
+                <td>Body text</td>
+              </tr>
+              <tr>
+                <td>--color-text-muted</td>
+                <td><span class="color-dot" style="background: #8892A2;"></span>#8892A2</td>
+                <td>Captions, labels</td>
+              </tr>
+            </table>
+
+            <h4>Brand Colors</h4>
+            <table class="component-table">
+              <tr>
+                <td>--color-primary</td>
+                <td><span class="color-dot" style="background: #005496;"></span>#005496</td>
+                <td>Buttons, links</td>
+              </tr>
+              <tr>
+                <td>--color-primary-hover</td>
+                <td><span class="color-dot" style="background: #003E70;"></span>#003E70</td>
+                <td>Hover states</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <h3>Dark Mode</h3>
+          <div class="mode-preview mode-preview--dark">
+            <h4 style="margin-top: 0; color: #94a3b8;">Background Hierarchy</h4>
+            <table class="component-table" style="color: #e2e8f0;">
+              <tr style="border-color: #334155;">
+                <td style="color: #a78bfa;">--color-bg</td>
+                <td><span class="color-dot" style="background: #0C1322;"></span>#0C1322</td>
+                <td>Page background</td>
+              </tr>
+              <tr style="border-color: #334155;">
+                <td style="color: #a78bfa;">--color-surface</td>
+                <td><span class="color-dot" style="background: #1E293B;"></span>#1E293B</td>
+                <td>Cards, modals</td>
+              </tr>
+              <tr style="border-color: #334155;">
+                <td style="color: #a78bfa;">--color-surface-alt</td>
+                <td><span class="color-dot" style="background: #313B49;"></span>#313B49</td>
+                <td>Alternate surfaces</td>
+              </tr>
+            </table>
+
+            <h4 style="color: #94a3b8;">Text Hierarchy</h4>
+            <table class="component-table" style="color: #e2e8f0;">
+              <tr style="border-color: #334155;">
+                <td style="color: #a78bfa;">--color-text-primary</td>
+                <td><span class="color-dot" style="background: #F0F5FA;"></span>#F0F5FA</td>
+                <td>Headings, names</td>
+              </tr>
+              <tr style="border-color: #334155;">
+                <td style="color: #a78bfa;">--color-text-secondary</td>
+                <td><span class="color-dot" style="background: #94A3B8;"></span>#94A3B8</td>
+                <td>Body text</td>
+              </tr>
+              <tr style="border-color: #334155;">
+                <td style="color: #a78bfa;">--color-text-muted</td>
+                <td><span class="color-dot" style="background: #64748B;"></span>#64748B</td>
+                <td>Captions, labels</td>
+              </tr>
+            </table>
+
+            <h4 style="color: #94a3b8;">Brand Colors</h4>
+            <table class="component-table" style="color: #e2e8f0;">
+              <tr style="border-color: #334155;">
+                <td style="color: #a78bfa;">--color-primary</td>
+                <td><span class="color-dot" style="background: #5BA3F5;"></span>#5BA3F5</td>
+                <td>Buttons, links</td>
+              </tr>
+              <tr style="border-color: #334155;">
+                <td style="color: #a78bfa;">--color-primary-hover</td>
+                <td><span class="color-dot" style="background: #93C5F8;"></span>#93C5F8</td>
+                <td>Hover states</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPONENT MAPPING -->
+    <h2>Component Color Mapping</h2>
+
+    <div class="section">
+      <h3>Header</h3>
+      <table class="component-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Light Mode</th>
+            <th>Dark Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>.header2-section</td>
+            <td>--color-surface (#FFFFFF)</td>
+            <td>--color-surface (#1E293B)</td>
+          </tr>
+          <tr>
+            <td>.header2__nav-link</td>
+            <td>--color-text-primary</td>
+            <td>--color-text-primary</td>
+          </tr>
+          <tr>
+            <td>.header2__search-button</td>
+            <td>--color-primary (#005496)</td>
+            <td>--color-primary (#5BA3F5)</td>
+          </tr>
+          <tr>
+            <td>.promo-bar</td>
+            <td>#005496 (forced)</td>
+            <td>--color-primary-light</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Footer</h3>
+      <table class="component-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Light Mode</th>
+            <th>Dark Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>.footer</td>
+            <td>#005496 (blue brand)</td>
+            <td>#0C1322</td>
+          </tr>
+          <tr>
+            <td>.footer text</td>
+            <td>#FFFFFF</td>
+            <td>--color-text-secondary</td>
+          </tr>
+          <tr>
+            <td>.footer__content-top</td>
+            <td>transparent</td>
+            <td>transparent</td>
+          </tr>
+          <tr>
+            <td>.footer__content-bottom</td>
+            <td>transparent</td>
+            <td>transparent + border 0.06</td>
+          </tr>
+          <tr>
+            <td>.footer-block</td>
+            <td>transparent</td>
+            <td>transparent</td>
+          </tr>
+          <tr>
+            <td>.footer__theme-toggle-section</td>
+            <td>#005496</td>
+            <td>rgba(255,255,255, 0.03)</td>
+          </tr>
+          <tr>
+            <td>.theme-toggle (in footer)</td>
+            <td>rgba(255,255,255, 0.15)</td>
+            <td>rgba(255,255,255, 0.08)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Testimonials / Customer Reviews</h3>
+      <table class="component-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Light Mode</th>
+            <th>Dark Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>.testimonial (container)</td>
+            <td>--color-bg</td>
+            <td>--color-bg (#0C1322)</td>
+          </tr>
+          <tr>
+            <td>.testimonial__card</td>
+            <td>--color-card-bg</td>
+            <td>rgba(255,255,255, 0.03) + border 0.08</td>
+          </tr>
+          <tr>
+            <td>.testimonial__heading</td>
+            <td>--color-text-primary</td>
+            <td>--color-text-primary</td>
+          </tr>
+          <tr>
+            <td>.testimonial__description</td>
+            <td>--color-text-secondary</td>
+            <td>--color-text-secondary</td>
+          </tr>
+          <tr>
+            <td>.testimonial__text (quote)</td>
+            <td>--color-text-primary</td>
+            <td>--color-text-primary</td>
+          </tr>
+          <tr>
+            <td>.testimonial__customer-name</td>
+            <td>--color-text-primary</td>
+            <td>--color-text-primary</td>
+          </tr>
+          <tr>
+            <td>.testimonial__customer-location</td>
+            <td>--color-text-muted</td>
+            <td>--color-text-muted</td>
+          </tr>
+          <tr>
+            <td>.testimonial__service-type</td>
+            <td>--color-surface-alt bg, --color-primary text</td>
+            <td>--color-badge-secondary-bg, --color-text-primary</td>
+          </tr>
+          <tr>
+            <td>.testimonial__star--filled</td>
+            <td>--color-star-filled (#EAB308)</td>
+            <td>--color-star-filled</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Theme Toggle</h3>
+      <table class="component-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Light Mode</th>
+            <th>Dark Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>.theme-toggle (container)</td>
+            <td>--toggle-container-bg (#EDF0F3)</td>
+            <td>--toggle-container-bg (#313B49)</td>
+          </tr>
+          <tr>
+            <td>.theme-toggle__btn[aria-pressed="true"]</td>
+            <td colspan="2" style="text-align: center;">--base-ice-blue (#5BA3F5) - <strong>Same in both modes</strong></td>
+          </tr>
+          <tr>
+            <td>.theme-toggle__btn[aria-pressed="false"]</td>
+            <td>transparent, --toggle-inactive-text</td>
+            <td>transparent, --toggle-inactive-text</td>
+          </tr>
+          <tr>
+            <td>.theme-toggle__btn:hover (inactive)</td>
+            <td>--toggle-hover-text (near black)</td>
+            <td>--toggle-hover-text (near white)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="usage-note">
+        <strong>Design Decision:</strong> The active toggle button uses Ice Blue (#5BA3F5) in BOTH light and dark mode for brand consistency. This creates a recognizable interactive element across themes.
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Buttons</h3>
+      <table class="component-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Light Mode</th>
+            <th>Dark Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>.button--primary</td>
+            <td>bg: --color-primary, text: white</td>
+            <td>bg: --color-primary, text: white</td>
+          </tr>
+          <tr>
+            <td>.button--primary:hover</td>
+            <td>bg: --color-primary-hover</td>
+            <td>bg: --color-primary-hover</td>
+          </tr>
+          <tr>
+            <td>.button--secondary</td>
+            <td>bg: transparent, border: --color-primary</td>
+            <td>bg: transparent, border: --color-primary</td>
+          </tr>
+          <tr>
+            <td>.banner-button</td>
+            <td>bg: --color-success</td>
+            <td>bg: --color-banner-button-bg</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Cards & Products</h3>
+      <table class="component-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Light Mode</th>
+            <th>Dark Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>.card / .product-card</td>
+            <td>--color-card-bg (#FFFFFF)</td>
+            <td>--color-card-bg (#1E293B)</td>
+          </tr>
+          <tr>
+            <td>.card border</td>
+            <td>--color-border</td>
+            <td>--color-border</td>
+          </tr>
+          <tr>
+            <td>.product-card__name</td>
+            <td>--color-link</td>
+            <td>--color-product-title</td>
+          </tr>
+          <tr>
+            <td>.product-card__price</td>
+            <td>--color-text-primary</td>
+            <td>--color-text-primary</td>
+          </tr>
+          <tr>
+            <td>.product-card__compare-price</td>
+            <td>--color-text-muted</td>
+            <td>--color-compare-price</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Features Bar</h3>
+      <table class="component-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Light Mode</th>
+            <th>Dark Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>.features-bar__item</td>
+            <td>--color-surface, --color-border</td>
+            <td>--color-card-bg, --color-border</td>
+          </tr>
+          <tr>
+            <td>.features-bar__title</td>
+            <td>--color-text-primary</td>
+            <td>--color-text-primary</td>
+          </tr>
+          <tr>
+            <td>.features-bar__desc</td>
+            <td>--color-text-muted</td>
+            <td>--color-text-secondary</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- CSS VARIABLE REFERENCE -->
+    <h2>Quick Reference: All CSS Variables</h2>
+
+    <div class="section">
+      <h3>Copy-Paste Ready Variables</h3>
+      <pre style="background: #1e293b; color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-size: 0.8rem; line-height: 1.8;"><code>/* TIER 1: Base Colors */
+--base-blue-700: 204 100% 29%;    /* Light mode primary */
+--base-blue-400: 213 94% 68%;     /* Dark mode primary */
+--base-gray-950: 222 47% 9%;      /* #0C1322 - Dark bg */
+--base-gray-100: 216 20% 96%;     /* #F0F2F5 - Light bg */
+--base-ice-blue: 213 94% 68%;     /* #5BA3F5 - Toggle active */
+
+/* TIER 2: Semantic Tokens (use these in components) */
+--color-bg
+--color-surface
+--color-surface-alt
+--color-text-primary
+--color-text-secondary
+--color-text-muted
+--color-primary
+--color-primary-hover
+--color-border
+--color-card-bg
+
+/* Opacity Patterns */
+rgba(255, 255, 255, 0.03)  /* Subtle card bg */
+rgba(255, 255, 255, 0.06)  /* Borders */
+rgba(255, 255, 255, 0.08)  /* Interactive containers */
+rgba(255, 255, 255, 0.12)  /* Prominent borders */</code></pre>
+    </div>
+
+    <div style="margin-top: 4rem; padding: 2rem; background: #f1f5f9; border-radius: 8px; text-align: center;">
+      <p style="color: #64748b; font-size: 0.875rem;">
+        ASIW Supply Color Scheme Guide v1.0<br>
+        Generated for Shopify Theme Development
+      </p>
+    </div>
+  </div>
+</body>
+</html>
