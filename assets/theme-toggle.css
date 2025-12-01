@@ -840,7 +840,7 @@ a:not([class]):not([style]):hover {
 
 /* Footer */
 [data-theme="dark"] .footer {
-  background-color: var(--color-surface) !important;
+  background-color: #0C1322 !important;
 }
 
 [data-theme="dark"] .footer a,
@@ -862,11 +862,11 @@ a:not([class]):not([style]):hover {
 
 /* Footer theme toggle section - dark mode */
 [data-theme="dark"] .footer__theme-toggle-section {
-  background-color: var(--color-surface) !important;
+  background-color: #0C1322 !important;
 }
 
 [data-theme="dark"] .footer__theme-toggle-section .theme-toggle {
-  background-color: var(--toggle-container-bg) !important;
+  background-color: #0C1322 !important;
   border-color: var(--color-border) !important;
 }
 
