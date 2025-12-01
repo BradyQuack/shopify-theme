@@ -860,14 +860,34 @@ a:not([class]):not([style]):hover {
   color: var(--color-primary) !important;
 }
 
+/* Footer content sections - subtle separation with opacity */
+[data-theme="dark"] .footer__content-top {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+  border-radius: 8px;
+  padding: 1.5rem !important;
+  margin-bottom: 1.5rem;
+}
+
+[data-theme="dark"] .footer__content-bottom {
+  background-color: rgba(255, 255, 255, 0.01) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  padding-top: 1.5rem !important;
+}
+
+[data-theme="dark"] .footer-block {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  border-radius: 6px;
+  padding: 1rem !important;
+}
+
 /* Footer theme toggle section - dark mode */
 [data-theme="dark"] .footer__theme-toggle-section {
-  background-color: #0C1322 !important;
+  background-color: rgba(255, 255, 255, 0.03) !important;
 }
 
 [data-theme="dark"] .footer__theme-toggle-section .theme-toggle {
-  background-color: #0C1322 !important;
-  border-color: var(--color-border) !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 [data-theme="dark"] .footer__theme-toggle-section .theme-toggle__btn[aria-pressed="false"] {
