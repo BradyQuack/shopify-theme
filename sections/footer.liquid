@@ -11,6 +11,11 @@
   <script src="{{ 'style-debug.js' | asset_url }}" defer></script>
 {%- endif -%}
 
+{%- if section.settings.show_section_debug -%}
+  {{ 'section-debug.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'section-debug.js' | asset_url }}" defer></script>
+{%- endif -%}
+
 {%- style -%}
   .footer {
     margin-top: {{ section.settings.margin_top | times: 0.75 | round: 0 }}px;
@@ -564,6 +569,13 @@
       "default": false,
       "label": "Show style debug inspector",
       "info": "Displays a floating button to open the style debug modal. Shows font, size, weight, and color inconsistencies."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section_debug",
+      "default": false,
+      "label": "Show section copy debug buttons",
+      "info": "Displays a copy button on each section to copy debug info (section ID, type, settings) to clipboard."
     },
     {
       "type": "header",
