@@ -1,7 +1,14 @@
 /**
  * Theme Toggle - Light/Dark Mode
  * Handles theme switching and persists user preference in localStorage
- * Similar to next-themes pattern
+ * Similar to next-themes pattern from React
+ *
+ * Features:
+ * - FOUC prevention (inline script in head sets theme before CSS loads)
+ * - System preference detection (prefers-color-scheme)
+ * - localStorage persistence
+ * - Smooth transitions after initial load
+ * - Custom event dispatch for other scripts
  */
 
 (function() {
@@ -10,6 +17,7 @@
   const STORAGE_KEY = 'theme-preference';
   const THEME_LIGHT = 'light';
   const THEME_DARK = 'dark';
+  const TRANSITION_DURATION = 200; // ms - matches CSS transition
 
   /**
    * Get the user's theme preference
@@ -33,17 +41,80 @@
 
   /**
    * Apply theme to the document
+   * @param {string} theme - 'light' or 'dark'
+   * @param {boolean} withTransition - whether to show transition effect
    */
-  function setTheme(theme) {
-    // Set data-theme attribute on HTML element (similar to next-themes class approach)
-    document.documentElement.setAttribute('data-theme', theme);
+  function setTheme(theme, withTransition = true) {
+    const html = document.documentElement;
+    const isReady = html.classList.contains('theme-ready');
+
+    // If theme is ready and transition requested, do smooth transition
+    if (isReady && withTransition) {
+      // Optional: Use overlay for extra smooth transition
+      // Uncomment below if you want the overlay effect
+      // showTransitionOverlay();
+    }
+
+    // Set data-theme attribute on HTML element
+    html.setAttribute('data-theme', theme);
     localStorage.setItem(STORAGE_KEY, theme);
 
     // Update button states
     updateToggleButtons(theme);
 
+    // Update meta theme-color for mobile browsers
+    updateMetaThemeColor(theme);
+
     // Dispatch custom event for other scripts to listen to
-    window.dispatchEvent(new CustomEvent('themechange', { detail: { theme } }));
+    window.dispatchEvent(new CustomEvent('themechange', {
+      detail: {
+        theme,
+        isInitial: !isReady
+      }
+    }));
+  }
+
+  /**
+   * Update meta theme-color for mobile browser chrome
+   */
+  function updateMetaThemeColor(theme) {
+    let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (!metaThemeColor) {
+      metaThemeColor = document.createElement('meta');
+      metaThemeColor.name = 'theme-color';
+      document.head.appendChild(metaThemeColor);
+    }
+
+    // Set appropriate color based on theme
+    metaThemeColor.content = theme === THEME_DARK ? '#0F172A' : '#F5F7FA';
+  }
+
+  /**
+   * Show transition overlay for smooth theme switch (optional)
+   */
+  function showTransitionOverlay() {
+    let overlay = document.querySelector('.theme-transition-overlay');
+
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.className = 'theme-transition-overlay';
+      document.body.appendChild(overlay);
+    }
+
+    // Show overlay
+    overlay.classList.add('active');
+    overlay.classList.remove('fade-out');
+
+    // Fade out after theme is applied
+    setTimeout(() => {
+      overlay.classList.add('fade-out');
+      overlay.classList.remove('active');
+    }, 50);
+
+    // Remove completely after animation
+    setTimeout(() => {
+      overlay.classList.remove('fade-out');
+    }, TRANSITION_DURATION + 50);
   }
 
   /**
@@ -64,12 +135,27 @@
   }
 
   /**
+   * Mark theme as ready - enables CSS transitions
+   */
+  function setThemeReady() {
+    // Small delay to ensure CSS is fully loaded
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.documentElement.classList.add('theme-ready');
+      });
+    });
+  }
+
+  /**
    * Initialize theme toggle functionality
    */
   function init() {
-    // Apply saved theme immediately
+    // Apply saved theme (without transition on initial load)
     const savedTheme = getThemePreference();
-    setTheme(savedTheme);
+    setTheme(savedTheme, false);
+
+    // Mark theme as ready after a brief delay (enables transitions)
+    setThemeReady();
 
     // Set up click handlers for theme buttons
     document.addEventListener('click', function(e) {
@@ -78,19 +164,29 @@
         e.preventDefault();
         const themeValue = btn.getAttribute('data-theme-value');
         if (themeValue) {
-          setTheme(themeValue);
+          setTheme(themeValue, true);
         }
       }
     });
 
     // Listen for system theme changes
     if (window.matchMedia) {
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+      const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+      // Use addEventListener with fallback for older browsers
+      const handleChange = function(e) {
         // Only auto-switch if user hasn't manually set a preference
         if (!localStorage.getItem(STORAGE_KEY)) {
-          setTheme(e.matches ? THEME_DARK : THEME_LIGHT);
+          setTheme(e.matches ? THEME_DARK : THEME_LIGHT, true);
         }
-      });
+      };
+
+      if (darkModeQuery.addEventListener) {
+        darkModeQuery.addEventListener('change', handleChange);
+      } else if (darkModeQuery.addListener) {
+        // Fallback for older Safari
+        darkModeQuery.addListener(handleChange);
+      }
     }
   }
 
@@ -101,19 +197,25 @@
     init();
   }
 
-  // Also run early to prevent flash of wrong theme
+  // Early theme application (backup - main FOUC prevention is inline in head)
+  // This runs immediately when script is parsed
   const savedTheme = getThemePreference();
   document.documentElement.setAttribute('data-theme', savedTheme);
 
   // Expose functions globally for external use (similar to next-themes useTheme hook)
   window.ThemeToggle = {
-    setTheme: setTheme,
+    setTheme: function(theme) {
+      setTheme(theme, true);
+    },
     getTheme: function() {
       return document.documentElement.getAttribute('data-theme') || THEME_LIGHT;
     },
     toggle: function() {
       const currentTheme = this.getTheme();
-      setTheme(currentTheme === THEME_LIGHT ? THEME_DARK : THEME_LIGHT);
-    }
+      setTheme(currentTheme === THEME_LIGHT ? THEME_DARK : THEME_LIGHT, true);
+    },
+    // Expose constants
+    LIGHT: THEME_LIGHT,
+    DARK: THEME_DARK
   };
 })();

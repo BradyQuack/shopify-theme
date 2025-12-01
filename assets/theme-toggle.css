@@ -1445,3 +1445,84 @@ a:not([class]):not([style]):hover {
   margin-bottom: 3rem;
   box-sizing: border-box;
 }
+
+/* ============================================
+   TRANSITION SYSTEM
+   Prevents flash on initial load, enables smooth
+   transitions after theme is ready.
+   Similar to React next-themes pattern.
+   ============================================ */
+
+/* Disable ALL transitions on initial page load to prevent FOUC */
+html:not(.theme-ready) *,
+html:not(.theme-ready) *::before,
+html:not(.theme-ready) *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* After theme is ready, enable smooth color transitions */
+html.theme-ready *,
+html.theme-ready *::before,
+html.theme-ready *::after {
+  transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Exclude elements that shouldn't transition (performance) */
+html.theme-ready img,
+html.theme-ready video,
+html.theme-ready iframe,
+html.theme-ready canvas,
+html.theme-ready svg path,
+html.theme-ready .no-transition {
+  transition: none !important;
+}
+
+/* Theme transition overlay (optional - for smooth fade effect) */
+.theme-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  background-color: var(--color-bg, #F5F7FA);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 150ms ease-out, visibility 150ms ease-out;
+}
+
+.theme-transition-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Fade out animation for transition overlay */
+@keyframes theme-fade-out {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.theme-transition-overlay.fade-out {
+  animation: theme-fade-out 200ms ease-out forwards;
+}
+
+/* ============================================
+   THEME-SPECIFIC META ADJUSTMENTS
+   ============================================ */
+
+/* Light mode - ensure proper contrast */
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* Dark mode - ensure proper contrast */
+[data-theme="dark"] {
+  color-scheme: dark;
+}
