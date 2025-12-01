@@ -860,24 +860,18 @@ a:not([class]):not([style]):hover {
   color: var(--color-primary) !important;
 }
 
-/* Footer content sections - subtle separation with opacity */
+/* Footer content sections - minimal separation */
 [data-theme="dark"] .footer__content-top {
-  background-color: rgba(255, 255, 255, 0.02) !important;
-  border-radius: 8px;
-  padding: 1.5rem !important;
-  margin-bottom: 1.5rem;
+  background-color: transparent !important;
 }
 
 [data-theme="dark"] .footer__content-bottom {
-  background-color: rgba(255, 255, 255, 0.01) !important;
+  background-color: transparent !important;
   border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
-  padding-top: 1.5rem !important;
 }
 
 [data-theme="dark"] .footer-block {
-  background-color: rgba(255, 255, 255, 0.03) !important;
-  border-radius: 6px;
-  padding: 1rem !important;
+  background-color: transparent !important;
 }
 
 /* Footer theme toggle section - dark mode */
@@ -1197,8 +1191,8 @@ a:not([class]):not([style]):hover {
 }
 
 [data-theme="dark"] .testimonial__card {
-  background-color: var(--color-card-bg) !important;
-  border-color: var(--color-border) !important;
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 [data-theme="dark"] .testimonial__star {
