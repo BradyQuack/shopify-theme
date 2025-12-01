@@ -1204,7 +1204,7 @@ a:not([class]):not([style]):hover {
 [data-theme="dark"] .testimonial__text.rte,
 [data-theme="dark"] .testimonial__text.rte p,
 [data-theme="dark"] .testimonial__text p {
-  color: var(--color-text-secondary) !important;
+  color: var(--color-text-primary) !important;
 }
 
 [data-theme="dark"] .testimonial__customer-name {
@@ -1217,7 +1217,7 @@ a:not([class]):not([style]):hover {
 
 [data-theme="dark"] .testimonial__service-type {
   background-color: var(--color-badge-secondary-bg) !important;
-  color: var(--color-badge-secondary-text) !important;
+  color: var(--color-text-primary) !important;
 }
 
 [data-theme="dark"] .testimonial__nav-btn {
