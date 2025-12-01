@@ -70,6 +70,14 @@
   --base-error-light: 0 72% 51%;
   --base-error-dark: 0 91% 71%;
   --base-star: 45 93% 55%;
+
+  /* ---- Ice Blue Accent (Consistent across both modes) ---- */
+  --base-ice-blue: 213 94% 68%;       /* #5BA3F5 - Toggle active state */
+  --base-ice-blue-hover: 213 94% 58%; /* Darker for hover */
+
+  /* ---- Muted Background (Toggle container) ---- */
+  --base-muted-light: 216 15% 94%;    /* Light mode toggle bg */
+  --base-muted-dark: 215 16% 28%;     /* Dark mode toggle bg */
 }
 
 /* ============================================
@@ -188,12 +196,14 @@
   --color-focus-ring: hsla(var(--base-blue-700) / 0.5);
   --color-focus-outline: hsl(var(--base-blue-700));
 
-  /* ---- Toggle Specific (Light Mode Active) ---- */
-  --toggle-active-bg: hsl(var(--base-blue-700));
-  --toggle-active-text: hsl(var(--base-gray-50));
+  /* ---- Toggle Specific (Light Mode) ---- */
+  /* Ice Blue active state - consistent across both modes */
+  --toggle-active-bg: hsl(var(--base-ice-blue));
+  --toggle-active-text: hsl(0 0% 100%);            /* Pure white */
   --toggle-inactive-bg: transparent;
-  --toggle-inactive-text: hsl(215 14% 47%);
-  --toggle-hover-bg: hsl(214 14% 92%);
+  --toggle-inactive-text: hsl(216 8% 46%);         /* Muted gray */
+  --toggle-hover-text: hsl(220 20% 2%);            /* Near-black on hover */
+  --toggle-container-bg: hsl(var(--base-muted-light));
 }
 
 /* ============================================
@@ -313,12 +323,14 @@
   --color-focus-ring: hsla(var(--base-blue-400) / 0.5);
   --color-focus-outline: hsl(var(--base-blue-400));
 
-  /* ---- Toggle Specific (Dark Mode Active) ---- */
-  --toggle-active-bg: hsl(var(--base-blue-400));
-  --toggle-active-text: hsl(var(--base-gray-950));
+  /* ---- Toggle Specific (Dark Mode) ---- */
+  /* Ice Blue active state - SAME as light mode for brand consistency */
+  --toggle-active-bg: hsl(var(--base-ice-blue));
+  --toggle-active-text: hsl(210 20% 95%);          /* Off-white */
   --toggle-inactive-bg: transparent;
-  --toggle-inactive-text: hsl(215 16% 47%);
-  --toggle-hover-bg: hsl(215 20% 28%);
+  --toggle-inactive-text: hsl(218 11% 65%);        /* Light gray */
+  --toggle-hover-text: hsl(210 20% 95%);           /* Off-white on hover */
+  --toggle-container-bg: hsl(var(--base-muted-dark));
 }
 
 /* ============================================
@@ -1406,7 +1418,10 @@ a:not([class]):not([style]):hover {
 
 /* ============================================
    THEME TOGGLE BUTTON STYLES
-   Segmented control UI pattern
+   Segmented control (pill toggle) UI pattern
+
+   Design: Ice Blue (#5BA3F5) active state in BOTH modes
+   for brand consistency across themes.
    ============================================ */
 
 .theme-toggle {
@@ -1415,9 +1430,8 @@ a:not([class]):not([style]):hover {
   gap: 4px;
   padding: 4px;
   user-select: none;
-  background-color: var(--color-surface-alt);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
+  background-color: var(--toggle-container-bg);
+  border-radius: 8px;                              /* rounded-lg = 0.5rem */
   overflow: hidden;
 }
 
@@ -1426,44 +1440,45 @@ a:not([class]):not([style]):hover {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 8px 16px;
   background-color: var(--toggle-inactive-bg);
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--toggle-inactive-text);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  /* 300ms ease-in-out transition for all properties */
+  transition: all 300ms ease-in-out;
   position: relative;
 }
 
 .theme-toggle__btn svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;                                     /* h-4 w-4 = 16px */
+  height: 16px;
   stroke: currentColor;
   stroke-width: 2;
   fill: none;
 }
 
-/* Active state styling - uses semantic toggle tokens */
+/* Active state - Ice Blue with shadow for depth */
 .theme-toggle__btn[aria-pressed="true"] {
   background-color: var(--toggle-active-bg);
   color: var(--toggle-active-text);
   font-weight: 600;
-  box-shadow: 0 2px 8px hsla(var(--base-blue-700) / 0.25);
+  box-shadow: 0 1px 3px hsla(var(--base-ice-blue) / 0.3);
 }
 
 /* Inactive button styling */
 .theme-toggle__btn[aria-pressed="false"] {
   color: var(--toggle-inactive-text);
-  background-color: var(--toggle-inactive-bg);
+  background-color: transparent;                   /* Explicitly transparent */
 }
 
-/* Hover states */
+/* Hover state - TEXT ONLY change, no background */
 .theme-toggle__btn[aria-pressed="false"]:hover {
-  background-color: var(--toggle-hover-bg);
-  color: var(--color-text-primary);
+  color: var(--toggle-hover-text);
+  background-color: transparent;                   /* Keep transparent */
 }
 
 /* Focus state - accessibility */
@@ -1472,18 +1487,13 @@ a:not([class]):not([style]):hover {
 }
 
 .theme-toggle__btn:focus-visible {
-  outline: 2px solid var(--color-focus-outline);
+  outline: 2px solid hsl(var(--base-ice-blue));
   outline-offset: 2px;
 }
 
-/* Dark mode specific adjustments */
+/* Dark mode container adjustment */
 [data-theme="dark"] .theme-toggle {
-  background-color: var(--color-surface);
-  border-color: var(--color-border);
-}
-
-[data-theme="dark"] .theme-toggle__btn[aria-pressed="true"] {
-  box-shadow: 0 2px 8px hsla(var(--base-blue-400) / 0.3);
+  background-color: var(--toggle-container-bg);
 }
 
 /* Footer top section placement - centered */
