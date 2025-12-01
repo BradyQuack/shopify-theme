@@ -602,7 +602,6 @@ p.features-bar__desc {
 
 .footer__theme-toggle-section {
   background-color: #005496 !important;
-  border-bottom-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 .footer__theme-toggle-section .theme-toggle {
@@ -610,12 +609,12 @@ p.features-bar__desc {
   border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
-.footer__theme-toggle-section .theme-toggle__btn {
+.footer__theme-toggle-section .theme-toggle__btn[aria-pressed="false"] {
   color: rgba(255, 255, 255, 0.7) !important;
 }
 
-.footer__theme-toggle-section .theme-toggle__btn:first-child {
-  border-right-color: rgba(255, 255, 255, 0.3) !important;
+.footer__theme-toggle-section .theme-toggle__btn[aria-pressed="false"]:hover {
+  color: rgba(255, 255, 255, 1) !important;
 }
 
 /* RTE Content */
@@ -1505,7 +1504,6 @@ a:not([class]):not([style]):hover {
   justify-content: center;
   width: 100%;
   padding: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   margin-bottom: 3rem;
   box-sizing: border-box;
 }
