@@ -1477,10 +1477,10 @@ a:not([class]):not([style]):hover {
   background-color: transparent;                   /* Explicitly transparent */
 }
 
-/* Hover state - visible background + text change */
+/* Hover state - text/icon color change only, no background */
 .theme-toggle__btn[aria-pressed="false"]:hover {
   color: var(--toggle-hover-text);
-  background-color: var(--toggle-hover-bg);
+  background-color: transparent;
 }
 
 /* Focus state - accessibility */
