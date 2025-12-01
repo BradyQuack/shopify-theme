@@ -130,6 +130,42 @@
   }
 
   /**
+   * Convert RGB to HEX
+   * @param {string} rgb - RGB color string like "rgb(255, 255, 255)"
+   * @returns {string} - HEX color like "#FFFFFF"
+   */
+  function rgbToHex(rgb) {
+    if (!rgb || rgb === 'transparent' || rgb === 'rgba(0, 0, 0, 0)') {
+      return 'transparent';
+    }
+    const match = rgb.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if (!match) return rgb;
+    const r = parseInt(match[1]).toString(16).padStart(2, '0');
+    const g = parseInt(match[2]).toString(16).padStart(2, '0');
+    const b = parseInt(match[3]).toString(16).padStart(2, '0');
+    return `#${r}${g}${b}`.toUpperCase();
+  }
+
+  /**
+   * Get computed colors for an element
+   * @param {HTMLElement} element - The element to get colors from
+   * @returns {Object} - Color information
+   */
+  function getComputedColors(element) {
+    const styles = window.getComputedStyle(element);
+
+    // Find the first text element to get actual text color
+    const textElement = element.querySelector('h1, h2, h3, h4, h5, h6, p, span, a') || element;
+    const textStyles = window.getComputedStyle(textElement);
+
+    return {
+      background: rgbToHex(styles.backgroundColor),
+      text: rgbToHex(textStyles.color),
+      border: rgbToHex(styles.borderColor),
+    };
+  }
+
+  /**
    * Build debug info object for a section
    * @param {HTMLElement} section - The section element
    * @returns {Object} - Debug info object
@@ -146,6 +182,12 @@
     const hasColorScheme = section.className.includes('color-');
     const colorSchemeMatch = section.className.match(/color-(\S+)/);
 
+    // Get current theme mode
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+
+    // Get computed colors
+    const colors = getComputedColors(section);
+
     const info = {
       section_id: sectionId,
       section_type: sectionType || 'unknown',
@@ -155,6 +197,8 @@
         width: Math.round(rect.width),
         height: Math.round(rect.height),
       },
+      theme: currentTheme,
+      colors: colors,
       page: {
         url: window.location.pathname,
         template: window.Shopify?.theme?.name || 'unknown',
