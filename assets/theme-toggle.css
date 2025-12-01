@@ -203,6 +203,7 @@
   --toggle-inactive-bg: transparent;
   --toggle-inactive-text: hsl(216 8% 46%);         /* Muted gray */
   --toggle-hover-text: hsl(220 20% 2%);            /* Near-black on hover */
+  --toggle-hover-bg: hsl(216 15% 88%);             /* Light gray bg on hover */
   --toggle-container-bg: hsl(var(--base-muted-light));
 }
 
@@ -330,6 +331,7 @@
   --toggle-inactive-bg: transparent;
   --toggle-inactive-text: hsl(218 11% 65%);        /* Light gray */
   --toggle-hover-text: hsl(210 20% 95%);           /* Off-white on hover */
+  --toggle-hover-bg: hsl(215 20% 35%);             /* Dark slate bg on hover */
   --toggle-container-bg: hsl(var(--base-muted-dark));
 }
 
@@ -1475,10 +1477,10 @@ a:not([class]):not([style]):hover {
   background-color: transparent;                   /* Explicitly transparent */
 }
 
-/* Hover state - TEXT ONLY change, no background */
+/* Hover state - visible background + text change */
 .theme-toggle__btn[aria-pressed="false"]:hover {
   color: var(--toggle-hover-text);
-  background-color: transparent;                   /* Keep transparent */
+  background-color: var(--toggle-hover-bg);
 }
 
 /* Focus state - accessibility */
