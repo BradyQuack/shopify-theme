@@ -1164,10 +1164,20 @@ a:not([class]):not([style]):hover {
 
 /* ============================================
    CUSTOMER REVIEWS SECTION
+   Aggressive overrides for inline style variables
    ============================================ */
 
-[data-theme="dark"] .customer-reviews {
+[data-theme="dark"] .customer-reviews,
+[data-theme="dark"] .testimonial,
+[data-theme="dark"] [class*="testimonial"] {
   background-color: var(--color-bg) !important;
+  /* Override inline CSS custom properties */
+  --testimonial-text-color: var(--color-text-primary) !important;
+  --testimonial-name-color: var(--color-text-primary) !important;
+  --testimonial-service-color: var(--color-text-primary) !important;
+  --testimonial-description-color: var(--color-text-secondary) !important;
+  --testimonial-location-color: var(--color-text-muted) !important;
+  --testimonial-quote-color: var(--color-quote) !important;
 }
 
 [data-theme="dark"] .testimonial__badge {
@@ -1175,11 +1185,14 @@ a:not([class]):not([style]):hover {
   color: var(--color-badge-text) !important;
 }
 
-[data-theme="dark"] .testimonial__heading {
+[data-theme="dark"] .testimonial__heading,
+[data-theme="dark"] .testimonial .testimonial__heading,
+[data-theme="dark"] [class*="testimonial"] h2 {
   color: var(--color-text-primary) !important;
 }
 
-[data-theme="dark"] .testimonial__description {
+[data-theme="dark"] .testimonial__description,
+[data-theme="dark"] .testimonial .testimonial__description {
   color: var(--color-text-secondary) !important;
 }
 
@@ -1200,14 +1213,30 @@ a:not([class]):not([style]):hover {
   color: var(--color-quote) !important;
 }
 
+/* Testimonial quote text - aggressive override */
 [data-theme="dark"] .testimonial__text,
 [data-theme="dark"] .testimonial__text.rte,
 [data-theme="dark"] .testimonial__text.rte p,
-[data-theme="dark"] .testimonial__text p {
+[data-theme="dark"] .testimonial__text p,
+[data-theme="dark"] .testimonial .testimonial__text,
+[data-theme="dark"] .testimonial .testimonial__text p,
+[data-theme="dark"] [class*="testimonial"] .testimonial__text,
+[data-theme="dark"] [class*="testimonial"] .testimonial__text p,
+[data-theme="dark"] .testimonial__card .testimonial__text,
+[data-theme="dark"] .testimonial__card .testimonial__text p,
+[data-theme="dark"] .testimonial__text[style],
+[data-theme="dark"] .testimonial__text p[style],
+[data-theme="dark"] blockquote.testimonial__text,
+[data-theme="dark"] .testimonial__text blockquote {
   color: var(--color-text-primary) !important;
 }
 
-[data-theme="dark"] .testimonial__customer-name {
+/* Customer name - aggressive override */
+[data-theme="dark"] .testimonial__customer-name,
+[data-theme="dark"] .testimonial .testimonial__customer-name,
+[data-theme="dark"] .testimonial__card .testimonial__customer-name,
+[data-theme="dark"] [class*="testimonial"] .testimonial__customer-name,
+[data-theme="dark"] .testimonial__customer-name[style] {
   color: var(--color-text-primary) !important;
 }
 
@@ -1215,7 +1244,12 @@ a:not([class]):not([style]):hover {
   color: var(--color-text-muted) !important;
 }
 
-[data-theme="dark"] .testimonial__service-type {
+/* Service type / industry badge - aggressive override */
+[data-theme="dark"] .testimonial__service-type,
+[data-theme="dark"] .testimonial .testimonial__service-type,
+[data-theme="dark"] .testimonial__card .testimonial__service-type,
+[data-theme="dark"] [class*="testimonial"] .testimonial__service-type,
+[data-theme="dark"] .testimonial__service-type[style] {
   background-color: var(--color-badge-secondary-bg) !important;
   color: var(--color-text-primary) !important;
 }
