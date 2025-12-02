@@ -1,138 +1,32 @@
 /**
- * Section Debug - Copy Debug Button
- * Adds a debug copy button to each Shopify section
- * Copies section info (ID, type, settings path) to clipboard
+ * Section Debug - Component Inspector
+ * Shows detailed component information for each Shopify section
+ * Displays colors, backgrounds, and file locations for every element
  */
 
 (function() {
   'use strict';
 
   // Icons as SVG strings
+  const INSPECT_ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="8"></circle>
+    <path d="M21 21l-4.35-4.35"></path>
+  </svg>`;
+
+  const CLOSE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>`;
+
   const COPY_ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
   </svg>`;
 
-  const CHECK_ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="20 6 9 17 4 12"></polyline>
-  </svg>`;
-
-  let toast = null;
-  let toastTimeout = null;
-
-  /**
-   * Create the toast notification element
-   */
-  function createToast() {
-    if (toast) return toast;
-
-    toast = document.createElement('div');
-    toast.className = 'section-debug-toast';
-    toast.setAttribute('role', 'status');
-    toast.setAttribute('aria-live', 'polite');
-    document.body.appendChild(toast);
-
-    return toast;
-  }
-
-  /**
-   * Show toast notification
-   * @param {string} sectionId - The section ID that was copied
-   * @param {string} sectionType - The section type
-   */
-  function showToast(sectionId, sectionType) {
-    const toastEl = createToast();
-
-    toastEl.innerHTML = `
-      ${CHECK_ICON}
-      <span>Copied</span>
-      <span class="section-debug-toast__id">${sectionType || sectionId}</span>
-    `;
-
-    // Clear any existing timeout
-    if (toastTimeout) {
-      clearTimeout(toastTimeout);
-    }
-
-    // Show toast
-    requestAnimationFrame(() => {
-      toastEl.classList.add('section-debug-toast--visible');
-    });
-
-    // Hide after delay
-    toastTimeout = setTimeout(() => {
-      toastEl.classList.remove('section-debug-toast--visible');
-    }, 2000);
-  }
-
-  /**
-   * Extract section type from section element
-   * Shopify sections have data attributes or class patterns we can parse
-   * @param {HTMLElement} section - The section element
-   * @returns {string|null} - The section type or null
-   */
-  function getSectionType(section) {
-    // Try data-section-type attribute (common pattern)
-    if (section.dataset.sectionType) {
-      return section.dataset.sectionType;
-    }
-
-    // Try to find section type from inner element with data-section-type
-    const innerWithType = section.querySelector('[data-section-type]');
-    if (innerWithType && innerWithType.dataset.sectionType) {
-      return innerWithType.dataset.sectionType;
-    }
-
-    // Try to extract from section ID (format: shopify-section-template--*--section-type-*)
-    const sectionId = section.id || '';
-    const idMatch = sectionId.match(/shopify-section-(?:template--\d+--)?([a-z0-9-]+)/i);
-    if (idMatch && idMatch[1]) {
-      // Clean up the extracted type
-      let type = idMatch[1];
-      // Remove trailing unique IDs (like _abc123)
-      type = type.replace(/_[a-zA-Z0-9]+$/, '');
-      // Remove numeric suffixes
-      type = type.replace(/-\d+$/, '');
-      return type;
-    }
-
-    // Try to find class that might indicate section type
-    const classes = Array.from(section.classList);
-    for (const cls of classes) {
-      if (cls.startsWith('section-') && cls !== 'section-padding') {
-        return cls.replace('section-', '');
-      }
-    }
-
-    return null;
-  }
-
-  /**
-   * Get section ID (cleaned up)
-   * @param {HTMLElement} section - The section element
-   * @returns {string} - The section ID
-   */
-  function getSectionId(section) {
-    const fullId = section.id || '';
-    // Extract just the unique part after "shopify-section-"
-    return fullId.replace('shopify-section-', '') || 'unknown';
-  }
-
-  /**
-   * Get block count within section
-   * @param {HTMLElement} section - The section element
-   * @returns {number} - Number of blocks found
-   */
-  function getBlockCount(section) {
-    // Look for common block patterns
-    const blocks = section.querySelectorAll('[data-block-id], [data-shopify-editor-block]');
-    return blocks.length;
-  }
+  const DEBUG_MODAL_ID = 'section-debug-modal';
 
   /**
    * Convert RGB to HEX
-   * @param {string} rgb - RGB color string like "rgb(255, 255, 255)"
-   * @returns {string} - HEX color like "#FFFFFF"
    */
   function rgbToHex(rgb) {
     if (!rgb || rgb === 'transparent' || rgb === 'rgba(0, 0, 0, 0)') {
@@ -147,168 +41,395 @@
   }
 
   /**
-   * Get computed colors for an element
-   * @param {HTMLElement} element - The element to get colors from
-   * @returns {Object} - Color information
+   * Get element selector for display
    */
-  function getComputedColors(element) {
-    const styles = window.getComputedStyle(element);
-
-    // Find the first text element to get actual text color
-    const textElement = element.querySelector('h1, h2, h3, h4, h5, h6, p, span, a') || element;
-    const textStyles = window.getComputedStyle(textElement);
-
-    return {
-      background: rgbToHex(styles.backgroundColor),
-      text: rgbToHex(textStyles.color),
-      border: rgbToHex(styles.borderColor),
-    };
+  function getElementSelector(el) {
+    let selector = el.tagName.toLowerCase();
+    if (el.id) selector += '#' + el.id;
+    if (el.className && typeof el.className === 'string') {
+      const classes = el.className.split(' ').filter(c => c.trim() && !c.startsWith('shopify')).slice(0, 3);
+      if (classes.length) selector += '.' + classes.join('.');
+    }
+    return selector;
   }
 
   /**
-   * Build debug info object for a section
-   * @param {HTMLElement} section - The section element
-   * @returns {Object} - Debug info object
+   * Get the primary class name for file location hint
    */
-  function buildDebugInfo(section) {
-    const sectionId = getSectionId(section);
+  function getPrimaryClass(el) {
+    if (!el.className || typeof el.className !== 'string') return null;
+    const classes = el.className.split(' ').filter(c => c.trim() && !c.startsWith('shopify') && !c.startsWith('color-'));
+    return classes[0] || null;
+  }
+
+  /**
+   * Guess file location based on class names
+   */
+  function guessFileLocation(className, sectionType) {
+    if (!className) return null;
+
+    // Common patterns
+    const patterns = [
+      // Section-specific classes
+      { regex: /^testimonial/, file: 'sections/testimonials.liquid' },
+      { regex: /^header2/, file: 'sections/header2.liquid' },
+      { regex: /^footer/, file: 'sections/footer.liquid' },
+      { regex: /^features-bar/, file: 'sections/features-bar.liquid' },
+      { regex: /^features-icons/, file: 'sections/features-icons.liquid' },
+      { regex: /^product-card/, file: 'snippets/product-card.liquid' },
+      { regex: /^product-grid/, file: 'sections/product-grid.liquid' },
+      { regex: /^banner/, file: 'sections/banner-image-hero.liquid' },
+      { regex: /^video-hero/, file: 'sections/hero-video.liquid' },
+      { regex: /^wholesale/, file: 'sections/wholesale-*.liquid' },
+      { regex: /^contact/, file: 'sections/contact-form.liquid' },
+      { regex: /^cta-banner/, file: 'sections/cta-banner.liquid' },
+      { regex: /^brand/, file: 'sections/brands-grid.liquid' },
+      // Generic patterns
+      { regex: /^card/, file: 'snippets/card-*.liquid' },
+      { regex: /^button/, file: 'assets/base.css' },
+      { regex: /^rte/, file: 'snippets/article-*.liquid' },
+    ];
+
+    for (const pattern of patterns) {
+      if (pattern.regex.test(className)) {
+        return pattern.file;
+      }
+    }
+
+    // Default: try section type
+    if (sectionType) {
+      return `sections/${sectionType}.liquid`;
+    }
+
+    return 'assets/theme-toggle.css (dark mode overrides)';
+  }
+
+  /**
+   * Get CSS variable if used
+   */
+  function getCSSVariable(el, property) {
+    // Check inline style for var() usage
+    const inlineStyle = el.getAttribute('style') || '';
+    const varMatch = inlineStyle.match(new RegExp(`${property}:\\s*var\\(([^)]+)\\)`));
+    if (varMatch) return varMatch[1];
+
+    return null;
+  }
+
+  /**
+   * Scan all components within a section
+   */
+  function scanSectionComponents(section) {
+    const components = [];
     const sectionType = getSectionType(section);
-    const blockCount = getBlockCount(section);
 
-    // Get computed dimensions
-    const rect = section.getBoundingClientRect();
+    // Get section info first
+    const sectionStyles = window.getComputedStyle(section);
+    components.push({
+      element: 'Section Container',
+      selector: getElementSelector(section),
+      className: getPrimaryClass(section),
+      textColor: rgbToHex(sectionStyles.color),
+      bgColor: rgbToHex(sectionStyles.backgroundColor),
+      fileHint: guessFileLocation(getPrimaryClass(section), sectionType),
+      isSection: true
+    });
 
-    // Check for common section properties
-    const hasColorScheme = section.className.includes('color-');
-    const colorSchemeMatch = section.className.match(/color-(\S+)/);
+    // Find notable child elements
+    const selectors = [
+      // Headings
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      // Text containers
+      'p', 'blockquote', '.rte',
+      // Cards and containers
+      '[class*="card"]', '[class*="item"]', '[class*="block"]',
+      // Specific components
+      '[class*="badge"]', '[class*="tag"]', '[class*="pill"]',
+      '[class*="button"]', '[class*="btn"]',
+      '[class*="icon"]', '[class*="star"]',
+      '[class*="nav"]', '[class*="dot"]',
+      '[class*="customer"]', '[class*="service"]',
+      '[class*="quote"]', '[class*="text"]',
+      '[class*="heading"]', '[class*="title"]', '[class*="description"]',
+      // Form elements
+      'input', 'textarea', 'select', 'label',
+    ];
 
-    // Get current theme mode
+    const seen = new Set();
+
+    selectors.forEach(selector => {
+      try {
+        const elements = section.querySelectorAll(selector);
+        elements.forEach(el => {
+          // Skip if already processed or hidden
+          if (seen.has(el)) return;
+          if (el.closest('#' + DEBUG_MODAL_ID)) return;
+          if (el.offsetParent === null && el.tagName !== 'BODY') return;
+
+          const className = getPrimaryClass(el);
+          if (!className) return; // Skip elements without meaningful classes
+
+          // Skip duplicates by class
+          if (seen.has(className)) return;
+          seen.add(className);
+          seen.add(el);
+
+          const styles = window.getComputedStyle(el);
+          const textColor = rgbToHex(styles.color);
+          const bgColor = rgbToHex(styles.backgroundColor);
+          const borderColor = rgbToHex(styles.borderColor);
+
+          // Only include if it has meaningful styling
+          if (textColor !== 'transparent' || bgColor !== 'transparent') {
+            components.push({
+              element: el.tagName.toLowerCase(),
+              selector: getElementSelector(el),
+              className: className,
+              textColor: textColor,
+              textVar: getCSSVariable(el, 'color'),
+              bgColor: bgColor,
+              bgVar: getCSSVariable(el, 'background-color'),
+              borderColor: borderColor !== 'transparent' ? borderColor : null,
+              fileHint: guessFileLocation(className, sectionType),
+              fontSize: styles.fontSize,
+              fontWeight: styles.fontWeight
+            });
+          }
+        });
+      } catch (e) {
+        // Invalid selector, skip
+      }
+    });
+
+    return components;
+  }
+
+  /**
+   * Extract section type from section element
+   */
+  function getSectionType(section) {
+    if (section.dataset.sectionType) {
+      return section.dataset.sectionType;
+    }
+
+    const innerWithType = section.querySelector('[data-section-type]');
+    if (innerWithType && innerWithType.dataset.sectionType) {
+      return innerWithType.dataset.sectionType;
+    }
+
+    const sectionId = section.id || '';
+    const idMatch = sectionId.match(/shopify-section-(?:template--\d+--)?([a-z0-9-]+)/i);
+    if (idMatch && idMatch[1]) {
+      let type = idMatch[1];
+      type = type.replace(/_[a-zA-Z0-9]+$/, '');
+      type = type.replace(/-\d+$/, '');
+      return type;
+    }
+
+    const classes = Array.from(section.classList);
+    for (const cls of classes) {
+      if (cls.startsWith('section-') && cls !== 'section-padding') {
+        return cls.replace('section-', '');
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Get section ID (cleaned up)
+   */
+  function getSectionId(section) {
+    const fullId = section.id || '';
+    return fullId.replace('shopify-section-', '') || 'unknown';
+  }
+
+  /**
+   * Create the debug modal
+   */
+  function createModal() {
+    const existingModal = document.getElementById(DEBUG_MODAL_ID);
+    if (existingModal) existingModal.remove();
+
+    const modal = document.createElement('div');
+    modal.id = DEBUG_MODAL_ID;
+    modal.className = 'section-debug-modal';
+    modal.innerHTML = `
+      <div class="section-debug-modal__overlay"></div>
+      <div class="section-debug-modal__content">
+        <div class="section-debug-modal__header">
+          <h2 class="section-debug-modal__title">Section Components</h2>
+          <div class="section-debug-modal__actions">
+            <button type="button" class="section-debug-modal__copy" title="Copy to clipboard">
+              ${COPY_ICON}
+            </button>
+            <button type="button" class="section-debug-modal__close" title="Close">
+              ${CLOSE_ICON}
+            </button>
+          </div>
+        </div>
+        <div class="section-debug-modal__body">
+          <div class="section-debug-modal__info"></div>
+          <div class="section-debug-modal__components"></div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Event listeners
+    modal.querySelector('.section-debug-modal__close').addEventListener('click', hideModal);
+    modal.querySelector('.section-debug-modal__overlay').addEventListener('click', hideModal);
+    modal.querySelector('.section-debug-modal__copy').addEventListener('click', () => copyToClipboard(modal));
+
+    // ESC key to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hideModal();
+    });
+
+    return modal;
+  }
+
+  /**
+   * Show modal with section component data
+   */
+  function showModal(section) {
+    let modal = document.getElementById(DEBUG_MODAL_ID);
+    if (!modal) {
+      modal = createModal();
+    }
+
+    const sectionType = getSectionType(section);
+    const sectionId = getSectionId(section);
+    const components = scanSectionComponents(section);
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
 
-    // Get computed colors
-    const colors = getComputedColors(section);
+    // Update title
+    modal.querySelector('.section-debug-modal__title').textContent =
+      `${sectionType || sectionId} Components`;
 
-    const info = {
-      section_id: sectionId,
-      section_type: sectionType || 'unknown',
-      full_element_id: section.id,
-      block_count: blockCount,
-      dimensions: {
-        width: Math.round(rect.width),
-        height: Math.round(rect.height),
-      },
-      theme: currentTheme,
-      colors: colors,
-      page: {
-        url: window.location.pathname,
-        template: window.Shopify?.theme?.name || 'unknown',
-      }
-    };
+    // Section info
+    const infoEl = modal.querySelector('.section-debug-modal__info');
+    infoEl.innerHTML = `
+      <div class="section-debug-modal__meta">
+        <span><strong>Section:</strong> ${sectionType || 'unknown'}</span>
+        <span><strong>ID:</strong> ${sectionId}</span>
+        <span><strong>Theme:</strong> ${currentTheme}</span>
+        <span><strong>Components:</strong> ${components.length}</span>
+      </div>
+      <div class="section-debug-modal__file">
+        <strong>File:</strong> sections/${sectionType || sectionId}.liquid
+      </div>
+    `;
 
-    if (colorSchemeMatch) {
-      info.color_scheme = colorSchemeMatch[1];
-    }
+    // Components list
+    const componentsEl = modal.querySelector('.section-debug-modal__components');
+    componentsEl.innerHTML = components.map((comp, idx) => `
+      <div class="section-debug-modal__component ${comp.isSection ? 'section-debug-modal__component--section' : ''}">
+        <div class="section-debug-modal__component-header">
+          <span class="section-debug-modal__component-num">#${idx + 1}</span>
+          <span class="section-debug-modal__component-name">${comp.element}</span>
+          <code class="section-debug-modal__component-class">.${comp.className}</code>
+        </div>
+        <div class="section-debug-modal__component-details">
+          <div class="section-debug-modal__component-row">
+            <span class="section-debug-modal__component-label">Selector:</span>
+            <code class="section-debug-modal__component-value">${comp.selector}</code>
+          </div>
+          <div class="section-debug-modal__component-row">
+            <span class="section-debug-modal__component-label">Text Color:</span>
+            <span class="section-debug-modal__component-value">
+              <span class="section-debug-modal__color-swatch" style="background-color: ${comp.textColor}"></span>
+              ${comp.textColor}
+              ${comp.textVar ? `<code class="section-debug-modal__var">${comp.textVar}</code>` : ''}
+            </span>
+          </div>
+          <div class="section-debug-modal__component-row">
+            <span class="section-debug-modal__component-label">Background:</span>
+            <span class="section-debug-modal__component-value">
+              <span class="section-debug-modal__color-swatch" style="background-color: ${comp.bgColor}; ${comp.bgColor === 'transparent' ? 'background-image: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%); background-size: 8px 8px; background-position: 0 0, 0 4px, 4px -4px, -4px 0px;' : ''}"></span>
+              ${comp.bgColor}
+              ${comp.bgVar ? `<code class="section-debug-modal__var">${comp.bgVar}</code>` : ''}
+            </span>
+          </div>
+          ${comp.borderColor ? `
+            <div class="section-debug-modal__component-row">
+              <span class="section-debug-modal__component-label">Border:</span>
+              <span class="section-debug-modal__component-value">
+                <span class="section-debug-modal__color-swatch" style="background-color: ${comp.borderColor}"></span>
+                ${comp.borderColor}
+              </span>
+            </div>
+          ` : ''}
+          <div class="section-debug-modal__component-row">
+            <span class="section-debug-modal__component-label">Font:</span>
+            <span class="section-debug-modal__component-value">${comp.fontSize} / ${comp.fontWeight}</span>
+          </div>
+          <div class="section-debug-modal__component-row">
+            <span class="section-debug-modal__component-label">File:</span>
+            <code class="section-debug-modal__component-value section-debug-modal__file-hint">${comp.fileHint || 'unknown'}</code>
+          </div>
+        </div>
+      </div>
+    `).join('');
 
-    // Add helpful paths
-    info.paths = {
-      section_file: `sections/${sectionType || sectionId}.liquid`,
-      template_json: `templates/${getTemplateName()}.json`,
-    };
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
 
-    return info;
+    // Store data for copy
+    modal.dataset.components = JSON.stringify(components, null, 2);
+    modal.dataset.sectionType = sectionType;
   }
 
   /**
-   * Get current template name
-   * @returns {string} - Template name
+   * Hide modal
    */
-  function getTemplateName() {
-    // Try to extract from body class or Shopify object
-    const bodyClasses = document.body.className;
-
-    // Common patterns: template-index, template-product, template-page, etc.
-    const templateMatch = bodyClasses.match(/template-([a-z0-9-]+)/i);
-    if (templateMatch) {
-      return templateMatch[1];
+  function hideModal() {
+    const modal = document.getElementById(DEBUG_MODAL_ID);
+    if (modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
     }
-
-    // Fallback to pathname parsing
-    const path = window.location.pathname;
-    if (path === '/' || path === '') return 'index';
-    if (path.includes('/products/')) return 'product';
-    if (path.includes('/collections/')) return 'collection';
-    if (path.includes('/pages/')) return 'page';
-    if (path.includes('/blogs/')) return 'article';
-    if (path.includes('/cart')) return 'cart';
-
-    return 'unknown';
   }
 
   /**
-   * Copy text to clipboard
-   * @param {string} text - Text to copy
-   * @returns {Promise<boolean>} - Success status
+   * Copy component data to clipboard
    */
-  async function copyToClipboard(text) {
+  async function copyToClipboard(modal) {
+    const components = JSON.parse(modal.dataset.components || '[]');
+    const sectionType = modal.dataset.sectionType;
+    const theme = document.documentElement.getAttribute('data-theme') || 'light';
+
+    let text = `SECTION COMPONENT DEBUG: ${sectionType}\n`;
+    text += `Theme Mode: ${theme}\n`;
+    text += `${'='.repeat(60)}\n\n`;
+
+    components.forEach((comp, idx) => {
+      text += `#${idx + 1} ${comp.element} (.${comp.className})\n`;
+      text += `   Selector: ${comp.selector}\n`;
+      text += `   Text Color: ${comp.textColor}\n`;
+      text += `   Background: ${comp.bgColor}\n`;
+      if (comp.borderColor) text += `   Border: ${comp.borderColor}\n`;
+      text += `   Font: ${comp.fontSize} / ${comp.fontWeight}\n`;
+      text += `   File: ${comp.fileHint}\n`;
+      text += '\n';
+    });
+
     try {
       await navigator.clipboard.writeText(text);
-      return true;
-    } catch (err) {
-      // Fallback for older browsers
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.style.position = 'fixed';
-      textarea.style.left = '-9999px';
-      document.body.appendChild(textarea);
-      textarea.select();
-
-      try {
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        return true;
-      } catch (e) {
-        document.body.removeChild(textarea);
-        console.error('Failed to copy:', e);
-        return false;
-      }
-    }
-  }
-
-  /**
-   * Handle copy button click
-   * @param {Event} e - Click event
-   * @param {HTMLElement} section - The section element
-   * @param {HTMLButtonElement} btn - The button element
-   */
-  async function handleCopyClick(e, section, btn) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const debugInfo = buildDebugInfo(section);
-    const jsonString = JSON.stringify(debugInfo, null, 2);
-
-    const success = await copyToClipboard(jsonString);
-
-    if (success) {
-      // Visual feedback on button
-      btn.classList.add('section-debug-btn--copied');
-      btn.innerHTML = `${CHECK_ICON}<span class="section-debug-btn__type">Copied!</span>`;
-
-      // Show toast
-      showToast(debugInfo.section_id, debugInfo.section_type);
-
-      // Reset button after delay
+      const copyBtn = modal.querySelector('.section-debug-modal__copy');
+      copyBtn.innerHTML = '✓';
       setTimeout(() => {
-        btn.classList.remove('section-debug-btn--copied');
-        btn.innerHTML = `${COPY_ICON}<span class="section-debug-btn__type">${debugInfo.section_type || debugInfo.section_id}</span>`;
+        copyBtn.innerHTML = COPY_ICON;
       }, 1500);
+    } catch (err) {
+      console.error('Failed to copy:', err);
     }
   }
 
   /**
    * Create debug button for a section
-   * @param {HTMLElement} section - The section element
-   * @returns {HTMLButtonElement} - The button element
    */
   function createDebugButton(section) {
     const sectionType = getSectionType(section);
@@ -317,10 +438,14 @@
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'section-debug-btn';
-    btn.setAttribute('aria-label', `Copy debug info for ${sectionType || sectionId} section`);
-    btn.innerHTML = `${COPY_ICON}<span class="section-debug-btn__type">${sectionType || sectionId}</span>`;
+    btn.setAttribute('aria-label', `Inspect ${sectionType || sectionId} section components`);
+    btn.innerHTML = `${INSPECT_ICON}<span class="section-debug-btn__type">${sectionType || sectionId}</span>`;
 
-    btn.addEventListener('click', (e) => handleCopyClick(e, section, btn));
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      showModal(section);
+    });
 
     return btn;
   }
@@ -329,20 +454,16 @@
    * Initialize section debug buttons
    */
   function init() {
-    // Find all Shopify sections
     const sections = document.querySelectorAll('.shopify-section');
 
     sections.forEach((section) => {
-      // Skip if button already exists
       if (section.querySelector('.section-debug-btn')) return;
 
-      // Ensure section has position context for absolute button
       const computedStyle = window.getComputedStyle(section);
       if (computedStyle.position === 'static') {
         section.style.position = 'relative';
       }
 
-      // Create and append button
       const btn = createDebugButton(section);
       section.appendChild(btn);
     });
@@ -357,7 +478,7 @@
     init();
   }
 
-  // Re-initialize on Shopify section events (for theme editor)
+  // Re-initialize on Shopify section events
   document.addEventListener('shopify:section:load', (e) => {
     if (e.target && e.target.classList.contains('shopify-section')) {
       const btn = createDebugButton(e.target);
@@ -365,13 +486,11 @@
     }
   });
 
-  // Expose globally for manual use
+  // Expose globally
   window.SectionDebug = {
     init,
-    getInfo: (sectionElement) => buildDebugInfo(sectionElement),
-    copyInfo: async (sectionElement) => {
-      const info = buildDebugInfo(sectionElement);
-      return copyToClipboard(JSON.stringify(info, null, 2));
-    }
+    inspect: showModal,
+    hide: hideModal,
+    scanComponents: scanSectionComponents
   };
 })();
