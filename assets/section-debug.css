@@ -240,7 +240,43 @@
   gap: 8px;
 }
 
-.section-debug-modal__copy,
+/* Copy All button - prominent with text */
+.section-debug-modal__copy-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background-color: hsl(213 70% 45%);
+  border: 1px solid hsl(213 70% 55%);
+  border-radius: 6px;
+  color: hsl(0 0% 100%);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.section-debug-modal__copy-all:hover {
+  background-color: hsl(213 70% 52%);
+  border-color: hsl(213 70% 62%);
+}
+
+.section-debug-modal__copy-all--success {
+  background-color: hsl(142 71% 40%) !important;
+  border-color: hsl(142 71% 50%) !important;
+}
+
+.section-debug-modal__copy-all svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  flex-shrink: 0;
+}
+
+/* Close button */
 .section-debug-modal__close {
   display: flex;
   align-items: center;
@@ -256,14 +292,12 @@
   transition: all 150ms ease;
 }
 
-.section-debug-modal__copy:hover,
 .section-debug-modal__close:hover {
   background-color: hsl(220 15% 22%);
   color: hsl(0 0% 95%);
   border-color: hsl(220 15% 40%);
 }
 
-.section-debug-modal__copy svg,
 .section-debug-modal__close svg {
   width: 16px;
   height: 16px;

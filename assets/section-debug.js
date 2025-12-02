@@ -260,8 +260,9 @@
         <div class="section-debug-modal__header">
           <h2 class="section-debug-modal__title">Section Components</h2>
           <div class="section-debug-modal__actions">
-            <button type="button" class="section-debug-modal__copy" title="Copy to clipboard">
+            <button type="button" class="section-debug-modal__copy-all" title="Copy all component data">
               ${COPY_ICON}
+              <span>Copy All</span>
             </button>
             <button type="button" class="section-debug-modal__close" title="Close">
               ${CLOSE_ICON}
@@ -280,7 +281,7 @@
     // Event listeners
     modal.querySelector('.section-debug-modal__close').addEventListener('click', hideModal);
     modal.querySelector('.section-debug-modal__overlay').addEventListener('click', hideModal);
-    modal.querySelector('.section-debug-modal__copy').addEventListener('click', () => copyToClipboard(modal));
+    modal.querySelector('.section-debug-modal__copy-all').addEventListener('click', () => copyToClipboard(modal));
 
     // ESC key to close
     document.addEventListener('keydown', (e) => {
@@ -418,10 +419,13 @@
 
     try {
       await navigator.clipboard.writeText(text);
-      const copyBtn = modal.querySelector('.section-debug-modal__copy');
-      copyBtn.innerHTML = '✓';
+      const copyBtn = modal.querySelector('.section-debug-modal__copy-all');
+      const originalHTML = copyBtn.innerHTML;
+      copyBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Copied!</span>`;
+      copyBtn.classList.add('section-debug-modal__copy-all--success');
       setTimeout(() => {
-        copyBtn.innerHTML = COPY_ICON;
+        copyBtn.innerHTML = originalHTML;
+        copyBtn.classList.remove('section-debug-modal__copy-all--success');
       }, 1500);
     } catch (err) {
       console.error('Failed to copy:', err);
