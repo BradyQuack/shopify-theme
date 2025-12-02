@@ -152,7 +152,11 @@
             data-id="{{ section.id }}"
             class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
           >
-            <div class="loading-overlay gradient"></div>
+            <div class="loading-overlay gradient">
+              <div class="collection-loading-spinner">
+                {{ 'loading-spinner.svg' | inline_asset_content }}
+              </div>
+            </div>
             <ul
               id="product-grid-{{ section.id }}"
               data-id="{{ section.id }}"

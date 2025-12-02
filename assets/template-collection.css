@@ -49,7 +49,29 @@
 }
 
 .collection.loading .loading-overlay {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(var(--color-background), 0.7);
+}
+
+/* Centered loading spinner for collection filtering */
+.collection-loading-spinner {
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collection-loading-spinner svg {
+  width: 100%;
+  height: 100%;
+  animation: rotator 1.4s linear infinite;
+}
+
+.collection-loading-spinner .path {
+  stroke: rgb(var(--color-foreground));
 }
 
 .collection--empty .title-wrapper {

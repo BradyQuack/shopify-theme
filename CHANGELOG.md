@@ -2,6 +2,12 @@
 
 All notable changes to the ASIW Supply Shopify theme are documented in this file.
 
+## [v01.00.16] - 2025-12-02
+
+### Added
+- Loading spinner displayed on product grid when filtering
+- Centered spinner with semi-transparent overlay for better UX
+
 ## [v01.00.15] - 2025-12-02
 
 ### Fixed
@@ -161,4 +167,4 @@ Versions follow the format: `vMM.mm.pp`
 - `mm` - Minor version (new features, enhancements)
 - `pp` - Patch version (bug fixes, small improvements)
 
-Current: **v01.00.15**
+Current: **v01.00.16**
