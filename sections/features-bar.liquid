@@ -13,12 +13,6 @@
   assign heading          = section.settings.heading
   assign subheading       = section.settings.subheading
   assign max_width        = section.settings.max_width | default: 1160
-  assign bg               = section.settings.background_color | default: '#F5F7FA'
-  assign head_color       = section.settings.heading_color | default: '#111827'
-  assign text_color       = section.settings.text_color | default: '#64748B'
-  assign blue_start       = section.settings.accent_blue_start | default: '#1976D2'
-  assign blue_end         = section.settings.accent_blue_end | default: '#1E88E5'
-  assign item_bg          = section.settings.item_bg_color | default: 'transparent'
   assign radius           = section.settings.icon_bg_radius | default: 14
   assign icon_size        = section.settings.icon_size | default: 24
   assign cols_desktop     = section.settings.columns_desktop | default: '4'
@@ -41,25 +35,20 @@
 
   <style>
     .features-bar--{{ section.id }}{
-      --features-bar__bg: {{ bg }};
-      --features-bar__head: {{ head_color }};
-      --features-bar__text: {{ text_color }};
-      --features-bar__blue-start: {{ blue_start }};
-      --features-bar__blue-end: {{ blue_end }};
-      --features-bar__item-bg: {{ item_bg }};
+      /* Using semantic tokens from theme-toggle.css */
       --features-bar__radius: {{ radius }}px;
       --features-bar__icon-size: {{ icon_size }}px;
       --features-bar__gap: {{ gap_desktop }}px;
       --features-bar__gap-mobile: {{ gap_mobile }}px;
       --features-bar__container: {{ max_width }}px;
 
-      background: var(--features-bar__bg);
+      background: var(--color-bg);
       padding-top: {{ pad_top }}px;
       padding-bottom: {{ pad_bottom }}px;
       font-family: inherit; /* Inherit theme fonts */
       {% if show_dividers %}
-      border-top: 1px solid rgba(0,0,0,.05);
-      border-bottom: 1px solid rgba(0,0,0,.05);
+      border-top: 1px solid var(--color-border-light);
+      border-bottom: 1px solid var(--color-border-light);
       {% endif %}
     }
 
@@ -70,7 +59,7 @@
     }
 
     .features-bar--{{ section.id }} .features-bar__heading{
-      color: var(--features-bar__head);
+      color: var(--color-text-heading);
       font-family: var(--font-heading-family, inherit); /* Use theme's heading font */
       font-weight: 700;
       letter-spacing: -0.01em;
@@ -81,7 +70,7 @@
     }
 
     .features-bar--{{ section.id }} .features-bar__subheading{
-      color: var(--features-bar__text);
+      color: var(--color-text-secondary);
       font-family: var(--font-body-family, inherit); /* Use theme's body font */
       text-align: {{ align }};
       margin: 0 0 28px 0;
@@ -134,7 +123,7 @@
       width: 100%;
       text-align: {{ align }};
       font-family: inherit; /* Ensure font inheritance */
-      background-color: var(--features-bar__item-bg) !important;
+      background-color: transparent;
       padding: 20px;
       border-radius: 12px;
     }
@@ -146,13 +135,13 @@
       font-family: var(--font-body-family, inherit); /* Use theme's body font for links */
       font-weight: 600;
       text-decoration: none;
-      color: var(--features-bar__head);
+      color: var(--color-text-heading);
       outline: none;
       border-radius: 10px;
       padding: 2px 4px;
     }
     .features-bar--{{ section.id }} .features-bar__link:focus-visible{
-      box-shadow: 0 0 0 3px rgba(30,136,229,.35);
+      box-shadow: 0 0 0 var(--ring-width) var(--ring-color-alpha);
     }
 
     .features-bar--{{ section.id }} .features-bar__icon{
@@ -160,7 +149,7 @@
       display: inline-grid;
       place-items: center;
       border-radius: var(--features-bar__radius);
-      background: linear-gradient(180deg, var(--features-bar__blue-start), var(--features-bar__blue-end));
+      background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
       box-shadow: 0 6px 14px rgba(0,0,0,.08);
       transition: transform .18s ease, box-shadow .18s ease;
       margin: 0 auto 12px auto;
@@ -176,12 +165,12 @@
       box-shadow: 0 10px 20px rgba(0,0,0,.10);
     }
     .features-bar--{{ section.id }} .features-bar__focusable:focus-visible .features-bar__icon{
-      box-shadow: 0 0 0 3px rgba(30,136,229,.35), 0 6px 14px rgba(0,0,0,.08);
+      box-shadow: 0 0 0 var(--ring-width) var(--ring-color-alpha), 0 6px 14px rgba(0,0,0,.08);
       transform: translateY(-1px);
     }
 
     .features-bar--{{ section.id }} .features-bar__title{
-      color: var(--features-bar__head);
+      color: var(--color-text-heading);
       font-family: var(--font-heading-family, inherit); /* Use theme's heading font for feature titles */
       font-weight: 600;
       margin: 0 0 6px 0;
@@ -189,7 +178,7 @@
       line-height: 1.35;
     }
     .features-bar--{{ section.id }} .features-bar__desc{
-      color: var(--features-bar__text);
+      color: var(--color-text-secondary);
       font-family: var(--font-body-family, inherit); /* Use theme's body font for descriptions */
       margin: 0;
       font-size: 1rem;
@@ -511,13 +500,7 @@ EXPECTED: background-color: {{ item_bg }}</textarea>
     { "type": "richtext", "id": "subheading", "label": "Subheading", "default": "<p>Access exclusive savings and support designed for growing businesses.</p>" },
     { "type": "range", "id": "max_width", "min": 800, "max": 1400, "step": 10, "unit": "px", "label": "Max content width", "default": 1160 },
 
-    { "type": "color", "id": "background_color", "label": "Background color", "default": "#F5F7FA" },
-    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#2B2C2D" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#6B7280" },
-
-    { "type": "color", "id": "accent_blue_start", "label": "Tile gradient start", "default": "#005496" },
-    { "type": "color", "id": "accent_blue_end", "label": "Tile gradient end", "default": "#1D6AE5" },
-    { "type": "color", "id": "item_bg_color", "label": "Feature container background" },
+    { "type": "paragraph", "content": "Colors are managed by the theme color scheme (see COLOR_SCHEME.md)" },
 
     { "type": "range", "id": "icon_bg_radius", "min": 8, "max": 20, "step": 1, "unit": "px", "label": "Tile corner radius", "default": 14 },
     { "type": "range", "id": "icon_size", "min": 20, "max": 36, "step": 1, "unit": "px", "label": "PNG scale (base unit)", "default": 24 },

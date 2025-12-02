@@ -7,28 +7,13 @@
   id="Testimonial-{{ section.id }}"
   class="testimonial color-{{ section.settings.color_scheme }}"
   style="
-    --testimonial-bg-color: {{ section.settings.background_color }};
     --testimonial-padding-top: {{ section.settings.padding_top }}px;
     --testimonial-padding-bottom: {{ section.settings.padding_bottom }}px;
-    --testimonial-badge-bg: {{ section.settings.badge_bg_color }};
-    --testimonial-badge-color: {{ section.settings.badge_text_color }};
     --testimonial-heading-size: {{ section.settings.heading_size }}px;
     --testimonial-heading-weight: {{ section.settings.heading_weight }};
-    --testimonial-heading-color: {{ section.settings.heading_color }};
     --testimonial-description-size: {{ section.settings.description_size }}px;
-    --testimonial-description-color: {{ section.settings.description_color }};
-    --testimonial-star-color: {{ section.settings.star_color }};
-    --testimonial-quote-color: {{ section.settings.quote_icon_color }};
     --testimonial-text-size: {{ section.settings.review_text_size }}px;
-    --testimonial-text-color: {{ section.settings.review_text_color }};
     --testimonial-name-weight: {{ section.settings.name_weight }};
-    --testimonial-name-color: {{ section.settings.name_color }};
-    --testimonial-location-color: {{ section.settings.location_color }};
-    --testimonial-service-bg: {{ section.settings.service_badge_bg }};
-    --testimonial-service-color: {{ section.settings.service_badge_color }};
-    --testimonial-button-bg: {{ section.settings.button_bg_color }};
-    --testimonial-button-color: {{ section.settings.button_text_color }};
-    --testimonial-dot-color: {{ section.settings.dot_color }};
   "
   {% if request.visual_preview_mode %}
     data-shopify-visual-preview
@@ -160,7 +145,8 @@
 
 {% stylesheet %}
   .testimonial {
-    background-color: var(--testimonial-bg-color);
+    /* Using semantic tokens from theme-toggle.css */
+    background-color: var(--color-bg);
     padding: var(--testimonial-padding-top) 0 var(--testimonial-padding-bottom);
   }
 
@@ -190,8 +176,8 @@
     font-weight: 500;
     font-style: normal;
     margin-bottom: 20px;
-    background-color: var(--testimonial-badge-bg);
-    color: var(--testimonial-badge-color);
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
   }
 
   .testimonial__heading {
@@ -200,7 +186,7 @@
     line-height: 1.3;
     font-size: var(--testimonial-heading-size);
     font-weight: var(--testimonial-heading-weight);
-    color: var(--testimonial-heading-color);
+    color: var(--color-text-heading);
   }
 
   .testimonial__description {
@@ -208,7 +194,7 @@
     line-height: 1.6;
     max-width: 600px;
     font-size: var(--testimonial-description-size);
-    color: var(--testimonial-description-color);
+    color: var(--color-text-secondary);
   }
 
   /* Carousel Wrapper */
@@ -223,8 +209,8 @@
   }
 
   .testimonial__card {
-    background: var(--color-card-bg, #ffffff);
-    border: 1px solid var(--color-border, #e5e7eb);
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 24px;
     position: relative;
@@ -235,6 +221,7 @@
   .testimonial__card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    background: var(--color-surface-hover);
   }
 
   .testimonial__rating {
@@ -245,12 +232,12 @@
 
   .testimonial__star {
     font-size: 16px;
-    color: var(--color-border, #d1d5db);
+    color: var(--color-border);
     transition: color 0.2s ease;
   }
 
   .testimonial__star--filled {
-    color: var(--testimonial-star-color);
+    color: var(--color-star-filled);
   }
 
   .testimonial__quote-icon {
@@ -259,7 +246,7 @@
     right: 24px;
     font-size: 24px;
     opacity: 0.3;
-    color: var(--testimonial-quote-color);
+    color: var(--color-border);
   }
 
   .testimonial__text {
@@ -276,7 +263,7 @@
     word-wrap: break-word;
     hyphens: auto;
     font-size: var(--testimonial-text-size);
-    color: var(--testimonial-text-color);
+    color: var(--color-text-quote);
   }
 
   .testimonial__customer-info {
@@ -294,13 +281,12 @@
     font-size: 16px;
     margin-bottom: 4px;
     font-weight: var(--testimonial-name-weight);
-    color: var(--testimonial-name-color);
+    color: var(--color-text-primary);
   }
 
   .testimonial__customer-location {
     font-size: 13px;
-    opacity: 0.7;
-    color: var(--testimonial-location-color);
+    color: var(--color-text-label);
   }
 
   .testimonial__service-type {
@@ -310,8 +296,9 @@
     font-weight: 600;
     white-space: nowrap;
     text-align: center;
-    background-color: var(--testimonial-service-bg);
-    color: var(--testimonial-service-color);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
   }
 
   /* Navigation & Dots - Hidden on Desktop */
@@ -361,8 +348,8 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
       transition: all 0.3s ease;
       font-weight: 300;
-      background-color: var(--testimonial-button-bg);
-      color: var(--testimonial-button-color);
+      background-color: var(--color-primary);
+      color: var(--color-text-inverse);
     }
 
     .testimonial__nav-btn:active {
@@ -389,7 +376,7 @@
       opacity: 0.3;
       transition: all 0.3s ease;
       cursor: pointer;
-      background-color: var(--testimonial-dot-color);
+      background-color: var(--color-primary);
     }
 
     .testimonial__dot--active {
@@ -464,8 +451,8 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
       transition: all 0.3s ease;
       font-weight: 300;
-      background-color: var(--testimonial-button-bg);
-      color: var(--testimonial-button-color);
+      background-color: var(--color-primary);
+      color: var(--color-text-inverse);
     }
 
     .testimonial__nav-btn:active {
@@ -492,7 +479,7 @@
       opacity: 0.3;
       transition: all 0.3s ease;
       cursor: pointer;
-      background-color: var(--testimonial-dot-color);
+      background-color: var(--color-primary);
     }
 
     .testimonial__dot--active {
@@ -673,10 +660,8 @@
       "default": "scheme-1"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background Color",
-      "default": "#F5F7FA"
+      "type": "paragraph",
+      "content": "Colors are managed by the theme color scheme (see COLOR_SCHEME.md)"
     },
     {
       "type": "header",
@@ -695,18 +680,6 @@
       "default": "Customer Reviews"
     },
     {
-      "type": "color",
-      "id": "badge_bg_color",
-      "label": "Badge Background Color",
-      "default": "#005496"
-    },
-    {
-      "type": "color",
-      "id": "badge_text_color",
-      "label": "Badge Text Color",
-      "default": "#ffffff"
-    },
-    {
       "type": "header",
       "content": "Header Content"
     },
@@ -715,12 +688,6 @@
       "id": "heading",
       "label": "Heading",
       "default": "What Our Customers Say"
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading Color",
-      "default": "#2B2C2D"
     },
     {
       "type": "range",
@@ -759,12 +726,6 @@
       "default": "Don't just take our word for it. Here's what our satisfied customers have to say about our professional interior detailing services."
     },
     {
-      "type": "color",
-      "id": "description_color",
-      "label": "Description Color",
-      "default": "#6B7280"
-    },
-    {
       "type": "range",
       "id": "description_size",
       "label": "Description Size",
@@ -779,22 +740,10 @@
       "content": "Review Card Styling"
     },
     {
-      "type": "color",
-      "id": "star_color",
-      "label": "Star Rating Color",
-      "default": "#fbbf24"
-    },
-    {
       "type": "text",
       "id": "quote_icon",
       "label": "Quote Icon",
       "default": "\""
-    },
-    {
-      "type": "color",
-      "id": "quote_icon_color",
-      "label": "Quote Icon Color",
-      "default": "#E1E5EA"
     },
     {
       "type": "range",
@@ -805,12 +754,6 @@
       "step": 1,
       "unit": "px",
       "default": 15
-    },
-    {
-      "type": "color",
-      "id": "review_text_color",
-      "label": "Review Text Color",
-      "default": "#2B2C2D"
     },
     {
       "type": "select",
@@ -831,52 +774,6 @@
         }
       ],
       "default": "600"
-    },
-    {
-      "type": "color",
-      "id": "name_color",
-      "label": "Customer Name Color",
-      "default": "#2B2C2D"
-    },
-    {
-      "type": "color",
-      "id": "location_color",
-      "label": "Location Color",
-      "default": "#6B7280"
-    },
-    {
-      "type": "color",
-      "id": "service_badge_bg",
-      "label": "Service Badge Background",
-      "default": "#E1E5EA"
-    },
-    {
-      "type": "color",
-      "id": "service_badge_color",
-      "label": "Service Badge Text Color",
-      "default": "#005496"
-    },
-    {
-      "type": "header",
-      "content": "Carousel Controls (Mobile/Tablet)"
-    },
-    {
-      "type": "color",
-      "id": "button_bg_color",
-      "label": "Button Background Color",
-      "default": "#005496"
-    },
-    {
-      "type": "color",
-      "id": "button_text_color",
-      "label": "Button Text Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "dot_color",
-      "label": "Dot Indicator Color",
-      "default": "#005496"
     },
     {
       "type": "header",

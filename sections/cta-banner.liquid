@@ -4,27 +4,23 @@
 {% endcomment %}
 
 {%- liquid
-  assign bg_color = section.settings.background_color | default: '#2c5f7a'
-  assign text_color = section.settings.text_color | default: '#ffffff'
-  assign title_color = section.settings.title_color | default: text_color
-  assign button_bg_color = section.settings.button_bg_color | default: '#4CAF50'
-  assign button_text_color = section.settings.button_text_color | default: '#ffffff'
-  assign button_hover_bg = section.settings.button_hover_bg | default: '#45a049'
+  comment
+    Colors now use semantic tokens from theme-toggle.css
+    This ensures automatic light/dark mode support
+  endcomment
 -%}
 
 <style>
   .wholesale-banner-{{ section.id }} {
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
+    /* Using semantic tokens from theme-toggle.css */
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
     padding: {{ section.settings.padding_top }}px {{ section.settings.padding_horizontal }}px {{ section.settings.padding_bottom }}px;
     text-align: center;
     position: relative;
     overflow: hidden;
-    {% if section.settings.enable_gradient %}
-      background: linear-gradient(135deg, {{ bg_color }}, {{ section.settings.gradient_color | default: '#1a4a5c' }});
-    {% endif %}
   }
-  
+
   .wholesale-banner-{{ section.id }}::before {
     content: '';
     position: absolute;
@@ -32,10 +28,10 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: {{ section.settings.overlay_color | default: 'rgba(0,0,0,0.1)' }};
+    background: rgba(0,0,0,0.1);
     pointer-events: none;
   }
-  
+
   .wholesale-banner-{{ section.id }} .banner-container {
     max-width: {{ section.settings.container_width }}px;
     margin: 0 auto;
@@ -47,34 +43,35 @@
     flex-wrap: wrap;
     gap: 20px;
   }
-  
+
   .wholesale-banner-{{ section.id }} .banner-text {
     flex: 1;
     text-align: left;
     min-width: 300px;
   }
-  
+
   .wholesale-banner-{{ section.id }} .banner-title {
     font-size: {{ section.settings.title_font_size }}px;
     font-weight: {{ section.settings.title_font_weight }};
     margin: 0;
     line-height: 1.2;
-    color: {{ title_color }};
+    color: var(--color-text-inverse);
     {% if section.settings.title_font_family != 'inherit' %}
       font-family: {{ section.settings.title_font_family }};
     {% endif %}
   }
-  
+
   .wholesale-banner-{{ section.id }} .banner-subtitle {
     font-size: {{ section.settings.subtitle_font_size }}px;
     margin: 5px 0 0;
     opacity: 0.9;
     font-weight: {{ section.settings.subtitle_font_weight }};
+    color: var(--color-text-inverse);
   }
-  
+
   .wholesale-banner-{{ section.id }} .banner-button {
-    background-color: {{ button_bg_color }};
-    color: {{ button_text_color }};
+    background-color: var(--color-success);
+    color: var(--color-text-inverse);
     padding: {{ section.settings.button_padding_vertical }}px {{ section.settings.button_padding_horizontal }}px;
     text-decoration: none;
     border-radius: {{ section.settings.button_border_radius }}px;
@@ -82,16 +79,16 @@
     font-size: {{ section.settings.button_font_size }}px;
     transition: all 0.3s ease;
     display: inline-block;
-    border: {{ section.settings.button_border_width }}px solid {{ section.settings.button_border_color | default: 'transparent' }};
+    border: none;
     text-transform: {{ section.settings.button_text_transform }};
     letter-spacing: {{ section.settings.button_letter_spacing }}px;
     {% if section.settings.button_shadow %}
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     {% endif %}
   }
-  
+
   .wholesale-banner-{{ section.id }} .banner-button:hover {
-    background-color: {{ button_hover_bg }};
+    background-color: var(--color-success-hover);
     transform: translateY(-1px);
     {% if section.settings.button_shadow %}
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
@@ -260,64 +257,8 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background Color",
-      "default": "#005496"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_gradient",
-      "label": "Enable Gradient Background",
-      "default": false
-    },
-    {
-      "type": "color",
-      "id": "gradient_color",
-      "label": "Gradient End Color",
-      "default": "#003E70"
-    },
-    {
-      "type": "color_background",
-      "id": "overlay_color",
-      "label": "Background Overlay",
-      "default": "rgba(0,0,0,0.1)"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "General Text Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "title_color",
-      "label": "Title Text Color",
-      "info": "If not set, will use general text color"
-    },
-    {
-      "type": "color",
-      "id": "button_bg_color",
-      "label": "Button Background Color",
-      "default": "#28A745"
-    },
-    {
-      "type": "color",
-      "id": "button_text_color",
-      "label": "Button Text Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "button_hover_bg",
-      "label": "Button Hover Background Color",
-      "default": "#218838"
-    },
-    {
-      "type": "color",
-      "id": "button_border_color",
-      "label": "Button Border Color",
-      "default": "transparent"
+      "type": "paragraph",
+      "content": "Colors are managed by the theme color scheme (see COLOR_SCHEME.md). Banner uses --color-primary background with --color-success button."
     },
     {
       "type": "header",

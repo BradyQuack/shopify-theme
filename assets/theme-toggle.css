@@ -515,6 +515,11 @@
 /* ============================================
    FORCED THEME CONSISTENCY (BOTH MODES)
    Override saved schema values to ensure theme unity
+
+   Note: Homepage sections (features-bar, cta-banner, testimonials,
+   product-grid, content-block) now use semantic tokens directly.
+   These overrides serve as backup coverage for edge cases and
+   Shopify's built-in color scheme classes.
    ============================================ */
 
 /* Promo Bar - Force primary color */
