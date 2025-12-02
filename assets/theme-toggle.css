@@ -1634,6 +1634,13 @@ a:not([class]):not([style]):hover {
   color: var(--color-text-label) !important;  /* Distinct label color */
 }
 
+/* Customer info container - seamless with card background */
+[data-theme="dark"] .testimonial__customer-info {
+  background-color: transparent !important;
+  border: none !important;
+  border-top: none !important;
+}
+
 /* Service type / industry badge - branded appearance */
 [data-theme="dark"] .testimonial__service-type,
 [data-theme="dark"] .testimonial .testimonial__service-type,
@@ -1760,6 +1767,13 @@ a:not([class]):not([style]):hover {
 [data-theme="dark"] blockquote {
   border-color: var(--color-border) !important;
   color: var(--color-quote-text) !important;
+}
+
+/* Testimonial blockquote - no borders for seamless card interior */
+[data-theme="dark"] .testimonial__card blockquote,
+[data-theme="dark"] blockquote.testimonial__text {
+  border: none !important;
+  background-color: transparent !important;
 }
 
 /* ============================================
