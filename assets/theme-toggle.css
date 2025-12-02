@@ -436,12 +436,12 @@
   /* ---- Banner/CTA ---- */
   --color-banner-bg: hsl(210 50% 25%);
 
-  /* ---- Footer (Branded Dark Blue) ---- */
-  --color-footer-bg: hsl(215 50% 12%);               /* Dark branded blue #0F1A2E */
-  --color-footer-surface: hsl(215 45% 16%);          /* Slightly elevated */
-  --color-footer-border: hsl(215 40% 22%);           /* Subtle borders */
-  --color-footer-text: hsl(215 20% 75%);             /* Readable on dark blue */
-  --color-footer-text-heading: hsl(210 20% 90%);     /* Brighter headings */
+  /* ---- Footer (Dark Blue - matches main surface) ---- */
+  --color-footer-bg: hsl(217 24% 17%);               /* #212936 - matches dark surface */
+  --color-footer-surface: hsl(217 24% 17%);          /* Same as bg */
+  --color-footer-border: hsl(215 25% 27%);           /* Subtle borders */
+  --color-footer-text: hsl(210 20% 85%);             /* Light text */
+  --color-footer-text-heading: hsl(210 20% 95%);     /* Bright headings */
 
   /* ---- Card Opacity Tokens ---- */
   --card-bg-opacity: 0.05;                           /* 5% white overlay */
@@ -1026,9 +1026,14 @@ a:not([class]):not([style]):hover {
   color: var(--color-text-primary) !important;
 }
 
-/* Footer - Branded Dark Blue (not blending with page) */
-[data-theme="dark"] .footer {
+/* Footer - Dark Blue background for entire section */
+[data-theme="dark"] .footer,
+[data-theme="dark"] .shopify-section-group-footer-group,
+[data-theme="dark"] [class*="shopify-section-footer"],
+[data-theme="dark"] .footer.gradient,
+[data-theme="dark"] .footer[class*="color-scheme"] {
   background-color: var(--color-footer-bg) !important;
+  background: var(--color-footer-bg) !important;
 }
 
 [data-theme="dark"] .footer h2,
