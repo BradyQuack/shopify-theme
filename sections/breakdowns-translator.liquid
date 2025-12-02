@@ -14,7 +14,37 @@
   }
 {%- endstyle -%}
 
-<div class="breakdowns-translator section-{{ section.id }}-padding" style="background-color: {{ section.settings.background_color }};">
+<!-- Password Gate -->
+<div id="password-gate" class="breakdowns-password">
+  <div class="breakdowns-password__container">
+    <div class="breakdowns-password__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+      </svg>
+    </div>
+    <h2 class="breakdowns-password__title">Protected Page</h2>
+    <p class="breakdowns-password__text">Enter the password to access this page.</p>
+    <div class="breakdowns-password__form">
+      <input
+        type="password"
+        id="password-input"
+        class="breakdowns-password__input"
+        placeholder="Enter password"
+        autocomplete="off"
+      >
+      <button type="button" id="password-submit" class="breakdowns-password__button">
+        Access
+      </button>
+    </div>
+    <p id="password-error" class="breakdowns-password__error" style="display: none;">
+      Incorrect password. Please try again.
+    </p>
+  </div>
+</div>
+
+<!-- Main Content (hidden until password entered) -->
+<div id="breakdowns-content" class="breakdowns-translator section-{{ section.id }}-padding" style="display: none; background-color: {{ section.settings.background_color }};">
   <div class="page-width">
     <div class="breakdowns-translator__header">
       {%- if section.settings.heading != blank -%}
@@ -29,257 +59,604 @@
       {%- endif -%}
     </div>
 
-    <div class="breakdowns-translator__container">
-      <!-- Input Section -->
-      <div class="breakdowns-translator__input-section">
-        <label for="translator-input" class="breakdowns-translator__label" style="color: {{ section.settings.heading_color }};">
-          {{ section.settings.input_label }}
-        </label>
-        <textarea
-          id="translator-input"
-          class="breakdowns-translator__textarea"
-          placeholder="{{ section.settings.input_placeholder }}"
-          rows="6"
-        ></textarea>
+    <!-- Tab Navigation -->
+    <div class="breakdowns-tabs">
+      <button type="button" class="breakdowns-tabs__btn breakdowns-tabs__btn--active" data-tab="translator">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        Translator
+      </button>
+      <button type="button" class="breakdowns-tabs__btn" data-tab="breakdowns">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        Breakdowns
+        <span id="breakdowns-count" class="breakdowns-tabs__count" style="display: none;">0</span>
+      </button>
+    </div>
 
-        <div class="breakdowns-translator__actions">
-          <button type="button" id="translate-btn" class="breakdowns-translator__button breakdowns-translator__button--primary">
-            <span class="breakdowns-translator__button-text">{{ section.settings.button_label }}</span>
-            <span class="breakdowns-translator__button-loading" style="display: none;">
-              <svg class="breakdowns-translator__spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
-                <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/>
-              </svg>
-              Translating...
-            </span>
-          </button>
-          <button type="button" id="clear-btn" class="breakdowns-translator__button breakdowns-translator__button--secondary">
-            Clear
-          </button>
+    <!-- Translator Tab -->
+    <div id="tab-translator" class="breakdowns-tab-content breakdowns-tab-content--active">
+      <div class="breakdowns-translator__container">
+        <!-- Input Section -->
+        <div class="breakdowns-translator__input-section">
+          <label for="translator-input" class="breakdowns-translator__label" style="color: {{ section.settings.heading_color }};">
+            {{ section.settings.input_label }}
+          </label>
+          <textarea
+            id="translator-input"
+            class="breakdowns-translator__textarea"
+            placeholder="{{ section.settings.input_placeholder }}"
+            rows="6"
+          ></textarea>
+
+          <div class="breakdowns-translator__actions">
+            <button type="button" id="translate-btn" class="breakdowns-translator__button breakdowns-translator__button--primary">
+              <span class="breakdowns-translator__button-text">{{ section.settings.button_label }}</span>
+              <span class="breakdowns-translator__button-loading" style="display: none;">
+                <svg class="breakdowns-translator__spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
+                  <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/>
+                </svg>
+                Translating...
+              </span>
+            </button>
+            <button type="button" id="clear-btn" class="breakdowns-translator__button breakdowns-translator__button--secondary">
+              Clear
+            </button>
+          </div>
+
+          <!-- Quick Actions -->
+          {%- if section.settings.show_quick_actions -%}
+            <div class="breakdowns-translator__quick-actions">
+              <span class="breakdowns-translator__quick-label" style="color: {{ section.settings.text_color }};">Quick requests:</span>
+              <div class="breakdowns-translator__quick-buttons">
+                <button type="button" class="breakdowns-translator__quick-btn" data-request="Change the promo bar message">
+                  Update promo bar
+                </button>
+                <button type="button" class="breakdowns-translator__quick-btn" data-request="Change the hero section text">
+                  Edit hero text
+                </button>
+                <button type="button" class="breakdowns-translator__quick-btn" data-request="Update a testimonial">
+                  Edit testimonial
+                </button>
+                <button type="button" class="breakdowns-translator__quick-btn" data-request="Change product grid on homepage">
+                  Edit products
+                </button>
+              </div>
+            </div>
+          {%- endif -%}
         </div>
 
-        <!-- Quick Actions -->
-        {%- if section.settings.show_quick_actions -%}
-          <div class="breakdowns-translator__quick-actions">
-            <span class="breakdowns-translator__quick-label" style="color: {{ section.settings.text_color }};">Quick requests:</span>
-            <div class="breakdowns-translator__quick-buttons">
-              <button type="button" class="breakdowns-translator__quick-btn" data-request="Change the promo bar message">
-                Update promo bar
+        <!-- Output Section -->
+        <div class="breakdowns-translator__output-section">
+          <div class="breakdowns-translator__output-header">
+            <label class="breakdowns-translator__label" style="color: {{ section.settings.heading_color }};">
+              {{ section.settings.output_label }}
+            </label>
+            <div class="breakdowns-translator__output-actions">
+              <button type="button" id="save-breakdown-btn" class="breakdowns-translator__save-btn" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                  <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                  <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+                Save to Breakdowns
               </button>
-              <button type="button" class="breakdowns-translator__quick-btn" data-request="Change the hero section text">
-                Edit hero text
-              </button>
-              <button type="button" class="breakdowns-translator__quick-btn" data-request="Update a testimonial">
-                Edit testimonial
-              </button>
-              <button type="button" class="breakdowns-translator__quick-btn" data-request="Change product grid on homepage">
-                Edit products
+              <button type="button" id="copy-output-btn" class="breakdowns-translator__copy-btn" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy
               </button>
             </div>
           </div>
-        {%- endif -%}
+          <div id="translator-output" class="breakdowns-translator__output">
+            <div class="breakdowns-translator__placeholder" style="color: {{ section.settings.text_color }};">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <p>Enter your request above and click "Translate" to get developer instructions.</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Output Section -->
-      <div class="breakdowns-translator__output-section">
-        <div class="breakdowns-translator__output-header">
-          <label class="breakdowns-translator__label" style="color: {{ section.settings.heading_color }};">
-            {{ section.settings.output_label }}
-          </label>
-          <button type="button" id="copy-output-btn" class="breakdowns-translator__copy-btn" style="display: none;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-            Copy
-          </button>
-        </div>
-        <div id="translator-output" class="breakdowns-translator__output">
-          <div class="breakdowns-translator__placeholder" style="color: {{ section.settings.text_color }};">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
-            <p>Enter your request above and click "Translate" to get developer instructions.</p>
-          </div>
+      <!-- Configuration Notice -->
+      <div id="config-notice" class="breakdowns-translator__notice" style="display: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <div>
+          <strong>API Configuration Required</strong>
+          <p>Set your API endpoint in the section settings to enable translation.</p>
         </div>
       </div>
     </div>
 
-    <!-- Configuration Notice -->
-    <div id="config-notice" class="breakdowns-translator__notice" style="display: none;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"></circle>
-        <line x1="12" y1="8" x2="12" y2="12"></line>
-        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-      </svg>
-      <div>
-        <strong>API Configuration Required</strong>
-        <p>Set your API endpoint in the section settings to enable translation.</p>
+    <!-- Breakdowns Tab -->
+    <div id="tab-breakdowns" class="breakdowns-tab-content">
+      <div class="breakdowns-list">
+        <div class="breakdowns-list__header">
+          <h2 class="breakdowns-list__title" style="color: {{ section.settings.heading_color }};">Saved Breakdowns</h2>
+          <div class="breakdowns-list__filters">
+            <button type="button" class="breakdowns-filter-btn breakdowns-filter-btn--active" data-filter="all">All</button>
+            <button type="button" class="breakdowns-filter-btn" data-filter="pending">Pending</button>
+            <button type="button" class="breakdowns-filter-btn" data-filter="completed">Completed</button>
+          </div>
+        </div>
+
+        <div id="breakdowns-container" class="breakdowns-list__items">
+          <!-- Breakdowns will be rendered here -->
+        </div>
+
+        <div id="breakdowns-empty" class="breakdowns-list__empty" style="color: {{ section.settings.text_color }};">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+          </svg>
+          <p>No breakdowns yet. Use the Translator tab to create your first breakdown.</p>
+        </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="edit-modal" class="breakdowns-modal" style="display: none;">
+  <div class="breakdowns-modal__backdrop"></div>
+  <div class="breakdowns-modal__content">
+    <div class="breakdowns-modal__header">
+      <h3>Edit Breakdown</h3>
+      <button type="button" class="breakdowns-modal__close" id="edit-modal-close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="breakdowns-modal__body">
+      <label class="breakdowns-translator__label">Title</label>
+      <input type="text" id="edit-title" class="breakdowns-modal__input">
+      <label class="breakdowns-translator__label">Developer Instructions</label>
+      <textarea id="edit-instructions" class="breakdowns-modal__textarea" rows="10"></textarea>
+    </div>
+    <div class="breakdowns-modal__footer">
+      <button type="button" class="breakdowns-translator__button breakdowns-translator__button--secondary" id="edit-cancel">Cancel</button>
+      <button type="button" class="breakdowns-translator__button breakdowns-translator__button--primary" id="edit-save">Save Changes</button>
     </div>
   </div>
 </div>
 
 <script>
 (function() {
-  const API_ENDPOINT = {{ section.settings.api_endpoint | json }};
-  const input = document.getElementById('translator-input');
-  const output = document.getElementById('translator-output');
-  const translateBtn = document.getElementById('translate-btn');
-  const clearBtn = document.getElementById('clear-btn');
-  const copyBtn = document.getElementById('copy-output-btn');
-  const configNotice = document.getElementById('config-notice');
+  const CORRECT_PASSWORD = '0000';
+  const STORAGE_KEY = 'breakdowns_data';
+  const AUTH_KEY = 'breakdowns_auth';
 
-  let conversationHistory = [];
+  // Elements
+  const passwordGate = document.getElementById('password-gate');
+  const mainContent = document.getElementById('breakdowns-content');
+  const passwordInput = document.getElementById('password-input');
+  const passwordSubmit = document.getElementById('password-submit');
+  const passwordError = document.getElementById('password-error');
 
-  // Show config notice if no API endpoint
-  if (!API_ENDPOINT) {
-    configNotice.style.display = 'flex';
+  // Check if already authenticated this session
+  if (sessionStorage.getItem(AUTH_KEY) === 'true') {
+    passwordGate.style.display = 'none';
+    mainContent.style.display = 'block';
+    initApp();
   }
 
-  // Quick action buttons
-  document.querySelectorAll('.breakdowns-translator__quick-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      input.value = btn.dataset.request;
-      input.focus();
-    });
+  // Password submission
+  passwordSubmit.addEventListener('click', checkPassword);
+  passwordInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') checkPassword();
   });
 
-  // Translate button
-  translateBtn.addEventListener('click', async () => {
-    const request = input.value.trim();
-    if (!request) {
-      showError('Please enter a request to translate.');
-      return;
+  function checkPassword() {
+    if (passwordInput.value === CORRECT_PASSWORD) {
+      sessionStorage.setItem(AUTH_KEY, 'true');
+      passwordGate.style.display = 'none';
+      mainContent.style.display = 'block';
+      initApp();
+    } else {
+      passwordError.style.display = 'block';
+      passwordInput.value = '';
+      passwordInput.focus();
     }
+  }
 
+  function initApp() {
+    const API_ENDPOINT = {{ section.settings.api_endpoint | json }};
+    const input = document.getElementById('translator-input');
+    const output = document.getElementById('translator-output');
+    const translateBtn = document.getElementById('translate-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const copyBtn = document.getElementById('copy-output-btn');
+    const saveBtn = document.getElementById('save-breakdown-btn');
+    const configNotice = document.getElementById('config-notice');
+    const breakdownsContainer = document.getElementById('breakdowns-container');
+    const breakdownsEmpty = document.getElementById('breakdowns-empty');
+    const breakdownsCount = document.getElementById('breakdowns-count');
+
+    let conversationHistory = [];
+    let currentTranslation = { title: '', instructions: '' };
+    let breakdowns = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    let currentFilter = 'all';
+    let editingId = null;
+
+    // Show config notice if no API endpoint
     if (!API_ENDPOINT) {
-      showError('API endpoint not configured. Please set up your backend API endpoint in the section settings.');
-      return;
+      configNotice.style.display = 'flex';
     }
 
-    setLoading(true);
-
-    try {
-      const response = await fetch(API_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: request,
-          history: conversationHistory
-        })
+    // Tab switching
+    document.querySelectorAll('.breakdowns-tabs__btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.breakdowns-tabs__btn').forEach(b => b.classList.remove('breakdowns-tabs__btn--active'));
+        document.querySelectorAll('.breakdowns-tab-content').forEach(t => t.classList.remove('breakdowns-tab-content--active'));
+        btn.classList.add('breakdowns-tabs__btn--active');
+        document.getElementById(`tab-${btn.dataset.tab}`).classList.add('breakdowns-tab-content--active');
       });
+    });
 
-      if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
+    // Filter buttons
+    document.querySelectorAll('.breakdowns-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.breakdowns-filter-btn').forEach(b => b.classList.remove('breakdowns-filter-btn--active'));
+        btn.classList.add('breakdowns-filter-btn--active');
+        currentFilter = btn.dataset.filter;
+        renderBreakdowns();
+      });
+    });
+
+    // Quick action buttons
+    document.querySelectorAll('.breakdowns-translator__quick-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        input.value = btn.dataset.request;
+        input.focus();
+      });
+    });
+
+    // Translate button
+    translateBtn.addEventListener('click', async () => {
+      const request = input.value.trim();
+      if (!request) {
+        showError('Please enter a request to translate.');
+        return;
       }
 
-      const data = await response.json();
-      const result = data.response || data.content || data.message || JSON.stringify(data);
+      if (!API_ENDPOINT) {
+        showError('API endpoint not configured. Please set up your backend API endpoint in the section settings.');
+        return;
+      }
 
-      // Add to conversation history
-      conversationHistory.push({ role: 'user', content: request });
-      conversationHistory.push({ role: 'assistant', content: result });
+      setLoading(true);
 
-      showResult(result);
-    } catch (error) {
-      console.error('Translation error:', error);
-      showError(`Failed to translate: ${error.message}`);
-    } finally {
-      setLoading(false);
-    }
-  });
+      try {
+        const response = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: request, history: conversationHistory })
+        });
 
-  // Clear button
-  clearBtn.addEventListener('click', () => {
-    input.value = '';
-    conversationHistory = [];
-    output.innerHTML = `
-      <div class="breakdowns-translator__placeholder">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-        <p>Enter your request above and click "Translate" to get developer instructions.</p>
-      </div>
-    `;
-    copyBtn.style.display = 'none';
-    input.focus();
-  });
+        if (!response.ok) throw new Error(`API error: ${response.status}`);
 
-  // Copy button
-  copyBtn.addEventListener('click', async () => {
-    const text = output.innerText;
-    try {
-      await navigator.clipboard.writeText(text);
-      copyBtn.innerHTML = `
+        const data = await response.json();
+        const result = data.response || data.content || data.message || JSON.stringify(data);
+
+        conversationHistory.push({ role: 'user', content: request });
+        conversationHistory.push({ role: 'assistant', content: result });
+
+        currentTranslation = { title: request, instructions: result };
+        showResult(result);
+      } catch (error) {
+        console.error('Translation error:', error);
+        showError(`Failed to translate: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    // Clear button
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      conversationHistory = [];
+      currentTranslation = { title: '', instructions: '' };
+      output.innerHTML = `
+        <div class="breakdowns-translator__placeholder">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <p>Enter your request above and click "Translate" to get developer instructions.</p>
+        </div>
+      `;
+      copyBtn.style.display = 'none';
+      saveBtn.style.display = 'none';
+      input.focus();
+    });
+
+    // Copy button
+    copyBtn.addEventListener('click', async () => {
+      const text = output.innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          Copied!
+        `;
+        setTimeout(() => {
+          copyBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            Copy
+          `;
+        }, 2000);
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    });
+
+    // Save breakdown button
+    saveBtn.addEventListener('click', () => {
+      if (!currentTranslation.title || !currentTranslation.instructions) return;
+
+      const breakdown = {
+        id: Date.now(),
+        title: currentTranslation.title,
+        instructions: currentTranslation.instructions,
+        completed: false,
+        createdAt: new Date().toISOString()
+      };
+
+      breakdowns.unshift(breakdown);
+      saveBreakdowns();
+      renderBreakdowns();
+
+      // Show success feedback
+      saveBtn.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
-        Copied!
+        Saved!
       `;
       setTimeout(() => {
-        copyBtn.innerHTML = `
+        saveBtn.innerHTML = `
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
           </svg>
-          Copy
+          Save to Breakdowns
         `;
       }, 2000);
-    } catch (err) {
-      console.error('Copy failed:', err);
+    });
+
+    // Enter key to submit
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.ctrlKey) translateBtn.click();
+    });
+
+    // Edit modal
+    const editModal = document.getElementById('edit-modal');
+    const editTitle = document.getElementById('edit-title');
+    const editInstructions = document.getElementById('edit-instructions');
+
+    document.getElementById('edit-modal-close').addEventListener('click', closeEditModal);
+    document.getElementById('edit-cancel').addEventListener('click', closeEditModal);
+    document.querySelector('.breakdowns-modal__backdrop').addEventListener('click', closeEditModal);
+
+    document.getElementById('edit-save').addEventListener('click', () => {
+      if (editingId === null) return;
+      const idx = breakdowns.findIndex(b => b.id === editingId);
+      if (idx !== -1) {
+        breakdowns[idx].title = editTitle.value;
+        breakdowns[idx].instructions = editInstructions.value;
+        saveBreakdowns();
+        renderBreakdowns();
+      }
+      closeEditModal();
+    });
+
+    function closeEditModal() {
+      editModal.style.display = 'none';
+      editingId = null;
     }
-  });
 
-  // Enter key to submit
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && e.ctrlKey) {
-      translateBtn.click();
+    function openEditModal(id) {
+      const breakdown = breakdowns.find(b => b.id === id);
+      if (!breakdown) return;
+      editingId = id;
+      editTitle.value = breakdown.title;
+      editInstructions.value = breakdown.instructions;
+      editModal.style.display = 'flex';
     }
-  });
 
-  function setLoading(loading) {
-    translateBtn.disabled = loading;
-    translateBtn.querySelector('.breakdowns-translator__button-text').style.display = loading ? 'none' : 'inline';
-    translateBtn.querySelector('.breakdowns-translator__button-loading').style.display = loading ? 'inline-flex' : 'none';
-  }
+    function setLoading(loading) {
+      translateBtn.disabled = loading;
+      translateBtn.querySelector('.breakdowns-translator__button-text').style.display = loading ? 'none' : 'inline';
+      translateBtn.querySelector('.breakdowns-translator__button-loading').style.display = loading ? 'inline-flex' : 'none';
+    }
 
-  function showResult(markdown) {
-    // Simple markdown to HTML conversion
-    let html = markdown
-      .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-      .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-      .replace(/^# (.*$)/gm, '<h1>$1</h1>')
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/`([^`]+)`/g, '<code>$1</code>')
-      .replace(/^- (.*$)/gm, '<li>$1</li>')
-      .replace(/^\d+\. (.*$)/gm, '<li>$1</li>')
-      .replace(/\n\n/g, '</p><p>')
-      .replace(/\n/g, '<br>');
+    function showResult(markdown) {
+      let html = markdown
+        .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+        .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+        .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/^- (.*$)/gm, '<li>$1</li>')
+        .replace(/^\d+\. (.*$)/gm, '<li>$1</li>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>');
 
-    // Wrap lists
-    html = html.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
-    html = '<p>' + html + '</p>';
+      html = html.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+      html = '<p>' + html + '</p>';
 
-    output.innerHTML = `<div class="breakdowns-translator__result">${html}</div>`;
-    copyBtn.style.display = 'flex';
-  }
+      output.innerHTML = `<div class="breakdowns-translator__result">${html}</div>`;
+      copyBtn.style.display = 'flex';
+      saveBtn.style.display = 'flex';
+    }
 
-  function showError(message) {
-    output.innerHTML = `
-      <div class="breakdowns-translator__error">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"></circle>
-          <line x1="15" y1="9" x2="9" y2="15"></line>
-          <line x1="9" y1="9" x2="15" y2="15"></line>
-        </svg>
-        <p>${message}</p>
-      </div>
-    `;
-    copyBtn.style.display = 'none';
+    function showError(message) {
+      output.innerHTML = `
+        <div class="breakdowns-translator__error">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+          <p>${message}</p>
+        </div>
+      `;
+      copyBtn.style.display = 'none';
+      saveBtn.style.display = 'none';
+    }
+
+    function saveBreakdowns() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(breakdowns));
+      updateCount();
+    }
+
+    function updateCount() {
+      const pending = breakdowns.filter(b => !b.completed).length;
+      breakdownsCount.textContent = pending;
+      breakdownsCount.style.display = pending > 0 ? 'inline-flex' : 'none';
+    }
+
+    function renderBreakdowns() {
+      let filtered = breakdowns;
+      if (currentFilter === 'pending') filtered = breakdowns.filter(b => !b.completed);
+      if (currentFilter === 'completed') filtered = breakdowns.filter(b => b.completed);
+
+      if (filtered.length === 0) {
+        breakdownsContainer.innerHTML = '';
+        breakdownsEmpty.style.display = 'flex';
+        return;
+      }
+
+      breakdownsEmpty.style.display = 'none';
+      breakdownsContainer.innerHTML = filtered.map(b => `
+        <div class="breakdown-item ${b.completed ? 'breakdown-item--completed' : ''}" data-id="${b.id}">
+          <div class="breakdown-item__header">
+            <button type="button" class="breakdown-item__toggle" aria-expanded="false">
+              <svg class="breakdown-item__chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+              <span class="breakdown-item__title ${b.completed ? 'breakdown-item__title--completed' : ''}">${escapeHtml(b.title)}</span>
+            </button>
+            <div class="breakdown-item__actions">
+              <button type="button" class="breakdown-item__action breakdown-item__action--complete" title="${b.completed ? 'Mark pending' : 'Mark complete'}">
+                ${b.completed ? `
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                    <path d="M3 3v5h5"></path>
+                  </svg>
+                ` : `
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                `}
+              </button>
+              <button type="button" class="breakdown-item__action breakdown-item__action--edit" title="Edit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+              </button>
+              <button type="button" class="breakdown-item__action breakdown-item__action--delete" title="Delete">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="breakdown-item__content" style="display: none;">
+            <div class="breakdown-item__instructions">${formatMarkdown(b.instructions)}</div>
+          </div>
+        </div>
+      `).join('');
+
+      // Add event listeners
+      breakdownsContainer.querySelectorAll('.breakdown-item').forEach(item => {
+        const id = parseInt(item.dataset.id);
+
+        // Toggle dropdown
+        item.querySelector('.breakdown-item__toggle').addEventListener('click', () => {
+          const content = item.querySelector('.breakdown-item__content');
+          const toggle = item.querySelector('.breakdown-item__toggle');
+          const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+          toggle.setAttribute('aria-expanded', !isExpanded);
+          content.style.display = isExpanded ? 'none' : 'block';
+          item.classList.toggle('breakdown-item--expanded', !isExpanded);
+        });
+
+        // Complete action
+        item.querySelector('.breakdown-item__action--complete').addEventListener('click', () => {
+          const idx = breakdowns.findIndex(b => b.id === id);
+          if (idx !== -1) {
+            breakdowns[idx].completed = !breakdowns[idx].completed;
+            saveBreakdowns();
+            renderBreakdowns();
+          }
+        });
+
+        // Edit action
+        item.querySelector('.breakdown-item__action--edit').addEventListener('click', () => {
+          openEditModal(id);
+        });
+
+        // Delete action
+        item.querySelector('.breakdown-item__action--delete').addEventListener('click', () => {
+          if (confirm('Are you sure you want to delete this breakdown?')) {
+            breakdowns = breakdowns.filter(b => b.id !== id);
+            saveBreakdowns();
+            renderBreakdowns();
+          }
+        });
+      });
+    }
+
+    function formatMarkdown(markdown) {
+      let html = markdown
+        .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+        .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+        .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/^- (.*$)/gm, '<li>$1</li>')
+        .replace(/^\d+\. (.*$)/gm, '<li>$1</li>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>');
+      html = html.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+      return '<p>' + html + '</p>';
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Initial render
+    updateCount();
+    renderBreakdowns();
   }
 })();
 </script>
