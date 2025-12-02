@@ -1072,7 +1072,8 @@ a:not([class]):not([style]):hover {
 
 /* Footer theme toggle section - dark mode */
 [data-theme="dark"] .footer__theme-toggle-section {
-  background-color: var(--color-footer-surface) !important;
+  background-color: transparent !important;
+  border: none !important;
 }
 
 [data-theme="dark"] .footer__theme-toggle-section .theme-toggle {
