@@ -2,6 +2,14 @@
 
 All notable changes to the ASIW Supply Shopify theme are documented in this file.
 
+## [v01.00.14] - 2025-12-02
+
+### Fixed
+- Collection card images now properly display
+- Added explicit `inset: 0` to `.media` element (Dawn only sets `top`/`bottom`, not `left`)
+- Removed margin on `.card__media` that was causing offset issues
+- Root cause: Dawn's `.card .media` positioned at `left: auto` by default
+
 ## [v01.00.13] - 2025-12-02
 
 ### Fixed
@@ -146,4 +154,4 @@ Versions follow the format: `vMM.mm.pp`
 - `mm` - Minor version (new features, enhancements)
 - `pp` - Patch version (bug fixes, small improvements)
 
-Current: **v01.00.08**
+Current: **v01.00.14**

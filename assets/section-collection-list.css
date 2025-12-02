@@ -56,9 +56,14 @@
   inset: 0 !important;
   height: 100% !important;
   width: 100% !important;
+  margin: 0 !important; /* Override Dawn's margin: var(--image-padding) */
 }
 
+/* CRITICAL: Dawn's .card .media only sets top/bottom, not left/right */
+/* This causes images to be positioned at left: auto (invisible) */
 .collection-list .card__media .media {
+  position: absolute !important;
+  inset: 0 !important; /* Explicitly set all four sides */
   height: 100% !important;
   width: 100% !important;
 }
