@@ -1,0 +1,402 @@
+{{ 'section-breakdowns-translator.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="breakdowns-translator section-{{ section.id }}-padding" style="background-color: {{ section.settings.background_color }};">
+  <div class="page-width">
+    <div class="breakdowns-translator__header">
+      {%- if section.settings.heading != blank -%}
+        <h1 class="breakdowns-translator__heading" style="color: {{ section.settings.heading_color }};">
+          {{ section.settings.heading }}
+        </h1>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="breakdowns-translator__subheading" style="color: {{ section.settings.text_color }};">
+          {{ section.settings.subheading }}
+        </p>
+      {%- endif -%}
+    </div>
+
+    <div class="breakdowns-translator__container">
+      <!-- Input Section -->
+      <div class="breakdowns-translator__input-section">
+        <label for="translator-input" class="breakdowns-translator__label" style="color: {{ section.settings.heading_color }};">
+          {{ section.settings.input_label }}
+        </label>
+        <textarea
+          id="translator-input"
+          class="breakdowns-translator__textarea"
+          placeholder="{{ section.settings.input_placeholder }}"
+          rows="6"
+        ></textarea>
+
+        <div class="breakdowns-translator__actions">
+          <button type="button" id="translate-btn" class="breakdowns-translator__button breakdowns-translator__button--primary">
+            <span class="breakdowns-translator__button-text">{{ section.settings.button_label }}</span>
+            <span class="breakdowns-translator__button-loading" style="display: none;">
+              <svg class="breakdowns-translator__spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
+                <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/>
+              </svg>
+              Translating...
+            </span>
+          </button>
+          <button type="button" id="clear-btn" class="breakdowns-translator__button breakdowns-translator__button--secondary">
+            Clear
+          </button>
+        </div>
+
+        <!-- Quick Actions -->
+        {%- if section.settings.show_quick_actions -%}
+          <div class="breakdowns-translator__quick-actions">
+            <span class="breakdowns-translator__quick-label" style="color: {{ section.settings.text_color }};">Quick requests:</span>
+            <div class="breakdowns-translator__quick-buttons">
+              <button type="button" class="breakdowns-translator__quick-btn" data-request="Change the promo bar message">
+                Update promo bar
+              </button>
+              <button type="button" class="breakdowns-translator__quick-btn" data-request="Change the hero section text">
+                Edit hero text
+              </button>
+              <button type="button" class="breakdowns-translator__quick-btn" data-request="Update a testimonial">
+                Edit testimonial
+              </button>
+              <button type="button" class="breakdowns-translator__quick-btn" data-request="Change product grid on homepage">
+                Edit products
+              </button>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- Output Section -->
+      <div class="breakdowns-translator__output-section">
+        <div class="breakdowns-translator__output-header">
+          <label class="breakdowns-translator__label" style="color: {{ section.settings.heading_color }};">
+            {{ section.settings.output_label }}
+          </label>
+          <button type="button" id="copy-output-btn" class="breakdowns-translator__copy-btn" style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            Copy
+          </button>
+        </div>
+        <div id="translator-output" class="breakdowns-translator__output">
+          <div class="breakdowns-translator__placeholder" style="color: {{ section.settings.text_color }};">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <p>Enter your request above and click "Translate" to get developer instructions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Configuration Notice -->
+    <div id="config-notice" class="breakdowns-translator__notice" style="display: none;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <div>
+        <strong>API Configuration Required</strong>
+        <p>Set your API endpoint in the section settings to enable translation.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const API_ENDPOINT = {{ section.settings.api_endpoint | json }};
+  const input = document.getElementById('translator-input');
+  const output = document.getElementById('translator-output');
+  const translateBtn = document.getElementById('translate-btn');
+  const clearBtn = document.getElementById('clear-btn');
+  const copyBtn = document.getElementById('copy-output-btn');
+  const configNotice = document.getElementById('config-notice');
+
+  let conversationHistory = [];
+
+  // Show config notice if no API endpoint
+  if (!API_ENDPOINT) {
+    configNotice.style.display = 'flex';
+  }
+
+  // Quick action buttons
+  document.querySelectorAll('.breakdowns-translator__quick-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      input.value = btn.dataset.request;
+      input.focus();
+    });
+  });
+
+  // Translate button
+  translateBtn.addEventListener('click', async () => {
+    const request = input.value.trim();
+    if (!request) {
+      showError('Please enter a request to translate.');
+      return;
+    }
+
+    if (!API_ENDPOINT) {
+      showError('API endpoint not configured. Please set up your backend API endpoint in the section settings.');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: request,
+          history: conversationHistory
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const result = data.response || data.content || data.message || JSON.stringify(data);
+
+      // Add to conversation history
+      conversationHistory.push({ role: 'user', content: request });
+      conversationHistory.push({ role: 'assistant', content: result });
+
+      showResult(result);
+    } catch (error) {
+      console.error('Translation error:', error);
+      showError(`Failed to translate: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  });
+
+  // Clear button
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    conversationHistory = [];
+    output.innerHTML = `
+      <div class="breakdowns-translator__placeholder">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <p>Enter your request above and click "Translate" to get developer instructions.</p>
+      </div>
+    `;
+    copyBtn.style.display = 'none';
+    input.focus();
+  });
+
+  // Copy button
+  copyBtn.addEventListener('click', async () => {
+    const text = output.innerText;
+    try {
+      await navigator.clipboard.writeText(text);
+      copyBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Copied!
+      `;
+      setTimeout(() => {
+        copyBtn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          Copy
+        `;
+      }, 2000);
+    } catch (err) {
+      console.error('Copy failed:', err);
+    }
+  });
+
+  // Enter key to submit
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.ctrlKey) {
+      translateBtn.click();
+    }
+  });
+
+  function setLoading(loading) {
+    translateBtn.disabled = loading;
+    translateBtn.querySelector('.breakdowns-translator__button-text').style.display = loading ? 'none' : 'inline';
+    translateBtn.querySelector('.breakdowns-translator__button-loading').style.display = loading ? 'inline-flex' : 'none';
+  }
+
+  function showResult(markdown) {
+    // Simple markdown to HTML conversion
+    let html = markdown
+      .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+      .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+      .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/^- (.*$)/gm, '<li>$1</li>')
+      .replace(/^\d+\. (.*$)/gm, '<li>$1</li>')
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n/g, '<br>');
+
+    // Wrap lists
+    html = html.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+    html = '<p>' + html + '</p>';
+
+    output.innerHTML = `<div class="breakdowns-translator__result">${html}</div>`;
+    copyBtn.style.display = 'flex';
+  }
+
+  function showError(message) {
+    output.innerHTML = `
+      <div class="breakdowns-translator__error">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        <p>${message}</p>
+      </div>
+    `;
+    copyBtn.style.display = 'none';
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Breakdowns Translator",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Website Change Translator"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Describe what you want to change on the website in plain language, and get step-by-step developer instructions."
+    },
+    {
+      "type": "text",
+      "id": "input_label",
+      "label": "Input label",
+      "default": "What would you like to change?"
+    },
+    {
+      "type": "text",
+      "id": "input_placeholder",
+      "label": "Input placeholder",
+      "default": "Example: Change the top banner to say Holiday Sale"
+    },
+    {
+      "type": "text",
+      "id": "output_label",
+      "label": "Output label",
+      "default": "Developer Instructions"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Translate to Dev Instructions"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_actions",
+      "label": "Show quick action buttons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "API Configuration"
+    },
+    {
+      "type": "text",
+      "id": "api_endpoint",
+      "label": "API Endpoint URL",
+      "info": "Enter the URL of your translation API backend (e.g., https://your-api.com/translate)"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f5f7fa"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#2b2c2d"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#64748b"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Breakdowns Translator"
+    }
+  ]
+}
+{% endschema %}

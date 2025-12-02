@@ -1,0 +1,34 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "translator_section": {
+      "type": "breakdowns-translator",
+      "settings": {
+        "heading": "Website Change Translator",
+        "subheading": "Describe what you want to change on the website in plain language, and get step-by-step developer instructions.",
+        "input_label": "What would you like to change?",
+        "input_placeholder": "Example: Change the top banner to say Holiday Sale, make the hero image darker, update the footer phone number...",
+        "output_label": "Developer Instructions",
+        "button_label": "Translate to Dev Instructions",
+        "show_quick_actions": true,
+        "api_endpoint": "",
+        "background_color": "#f5f7fa",
+        "heading_color": "#2b2c2d",
+        "text_color": "#64748b",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    }
+  },
+  "order": [
+    "main",
+    "translator_section"
+  ]
+}
