@@ -14,8 +14,8 @@
         var STORAGE_KEY = 'theme-preference';
         var theme = localStorage.getItem(STORAGE_KEY);
         if (!theme) {
-          // Check system preference if no stored preference
-          theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          // Default to light mode for new visitors
+          theme = 'light';
         }
         document.documentElement.setAttribute('data-theme', theme);
       })();

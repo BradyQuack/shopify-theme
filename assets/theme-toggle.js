@@ -21,7 +21,7 @@
 
   /**
    * Get the user's theme preference
-   * Priority: localStorage > system preference > default (light)
+   * Priority: localStorage > default (light)
    */
   function getThemePreference() {
     // Check localStorage first
@@ -30,12 +30,7 @@
       return storedTheme;
     }
 
-    // Check system preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return THEME_DARK;
-    }
-
-    // Default to light
+    // Default to light mode for new visitors
     return THEME_LIGHT;
   }
 
@@ -169,25 +164,6 @@
       }
     });
 
-    // Listen for system theme changes
-    if (window.matchMedia) {
-      const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-      // Use addEventListener with fallback for older browsers
-      const handleChange = function(e) {
-        // Only auto-switch if user hasn't manually set a preference
-        if (!localStorage.getItem(STORAGE_KEY)) {
-          setTheme(e.matches ? THEME_DARK : THEME_LIGHT, true);
-        }
-      };
-
-      if (darkModeQuery.addEventListener) {
-        darkModeQuery.addEventListener('change', handleChange);
-      } else if (darkModeQuery.addListener) {
-        // Fallback for older Safari
-        darkModeQuery.addListener(handleChange);
-      }
-    }
   }
 
   // Initialize on DOM ready
