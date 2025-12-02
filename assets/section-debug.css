@@ -474,6 +474,24 @@
   background-color: hsla(35 90% 50% / 0.15);
 }
 
+.section-debug-modal__layout-tag--error {
+  color: hsl(0 71% 65%);
+  background-color: hsla(0 71% 50% / 0.15);
+}
+
+.section-debug-modal__layout-tag--success {
+  color: hsl(142 71% 55%);
+  background-color: hsla(142 71% 45% / 0.15);
+}
+
+.section-debug-modal__img-src {
+  font-size: 10px;
+  word-break: break-all;
+  color: hsl(200 70% 70%);
+  max-width: 100%;
+  display: block;
+}
+
 /* Scrollbar styling */
 .section-debug-modal__body::-webkit-scrollbar {
   width: 8px;

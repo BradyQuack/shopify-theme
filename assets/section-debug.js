@@ -143,6 +143,8 @@
       'p', 'blockquote', '.rte',
       // Cards and containers
       '[class*="card"]', '[class*="item"]', '[class*="block"]',
+      // Media elements (important for debugging images)
+      '.media', '[class*="media"]', 'img', 'picture', 'video',
       // Specific components
       '[class*="badge"]', '[class*="tag"]', '[class*="pill"]',
       '[class*="button"]', '[class*="btn"]',
@@ -161,16 +163,24 @@
       try {
         const elements = section.querySelectorAll(selector);
         elements.forEach(el => {
-          // Skip if already processed or hidden
+          // Skip if already processed
           if (seen.has(el)) return;
           if (el.closest('#' + DEBUG_MODAL_ID)) return;
-          if (el.offsetParent === null && el.tagName !== 'BODY') return;
 
-          const className = getPrimaryClass(el);
+          // Check if hidden (but still include imgs and media for debugging)
+          const isMediaElement = el.tagName === 'IMG' || el.classList.contains('media') || el.closest('.media');
+          const isHidden = el.offsetParent === null && el.tagName !== 'BODY';
+          if (isHidden && !isMediaElement) return;
+
+          let className = getPrimaryClass(el);
+          // For img elements without classes, use tag name
+          if (!className && el.tagName === 'IMG') {
+            className = 'img';
+          }
           if (!className) return; // Skip elements without meaningful classes
 
-          // Skip duplicates by class
-          if (seen.has(className)) return;
+          // Skip duplicates by class (but allow multiple images)
+          if (seen.has(className) && el.tagName !== 'IMG') return;
           seen.add(className);
           seen.add(el);
 
@@ -179,8 +189,11 @@
           const bgColor = rgbToHex(styles.backgroundColor);
           const borderColor = rgbToHex(styles.borderColor);
 
-          // Only include if it has meaningful styling
-          if (textColor !== 'transparent' || bgColor !== 'transparent') {
+          // For images, always include them for debugging
+          const isImage = el.tagName === 'IMG';
+
+          // Only include if it has meaningful styling OR is an image/media
+          if (textColor !== 'transparent' || bgColor !== 'transparent' || isImage || isMediaElement) {
             // Get layout properties
             const display = styles.display;
             const position = styles.position;
@@ -189,10 +202,22 @@
             const aspectRatio = styles.aspectRatio;
             const objectFit = el.tagName === 'IMG' ? styles.objectFit : null;
             const paddingBottom = styles.paddingBottom;
+            const visibility = styles.visibility;
+            const opacity = styles.opacity;
 
             // Check for CSS variable in inline style
             const inlineStyle = el.getAttribute('style') || '';
             const ratioVar = inlineStyle.match(/--ratio-percent:\s*([^;]+)/);
+
+            // Image-specific properties
+            let imgSrc = null;
+            let imgNaturalSize = null;
+            let imgLoaded = null;
+            if (isImage) {
+              imgSrc = el.src ? (el.src.length > 80 ? el.src.substring(0, 80) + '...' : el.src) : 'NO SRC';
+              imgNaturalSize = el.naturalWidth && el.naturalHeight ? `${el.naturalWidth}×${el.naturalHeight}` : 'not loaded';
+              imgLoaded = el.complete && el.naturalHeight > 0;
+            }
 
             components.push({
               element: el.tagName.toLowerCase(),
@@ -214,7 +239,15 @@
               aspectRatio: aspectRatio !== 'auto' ? aspectRatio : null,
               objectFit: objectFit !== 'fill' ? objectFit : null,
               paddingBottom: paddingBottom !== '0px' ? paddingBottom : null,
-              ratioVar: ratioVar ? ratioVar[1].trim() : null
+              ratioVar: ratioVar ? ratioVar[1].trim() : null,
+              // Visibility
+              visibility: visibility !== 'visible' ? visibility : null,
+              opacity: opacity !== '1' ? opacity : null,
+              isHidden: isHidden,
+              // Image-specific
+              imgSrc: imgSrc,
+              imgNaturalSize: imgNaturalSize,
+              imgLoaded: imgLoaded
             });
           }
         });
@@ -423,6 +456,29 @@
               <span class="section-debug-modal__component-value"><code class="section-debug-modal__layout-tag">${comp.objectFit}</code></span>
             </div>
           ` : ''}
+          ${comp.visibility || comp.opacity || comp.isHidden ? `
+            <div class="section-debug-modal__component-row">
+              <span class="section-debug-modal__component-label">Visibility:</span>
+              <span class="section-debug-modal__component-value">
+                ${comp.isHidden ? '<code class="section-debug-modal__layout-tag section-debug-modal__layout-tag--error">HIDDEN (no offsetParent)</code>' : ''}
+                ${comp.visibility ? `<code class="section-debug-modal__layout-tag section-debug-modal__layout-tag--warning">${comp.visibility}</code>` : ''}
+                ${comp.opacity ? `<code class="section-debug-modal__layout-tag section-debug-modal__layout-tag--warning">opacity: ${comp.opacity}</code>` : ''}
+              </span>
+            </div>
+          ` : ''}
+          ${comp.imgSrc ? `
+            <div class="section-debug-modal__component-row">
+              <span class="section-debug-modal__component-label">Image Src:</span>
+              <code class="section-debug-modal__component-value section-debug-modal__img-src">${comp.imgSrc}</code>
+            </div>
+            <div class="section-debug-modal__component-row">
+              <span class="section-debug-modal__component-label">Natural Size:</span>
+              <span class="section-debug-modal__component-value">
+                ${comp.imgLoaded ? `<code class="section-debug-modal__layout-tag section-debug-modal__layout-tag--success">${comp.imgNaturalSize}</code>` : `<code class="section-debug-modal__layout-tag section-debug-modal__layout-tag--error">${comp.imgNaturalSize}</code>`}
+                ${comp.imgLoaded ? '✓ loaded' : '✗ NOT LOADED'}
+              </span>
+            </div>
+          ` : ''}
           <div class="section-debug-modal__component-row">
             <span class="section-debug-modal__component-label">File:</span>
             <code class="section-debug-modal__component-value section-debug-modal__file-hint">${comp.fileHint || 'unknown'}</code>
@@ -500,6 +556,13 @@
       if (comp.paddingBottom) text += `   Padding-Bottom: ${comp.paddingBottom}\n`;
       if (comp.ratioVar) text += `   --ratio-percent: ${comp.ratioVar}\n`;
       if (comp.objectFit) text += `   Object-Fit: ${comp.objectFit}\n`;
+      if (comp.isHidden) text += `   ⚠️ HIDDEN: no offsetParent\n`;
+      if (comp.visibility) text += `   Visibility: ${comp.visibility}\n`;
+      if (comp.opacity) text += `   Opacity: ${comp.opacity}\n`;
+      if (comp.imgSrc) {
+        text += `   Image Src: ${comp.imgSrc}\n`;
+        text += `   Natural Size: ${comp.imgNaturalSize} ${comp.imgLoaded ? '✓ loaded' : '✗ NOT LOADED'}\n`;
+      }
       text += `   File: ${comp.fileHint}\n`;
       text += '\n';
     });

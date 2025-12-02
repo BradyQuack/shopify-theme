@@ -2,6 +2,14 @@
 
 All notable changes to the ASIW Supply Shopify theme are documented in this file.
 
+## [v01.00.17] - 2025-12-02
+
+### Enhanced
+- Section debug now scans for `.media` and `img` elements (including hidden ones)
+- Added image-specific debugging: src URL, natural size, loaded status
+- Added visibility debugging: shows hidden elements, opacity, visibility
+- Color-coded tags: green=success, red=error/hidden, yellow=warning
+
 ## [v01.00.16] - 2025-12-02
 
 ### Added
@@ -167,4 +175,4 @@ Versions follow the format: `vMM.mm.pp`
 - `mm` - Minor version (new features, enhancements)
 - `pp` - Patch version (bug fixes, small improvements)
 
-Current: **v01.00.16**
+Current: **v01.00.17**
