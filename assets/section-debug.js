@@ -395,11 +395,35 @@
   }
 
   /**
+   * Copy text using fallback method
+   */
+  function fallbackCopyText(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    textarea.style.top = '0';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+
+    let success = false;
+    try {
+      success = document.execCommand('copy');
+    } catch (err) {
+      console.error('Fallback copy failed:', err);
+    }
+
+    document.body.removeChild(textarea);
+    return success;
+  }
+
+  /**
    * Copy component data to clipboard
    */
   async function copyToClipboard(modal) {
     const components = JSON.parse(modal.dataset.components || '[]');
-    const sectionType = modal.dataset.sectionType;
+    const sectionType = modal.dataset.sectionType || 'unknown';
     const theme = document.documentElement.getAttribute('data-theme') || 'light';
 
     let text = `SECTION COMPONENT DEBUG: ${sectionType}\n`;
@@ -417,18 +441,38 @@
       text += '\n';
     });
 
-    try {
-      await navigator.clipboard.writeText(text);
-      const copyBtn = modal.querySelector('.section-debug-modal__copy-all');
-      const originalHTML = copyBtn.innerHTML;
+    const copyBtn = modal.querySelector('.section-debug-modal__copy-all');
+    const originalHTML = copyBtn.innerHTML;
+    let success = false;
+
+    // Try modern clipboard API first
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        success = true;
+      } catch (err) {
+        console.warn('Clipboard API failed, trying fallback:', err);
+        success = fallbackCopyText(text);
+      }
+    } else {
+      // Use fallback for older browsers
+      success = fallbackCopyText(text);
+    }
+
+    if (success) {
       copyBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Copied!</span>`;
       copyBtn.classList.add('section-debug-modal__copy-all--success');
       setTimeout(() => {
         copyBtn.innerHTML = originalHTML;
         copyBtn.classList.remove('section-debug-modal__copy-all--success');
       }, 1500);
-    } catch (err) {
-      console.error('Failed to copy:', err);
+    } else {
+      copyBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Failed</span>`;
+      copyBtn.style.backgroundColor = 'hsl(0 71% 45%)';
+      setTimeout(() => {
+        copyBtn.innerHTML = originalHTML;
+        copyBtn.style.backgroundColor = '';
+      }, 1500);
     }
   }
 

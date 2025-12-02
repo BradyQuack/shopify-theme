@@ -2,6 +2,16 @@
 
 All notable changes to the ASIW Supply Shopify theme are documented in this file.
 
+## [v01.00.10] - 2025-12-02
+
+### Fixed
+- Collection cards now display with consistent square aspect ratio and equal heights
+- Copy All button in section debug modal now works with fallback for all browsers
+- Added error state feedback when clipboard copy fails
+
+### Added
+- Fallback copy method using execCommand for older browsers/contexts
+
 ## [v01.00.09] - 2025-12-02
 
 ### Fixed
