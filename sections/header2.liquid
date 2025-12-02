@@ -1206,6 +1206,33 @@
       });
     });
     themeObserver.observe(document.documentElement, { attributes: true });
+
+    // === DEBUG: Expose icon debug info to window for external debug tools ===
+    window.getIconDebug = function() {
+      const theme = document.documentElement.getAttribute('data-theme');
+      const signinPath = document.querySelector('.header2__signin-icon svg path');
+      const cartPath = document.querySelector('.header2__cart-icon svg path');
+      const action = document.querySelector('.header2__action');
+
+      return {
+        theme: theme,
+        icon_paths_found: document.querySelectorAll('.header2__actions svg path').length,
+        action: action ? {
+          computed_color: getComputedStyle(action).color,
+          computed_fill: getComputedStyle(action).fill
+        } : 'NOT_FOUND',
+        signin_path: signinPath ? {
+          computed_fill: getComputedStyle(signinPath).fill,
+          style_fill: signinPath.style.fill,
+          attr_fill: signinPath.getAttribute('fill')
+        } : 'NOT_FOUND',
+        cart_path: cartPath ? {
+          computed_fill: getComputedStyle(cartPath).fill,
+          style_fill: cartPath.style.fill,
+          attr_fill: cartPath.getAttribute('fill')
+        } : 'NOT_FOUND'
+      };
+    };
   });
 </script>
 
