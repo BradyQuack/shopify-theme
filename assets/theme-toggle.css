@@ -889,6 +889,11 @@ a:not([class]):not([style]):hover {
   color: var(--color-text-primary) !important;
 }
 
+/* Video banner sections need transparent background */
+[data-theme="dark"] .shopify-section:has([id^="VideoBanner"]) {
+  background-color: transparent !important;
+}
+
 /* Override all Shopify color scheme backgrounds - exclude video banners */
 [data-theme="dark"] [class*="color-scheme"]:not([id^="VideoBanner"] *):not(.section-video-hero *),
 [data-theme="dark"] [class*="color-"]:not([id^="VideoBanner"] *):not(.section-video-hero *) {
@@ -1471,10 +1476,21 @@ a:not([class]):not([style]):hover {
    BANNER SECTION STYLES
    ============================================ */
 
+/* General banner backgrounds - video banners override below */
 [data-theme="dark"] .banner,
 [data-theme="dark"] .banner__box,
 [data-theme="dark"] .banner__content {
   background-color: var(--color-surface) !important;
+}
+
+/* Video banners need fully transparent backgrounds to show video */
+[data-theme="dark"] [id^="VideoBanner"],
+[data-theme="dark"] [id^="VideoBanner"] .banner,
+[data-theme="dark"] [id^="VideoBanner"] .banner__box,
+[data-theme="dark"] [id^="VideoBanner"] .banner__content,
+[data-theme="dark"] [id^="VideoBanner"] .gradient {
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 [data-theme="dark"] .banner__box,
@@ -1491,6 +1507,13 @@ a:not([class]):not([style]):hover {
 [data-theme="dark"] .banner__text,
 [data-theme="dark"] .banner__text p {
   color: var(--color-text-secondary) !important;
+}
+
+/* Video banner text stays white for contrast on video */
+[data-theme="dark"] [id^="VideoBanner"] .banner__heading,
+[data-theme="dark"] [id^="VideoBanner"] .banner__text,
+[data-theme="dark"] [id^="VideoBanner"] .banner__text p {
+  color: #FFFFFF !important;
 }
 
 /* ============================================
