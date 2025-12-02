@@ -39,9 +39,11 @@
 
 /* Override Dawn's ratio padding trick with fixed aspect-ratio */
 .collection-list .card__inner {
+  position: relative !important; /* Required for absolute positioned children */
   padding-bottom: 0 !important; /* Remove padding-based ratio */
   aspect-ratio: 1 / 1 !important; /* Force square */
   height: auto !important;
+  overflow: hidden;
 }
 
 .collection-list .card__inner.ratio {
@@ -50,8 +52,8 @@
 
 /* Media container fills the card inner */
 .collection-list .card__media {
-  position: absolute;
-  inset: 0;
+  position: absolute !important;
+  inset: 0 !important;
   height: 100% !important;
   width: 100% !important;
 }

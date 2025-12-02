@@ -2,6 +2,13 @@
 
 All notable changes to the ASIW Supply Shopify theme are documented in this file.
 
+## [v01.00.13] - 2025-12-02
+
+### Fixed
+- Collection card images now visible - added `position: relative` to `.card__inner`
+- Added `overflow: hidden` to prevent image overflow
+- Fixed absolute positioning with `!important` for reliability
+
 ## [v01.00.12] - 2025-12-02
 
 ### Added
