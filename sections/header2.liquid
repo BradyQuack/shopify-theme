@@ -1177,6 +1177,59 @@
         }
       });
     }
+
+    // === DEBUG: Icon Color Inspector ===
+    function debugIconColors() {
+      const theme = document.documentElement.getAttribute('data-theme');
+      const signinIcon = document.querySelector('.header2__signin-icon');
+      const cartIcon = document.querySelector('.header2__cart-icon');
+      const signinSvg = document.querySelector('.header2__signin-icon svg');
+      const cartSvg = document.querySelector('.header2__cart-icon svg');
+      const signinPath = document.querySelector('.header2__signin-icon svg path');
+      const cartPath = document.querySelector('.header2__cart-icon svg path');
+      const action = document.querySelector('.header2__action');
+
+      const debug = {
+        theme: theme,
+        action: action ? {
+          computedColor: getComputedStyle(action).color,
+          computedFill: getComputedStyle(action).fill
+        } : 'NOT FOUND',
+        signinIcon: signinIcon ? {
+          computedColor: getComputedStyle(signinIcon).color,
+          computedFill: getComputedStyle(signinIcon).fill
+        } : 'NOT FOUND',
+        signinSvg: signinSvg ? {
+          computedColor: getComputedStyle(signinSvg).color,
+          computedFill: getComputedStyle(signinSvg).fill,
+          attrFill: signinSvg.getAttribute('fill')
+        } : 'NOT FOUND',
+        signinPath: signinPath ? {
+          computedColor: getComputedStyle(signinPath).color,
+          computedFill: getComputedStyle(signinPath).fill,
+          attrFill: signinPath.getAttribute('fill')
+        } : 'NOT FOUND',
+        cartPath: cartPath ? {
+          computedColor: getComputedStyle(cartPath).color,
+          computedFill: getComputedStyle(cartPath).fill,
+          attrFill: cartPath.getAttribute('fill')
+        } : 'NOT FOUND'
+      };
+
+      console.log('=== HEADER ICON DEBUG ===');
+      console.log(JSON.stringify(debug, null, 2));
+      alert('Icon Debug (check console):\n\nTheme: ' + theme +
+            '\nAction color: ' + (debug.action.computedColor || 'N/A') +
+            '\nSignin path fill: ' + (debug.signinPath.computedFill || 'N/A') +
+            '\nCart path fill: ' + (debug.cartPath.computedFill || 'N/A'));
+    }
+
+    // Add debug button to header
+    const debugBtn = document.createElement('button');
+    debugBtn.textContent = '🔍';
+    debugBtn.style.cssText = 'position:fixed;top:10px;right:10px;z-index:99999;padding:8px 12px;background:#ff6b6b;color:white;border:none;border-radius:4px;cursor:pointer;font-size:16px;';
+    debugBtn.onclick = debugIconColors;
+    document.body.appendChild(debugBtn);
   });
 </script>
 
