@@ -2,6 +2,11 @@
 
 All notable changes to the ASIW Supply Shopify theme are documented in this file.
 
+## [v01.00.09] - 2025-12-02
+
+### Fixed
+- "All Products" link in Shop All dropdown now correctly goes to `/collections/all` instead of `/collections`
+
 ## [v01.00.08] - 2025-12-02
 
 ### Added
