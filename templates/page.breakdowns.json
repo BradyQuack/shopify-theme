@@ -18,7 +18,7 @@
         "output_label": "Developer Instructions",
         "button_label": "Translate to Dev Instructions",
         "show_quick_actions": true,
-        "api_endpoint": "",
+        "api_endpoint": "https://translator-api.brady-090.workers.dev/",
         "background_color": "#f5f7fa",
         "heading_color": "#2b2c2d",
         "text_color": "#64748b",
