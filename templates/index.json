@@ -328,7 +328,7 @@
         "text_color": "#64748b",
         "accent_blue_start": "#1976d2",
         "accent_blue_end": "#1e88e5",
-        "item_bg_color": "#dd6727",
+        "item_bg_color": "#f5f7fa",
         "icon_bg_radius": 14,
         "icon_size": 24,
         "columns_desktop": "4",
@@ -340,7 +340,7 @@
         "padding_bottom": 20,
         "align": "center",
         "show_dividers": false,
-        "debug_mode": true
+        "debug_mode": false
       }
     },
     "banner1_8wY8Ft": {
@@ -524,7 +524,7 @@
       }
     },
     "custom2_7XUC8B": {
-      "type": "custom2",
+      "type": "banner-image-hero",
       "blocks": {
         "heading_PebgWC": {
           "type": "heading",
@@ -711,7 +711,7 @@
       }
     },
     "richcustom2_tqRnBA": {
-      "type": "richcustom2",
+      "type": "reviews-summary",
       "disabled": true,
       "name": "Rich Custom 2",
       "settings": {

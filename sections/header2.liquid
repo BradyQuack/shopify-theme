@@ -3,15 +3,33 @@
 {{ 'component-menu-drawer.css' | asset_url | stylesheet_tag }}
 
 <style>
+  /* Header2 CSS Custom Properties - Light mode defaults from section settings */
+  .header2-section {
+    --header2-promo-bg: {{ section.settings.promo_bar_color }};
+    --header2-promo-text: {{ section.settings.promo_bar_text_color }};
+    --header2-header-bg: {{ section.settings.header_bg_color }};
+    --header2-nav-bg: {{ section.settings.nav_bg_color }};
+    --header2-nav-hover: {{ section.settings.nav_hover_color }};
+    --header2-nav-text-hover: {{ section.settings.nav_text_hover_color | default: '#333' }};
+    --header2-shop-all-bg: {{ section.settings.shop_all_bg_color }};
+    --header2-shop-all-text: {{ section.settings.shop_all_text_color }};
+    --header2-shop-all-hover: {{ section.settings.shop_all_hover_color }};
+    --header2-search-border: {{ section.settings.search_border_color }};
+    --header2-search-btn: {{ section.settings.search_button_color }};
+    --header2-search-btn-hover: {{ section.settings.search_button_hover_color }};
+    --header2-accent: {{ section.settings.accent_color }};
+    --header2-recommendation-hover: {{ section.settings.recommendation_hover_color | default: '#f0f8ff' }};
+  }
+
   /* Top promotional bar */
   .promo-bar {
-    background-color: {{ section.settings.promo_bar_color }};
-    color: {{ section.settings.promo_bar_text_color }};
+    background-color: var(--header2-promo-bg);
+    color: var(--header2-promo-text);
     padding: 12px 0;
     font-size: 14px;
     text-align: center;
   }
-  
+
   .promo-bar__content {
     display: flex;
     justify-content: space-between;
@@ -20,22 +38,22 @@
     margin: 0 auto;
     padding: 0 20px;
   }
-  
+
   .promo-bar__message {
     flex: 1;
   }
-  
+
   .promo-bar__links {
     display: flex;
     gap: 20px;
     font-size: 13px;
   }
-  
+
   .promo-bar__links a {
-    color: {{ section.settings.promo_bar_text_color }};
+    color: var(--header2-promo-text);
     text-decoration: none;
   }
-  
+
   .promo-bar__links a:hover {
     text-decoration: underline;
   }
@@ -132,14 +150,14 @@
   }
 
   .header2__mobile-nav-link--shop-all {
-    background: {{ section.settings.shop_all_bg_color }};
-    color: {{ section.settings.shop_all_text_color }};
+    background: var(--header2-shop-all-bg);
+    color: var(--header2-shop-all-text);
     font-weight: 600;
   }
 
   /* Main header */
   .header2 {
-    background-color: {{ section.settings.header_bg_color }};
+    background-color: var(--header2-header-bg);
     border-bottom: 1px solid var(--color-border, #e0e0e0);
   }
   
@@ -172,7 +190,7 @@
   }
   
   .header2__store-info:hover {
-    color: {{ section.settings.accent_color }};
+    color: var(--header2-accent);
   }
   
   .header2__store-icon {
@@ -198,21 +216,23 @@
   
   .header2__search-form {
     display: flex;
-    border: 2px solid {{ section.settings.search_border_color }};
+    border: 2px solid var(--header2-search-border);
     border-radius: 6px;
     overflow: hidden;
   }
-  
+
   .header2__search-input {
     flex: 1;
     padding: 12px 16px;
     border: none;
     font-size: 16px;
     outline: none;
+    background-color: var(--color-surface, white);
+    color: var(--color-text-primary, #333);
   }
-  
+
   .header2__search-button {
-    background: {{ section.settings.search_button_color }};
+    background: var(--header2-search-btn);
     border: none;
     padding: 12px 20px;
     cursor: pointer;
@@ -220,9 +240,9 @@
     align-items: center;
     justify-content: center;
   }
-  
+
   .header2__search-button:hover {
-    background: {{ section.settings.search_button_hover_color }};
+    background: var(--header2-search-btn-hover);
   }
 
   /* Predictive Search Results */
@@ -355,7 +375,7 @@
   }
   
   .header2__cart-count {
-    background: {{ section.settings.accent_color }};
+    background: var(--header2-accent);
     color: white;
     border-radius: 50%;
     width: 20px;
@@ -369,10 +389,10 @@
     top: -5px;
     right: -5px;
   }
-  
+
   /* Navigation bar */
   .header2__nav {
-    background: {{ section.settings.nav_bg_color }};
+    background: var(--header2-nav-bg);
     border-bottom: 1px solid var(--color-border, #e0e0e0);
   }
   
@@ -422,17 +442,17 @@
   }
   
   .header2__nav-link:hover {
-    background-color: {{ section.settings.nav_hover_color }};
-    color: {{ section.settings.nav_text_hover_color | default: '#333' }};
+    background-color: var(--header2-nav-hover);
+    color: var(--header2-nav-text-hover);
   }
-  
+
   .header2__nav-link--shop-all {
-    background: {{ section.settings.shop_all_bg_color }};
-    color: {{ section.settings.shop_all_text_color }};
+    background: var(--header2-shop-all-bg);
+    color: var(--header2-shop-all-text);
   }
-  
+
   .header2__nav-link--shop-all:hover {
-    background: {{ section.settings.shop_all_hover_color }};
+    background: var(--header2-shop-all-hover);
   }
   
   .header2__nav-icon {
@@ -448,7 +468,7 @@
     left: 0;
     background: var(--color-surface, white);
     border: 1px solid var(--color-border, #e0e0e0);
-    border-top: 2px solid {{ section.settings.accent_color }};
+    border-top: 2px solid var(--header2-accent);
     border-radius: 0 0 6px 6px;
     box-shadow: 0 4px 12px var(--color-card-shadow, rgba(0, 0, 0, 0.1));
     min-width: 220px;
@@ -487,7 +507,7 @@
 
   .header2__dropdown-link:hover {
     background-color: var(--color-surface-alt, #f5f5f5);
-    color: {{ section.settings.accent_color }};
+    color: var(--header2-accent);
   }
 
   .header2__dropdown-divider {
@@ -544,12 +564,12 @@
   }
   
   .header2__recommendation-item:hover {
-    border-color: {{ section.settings.accent_color }};
-    background: {{ section.settings.recommendation_hover_color | default: '#f0f8ff' }};
+    border-color: var(--header2-accent);
+    background: var(--header2-recommendation-hover);
   }
-  
+
   .header2__more-suggestions {
-    color: {{ section.settings.accent_color }};
+    color: var(--header2-accent);
     text-decoration: none;
     font-size: 14px;
     white-space: nowrap;
@@ -713,8 +733,25 @@
     }
 
     .header2__recommendation-item:active {
-      background-color: {{ section.settings.recommendation_hover_color | default: '#f0f8ff' }};
+      background-color: var(--header2-recommendation-hover);
     }
+  }
+
+  /* Dark mode: Light icons for Sign In and Cart */
+  [data-theme="dark"] .header2__action {
+    color: var(--color-text-primary, #f1f5f9) !important;
+  }
+
+  [data-theme="dark"] .header2__signin-icon,
+  [data-theme="dark"] .header2__cart-icon,
+  [data-theme="dark"] .header2__signin-wrapper,
+  [data-theme="dark"] .header2__cart-wrapper {
+    color: var(--color-text-primary, #f1f5f9) !important;
+  }
+
+  /* SVG icons use fill="currentColor" - inherit from parent color */
+  [data-theme="dark"] .header2__actions svg path {
+    fill: var(--color-text-primary, #f1f5f9) !important;
   }
 </style>
 
@@ -913,11 +950,11 @@
         <!-- Account -->
         <a href="{{ routes.account_url }}" class="header2__action">
           <span class="header2__signin-wrapper">
-            {%- if section.settings.signin_icon -%}
-              {{ section.settings.signin_icon | image_url: width: section.settings.signin_icon_size, height: section.settings.signin_icon_size | image_tag: alt: 'Sign In', class: 'header2__signin-icon' }}
-            {%- else -%}
-              <span class="header2__signin-icon">{{ 'icon-account.svg' | inline_asset_content }}</span>
-            {%- endif -%}
+            <span class="header2__signin-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="{{ section.settings.signin_icon_size | default: 28 }}" height="{{ section.settings.signin_icon_size | default: 28 }}" fill="currentColor">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+            </span>
           </span>
           {%- if customer -%}
             Account
@@ -929,11 +966,11 @@
         <!-- Cart -->
         <a href="{{ routes.cart_url }}" class="header2__action" style="position: relative;">
           <span class="header2__cart-wrapper">
-            {%- if section.settings.cart_icon -%}
-              {{ section.settings.cart_icon | image_url: width: section.settings.cart_icon_size, height: section.settings.cart_icon_size | image_tag: alt: 'Cart', class: 'header2__cart-icon' }}
-            {%- else -%}
-              <span class="header2__cart-icon">{{ 'icon-cart.svg' | inline_asset_content }}</span>
-            {%- endif -%}
+            <span class="header2__cart-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="{{ section.settings.cart_icon_size | default: 28 }}" height="{{ section.settings.cart_icon_size | default: 28 }}" fill="currentColor">
+                <path d="M18 6h-2c0-2.21-1.79-4-4-4S8 3.79 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm6 16H6V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h4v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z"/>
+              </svg>
+            </span>
           </span>
           Cart
           {%- if cart.item_count > 0 -%}
@@ -961,7 +998,7 @@
             <div class="header2__dropdown">
               <ul class="header2__dropdown-list">
                 <li class="header2__dropdown-item">
-                  <a href="{{ section.settings.shop_all_link | default: '/collections' }}" class="header2__dropdown-link">
+                  <a href="{{ section.settings.all_products_link | default: '/collections/all' }}" class="header2__dropdown-link">
                     All Products
                   </a>
                 </li>
@@ -1160,6 +1197,7 @@
         }
       });
     }
+
   });
 </script>
 

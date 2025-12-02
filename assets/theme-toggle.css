@@ -1,250 +1,525 @@
 /* ============================================
    LIGHT / DARK MODE COLOR SCHEME
+   Two-Tier Token System Architecture
    ============================================
 
-   Section Naming Convention:
-   - hero-video (formerly home-video-hero2)
-   - content-block (formerly custom-section)
-   - testimonials (formerly customerreview)
-   - product-grid (formerly product-highlights)
-   - features-bar (formerly feature-highlights)
-   - cta-banner (formerly banner1)
+   TIER 1: Base Variables (Raw HSL Colors)
+   - Defined in :root for global access
+   - Named by color family (e.g., --base-blue, --base-orange)
 
-   CSS Class Naming (BEM):
-   - .testimonial__* (formerly .customer-reviews__*)
-   - .content-block__* (formerly .customer-reviews__* in content-block)
-   - .product-grid__* (formerly .product-highlights__*)
-   - .features-bar__* (formerly .sig-* and .features-highlight__*)
+   TIER 2: Semantic Tokens (Purpose-Driven)
+   - Mapped per theme (light/dark)
+   - Named by function (e.g., --color-primary, --color-bg)
+
+   Primary Color Strategy:
+   - Light Mode: Darker, muted blue (204° 100% 29%)
+   - Dark Mode: Brighter, vibrant blue (213° 94% 68%)
+   - Same visual impact in both contexts
+
+   Section Naming Convention:
+   - hero-video, content-block, testimonials
+   - product-grid, features-bar, cta-banner
 
    ============================================ */
 
-/* Light Mode (Default) */
-:root,
-[data-theme="light"] {
-  /* ---- Base Colors ---- */
-  --color-bg: #F5F7FA;
-  --color-surface: #FFFFFF;
-  --color-surface-alt: #F0F2F5;
-  --color-overlay: rgba(0, 0, 0, 0.5);
+/* ============================================
+   TIER 1: BASE COLOR VARIABLES (HSL)
+   Raw color definitions - theme agnostic
+   ============================================ */
+:root {
+  /* ---- Blue Family ---- */
+  --base-blue-900: 204 100% 18%;   /* Darkest */
+  --base-blue-800: 204 100% 24%;
+  --base-blue-700: 204 100% 29%;   /* Primary light mode */
+  --base-blue-600: 210 90% 40%;
+  --base-blue-500: 213 90% 52%;
+  --base-blue-400: 213 94% 68%;    /* Primary dark mode */
+  --base-blue-300: 213 94% 78%;
+  --base-blue-200: 214 95% 88%;
+  --base-blue-100: 214 100% 95%;   /* Lightest */
 
-  /* ---- Text Colors ---- */
-  --color-text-primary: #2B2C2D;
-  --color-text-secondary: #6B7280;
-  --color-text-muted: #9CA3AF;
-  --color-text-inverse: #FFFFFF;
+  /* ---- Orange/Accent Family ---- */
+  --base-orange-900: 24 75% 25%;
+  --base-orange-800: 24 78% 35%;
+  --base-orange-700: 24 72% 51%;   /* Accent light mode */
+  --base-orange-600: 27 87% 54%;
+  --base-orange-500: 27 96% 61%;   /* Accent dark mode */
+  --base-orange-400: 32 95% 68%;
+  --base-orange-300: 35 100% 78%;
+  --base-orange-200: 38 100% 88%;
+  --base-orange-100: 40 100% 95%;
 
-  /* ---- Border Colors ---- */
-  --color-border: #E1E5EA;
-  --color-border-light: #F0F2F5;
-  --color-border-dark: #D1D5DB;
+  /* ---- Gray Family (Cool, Blue Undertone) ---- */
+  --base-gray-950: 222 47% 9%;     /* Darkest - dark mode bg */
+  --base-gray-900: 217 33% 13%;
+  --base-gray-800: 217 24% 17%;    /* Dark mode surface */
+  --base-gray-700: 215 20% 24%;
+  --base-gray-600: 215 16% 35%;
+  --base-gray-500: 215 14% 47%;
+  --base-gray-400: 214 12% 58%;
+  --base-gray-300: 213 12% 70%;
+  --base-gray-200: 214 14% 82%;
+  --base-gray-100: 216 20% 96%;    /* Light mode bg */
+  --base-gray-50: 0 0% 100%;       /* Pure white */
 
-  /* ---- Brand Colors ---- */
-  --color-primary: #005496;
-  --color-primary-hover: #003E70;
-  --color-primary-light: #E6F0F7;
+  /* ---- Semantic Base Colors ---- */
+  --base-success-light: 142 71% 45%;
+  --base-success-dark: 142 69% 58%;
+  --base-warning-light: 38 92% 50%;
+  --base-warning-dark: 45 93% 58%;
+  --base-error-light: 0 72% 51%;
+  --base-error-dark: 0 91% 71%;
+  --base-star: 45 93% 55%;
 
-  --color-secondary: #1D6AE5;
-  --color-secondary-hover: #1550B0;
-  --color-secondary-light: #EBF2FC;
+  /* ---- Ice Blue Accent (Consistent across both modes) ---- */
+  --base-ice-blue: 213 94% 68%;       /* #5BA3F5 - Toggle active state */
+  --base-ice-blue-hover: 213 94% 58%; /* Darker for hover */
 
-  --color-accent: #DD6727;
-  --color-accent-hover: #BE531D;
-  --color-accent-light: #FDF3ED;
+  /* ---- Muted Background (Toggle container) ---- */
+  --base-muted-light: 216 15% 94%;    /* Light mode toggle bg */
+  --base-muted-dark: 215 16% 28%;     /* Dark mode toggle bg */
 
-  /* ---- Semantic Colors ---- */
-  --color-success: #28A745;
-  --color-success-hover: #218838;
-  --color-success-light: #E8F5EC;
-
-  --color-warning: #F59E0B;
-  --color-warning-hover: #D97706;
-  --color-warning-light: #FEF7E6;
-
-  --color-error: #DC2626;
-  --color-error-hover: #B91C1C;
-  --color-error-light: #FEE8E8;
-
-  --color-info: #3B82F6;
-  --color-info-hover: #2563EB;
-  --color-info-light: #EFF6FF;
-
-  /* ---- Card Colors ---- */
-  --color-card-bg: #FFFFFF;
-  --color-card-hover: #F9FAFB;
-  --color-card-separator: #E1E5EA;
-  --color-card-shadow: rgba(0, 0, 0, 0.08);
-
-  /* ---- Product Colors ---- */
-  --color-product-title: #2B2C2D;
-  --color-sku: #6B7280;
-  --color-compare-price: #9CA3AF;
-  --color-sale-price: #DC2626;
-
-  /* ---- Button Colors ---- */
-  --color-button-text: #FFFFFF;
-  --color-button-disabled: #9CA3AF;
-
-  /* ---- Icon Colors ---- */
-  --color-icon: #6B7280;
-  --color-icon-hover: #005496;
-  --color-icon-muted: #9CA3AF;
-
-  /* ---- Badge Colors ---- */
-  --color-badge-bg: #005496;
-  --color-badge-text: #FFFFFF;
-  --color-badge-secondary-bg: #E1E5EA;
-  --color-badge-secondary-text: #005496;
-
-  /* ---- Star Rating Colors ---- */
-  --color-star-filled: #FBBF24;
-  --color-star-unfilled: #E1E5EA;
-
-  /* ---- Quote/Decorative Colors ---- */
-  --color-quote: #E1E5EA;
-  --color-quote-text: #6B7280;
-
-  /* ---- Navigation Colors ---- */
-  --color-nav-bg: #005496;
-  --color-nav-text: #FFFFFF;
-  --color-nav-hover: #003E70;
-  --color-dot-active: #005496;
-  --color-dot-inactive: rgba(0, 84, 150, 0.3);
-
-  /* ---- Banner Colors ---- */
-  --color-banner-bg: #005496;
-  --color-banner-text: #FFFFFF;
-  --color-banner-button-bg: #28A745;
-  --color-banner-button-hover: #218838;
-
-  /* ---- Section Backgrounds ---- */
-  --color-section-light: #F5F7FA;
-  --color-section-alt: #FFFFFF;
-
-  /* ---- Link Colors ---- */
-  --color-link: #005496;
-  --color-link-hover: #003E70;
-  --color-link-visited: #1550B0;
-
-  /* ---- Focus States ---- */
-  --color-focus-ring: rgba(0, 84, 150, 0.5);
-  --color-focus-outline: #005496;
+  /* ---- Opacity Scale (Centralized) ---- */
+  --alpha-5: 0.05;                    /* Subtle backgrounds */
+  --alpha-8: 0.08;                    /* Hover states */
+  --alpha-10: 0.10;                   /* Light overlays */
+  --alpha-12: 0.12;                   /* Borders */
+  --alpha-15: 0.15;                   /* Medium overlays */
+  --alpha-20: 0.20;                   /* Strong overlays */
+  --alpha-30: 0.30;                   /* Heavy overlays */
+  --alpha-50: 0.50;                   /* Modal backdrops */
+  --alpha-70: 0.70;                   /* Dark overlays */
 }
 
-/* Dark Mode */
-[data-theme="dark"] {
-  /* ---- Base Colors ---- */
-  --color-bg: #0F172A;
-  --color-surface: #1E293B;
-  --color-surface-alt: #243045;
-  --color-surface-hover: #2D3A50;
-  --color-overlay: rgba(0, 0, 0, 0.7);
+/* ============================================
+   TIER 2: SEMANTIC TOKENS - LIGHT MODE
+   Purpose-driven color mappings
+   ============================================ */
+:root,
+[data-theme="light"] {
+  /* ---- Surface Elevation System (5 Levels) ---- */
+  --color-bg: hsl(var(--base-gray-100));              /* Level 0: Page canvas */
+  --color-surface-0: hsl(var(--base-gray-100));       /* Level 0: Same as bg */
+  --color-surface-1: hsl(var(--base-gray-50));        /* Level 1: Cards, panels */
+  --color-surface-2: hsl(0 0% 100%);                  /* Level 2: Modals, dropdowns */
+  --color-surface-3: hsl(0 0% 100%);                  /* Level 3: Tooltips, popovers */
+  --color-surface-4: hsl(0 0% 100%);                  /* Level 4: Highest elevation */
+  --color-surface: hsl(var(--base-gray-50));          /* Alias: Default surface */
+  --color-surface-alt: hsl(214 14% 92%);              /* Alternate surfaces */
+  --color-surface-hover: hsl(214 14% 97%);            /* Hover state */
+  --color-overlay: hsla(222 47% 9% / var(--alpha-50)); /* Modal overlays */
 
-  /* ---- Text Colors ---- */
-  --color-text-primary: #F1F5F9;
-  --color-text-secondary: #94A3B8;
-  --color-text-muted: #64748B;
-  --color-text-inverse: #0F172A;
+  /* ---- Text Hierarchy (5 Levels) ---- */
+  --color-text-heading: hsl(220 25% 10%);             /* H1-H3: Strongest */
+  --color-text-primary: hsl(220 20% 12%);             /* Body text: Primary */
+  --color-text-secondary: hsl(215 14% 47%);           /* Supporting text */
+  --color-text-tertiary: hsl(214 12% 58%);            /* Captions, hints */
+  --color-text-disabled: hsl(214 10% 70%);            /* Inactive elements */
+  --color-text-muted: hsl(214 12% 58%);               /* Alias: Muted text */
+  --color-text-inverse: hsl(var(--base-gray-50));     /* Text on dark backgrounds */
 
-  /* ---- Border Colors ---- */
-  --color-border: #2D3A50;
-  --color-border-light: #334155;
-  --color-border-dark: #1E293B;
+  /* ---- Border Hierarchy ---- */
+  --color-border: hsl(214 14% 86%);                   /* Default borders */
+  --color-border-light: hsl(214 14% 92%);             /* Subtle borders */
+  --color-border-dark: hsl(214 14% 78%);              /* Emphasized borders */
 
-  /* ---- Brand Colors ---- */
-  --color-primary: #60A5FA;
-  --color-primary-hover: #93C5FD;
-  --color-primary-light: #1E3A5F;
+  /* ---- Brand Colors (Adapted for Light Mode) ---- */
+  /* Primary: Darker, muted blue - avoids clashing with light bg */
+  --color-primary: hsl(var(--base-blue-700));         /* #005496 equivalent */
+  --color-primary-hover: hsl(var(--base-blue-800));   /* Darker on hover */
+  --color-primary-active: hsl(var(--base-blue-900));  /* Pressed state */
+  --color-primary-light: hsl(var(--base-blue-100));   /* Light tint */
 
-  --color-secondary: #818CF8;
-  --color-secondary-hover: #A5B4FC;
-  --color-secondary-light: #2E3A59;
+  /* Secondary: Slightly lighter blue */
+  --color-secondary: hsl(var(--base-blue-500));
+  --color-secondary-hover: hsl(var(--base-blue-600));
+  --color-secondary-active: hsl(var(--base-blue-700));
+  --color-secondary-light: hsl(var(--base-blue-100));
 
-  --color-accent: #F28C38;
-  --color-accent-hover: #FB923C;
-  --color-accent-light: #3D2A1F;
+  /* Accent: Muted orange for light mode */
+  --color-accent: hsl(var(--base-orange-700));        /* #DD6727 equivalent */
+  --color-accent-hover: hsl(var(--base-orange-800));
+  --color-accent-active: hsl(var(--base-orange-900));
+  --color-accent-light: hsl(var(--base-orange-100));
 
-  /* ---- Semantic Colors ---- */
-  --color-success: #4ADE80;
-  --color-success-hover: #86EFAC;
-  --color-success-light: #1A3D2E;
+  /* ---- Feedback Colors (Full System) ---- */
+  /* Success */
+  --color-success: hsl(var(--base-success-light));
+  --color-success-hover: hsl(142 71% 38%);
+  --color-success-light: hsl(142 76% 95%);
+  --color-success-bg: hsl(142 76% 95%);
+  --color-success-text: hsl(142 71% 30%);
+  --color-success-border: hsl(142 50% 70%);
 
-  --color-warning: #FBBF24;
-  --color-warning-hover: #FCD34D;
-  --color-warning-light: #3D3520;
+  /* Warning */
+  --color-warning: hsl(var(--base-warning-light));
+  --color-warning-hover: hsl(32 95% 44%);
+  --color-warning-light: hsl(48 100% 95%);
+  --color-warning-bg: hsl(48 100% 95%);
+  --color-warning-text: hsl(32 95% 30%);
+  --color-warning-border: hsl(38 70% 70%);
 
-  --color-error: #F87171;
-  --color-error-hover: #FCA5A5;
-  --color-error-light: #3D2020;
+  /* Error */
+  --color-error: hsl(var(--base-error-light));
+  --color-error-hover: hsl(0 72% 43%);
+  --color-error-light: hsl(0 86% 96%);
+  --color-error-bg: hsl(0 86% 96%);
+  --color-error-text: hsl(0 72% 40%);
+  --color-error-border: hsl(0 60% 80%);
 
-  --color-info: #60A5FA;
-  --color-info-hover: #93C5FD;
-  --color-info-light: #1E3A5F;
+  /* Info */
+  --color-info: hsl(var(--base-blue-500));
+  --color-info-hover: hsl(var(--base-blue-600));
+  --color-info-light: hsl(var(--base-blue-100));
+  --color-info-bg: hsl(var(--base-blue-100));
+  --color-info-text: hsl(var(--base-blue-800));
+  --color-info-border: hsl(var(--base-blue-200));
 
-  /* ---- Card Colors ---- */
-  --color-card-bg: #1E293B;
-  --color-card-hover: #243045;
-  --color-card-separator: #2D3A50;
-  --color-card-shadow: rgba(0, 0, 0, 0.3);
+  /* ---- Focus Ring System ---- */
+  --ring-color: hsl(var(--base-blue-700));
+  --ring-color-alpha: hsla(var(--base-blue-700) / var(--alpha-30));
+  --ring-width: 2px;
+  --ring-offset: 2px;
+  --ring-offset-color: hsl(var(--base-gray-50));
 
-  /* ---- Product Colors ---- */
-  --color-product-title: #F1F5F9;
-  --color-sku: #94A3B8;
-  --color-compare-price: #64748B;
-  --color-sale-price: #F87171;
+  /* ---- Card Tokens ---- */
+  --color-card-bg: hsl(var(--base-gray-50));
+  --color-card-hover: hsl(214 14% 98%);
+  --color-card-separator: hsl(214 14% 86%);
+  --color-card-shadow: hsla(222 47% 9% / 0.08);
 
-  /* ---- Button Colors ---- */
-  --color-button-text: #FFFFFF;
-  --color-button-disabled: #475569;
+  /* ---- Product Display ---- */
+  --color-product-title: hsl(220 20% 12%);
+  --color-sku: hsl(215 14% 47%);
+  --color-compare-price: hsl(214 12% 58%);
+  --color-sale-price: hsl(var(--base-error-light));
 
-  /* ---- Icon Colors ---- */
-  --color-icon: #94A3B8;
-  --color-icon-hover: #60A5FA;
-  --color-icon-muted: #64748B;
+  /* ---- Interactive Elements ---- */
+  --color-button-text: hsl(var(--base-gray-50));
+  --color-button-disabled: hsl(214 12% 58%);
 
-  /* ---- Badge Colors ---- */
-  --color-badge-bg: #60A5FA;
-  --color-badge-text: #0F172A;
-  --color-badge-secondary-bg: #2D3A50;
-  --color-badge-secondary-text: #60A5FA;
+  --color-icon: hsl(215 14% 47%);
+  --color-icon-hover: hsl(var(--base-blue-700));
+  --color-icon-muted: hsl(214 12% 58%);
 
-  /* ---- Star Rating Colors ---- */
-  --color-star-filled: #FBBF24;
-  --color-star-unfilled: #475569;
+  /* ---- Badge/Tag Tokens ---- */
+  --color-badge-bg: hsl(var(--base-blue-700));
+  --color-badge-text: hsl(var(--base-gray-50));
+  --color-badge-secondary-bg: hsl(214 14% 92%);
+  --color-badge-secondary-text: hsl(var(--base-blue-700));
 
-  /* ---- Quote/Decorative Colors ---- */
-  --color-quote: #475569;
-  --color-quote-text: #94A3B8;
+  /* ---- Decorative Elements ---- */
+  --color-star-filled: hsl(var(--base-star));
+  --color-star-unfilled: hsl(214 14% 86%);
 
-  /* ---- Navigation Colors ---- */
-  --color-nav-bg: #60A5FA;
-  --color-nav-text: #0F172A;
-  --color-nav-hover: #93C5FD;
-  --color-dot-active: #60A5FA;
-  --color-dot-inactive: rgba(96, 165, 250, 0.3);
+  --color-quote: hsl(214 14% 86%);
+  --color-quote-text: hsl(215 14% 47%);
 
-  /* ---- Banner Colors ---- */
-  --color-banner-bg: #1E3A5F;
-  --color-banner-text: #F1F5F9;
-  --color-banner-button-bg: #4ADE80;
-  --color-banner-button-hover: #86EFAC;
+  /* ---- Navigation ---- */
+  --color-nav-bg: hsl(var(--base-blue-700));
+  --color-nav-text: hsl(var(--base-gray-50));
+  --color-nav-hover: hsl(var(--base-blue-800));
+  --color-dot-active: hsl(var(--base-blue-700));
+  --color-dot-inactive: hsla(var(--base-blue-700) / 0.3);
+
+  /* ---- Banner/CTA ---- */
+  --color-banner-bg: hsl(var(--base-blue-700));
+  --color-banner-text: hsl(var(--base-gray-50));
+  --color-banner-button-bg: hsl(var(--base-success-light));
+  --color-banner-button-hover: hsl(142 71% 38%);
 
   /* ---- Section Backgrounds ---- */
-  --color-section-light: #1E293B;
-  --color-section-alt: #0F172A;
+  --color-section-light: hsl(var(--base-gray-100));
+  --color-section-alt: hsl(var(--base-gray-50));
 
-  /* ---- Link Colors ---- */
-  --color-link: #60A5FA;
-  --color-link-hover: #93C5FD;
-  --color-link-visited: #A5B4FC;
+  /* ---- Footer (Branded Blue) ---- */
+  --color-footer-bg: hsl(var(--base-blue-700));        /* #005496 */
+  --color-footer-surface: hsl(var(--base-blue-700));   /* Same as bg */
+  --color-footer-border: hsla(0 0% 100% / 0.2);        /* White 20% */
+  --color-footer-text: hsl(0 0% 100%);                 /* White */
+  --color-footer-text-heading: hsl(0 0% 100%);         /* White */
+
+  /* ---- Card Opacity Tokens (Light Mode) ---- */
+  --card-bg-opacity: 1;                                /* Solid in light mode */
+  --card-border-opacity: 1;
+  --card-hover-opacity: 1;
+
+  /* ---- Text Hierarchy (Light Mode) ---- */
+  --color-text-quote: hsl(220 20% 12%);                /* Same as primary in light */
+  --color-text-label: hsl(215 14% 47%);                /* Same as secondary */
+
+  /* ---- Links ---- */
+  --color-link: hsl(var(--base-blue-700));
+  --color-link-hover: hsl(var(--base-blue-800));
+  --color-link-visited: hsl(var(--base-blue-600));
 
   /* ---- Focus States ---- */
-  --color-focus-ring: rgba(96, 165, 250, 0.5);
-  --color-focus-outline: #60A5FA;
+  --color-focus-ring: hsla(var(--base-blue-700) / 0.5);
+  --color-focus-outline: hsl(var(--base-blue-700));
+
+  /* ---- Toggle Specific (Light Mode) ---- */
+  /* Ice Blue active state - consistent across both modes */
+  --toggle-active-bg: hsl(var(--base-ice-blue));
+  --toggle-active-text: hsl(0 0% 100%);            /* Pure white */
+  --toggle-inactive-bg: transparent;
+  --toggle-inactive-text: hsl(216 8% 46%);         /* Muted gray */
+  --toggle-hover-text: hsl(220 20% 2%);            /* Near-black on hover */
+  --toggle-hover-bg: hsl(216 15% 88%);             /* Light gray bg on hover */
+  --toggle-container-bg: hsl(var(--base-muted-light));
+
+  /* ---- Component Tokens: Inputs ---- */
+  --input-bg: hsl(var(--base-gray-50));
+  --input-bg-disabled: hsl(var(--base-gray-100));
+  --input-border: hsl(214 14% 82%);
+  --input-border-hover: hsl(214 14% 70%);
+  --input-border-focus: hsl(var(--base-blue-700));
+  --input-placeholder: hsl(214 12% 58%);
+  --input-text: hsl(220 20% 12%);
+
+  /* ---- Component Tokens: Tables ---- */
+  --table-header-bg: hsl(214 14% 95%);
+  --table-row-hover: hsl(214 14% 97%);
+  --table-row-stripe: hsl(214 14% 98%);
+  --table-border: hsl(214 14% 90%);
+
+  /* ---- Component Tokens: Buttons ---- */
+  --button-primary-bg: var(--color-primary);
+  --button-primary-bg-hover: var(--color-primary-hover);
+  --button-primary-bg-active: var(--color-primary-active);
+  --button-primary-text: hsl(var(--base-gray-50));
+  --button-primary-bg-disabled: hsl(214 14% 82%);
+  --button-primary-text-disabled: hsl(214 10% 60%);
+
+  --button-secondary-bg: transparent;
+  --button-secondary-border: var(--color-primary);
+  --button-secondary-text: var(--color-primary);
+  --button-secondary-bg-hover: var(--color-primary);
+  --button-secondary-text-hover: hsl(var(--base-gray-50));
+
+  /* ---- Component Tokens: Skeleton/Loading ---- */
+  --skeleton-base: hsl(214 14% 90%);
+  --skeleton-shimmer: hsl(214 14% 95%);
+}
+
+/* ============================================
+   TIER 2: SEMANTIC TOKENS - DARK MODE
+   Brighter, more vibrant colors for dark backgrounds
+   ============================================ */
+[data-theme="dark"] {
+  /* ---- Surface Elevation System (5 Levels) ---- */
+  /* Deep navy-blue (not pure black) - avoids harshness */
+  --color-bg: hsl(var(--base-gray-950));              /* Level 0: Page canvas */
+  --color-surface-0: hsl(var(--base-gray-950));       /* Level 0: Same as bg */
+  --color-surface-1: hsl(var(--base-gray-800));       /* Level 1: Cards, panels */
+  --color-surface-2: hsl(var(--base-gray-700));       /* Level 2: Modals, dropdowns */
+  --color-surface-3: hsl(215 20% 26%);                /* Level 3: Tooltips, popovers */
+  --color-surface-4: hsl(215 20% 30%);                /* Level 4: Highest elevation */
+  --color-surface: hsl(var(--base-gray-800));         /* Alias: Default surface */
+  --color-surface-alt: hsl(var(--base-gray-700));     /* Alternate surfaces */
+  --color-surface-hover: hsl(215 20% 28%);            /* Hover state */
+  --color-overlay: hsla(222 47% 9% / var(--alpha-70)); /* Modal overlays */
+
+  /* ---- Text Hierarchy (5 Levels) ---- */
+  /* Off-white text - softer than pure white to reduce eye strain */
+  --color-text-heading: hsl(210 25% 98%);             /* H1-H3: Brightest */
+  --color-text-primary: hsl(210 20% 95%);             /* Body text: Primary */
+  --color-text-secondary: hsl(215 18% 65%);           /* Supporting text */
+  --color-text-tertiary: hsl(215 16% 55%);            /* Captions, hints */
+  --color-text-disabled: hsl(215 14% 40%);            /* Inactive elements */
+  --color-text-muted: hsl(215 16% 47%);               /* Alias: Muted text */
+  --color-text-inverse: hsl(var(--base-gray-950));    /* Text on light backgrounds */
+
+  /* ---- Border Hierarchy ---- */
+  --color-border: hsl(215 20% 28%);                   /* Default borders */
+  --color-border-light: hsl(215 19% 35%);             /* Subtle borders */
+  --color-border-dark: hsl(var(--base-gray-800));     /* Emphasized borders */
+
+  /* ---- Brand Colors (Adapted for Dark Mode) ---- */
+  /* Primary: Brighter, more vibrant blue - pops against dark bg */
+  --color-primary: hsl(var(--base-blue-400));         /* #60A5FA - Vibrant */
+  --color-primary-hover: hsl(var(--base-blue-300));   /* Lighter on hover */
+  --color-primary-active: hsl(var(--base-blue-200));  /* Pressed state */
+  --color-primary-light: hsl(210 50% 25%);            /* Dark tint */
+
+  /* Secondary: Lighter indigo-blue */
+  --color-secondary: hsl(235 82% 72%);                /* Indigo */
+  --color-secondary-hover: hsl(235 82% 82%);
+  --color-secondary-active: hsl(235 82% 88%);
+  --color-secondary-light: hsl(230 30% 25%);
+
+  /* Accent: Brighter, more saturated orange for dark mode */
+  --color-accent: hsl(var(--base-orange-500));        /* #F28C38 - Vibrant */
+  --color-accent-hover: hsl(var(--base-orange-400));  /* Lighter on hover */
+  --color-accent-active: hsl(var(--base-orange-300)); /* Pressed state */
+  --color-accent-light: hsl(24 40% 20%);              /* Dark tint */
+
+  /* ---- Feedback Colors (Full System) ---- */
+  /* Success */
+  --color-success: hsl(var(--base-success-dark));
+  --color-success-hover: hsl(142 69% 70%);
+  --color-success-light: hsl(145 35% 18%);
+  --color-success-bg: hsl(145 35% 18%);
+  --color-success-text: hsl(142 69% 65%);
+  --color-success-border: hsl(142 40% 35%);
+
+  /* Warning */
+  --color-warning: hsl(var(--base-warning-dark));
+  --color-warning-hover: hsl(48 96% 65%);
+  --color-warning-light: hsl(45 50% 18%);
+  --color-warning-bg: hsl(45 50% 18%);
+  --color-warning-text: hsl(45 93% 58%);
+  --color-warning-border: hsl(38 50% 35%);
+
+  /* Error */
+  --color-error: hsl(var(--base-error-dark));
+  --color-error-hover: hsl(0 91% 80%);
+  --color-error-light: hsl(0 40% 18%);
+  --color-error-bg: hsl(0 40% 18%);
+  --color-error-text: hsl(0 91% 71%);
+  --color-error-border: hsl(0 50% 35%);
+
+  /* Info */
+  --color-info: hsl(var(--base-blue-400));
+  --color-info-hover: hsl(var(--base-blue-300));
+  --color-info-light: hsl(210 50% 25%);
+  --color-info-bg: hsl(210 50% 25%);
+  --color-info-text: hsl(var(--base-blue-300));
+  --color-info-border: hsl(210 40% 40%);
+
+  /* ---- Focus Ring System ---- */
+  --ring-color: hsl(var(--base-blue-400));
+  --ring-color-alpha: hsla(var(--base-blue-400) / var(--alpha-30));
+  --ring-width: 2px;
+  --ring-offset: 2px;
+  --ring-offset-color: hsl(var(--base-gray-950));
+
+  /* ---- Card Tokens ---- */
+  --color-card-bg: hsl(var(--base-gray-800));
+  --color-card-hover: hsl(var(--base-gray-700));
+  --color-card-separator: hsl(215 20% 28%);
+  --color-card-shadow: hsla(222 47% 5% / 0.4);
+
+  /* ---- Product Display ---- */
+  --color-product-title: hsl(210 20% 95%);
+  --color-sku: hsl(215 18% 65%);
+  --color-compare-price: hsl(215 16% 47%);
+  --color-sale-price: hsl(var(--base-error-dark));
+
+  /* ---- Interactive Elements ---- */
+  --color-button-text: hsl(var(--base-gray-50));
+  --color-button-disabled: hsl(215 19% 35%);
+
+  --color-icon: hsl(215 18% 65%);
+  --color-icon-hover: hsl(var(--base-blue-400));
+  --color-icon-muted: hsl(215 16% 47%);
+
+  /* ---- Badge/Tag Tokens ---- */
+  --color-badge-bg: hsl(var(--base-blue-400));
+  --color-badge-text: hsl(var(--base-gray-950));
+  --color-badge-secondary-bg: hsl(215 20% 28%);
+  --color-badge-secondary-text: hsl(var(--base-blue-400));
+
+  /* ---- Decorative Elements ---- */
+  --color-star-filled: hsl(var(--base-star));
+  --color-star-unfilled: hsl(215 19% 35%);
+
+  --color-quote: hsl(215 19% 35%);
+  --color-quote-text: hsl(215 18% 65%);
+
+  /* ---- Navigation ---- */
+  --color-nav-bg: hsl(var(--base-blue-400));
+  --color-nav-text: hsl(var(--base-gray-950));
+  --color-nav-hover: hsl(var(--base-blue-300));
+  --color-dot-active: hsl(var(--base-blue-400));
+  --color-dot-inactive: hsla(var(--base-blue-400) / 0.3);
+
+  /* ---- Banner/CTA ---- */
+  --color-banner-bg: hsl(210 50% 25%);
+
+  /* ---- Footer (Dark Blue - matches main surface) ---- */
+  --color-footer-bg: hsl(217 24% 17%);               /* #212936 - matches dark surface */
+  --color-footer-surface: hsl(217 24% 17%);          /* Same as bg */
+  --color-footer-border: hsl(215 25% 27%);           /* Subtle borders */
+  --color-footer-text: hsl(210 20% 85%);             /* Light text */
+  --color-footer-text-heading: hsl(210 20% 95%);     /* Bright headings */
+
+  /* ---- Card Opacity Tokens ---- */
+  --card-bg-opacity: 0.05;                           /* 5% white overlay */
+  --card-border-opacity: 0.12;                       /* 12% border */
+  --card-hover-opacity: 0.08;                        /* 8% on hover */
+
+  /* ---- Text Hierarchy (Improved Distinction) ---- */
+  --color-text-quote: hsl(215 15% 78%);              /* Slightly dimmer than name */
+  --color-text-label: hsl(215 20% 55%);              /* Labels, locations */
+  --color-banner-text: hsl(210 20% 95%);
+  --color-banner-button-bg: hsl(var(--base-success-dark));
+  --color-banner-button-hover: hsl(142 69% 70%);
+
+  /* ---- Section Backgrounds ---- */
+  --color-section-light: hsl(var(--base-gray-800));
+  --color-section-alt: hsl(var(--base-gray-950));
+
+  /* ---- Links ---- */
+  --color-link: hsl(var(--base-blue-400));
+  --color-link-hover: hsl(var(--base-blue-300));
+  --color-link-visited: hsl(235 82% 75%);
+
+  /* ---- Focus States ---- */
+  --color-focus-ring: hsla(var(--base-blue-400) / 0.5);
+  --color-focus-outline: hsl(var(--base-blue-400));
+
+  /* ---- Toggle Specific (Dark Mode) ---- */
+  /* Ice Blue active state - SAME as light mode for brand consistency */
+  --toggle-active-bg: hsl(var(--base-ice-blue));
+  --toggle-active-text: hsl(210 20% 95%);          /* Off-white */
+  --toggle-inactive-bg: transparent;
+  --toggle-inactive-text: hsl(218 11% 65%);        /* Light gray */
+  --toggle-hover-text: hsl(210 20% 95%);           /* Off-white on hover */
+  --toggle-hover-bg: hsl(215 20% 35%);             /* Dark slate bg on hover */
+  --toggle-container-bg: hsl(var(--base-muted-dark));
+
+  /* ---- Component Tokens: Inputs ---- */
+  --input-bg: hsl(var(--base-gray-800));
+  --input-bg-disabled: hsl(var(--base-gray-900));
+  --input-border: hsl(215 20% 28%);
+  --input-border-hover: hsl(215 20% 38%);
+  --input-border-focus: hsl(var(--base-blue-400));
+  --input-placeholder: hsl(215 16% 55%);
+  --input-text: hsl(210 20% 95%);
+
+  /* ---- Component Tokens: Tables ---- */
+  --table-header-bg: hsl(var(--base-gray-800));
+  --table-row-hover: hsl(215 20% 22%);
+  --table-row-stripe: hsl(215 20% 18%);
+  --table-border: hsl(215 20% 28%);
+
+  /* ---- Component Tokens: Buttons ---- */
+  --button-primary-bg: var(--color-primary);
+  --button-primary-bg-hover: var(--color-primary-hover);
+  --button-primary-bg-active: var(--color-primary-active);
+  --button-primary-text: hsl(var(--base-gray-950));
+  --button-primary-bg-disabled: hsl(215 20% 35%);
+  --button-primary-text-disabled: hsl(215 16% 55%);
+
+  --button-secondary-bg: transparent;
+  --button-secondary-border: var(--color-primary);
+  --button-secondary-text: var(--color-primary);
+  --button-secondary-bg-hover: var(--color-primary);
+  --button-secondary-text-hover: hsl(var(--base-gray-950));
+
+  /* ---- Component Tokens: Skeleton/Loading ---- */
+  --skeleton-base: hsl(215 20% 22%);
+  --skeleton-shimmer: hsl(215 20% 28%);
 }
 
 /* ============================================
    FORCED THEME CONSISTENCY (BOTH MODES)
    Override saved schema values to ensure theme unity
+
+   Note: Homepage sections (features-bar, cta-banner, testimonials,
+   product-grid, content-block) now use semantic tokens directly.
+   These overrides serve as backup coverage for edge cases and
+   Shopify's built-in color scheme classes.
    ============================================ */
 
 /* Promo Bar - Force primary color */
@@ -337,7 +612,7 @@ span.pill-text,
 [class*="pill-text"],
 .testimonial__pill .pill-text {
   background-color: var(--color-primary) !important;
-  color: #FFFFFF !important;
+  color: var(--color-button-text) !important;
 }
 
 /* Product Cards */
@@ -465,9 +740,9 @@ p.features-bar__desc {
 [id^="VideoBanner"] .button--secondary,
 [id^="VideoBanner"] .button.button--secondary,
 [id^="VideoBanner"] .button {
-  background-color: #005496 !important;
-  color: #FFFFFF !important;
-  border-color: #005496 !important;
+  background-color: var(--color-primary) !important;
+  color: var(--color-text-inverse) !important;
+  border-color: var(--color-primary) !important;
 }
 
 [id^="VideoBanner"] .button--primary:hover,
@@ -475,15 +750,15 @@ p.features-bar__desc {
 [id^="VideoBanner"] .button--secondary:hover,
 [id^="VideoBanner"] .button.button--secondary:hover,
 [id^="VideoBanner"] .button:hover {
-  background-color: #003E70 !important;
-  border-color: #003E70 !important;
-  color: #FFFFFF !important;
+  background-color: var(--color-primary-hover) !important;
+  border-color: var(--color-primary-hover) !important;
+  color: var(--color-text-inverse) !important;
 }
 
-/* Footer - Blue background with white text in light mode */
+/* Footer - Branded background (uses tokens) */
 .footer {
-  background-color: #005496 !important;
-  color: #FFFFFF !important;
+  background-color: var(--color-footer-bg) !important;
+  color: var(--color-footer-text) !important;
   padding: 1.5rem !important;
   padding-top: 1.5rem !important;
 }
@@ -498,18 +773,18 @@ p.features-bar__desc {
 .footer__copyright,
 .footer-block__heading,
 .footer small {
-  color: #FFFFFF !important;
+  color: var(--color-footer-text) !important;
   text-decoration: none !important;
 }
 
 .footer a:hover {
-  color: rgba(255, 255, 255, 0.8) !important;
+  color: var(--color-footer-text) !important;
+  opacity: 0.8;
   text-decoration: none !important;
 }
 
 .footer__theme-toggle-section {
-  background-color: #005496 !important;
-  border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+  background-color: var(--color-footer-surface) !important;
 }
 
 .footer__theme-toggle-section .theme-toggle {
@@ -517,12 +792,12 @@ p.features-bar__desc {
   border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
-.footer__theme-toggle-section .theme-toggle__btn {
+.footer__theme-toggle-section .theme-toggle__btn[aria-pressed="false"] {
   color: rgba(255, 255, 255, 0.7) !important;
 }
 
-.footer__theme-toggle-section .theme-toggle__btn:first-child {
-  border-right-color: rgba(255, 255, 255, 0.3) !important;
+.footer__theme-toggle-section .theme-toggle__btn[aria-pressed="false"]:hover {
+  color: rgba(255, 255, 255, 1) !important;
 }
 
 /* RTE Content */
@@ -540,11 +815,11 @@ a:not([class]):not([style]):hover {
   color: var(--color-link-hover) !important;
 }
 
-/* Footer background - force blue for all color schemes */
+/* Footer background - force branded color for all color schemes */
 .footer.color-scheme-2,
 .footer[class*="color-scheme"] {
-  background-color: #005496 !important;
-  color: #FFFFFF !important;
+  background-color: var(--color-footer-bg) !important;
+  color: var(--color-footer-text) !important;
 }
 
 /* Ensure white text on non-white/colored backgrounds */
@@ -552,13 +827,13 @@ a:not([class]):not([style]):hover {
 .promo-bar *,
 [class*="wholesale-banner"],
 [class*="wholesale-banner"] * {
-  color: #FFFFFF !important;
+  color: var(--color-button-text) !important;
 }
 
 /* Customer Reviews badge - use theme color */
 .testimonial__badge {
-  background-color: #005496 !important;
-  color: #FFFFFF !important;
+  background-color: var(--color-badge-bg) !important;
+  color: var(--color-badge-text) !important;
 }
 
 /* Generic text overrides for common non-theme colors */
@@ -614,9 +889,14 @@ a:not([class]):not([style]):hover {
   color: var(--color-text-primary) !important;
 }
 
-/* Override all Shopify color scheme backgrounds */
-[data-theme="dark"] [class*="color-scheme"],
-[data-theme="dark"] [class*="color-"] {
+/* Video banner sections need transparent background */
+[data-theme="dark"] .shopify-section:has([id^="VideoBanner"]) {
+  background-color: transparent !important;
+}
+
+/* Override all Shopify color scheme backgrounds - exclude video banners */
+[data-theme="dark"] [class*="color-scheme"]:not([id^="VideoBanner"] *):not(.section-video-hero *),
+[data-theme="dark"] [class*="color-"]:not([id^="VideoBanner"] *):not(.section-video-hero *) {
   background-color: var(--color-bg) !important;
 }
 
@@ -746,20 +1026,67 @@ a:not([class]):not([style]):hover {
   color: var(--color-text-primary) !important;
 }
 
-/* Footer */
-[data-theme="dark"] .footer {
-  background-color: var(--color-bg) !important;
+/* Footer - Dark Blue background for entire section */
+[data-theme="dark"] .footer,
+[data-theme="dark"] .shopify-section-group-footer-group,
+[data-theme="dark"] [class*="shopify-section-footer"],
+[data-theme="dark"] .footer.gradient,
+[data-theme="dark"] .footer[class*="color-scheme"] {
+  background-color: var(--color-footer-bg) !important;
+  background: var(--color-footer-bg) !important;
+}
+
+[data-theme="dark"] .footer h2,
+[data-theme="dark"] .footer h3,
+[data-theme="dark"] .footer h4,
+[data-theme="dark"] .footer-block__heading {
+  color: var(--color-footer-text-heading) !important;
 }
 
 [data-theme="dark"] .footer a,
+[data-theme="dark"] .footer p,
+[data-theme="dark"] .footer span,
+[data-theme="dark"] .footer li,
 [data-theme="dark"] .footer__copyright,
-[data-theme="dark"] .footer-block__heading,
 [data-theme="dark"] .footer small {
-  color: var(--color-text-secondary) !important;
+  color: var(--color-footer-text) !important;
 }
 
 [data-theme="dark"] .footer a:hover {
   color: var(--color-primary) !important;
+}
+
+/* Footer content sections - subtle branded separation */
+[data-theme="dark"] .footer__content-top {
+  background-color: transparent !important;
+}
+
+[data-theme="dark"] .footer__content-bottom {
+  background-color: transparent !important;
+  border-top: 1px solid var(--color-footer-border) !important;
+}
+
+[data-theme="dark"] .footer-block {
+  background-color: transparent !important;
+}
+
+/* Footer theme toggle section - dark mode */
+[data-theme="dark"] .footer__theme-toggle-section {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+[data-theme="dark"] .footer__theme-toggle-section .theme-toggle {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: var(--color-footer-border) !important;
+}
+
+[data-theme="dark"] .footer__theme-toggle-section .theme-toggle__btn[aria-pressed="false"] {
+  color: var(--color-footer-text) !important;
+}
+
+[data-theme="dark"] .footer__theme-toggle-section .theme-toggle__btn[aria-pressed="false"]:hover {
+  color: var(--color-footer-text-heading) !important;
 }
 
 /* Form inputs */
@@ -833,9 +1160,18 @@ a:not([class]):not([style]):hover {
   background-color: var(--color-primary) !important;
 }
 
-/* Gradient overlays */
-[data-theme="dark"] .gradient {
+/* Gradient overlays - exclude video banners which need transparent overlays */
+[data-theme="dark"] .gradient:not([id^="VideoBanner"] .gradient) {
   background: var(--color-bg) !important;
+}
+
+/* Video Banner - ensure transparent content box */
+[data-theme="dark"] [id^="VideoBanner"] .banner__box,
+[data-theme="dark"] [id^="VideoBanner"] .gradient,
+[data-theme="dark"] .section-video-hero .banner__box,
+[data-theme="dark"] .section-video-hero .gradient {
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 /* ============================================
@@ -855,6 +1191,24 @@ a:not([class]):not([style]):hover {
 /* ============================================
    HEADER2 STYLES (Custom Header)
    ============================================ */
+
+/* Override header2 CSS custom properties for dark mode */
+[data-theme="dark"] .header2-section {
+  --header2-promo-bg: hsl(var(--base-blue-600));
+  --header2-promo-text: hsl(210 20% 95%);
+  --header2-header-bg: var(--color-surface);
+  --header2-nav-bg: var(--color-surface);
+  --header2-nav-hover: var(--color-surface-alt);
+  --header2-nav-text-hover: var(--color-primary);
+  --header2-shop-all-bg: var(--color-surface-alt);
+  --header2-shop-all-text: var(--color-text-primary);
+  --header2-shop-all-hover: var(--color-primary-light);
+  --header2-search-border: var(--color-border);
+  --header2-search-btn: var(--color-primary);
+  --header2-search-btn-hover: hsl(var(--base-blue-500));
+  --header2-accent: var(--color-primary);
+  --header2-recommendation-hover: var(--color-primary-light);
+}
 
 [data-theme="dark"] .header2-section,
 [data-theme="dark"] .header2__container,
@@ -902,6 +1256,57 @@ a:not([class]):not([style]):hover {
 [data-theme="dark"] .header2__mobile-menu-header {
   background-color: var(--color-surface) !important;
   border-color: var(--color-border) !important;
+}
+
+/* Header2 action icons (Sign In, Cart) - light colored in dark mode */
+/* The SVGs use fill="currentColor" so we need to set the color property */
+[data-theme="dark"] .header2__action,
+[data-theme="dark"] .header2__actions a {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .header2__signin-wrapper,
+[data-theme="dark"] .header2__cart-wrapper,
+[data-theme="dark"] .header2__signin-icon,
+[data-theme="dark"] .header2__cart-icon {
+  color: var(--color-text-primary) !important;
+}
+
+/* Force SVG fill for icons that use currentColor */
+[data-theme="dark"] .header2__signin-icon svg,
+[data-theme="dark"] .header2__cart-icon svg,
+[data-theme="dark"] .header2__signin-icon .icon,
+[data-theme="dark"] .header2__cart-icon .icon {
+  color: var(--color-text-primary) !important;
+}
+
+/* Direct path fill override for stubborn SVGs */
+[data-theme="dark"] .header2__signin-icon svg path,
+[data-theme="dark"] .header2__cart-icon svg path,
+[data-theme="dark"] .header2__actions svg path {
+  fill: var(--color-text-primary) !important;
+}
+
+/* Fallback: Use explicit light color for header action icons in dark mode */
+[data-theme="dark"] .header2__actions .icon,
+[data-theme="dark"] .header2__actions .icon path,
+[data-theme="dark"] .header2__actions svg.icon-account path,
+[data-theme="dark"] .header2__actions svg.icon-cart path {
+  fill: hsl(210 20% 95%) !important;
+}
+
+/* Search button icon should be white on blue background */
+[data-theme="dark"] .header2__search-button svg,
+[data-theme="dark"] .header2__search-button svg path {
+  fill: var(--color-button-text) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* Store info icon */
+[data-theme="dark"] .header2__store-icon svg,
+[data-theme="dark"] .header2__action-icon {
+  fill: var(--color-text-secondary) !important;
+  color: var(--color-text-secondary) !important;
 }
 
 /* ============================================
@@ -963,6 +1368,18 @@ a:not([class]):not([style]):hover {
   border-color: var(--color-border) !important;
 }
 
+/* Features bar icon tiles need darker gradient for white icon visibility */
+[data-theme="dark"] .features-bar__icon {
+  /* Use darker blue shades so white PNG icons remain visible */
+  background: linear-gradient(180deg, hsl(var(--base-blue-700)), hsl(var(--base-blue-900))) !important;
+}
+
+/* Ensure PNG icons within features-bar stay white (no filters) */
+[data-theme="dark"] .features-bar__icon img {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
 [data-theme="dark"] .product-highlights,
 [data-theme="dark"] .product-grid__container {
   background-color: var(--color-bg) !important;
@@ -977,10 +1394,36 @@ a:not([class]):not([style]):hover {
   color: var(--color-text-primary) !important;
 }
 
-/* Features Icons Grid */
+/* Features Icons Grid - Override CSS custom properties */
 [data-theme="dark"] .features-icons-grid,
 [data-theme="dark"] [class*="features-icons-grid"] {
+  --sig-bg: var(--color-bg) !important;
+  --sig-head: var(--color-text-heading) !important;
+  --sig-text: var(--color-text-secondary) !important;
+  --sig-blue-start: hsl(var(--base-blue-600)) !important;
+  --sig-blue-end: hsl(var(--base-blue-700)) !important;
   background-color: var(--color-bg) !important;
+}
+
+[data-theme="dark"] .sig-heading {
+  color: var(--color-text-heading) !important;
+}
+
+[data-theme="dark"] .sig-title {
+  color: var(--color-text-heading) !important;
+}
+
+[data-theme="dark"] .sig-subheading,
+[data-theme="dark"] .sig-desc {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .sig-link {
+  color: var(--color-text-heading) !important;
+}
+
+[data-theme="dark"] .sig-icon {
+  background: linear-gradient(180deg, hsl(var(--base-blue-600)), hsl(var(--base-blue-700))) !important;
 }
 
 /* ============================================
@@ -1027,11 +1470,95 @@ a:not([class]):not([style]):hover {
 }
 
 /* ============================================
-   CUSTOMER REVIEWS SECTION
+   WHOLESALE APPLY FORM
+   Override inline style CSS custom properties
    ============================================ */
 
-[data-theme="dark"] .customer-reviews {
+[data-theme="dark"] [class*="wh-apply-"] {
+  --wa-bg: var(--color-bg) !important;
+  --wa-head: var(--color-text-heading) !important;
+  --wa-body: var(--color-text-primary) !important;
+  --wa-card-bg: var(--color-card-bg) !important;
+  --wa-card-border: var(--color-border) !important;
+  --wa-btn-bg: var(--color-primary) !important;
+  --wa-btn-bg-hover: hsl(var(--base-blue-500)) !important;
+  --wa-btn-text: var(--color-button-text) !important;
+}
+
+[data-theme="dark"] [class*="wa"][class*="-input"] {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] [class*="wa"][class*="-input"]::placeholder {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] [class*="wa"][class*="-input"]:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px hsla(var(--base-blue-400) / 0.3) !important;
+}
+
+/* ============================================
+   CONTACT FORM
+   Override CSS custom properties for dark mode
+   ============================================ */
+
+[data-theme="dark"] .contact,
+[data-theme="dark"] [class*="section-contact"] {
+  --contact-surface: var(--color-card-bg);
+  --contact-surface-alt: var(--color-surface-alt);
+  --contact-text: var(--color-text-primary);
+  --contact-text-secondary: var(--color-text-secondary);
+  --contact-border: var(--color-border);
+  --contact-border-light: var(--color-border);
+  --contact-link: var(--color-link);
+  --contact-link-hover: var(--color-link-hover);
+  --contact-input-bg: var(--color-surface);
+  --contact-input-text: var(--color-text-primary);
+  --contact-input-border: var(--color-border);
+  --contact-focus-ring: hsla(var(--base-blue-400) / 0.3);
+}
+
+[data-theme="dark"] .contact-form-container {
+  background-color: var(--color-card-bg) !important;
+  border-color: var(--color-border) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .quote-product-info {
+  background-color: var(--color-surface-alt) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .quote-search-input {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .quote-search-results {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ============================================
+   CUSTOMER REVIEWS SECTION
+   Aggressive overrides for inline style variables
+   ============================================ */
+
+[data-theme="dark"] .customer-reviews,
+[data-theme="dark"] .testimonial,
+[data-theme="dark"] [class*="testimonial"] {
   background-color: var(--color-bg) !important;
+  /* Override inline CSS custom properties */
+  --testimonial-text-color: var(--color-text-primary) !important;
+  --testimonial-name-color: var(--color-text-primary) !important;
+  --testimonial-service-color: var(--color-text-primary) !important;
+  --testimonial-description-color: var(--color-text-secondary) !important;
+  --testimonial-location-color: var(--color-text-muted) !important;
+  --testimonial-quote-color: var(--color-quote) !important;
 }
 
 [data-theme="dark"] .testimonial__badge {
@@ -1039,17 +1566,29 @@ a:not([class]):not([style]):hover {
   color: var(--color-badge-text) !important;
 }
 
-[data-theme="dark"] .testimonial__heading {
+[data-theme="dark"] .testimonial__heading,
+[data-theme="dark"] .testimonial .testimonial__heading,
+[data-theme="dark"] [class*="testimonial"] h2 {
   color: var(--color-text-primary) !important;
 }
 
-[data-theme="dark"] .testimonial__description {
+[data-theme="dark"] .testimonial__description,
+[data-theme="dark"] .testimonial .testimonial__description {
   color: var(--color-text-secondary) !important;
 }
 
 [data-theme="dark"] .testimonial__card {
-  background-color: var(--color-card-bg) !important;
-  border-color: var(--color-border) !important;
+  /* Use surface-2 for more contrast against section bg (24% vs 9% lightness) */
+  background-color: var(--color-surface-2) !important;
+  border: 1px solid var(--color-border-light) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+[data-theme="dark"] .testimonial__card:hover {
+  background-color: var(--color-surface-3) !important;
+  border-color: var(--color-border-light) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35) !important;
 }
 
 [data-theme="dark"] .testimonial__star {
@@ -1064,24 +1603,53 @@ a:not([class]):not([style]):hover {
   color: var(--color-quote) !important;
 }
 
+/* Testimonial quote text - slightly dimmer than name for hierarchy */
 [data-theme="dark"] .testimonial__text,
 [data-theme="dark"] .testimonial__text.rte,
 [data-theme="dark"] .testimonial__text.rte p,
-[data-theme="dark"] .testimonial__text p {
-  color: var(--color-text-secondary) !important;
+[data-theme="dark"] .testimonial__text p,
+[data-theme="dark"] .testimonial .testimonial__text,
+[data-theme="dark"] .testimonial .testimonial__text p,
+[data-theme="dark"] [class*="testimonial"] .testimonial__text,
+[data-theme="dark"] [class*="testimonial"] .testimonial__text p,
+[data-theme="dark"] .testimonial__card .testimonial__text,
+[data-theme="dark"] .testimonial__card .testimonial__text p,
+[data-theme="dark"] .testimonial__text[style],
+[data-theme="dark"] .testimonial__text p[style],
+[data-theme="dark"] blockquote.testimonial__text,
+[data-theme="dark"] .testimonial__text blockquote {
+  color: var(--color-text-quote) !important;  /* Slightly dimmer than name */
 }
 
-[data-theme="dark"] .testimonial__customer-name {
+/* Customer name - aggressive override */
+[data-theme="dark"] .testimonial__customer-name,
+[data-theme="dark"] .testimonial .testimonial__customer-name,
+[data-theme="dark"] .testimonial__card .testimonial__customer-name,
+[data-theme="dark"] [class*="testimonial"] .testimonial__customer-name,
+[data-theme="dark"] .testimonial__customer-name[style] {
   color: var(--color-text-primary) !important;
 }
 
 [data-theme="dark"] .testimonial__customer-location {
-  color: var(--color-text-muted) !important;
+  color: var(--color-text-label) !important;  /* Distinct label color */
 }
 
-[data-theme="dark"] .testimonial__service-type {
-  background-color: var(--color-badge-secondary-bg) !important;
-  color: var(--color-badge-secondary-text) !important;
+/* Customer info container - seamless with card background */
+[data-theme="dark"] .testimonial__customer-info {
+  background-color: transparent !important;
+  border: none !important;
+  border-top: none !important;
+}
+
+/* Service type / industry badge - branded appearance */
+[data-theme="dark"] .testimonial__service-type,
+[data-theme="dark"] .testimonial .testimonial__service-type,
+[data-theme="dark"] .testimonial__card .testimonial__service-type,
+[data-theme="dark"] [class*="testimonial"] .testimonial__service-type,
+[data-theme="dark"] .testimonial__service-type[style] {
+  background-color: hsla(var(--base-blue-400) / 0.15) !important;  /* Subtle blue tint */
+  color: hsl(var(--base-blue-300)) !important;  /* Light blue text */
+  border: 1px solid hsla(var(--base-blue-400) / 0.25) !important;
 }
 
 [data-theme="dark"] .testimonial__nav-btn {
@@ -1105,10 +1673,21 @@ a:not([class]):not([style]):hover {
    BANNER SECTION STYLES
    ============================================ */
 
+/* General banner backgrounds - video banners override below */
 [data-theme="dark"] .banner,
 [data-theme="dark"] .banner__box,
 [data-theme="dark"] .banner__content {
   background-color: var(--color-surface) !important;
+}
+
+/* Video banners need fully transparent backgrounds to show video */
+[data-theme="dark"] [id^="VideoBanner"],
+[data-theme="dark"] [id^="VideoBanner"] .banner,
+[data-theme="dark"] [id^="VideoBanner"] .banner__box,
+[data-theme="dark"] [id^="VideoBanner"] .banner__content,
+[data-theme="dark"] [id^="VideoBanner"] .gradient {
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 [data-theme="dark"] .banner__box,
@@ -1125,6 +1704,20 @@ a:not([class]):not([style]):hover {
 [data-theme="dark"] .banner__text,
 [data-theme="dark"] .banner__text p {
   color: var(--color-text-secondary) !important;
+}
+
+/* Video banner text stays white for contrast on video */
+[data-theme="dark"] [id^="VideoBanner"] .banner__heading,
+[data-theme="dark"] [id^="VideoBanner"] .banner__text,
+[data-theme="dark"] [id^="VideoBanner"] .banner__text p {
+  color: #FFFFFF !important;
+}
+
+/* Banner icon-text block - dark mode overrides */
+[data-theme="dark"] .banner__icon-text {
+  --icon-text-bg: hsl(var(--base-blue-700));
+  --icon-text-color: hsl(210 20% 95%);
+  --icon-text-icon-color: hsl(210 20% 95%);
 }
 
 /* ============================================
@@ -1174,6 +1767,13 @@ a:not([class]):not([style]):hover {
 [data-theme="dark"] blockquote {
   border-color: var(--color-border) !important;
   color: var(--color-quote-text) !important;
+}
+
+/* Testimonial blockquote - no borders for seamless card interior */
+[data-theme="dark"] .testimonial__card blockquote,
+[data-theme="dark"] blockquote.testimonial__text {
+  border: none !important;
+  background-color: transparent !important;
 }
 
 /* ============================================
@@ -1327,111 +1927,82 @@ a:not([class]):not([style]):hover {
 
 /* ============================================
    THEME TOGGLE BUTTON STYLES
+   Segmented control (pill toggle) UI pattern
+
+   Design: Ice Blue (#5BA3F5) active state in BOTH modes
+   for brand consistency across themes.
    ============================================ */
 
 .theme-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 0;
-  padding: 0;
+  gap: 4px;
+  padding: 4px;
   user-select: none;
-  background-color: var(--color-surface, #FFFFFF);
-  border: 1px solid var(--color-border, #E1E5EA);
-  border-radius: 10px;
+  background-color: var(--toggle-container-bg);
+  border-radius: 8px;                              /* rounded-lg = 0.5rem */
   overflow: hidden;
 }
 
 .theme-toggle__btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.625rem;
-  padding: 0.625rem 1.25rem;
-  background-color: transparent;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: var(--toggle-inactive-bg);
   border: none;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  color: var(--color-text-muted, #9CA3AF);
-  transition: all 0.2s ease;
+  color: var(--toggle-inactive-text);
+  /* 300ms ease-in-out transition for all properties */
+  transition: all 300ms ease-in-out;
   position: relative;
-  opacity: 0.6;
-}
-
-.theme-toggle__btn:first-child {
-  border-right: 1px solid var(--color-border, #E1E5EA);
 }
 
 .theme-toggle__btn svg {
-  width: 20px;
-  height: 20px;
-  fill: currentColor;
+  width: 16px;                                     /* h-4 w-4 = 16px */
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
 }
 
-/* Active state for light mode */
-[data-theme="light"] .theme-toggle__btn--light,
-:root:not([data-theme="dark"]) .theme-toggle__btn--light {
-  background-color: var(--color-primary, #005496);
-  color: var(--color-button-text);
-  opacity: 1;
+/* Active state - Ice Blue with shadow for depth */
+.theme-toggle__btn[aria-pressed="true"] {
+  background-color: var(--toggle-active-bg);
+  color: var(--toggle-active-text);
   font-weight: 600;
-  box-shadow: 0 2px 4px rgba(0, 84, 150, 0.3);
+  box-shadow: 0 1px 3px hsla(var(--base-ice-blue) / 0.3);
 }
 
-/* Active state for dark mode */
-[data-theme="dark"] .theme-toggle__btn--dark {
-  background-color: var(--color-primary, #60A5FA);
-  color: var(--color-text-inverse, #0F172A);
-  opacity: 1;
-  font-weight: 600;
-  box-shadow: 0 2px 4px rgba(96, 165, 250, 0.3);
+/* Inactive button styling */
+.theme-toggle__btn[aria-pressed="false"] {
+  color: var(--toggle-inactive-text);
+  background-color: transparent;                   /* Explicitly transparent */
 }
 
-/* Inactive button styling - make it look selectable */
-[data-theme="light"] .theme-toggle__btn--dark,
-:root:not([data-theme="dark"]) .theme-toggle__btn--dark {
-  color: var(--color-text-muted, #9CA3AF);
-  opacity: 0.7;
+/* Hover state - text/icon color change only, no background */
+.theme-toggle__btn[aria-pressed="false"]:hover {
+  color: var(--toggle-hover-text);
+  background-color: transparent;
 }
 
-[data-theme="dark"] .theme-toggle__btn--light {
-  color: var(--color-text-muted, #64748B);
-  opacity: 0.7;
-}
-
-/* Hover states for inactive buttons */
-.theme-toggle__btn:hover {
-  opacity: 1;
-}
-
-[data-theme="light"] .theme-toggle__btn--dark:hover,
-:root:not([data-theme="dark"]) .theme-toggle__btn--dark:hover {
-  background-color: var(--color-surface-alt, #F0F2F5);
-  color: var(--color-text-primary, #2B2C2D);
-}
-
-[data-theme="dark"] .theme-toggle__btn--light:hover {
-  background-color: var(--color-surface-hover, #2D3A50);
-  color: var(--color-text-primary, #F1F5F9);
-}
-
-/* Focus state */
+/* Focus state - accessibility */
 .theme-toggle__btn:focus {
   outline: none;
-  box-shadow: inset 0 0 0 2px var(--color-primary, #005496);
 }
 
-/* Dark mode container adjustments */
+.theme-toggle__btn:focus-visible {
+  outline: 2px solid hsl(var(--base-ice-blue));
+  outline-offset: 2px;
+}
+
+/* Dark mode container adjustment */
 [data-theme="dark"] .theme-toggle {
-  background-color: var(--color-surface, #1A1D21);
-  border-color: var(--color-border, #2A2E33);
-}
-
-[data-theme="dark"] .theme-toggle__btn {
-  color: var(--color-text-secondary, rgba(245, 247, 250, 0.65));
-}
-
-[data-theme="dark"] .theme-toggle__btn:first-child {
-  border-right-color: var(--color-border, #2A2E33);
+  background-color: var(--toggle-container-bg);
 }
 
 /* Footer top section placement - centered */
@@ -1441,7 +2012,87 @@ a:not([class]):not([style]):hover {
   justify-content: center;
   width: 100%;
   padding: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   margin-bottom: 3rem;
   box-sizing: border-box;
+}
+
+/* ============================================
+   TRANSITION SYSTEM
+   Prevents flash on initial load, enables smooth
+   transitions after theme is ready.
+   Similar to React next-themes pattern.
+   ============================================ */
+
+/* Disable ALL transitions on initial page load to prevent FOUC */
+html:not(.theme-ready) *,
+html:not(.theme-ready) *::before,
+html:not(.theme-ready) *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* After theme is ready, enable smooth color transitions */
+html.theme-ready *,
+html.theme-ready *::before,
+html.theme-ready *::after {
+  transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Exclude elements that shouldn't transition (performance) */
+html.theme-ready img,
+html.theme-ready video,
+html.theme-ready iframe,
+html.theme-ready canvas,
+html.theme-ready svg path,
+html.theme-ready .no-transition {
+  transition: none !important;
+}
+
+/* Theme transition overlay (optional - for smooth fade effect) */
+.theme-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  background-color: var(--color-bg, #F5F7FA);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 150ms ease-out, visibility 150ms ease-out;
+}
+
+.theme-transition-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Fade out animation for transition overlay */
+@keyframes theme-fade-out {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.theme-transition-overlay.fade-out {
+  animation: theme-fade-out 200ms ease-out forwards;
+}
+
+/* ============================================
+   THEME-SPECIFIC META ADJUSTMENTS
+   ============================================ */
+
+/* Light mode - ensure proper contrast */
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* Dark mode - ensure proper contrast */
+[data-theme="dark"] {
+  color-scheme: dark;
 }

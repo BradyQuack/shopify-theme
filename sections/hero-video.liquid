@@ -1,9 +1,17 @@
 {{ 'section-video-banner.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
+  /* Video overlay uses design setting for opacity control */
   #VideoBanner-{{ section.id }} .banner__overlay {
-    background-color: {{ section.settings.overlay_color }};
+    background-color: #000000;
     opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  }
+
+  /* Text always white on video overlay - works in both light/dark modes */
+  #VideoBanner-{{ section.id }} .banner__heading,
+  #VideoBanner-{{ section.id }} .banner__text,
+  #VideoBanner-{{ section.id }} .banner__text p {
+    color: #FFFFFF;
   }
 {%- endstyle -%}
 
@@ -46,13 +54,12 @@
           {%- when 'heading' -%}
             <h2
               class="banner__heading inline-richtext {{ block.settings.heading_size }}"
-              style="{% if block.settings.heading_color != blank %}color: {{ block.settings.heading_color }};{% endif %}"
               {{ block.shopify_attributes }}
             >
               {{ block.settings.heading }}
             </h2>
           {%- when 'text' -%}
-            <div class="banner__text rte {{ block.settings.text_style }}" style="{% if block.settings.text_color != blank %}color: {{ block.settings.text_color }};{% endif %}" {{ block.shopify_attributes }}>
+            <div class="banner__text rte {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
               <p>{{ block.settings.text }}</p>
             </div>
           {%- when 'buttons' -%}
@@ -272,10 +279,8 @@
       "label": "Video"
     },
     {
-      "type": "color",
-      "id": "overlay_color",
-      "label": "Video overlay color",
-      "default": "#000000"
+      "type": "paragraph",
+      "content": "Overlay color is black. Text is white for optimal video contrast."
     },
     {
       "type": "range",
@@ -459,10 +464,8 @@
           "label": "Heading size"
         },
         {
-          "type": "color",
-          "id": "heading_color",
-          "label": "Heading color",
-          "default": "#FFFFFF"
+          "type": "paragraph",
+          "content": "Text color is white for optimal video contrast"
         }
       ]
     },
@@ -498,10 +501,8 @@
           "label": "Text style"
         },
         {
-          "type": "color",
-          "id": "text_color",
-          "label": "Text color",
-          "default": "#FFFFFF"
+          "type": "paragraph",
+          "content": "Text color is white for optimal video contrast"
         }
       ]
     },

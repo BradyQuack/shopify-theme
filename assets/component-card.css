@@ -1014,8 +1014,15 @@
 }
 
 /* Ensure the card content has the right background */
-.card__content {
+/* Only apply to card__content OUTSIDE card__inner (the visible title area) */
+.card > .card__content {
   background: var(--color-card-bg, white);
+}
+
+/* card__content INSIDE card__inner should be transparent (for media cards) */
+/* This prevents it from covering the image */
+.card__inner .card__content {
+  background: transparent;
 }
 
 /* ============================================

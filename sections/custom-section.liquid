@@ -16,7 +16,7 @@
       #shopify-block-{{ block.id }} .pill-text,
       #block-{{ block.id }} .pill-text {
         font-size: {{ block.settings.pill_font_size }}px;
-        background-color: var(--color-primary);
+        background-color: var(--color-primary, {{ block.settings.pill_bg_color }});
       }
     {%- endif -%}
     {%- if block.type == 'description_title' -%}
@@ -26,7 +26,7 @@
       #block-{{ block.id }} h2,
       #block-{{ block.id }} h2 *,
       #block-{{ block.id }} h2 span {
-        color: var(--color-text-heading);
+        color: var(--color-text-primary, {{ block.settings.title_text_color }});
       }
     {%- endif -%}
     {%- if block.type == 'description_body' -%}
@@ -38,12 +38,12 @@
       #block-{{ block.id }} *,
       #block-{{ block.id }} p,
       #block-{{ block.id }} span {
-        color: var(--color-text-secondary);
+        color: var(--color-text-secondary, {{ block.settings.body_text_color }});
       }
     {%- endif -%}
     {%- if block.type == 'features_highlight' -%}
       #block-{{ block.id }} .features-highlight__item {
-        background-color: var(--color-surface-1);
+        background-color: {{ block.settings.container_bg_color }};
       }
       
       #block-{{ block.id }} .features-highlight__grid {
@@ -103,9 +103,8 @@
     align-items: center;
     justify-content: center;
     padding: 8px 16px;
-    /* Using semantic tokens from theme-toggle.css */
-    background-color: var(--color-primary);
-    color: var(--color-button-text);
+    background-color: var(--color-primary, #007bff);
+    color: var(--color-button-text, #ffffff);
     border-radius: 20px;
     font-weight: 500;
   }
@@ -119,8 +118,7 @@
   }
 
   .custom-section__description {
-    /* Using semantic tokens from theme-toggle.css */
-    color: var(--color-text-secondary);
+    color: var(--color-text-secondary, rgb(113, 128, 150));
     font-style: normal;
   }
 
@@ -174,12 +172,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Using semantic tokens from theme-toggle.css */
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-border, #e5e7eb);
     border-radius: 12px;
     padding: 2px;
     overflow: hidden;
-    box-shadow: 0 2px 4px var(--color-card-shadow);
+    box-shadow: 0 2px 4px var(--color-card-shadow, rgba(0, 0, 0, 0.05));
     transition: all 0.3s ease;
     aspect-ratio: 1;
   }
@@ -357,7 +354,7 @@
                   data-cascade
                   style="--animation-order: {{ forloop.index }};"
                 {% endif %}
-                style="padding-top: {{ block.settings.body_padding_top }}px; padding-bottom: {{ block.settings.body_padding_bottom }}px;{% if settings.animations_reveal_on_scroll %} --animation-order: {{ forloop.index }};{% endif %}"
+                style="padding-top: {{ block.settings.body_padding_top }}px; padding-bottom: {{ block.settings.body_padding_bottom }}px; color: {{ block.settings.body_text_color }} !important;{% if settings.animations_reveal_on_scroll %} --animation-order: {{ forloop.index }};{% endif %}"
               >
                 {{ block.settings.body_text }}
               </div>
@@ -451,7 +448,7 @@
 
 {% schema %}
 {
-  "name": "Content Block",
+  "name": "Custom Section",
   "tag": "section",
   "class": "section",
   "disabled_on": {
@@ -548,8 +545,10 @@
           "label": "Pill text"
         },
         {
-          "type": "paragraph",
-          "content": "Colors are managed by the theme color scheme"
+          "type": "color",
+          "id": "pill_bg_color",
+          "label": "Background color",
+          "default": "#007bff"
         },
         {
           "type": "range",
@@ -623,8 +622,10 @@
           "label": "Heading size"
         },
         {
-          "type": "paragraph",
-          "content": "Colors are managed by the theme color scheme"
+          "type": "color",
+          "id": "title_text_color",
+          "label": "Text color",
+          "default": "#000000"
         },
         {
           "type": "range",
@@ -660,8 +661,10 @@
           "label": "Description"
         },
         {
-          "type": "paragraph",
-          "content": "Colors are managed by the theme color scheme"
+          "type": "color",
+          "id": "body_text_color",
+          "label": "Text color",
+          "default": "#718096"
         },
         {
           "type": "range",
@@ -713,8 +716,14 @@
           "info": "Adjust the width of the features grid container"
         },
         {
-          "type": "paragraph",
-          "content": "Colors are managed by the theme color scheme"
+          "type": "header",
+          "content": "Container Styling"
+        },
+        {
+          "type": "color",
+          "id": "container_bg_color",
+          "label": "Container background color",
+          "default": "#ffffff"
         },
         {
           "type": "header",
@@ -939,7 +948,7 @@
   ],
   "presets": [
     {
-      "name": "Content Block",
+      "name": "Custom Section",
       "blocks": [
         {
           "type": "title_pill"
