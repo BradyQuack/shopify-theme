@@ -1293,6 +1293,18 @@ a:not([class]):not([style]):hover {
   border-color: var(--color-border) !important;
 }
 
+/* Features bar icon tiles need darker gradient for white icon visibility */
+[data-theme="dark"] .features-bar__icon {
+  /* Use darker blue shades so white PNG icons remain visible */
+  background: linear-gradient(180deg, hsl(var(--base-blue-700)), hsl(var(--base-blue-900))) !important;
+}
+
+/* Ensure PNG icons within features-bar stay white (no filters) */
+[data-theme="dark"] .features-bar__icon img {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
 [data-theme="dark"] .product-highlights,
 [data-theme="dark"] .product-grid__container {
   background-color: var(--color-bg) !important;
