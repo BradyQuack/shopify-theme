@@ -32,9 +32,14 @@
 {%- endif -%}
 
 {%- style -%}
+  /* Banner CSS Custom Properties - Light mode defaults from section settings */
+  #Banner-{{ section.id }} {
+    --banner-overlay-color: {{ section.settings.overlay_color | default: '#000000' }};
+  }
+
   #Banner-{{ section.id }}::after {
     opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
-    background-color: {{ section.settings.overlay_color | default: '#000000' }};
+    background-color: var(--banner-overlay-color);
   }
 {%- endstyle -%}
 
@@ -191,21 +196,27 @@
               {%- endif -%}
             </div>
           {%- when 'icon_text' -%}
-            <div class="banner__icon-text" {{ block.shopify_attributes }}>
+            <div class="banner__icon-text" {{ block.shopify_attributes }}
+              style="
+                --icon-text-bg: {{ block.settings.background_color }};
+                --icon-text-color: {{ block.settings.text_color }};
+                --icon-text-icon-color: {{ block.settings.icon_color }};
+              "
+            >
               {%- liquid
                 assign icon_size_px = 24
                 if block.settings.icon_size == 'small'
                   assign icon_size_px = 20
-                elsif block.settings.icon_size == 'large' 
+                elsif block.settings.icon_size == 'large'
                   assign icon_size_px = 28
                 endif
               -%}
-              
+
               <div class="icon-text__container" style="
-                display: grid; 
-                grid-template-columns: repeat({{ block.settings.columns }}, 1fr); 
+                display: grid;
+                grid-template-columns: repeat({{ block.settings.columns }}, 1fr);
                 gap: 0px;
-                background-color: {{ block.settings.background_color }};
+                background-color: var(--icon-text-bg);
                 padding: {{ block.settings.padding }}px;
                 border-radius: 4px;
               ">
@@ -221,15 +232,15 @@
                       align-items: center;
                       justify-content: flex-start;
                       gap: 8px;
-                      color: {{ block.settings.text_color }};
+                      color: var(--icon-text-color);
                       font-weight: 500;
                       padding: 0 10px;
                     ">
                       <div class="icon-text__icon" style="
-                        width: {{ icon_size_px }}px; 
-                        height: {{ icon_size_px }}px; 
+                        width: {{ icon_size_px }}px;
+                        height: {{ icon_size_px }}px;
                         flex-shrink: 0;
-                        color: {{ block.settings.icon_color }};
+                        color: var(--icon-text-icon-color);
                       ">
                         {%- case icon_value -%}
                           {%- when 'truck' -%}

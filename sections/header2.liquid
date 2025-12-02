@@ -3,15 +3,33 @@
 {{ 'component-menu-drawer.css' | asset_url | stylesheet_tag }}
 
 <style>
+  /* Header2 CSS Custom Properties - Light mode defaults from section settings */
+  .header2-section {
+    --header2-promo-bg: {{ section.settings.promo_bar_color }};
+    --header2-promo-text: {{ section.settings.promo_bar_text_color }};
+    --header2-header-bg: {{ section.settings.header_bg_color }};
+    --header2-nav-bg: {{ section.settings.nav_bg_color }};
+    --header2-nav-hover: {{ section.settings.nav_hover_color }};
+    --header2-nav-text-hover: {{ section.settings.nav_text_hover_color | default: '#333' }};
+    --header2-shop-all-bg: {{ section.settings.shop_all_bg_color }};
+    --header2-shop-all-text: {{ section.settings.shop_all_text_color }};
+    --header2-shop-all-hover: {{ section.settings.shop_all_hover_color }};
+    --header2-search-border: {{ section.settings.search_border_color }};
+    --header2-search-btn: {{ section.settings.search_button_color }};
+    --header2-search-btn-hover: {{ section.settings.search_button_hover_color }};
+    --header2-accent: {{ section.settings.accent_color }};
+    --header2-recommendation-hover: {{ section.settings.recommendation_hover_color | default: '#f0f8ff' }};
+  }
+
   /* Top promotional bar */
   .promo-bar {
-    background-color: {{ section.settings.promo_bar_color }};
-    color: {{ section.settings.promo_bar_text_color }};
+    background-color: var(--header2-promo-bg);
+    color: var(--header2-promo-text);
     padding: 12px 0;
     font-size: 14px;
     text-align: center;
   }
-  
+
   .promo-bar__content {
     display: flex;
     justify-content: space-between;
@@ -20,22 +38,22 @@
     margin: 0 auto;
     padding: 0 20px;
   }
-  
+
   .promo-bar__message {
     flex: 1;
   }
-  
+
   .promo-bar__links {
     display: flex;
     gap: 20px;
     font-size: 13px;
   }
-  
+
   .promo-bar__links a {
-    color: {{ section.settings.promo_bar_text_color }};
+    color: var(--header2-promo-text);
     text-decoration: none;
   }
-  
+
   .promo-bar__links a:hover {
     text-decoration: underline;
   }
@@ -132,14 +150,14 @@
   }
 
   .header2__mobile-nav-link--shop-all {
-    background: {{ section.settings.shop_all_bg_color }};
-    color: {{ section.settings.shop_all_text_color }};
+    background: var(--header2-shop-all-bg);
+    color: var(--header2-shop-all-text);
     font-weight: 600;
   }
 
   /* Main header */
   .header2 {
-    background-color: {{ section.settings.header_bg_color }};
+    background-color: var(--header2-header-bg);
     border-bottom: 1px solid var(--color-border, #e0e0e0);
   }
   
@@ -172,7 +190,7 @@
   }
   
   .header2__store-info:hover {
-    color: {{ section.settings.accent_color }};
+    color: var(--header2-accent);
   }
   
   .header2__store-icon {
@@ -198,21 +216,23 @@
   
   .header2__search-form {
     display: flex;
-    border: 2px solid {{ section.settings.search_border_color }};
+    border: 2px solid var(--header2-search-border);
     border-radius: 6px;
     overflow: hidden;
   }
-  
+
   .header2__search-input {
     flex: 1;
     padding: 12px 16px;
     border: none;
     font-size: 16px;
     outline: none;
+    background-color: var(--color-surface, white);
+    color: var(--color-text-primary, #333);
   }
-  
+
   .header2__search-button {
-    background: {{ section.settings.search_button_color }};
+    background: var(--header2-search-btn);
     border: none;
     padding: 12px 20px;
     cursor: pointer;
@@ -220,9 +240,9 @@
     align-items: center;
     justify-content: center;
   }
-  
+
   .header2__search-button:hover {
-    background: {{ section.settings.search_button_hover_color }};
+    background: var(--header2-search-btn-hover);
   }
 
   /* Predictive Search Results */
@@ -355,7 +375,7 @@
   }
   
   .header2__cart-count {
-    background: {{ section.settings.accent_color }};
+    background: var(--header2-accent);
     color: white;
     border-radius: 50%;
     width: 20px;
@@ -369,10 +389,10 @@
     top: -5px;
     right: -5px;
   }
-  
+
   /* Navigation bar */
   .header2__nav {
-    background: {{ section.settings.nav_bg_color }};
+    background: var(--header2-nav-bg);
     border-bottom: 1px solid var(--color-border, #e0e0e0);
   }
   
@@ -422,17 +442,17 @@
   }
   
   .header2__nav-link:hover {
-    background-color: {{ section.settings.nav_hover_color }};
-    color: {{ section.settings.nav_text_hover_color | default: '#333' }};
+    background-color: var(--header2-nav-hover);
+    color: var(--header2-nav-text-hover);
   }
-  
+
   .header2__nav-link--shop-all {
-    background: {{ section.settings.shop_all_bg_color }};
-    color: {{ section.settings.shop_all_text_color }};
+    background: var(--header2-shop-all-bg);
+    color: var(--header2-shop-all-text);
   }
-  
+
   .header2__nav-link--shop-all:hover {
-    background: {{ section.settings.shop_all_hover_color }};
+    background: var(--header2-shop-all-hover);
   }
   
   .header2__nav-icon {
@@ -448,7 +468,7 @@
     left: 0;
     background: var(--color-surface, white);
     border: 1px solid var(--color-border, #e0e0e0);
-    border-top: 2px solid {{ section.settings.accent_color }};
+    border-top: 2px solid var(--header2-accent);
     border-radius: 0 0 6px 6px;
     box-shadow: 0 4px 12px var(--color-card-shadow, rgba(0, 0, 0, 0.1));
     min-width: 220px;
@@ -487,7 +507,7 @@
 
   .header2__dropdown-link:hover {
     background-color: var(--color-surface-alt, #f5f5f5);
-    color: {{ section.settings.accent_color }};
+    color: var(--header2-accent);
   }
 
   .header2__dropdown-divider {
@@ -544,12 +564,12 @@
   }
   
   .header2__recommendation-item:hover {
-    border-color: {{ section.settings.accent_color }};
-    background: {{ section.settings.recommendation_hover_color | default: '#f0f8ff' }};
+    border-color: var(--header2-accent);
+    background: var(--header2-recommendation-hover);
   }
-  
+
   .header2__more-suggestions {
-    color: {{ section.settings.accent_color }};
+    color: var(--header2-accent);
     text-decoration: none;
     font-size: 14px;
     white-space: nowrap;
@@ -713,7 +733,7 @@
     }
 
     .header2__recommendation-item:active {
-      background-color: {{ section.settings.recommendation_hover_color | default: '#f0f8ff' }};
+      background-color: var(--header2-recommendation-hover);
     }
   }
 

@@ -1192,6 +1192,24 @@ a:not([class]):not([style]):hover {
    HEADER2 STYLES (Custom Header)
    ============================================ */
 
+/* Override header2 CSS custom properties for dark mode */
+[data-theme="dark"] .header2-section {
+  --header2-promo-bg: hsl(var(--base-blue-600));
+  --header2-promo-text: hsl(210 20% 95%);
+  --header2-header-bg: var(--color-surface);
+  --header2-nav-bg: var(--color-surface);
+  --header2-nav-hover: var(--color-surface-alt);
+  --header2-nav-text-hover: var(--color-primary);
+  --header2-shop-all-bg: var(--color-surface-alt);
+  --header2-shop-all-text: var(--color-text-primary);
+  --header2-shop-all-hover: var(--color-primary-light);
+  --header2-search-border: var(--color-border);
+  --header2-search-btn: var(--color-primary);
+  --header2-search-btn-hover: hsl(var(--base-blue-500));
+  --header2-accent: var(--color-primary);
+  --header2-recommendation-hover: var(--color-primary-light);
+}
+
 [data-theme="dark"] .header2-section,
 [data-theme="dark"] .header2__container,
 [data-theme="dark"] .header2,
@@ -1376,10 +1394,36 @@ a:not([class]):not([style]):hover {
   color: var(--color-text-primary) !important;
 }
 
-/* Features Icons Grid */
+/* Features Icons Grid - Override CSS custom properties */
 [data-theme="dark"] .features-icons-grid,
 [data-theme="dark"] [class*="features-icons-grid"] {
+  --sig-bg: var(--color-bg) !important;
+  --sig-head: var(--color-text-heading) !important;
+  --sig-text: var(--color-text-secondary) !important;
+  --sig-blue-start: hsl(var(--base-blue-600)) !important;
+  --sig-blue-end: hsl(var(--base-blue-700)) !important;
   background-color: var(--color-bg) !important;
+}
+
+[data-theme="dark"] .sig-heading {
+  color: var(--color-text-heading) !important;
+}
+
+[data-theme="dark"] .sig-title {
+  color: var(--color-text-heading) !important;
+}
+
+[data-theme="dark"] .sig-subheading,
+[data-theme="dark"] .sig-desc {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .sig-link {
+  color: var(--color-text-heading) !important;
+}
+
+[data-theme="dark"] .sig-icon {
+  background: linear-gradient(180deg, hsl(var(--base-blue-600)), hsl(var(--base-blue-700))) !important;
 }
 
 /* ============================================
@@ -1423,6 +1467,80 @@ a:not([class]):not([style]):hover {
 
 [data-theme="dark"] .banner-button:hover {
   background-color: var(--color-banner-button-hover) !important;
+}
+
+/* ============================================
+   WHOLESALE APPLY FORM
+   Override inline style CSS custom properties
+   ============================================ */
+
+[data-theme="dark"] [class*="wh-apply-"] {
+  --wa-bg: var(--color-bg) !important;
+  --wa-head: var(--color-text-heading) !important;
+  --wa-body: var(--color-text-primary) !important;
+  --wa-card-bg: var(--color-card-bg) !important;
+  --wa-card-border: var(--color-border) !important;
+  --wa-btn-bg: var(--color-primary) !important;
+  --wa-btn-bg-hover: hsl(var(--base-blue-500)) !important;
+  --wa-btn-text: var(--color-button-text) !important;
+}
+
+[data-theme="dark"] [class*="wa"][class*="-input"] {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] [class*="wa"][class*="-input"]::placeholder {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] [class*="wa"][class*="-input"]:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px hsla(var(--base-blue-400) / 0.3) !important;
+}
+
+/* ============================================
+   CONTACT FORM
+   Override CSS custom properties for dark mode
+   ============================================ */
+
+[data-theme="dark"] .contact,
+[data-theme="dark"] [class*="section-contact"] {
+  --contact-surface: var(--color-card-bg);
+  --contact-surface-alt: var(--color-surface-alt);
+  --contact-text: var(--color-text-primary);
+  --contact-text-secondary: var(--color-text-secondary);
+  --contact-border: var(--color-border);
+  --contact-border-light: var(--color-border);
+  --contact-link: var(--color-link);
+  --contact-link-hover: var(--color-link-hover);
+  --contact-input-bg: var(--color-surface);
+  --contact-input-text: var(--color-text-primary);
+  --contact-input-border: var(--color-border);
+  --contact-focus-ring: hsla(var(--base-blue-400) / 0.3);
+}
+
+[data-theme="dark"] .contact-form-container {
+  background-color: var(--color-card-bg) !important;
+  border-color: var(--color-border) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .quote-product-info {
+  background-color: var(--color-surface-alt) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .quote-search-input {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .quote-search-results {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
 }
 
 /* ============================================
@@ -1581,6 +1699,13 @@ a:not([class]):not([style]):hover {
 [data-theme="dark"] [id^="VideoBanner"] .banner__text,
 [data-theme="dark"] [id^="VideoBanner"] .banner__text p {
   color: #FFFFFF !important;
+}
+
+/* Banner icon-text block - dark mode overrides */
+[data-theme="dark"] .banner__icon-text {
+  --icon-text-bg: hsl(var(--base-blue-700));
+  --icon-text-color: hsl(210 20% 95%);
+  --icon-text-icon-color: hsl(210 20% 95%);
 }
 
 /* ============================================

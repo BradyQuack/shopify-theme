@@ -13,13 +13,29 @@
     }
   }
 
+  /* Contact Form CSS Custom Properties */
+  .section-{{ section.id }} {
+    --contact-surface: var(--color-surface, #ffffff);
+    --contact-surface-alt: var(--color-surface-alt, {{ section.settings.product_container_bg_color }});
+    --contact-text: var(--color-text-primary, #0f1111);
+    --contact-text-secondary: var(--color-text-secondary, #565959);
+    --contact-border: var(--color-border, #e5e5e5);
+    --contact-border-light: var(--color-border-light, #ddd);
+    --contact-link: var(--color-link, #007185);
+    --contact-link-hover: var(--color-link-hover, #c7511f);
+    --contact-input-bg: {{ section.settings.input_bg_color }};
+    --contact-input-text: {{ section.settings.input_text_color }};
+    --contact-input-border: {{ section.settings.input_outline_color }};
+    --contact-focus-ring: rgba(0, 113, 133, 0.1);
+  }
+
   /* Rounded Container for Contact Form */
   .contact-form-container {
-    background: #ffffff;
+    background: var(--contact-surface);
     border-radius: 16px;
     padding: 30px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e5e5e5;
+    border: 1px solid var(--contact-border);
   }
 
   @media screen and (min-width: 750px) {
@@ -31,8 +47,8 @@
 
   /* Product Quote Display Styles */
   .quote-product-info {
-    background: {{ section.settings.product_container_bg_color }};
-    border: 1px solid #ddd;
+    background: var(--contact-surface-alt);
+    border: 1px solid var(--contact-border-light);
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 30px;
@@ -42,7 +58,7 @@
     font-size: 18px;
     font-weight: 600;
     margin: 0 0 15px 0;
-    color: #0f1111;
+    color: var(--contact-text);
   }
 
   .quote-product-details {
@@ -55,7 +71,7 @@
     width: 80px;
     height: 80px;
     border-radius: 4px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--contact-border-light);
     object-fit: cover;
     flex-shrink: 0;
   }
@@ -67,13 +83,13 @@
   .quote-product-title {
     font-size: 16px;
     font-weight: 500;
-    color: #0f1111;
+    color: var(--contact-text);
     margin: 0 0 8px 0;
     line-height: 1.4;
   }
 
   .quote-product-link {
-    color: #007185;
+    color: var(--contact-link);
     text-decoration: none;
     font-size: 13px;
     display: inline-block;
@@ -81,7 +97,7 @@
   }
 
   .quote-product-link:hover {
-    color: #c7511f;
+    color: var(--contact-link-hover);
     text-decoration: underline;
   }
 
@@ -89,13 +105,13 @@
   .quote-product-search {
     margin-top: 15px;
     padding-top: 15px;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--contact-border-light);
   }
 
   .quote-search-label {
     font-size: 18px;
     font-weight: 600;
-    color: #0f1111;
+    color: var(--contact-text);
     margin-bottom: 15px;
     display: block;
   }
@@ -103,24 +119,26 @@
   .quote-search-input {
     width: 100%;
     padding: 10px 12px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--contact-border-light);
     border-radius: 4px;
     font-size: 14px;
     margin-bottom: 10px;
+    background-color: var(--contact-surface);
+    color: var(--contact-text);
   }
 
   .quote-search-input:focus {
     outline: none;
-    border-color: #007185;
-    box-shadow: 0 0 0 3px rgba(0, 113, 133, 0.1);
+    border-color: var(--contact-link);
+    box-shadow: 0 0 0 3px var(--contact-focus-ring);
   }
 
   .quote-search-results {
     max-height: 300px;
     overflow-y: auto;
-    border: 1px solid #ddd;
+    border: 1px solid var(--contact-border-light);
     border-radius: 4px;
-    background: white;
+    background: var(--contact-surface);
     display: none;
   }
 
@@ -133,12 +151,12 @@
     gap: 12px;
     padding: 12px;
     cursor: pointer;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--contact-border-light);
     transition: background 0.2s;
   }
 
   .quote-search-item:hover {
-    background: #f7f7f7;
+    background: var(--contact-surface-alt);
   }
 
   .quote-search-item:last-child {
@@ -149,7 +167,7 @@
     width: 50px;
     height: 50px;
     border-radius: 4px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--contact-border-light);
     object-fit: cover;
     flex-shrink: 0;
   }
@@ -161,7 +179,7 @@
   .quote-search-item-title {
     font-size: 14px;
     font-weight: 500;
-    color: #0f1111;
+    color: var(--contact-text);
     line-height: 1.4;
   }
 
@@ -177,14 +195,14 @@
   .quote-search-loading {
     padding: 20px;
     text-align: center;
-    color: #565959;
+    color: var(--contact-text-secondary);
     font-size: 14px;
   }
 
   .quote-search-no-results {
     padding: 20px;
     text-align: center;
-    color: #565959;
+    color: var(--contact-text-secondary);
     font-size: 14px;
   }
 
