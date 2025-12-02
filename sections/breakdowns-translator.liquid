@@ -111,26 +111,6 @@
             </button>
           </div>
 
-          <!-- Quick Actions -->
-          {%- if section.settings.show_quick_actions -%}
-            <div class="breakdowns-translator__quick-actions">
-              <span class="breakdowns-translator__quick-label" style="color: {{ section.settings.text_color }};">Quick requests:</span>
-              <div class="breakdowns-translator__quick-buttons">
-                <button type="button" class="breakdowns-translator__quick-btn" data-request="Change the promo bar message">
-                  Update promo bar
-                </button>
-                <button type="button" class="breakdowns-translator__quick-btn" data-request="Change the hero section text">
-                  Edit hero text
-                </button>
-                <button type="button" class="breakdowns-translator__quick-btn" data-request="Update a testimonial">
-                  Edit testimonial
-                </button>
-                <button type="button" class="breakdowns-translator__quick-btn" data-request="Change product grid on homepage">
-                  Edit products
-                </button>
-              </div>
-            </div>
-          {%- endif -%}
         </div>
 
         <!-- Output Section -->
@@ -319,13 +299,6 @@
       });
     });
 
-    // Quick action buttons
-    document.querySelectorAll('.breakdowns-translator__quick-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        input.value = btn.dataset.request;
-        input.focus();
-      });
-    });
 
     // Translate button
     translateBtn.addEventListener('click', async () => {
@@ -675,7 +648,7 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Website Change Translator"
+      "default": "Developer Bridge"
     },
     {
       "type": "textarea",
@@ -706,12 +679,6 @@
       "id": "button_label",
       "label": "Button label",
       "default": "Translate to Dev Instructions"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_quick_actions",
-      "label": "Show quick action buttons",
-      "default": true
     },
     {
       "type": "header",
