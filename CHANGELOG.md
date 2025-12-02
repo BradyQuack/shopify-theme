@@ -2,6 +2,15 @@
 
 All notable changes to the ASIW Supply Shopify theme are documented in this file.
 
+## [v01.00.12] - 2025-12-02
+
+### Added
+- **Layout properties in section debug**: Display type, position, width, height
+- **Aspect ratio detection**: Shows aspect-ratio CSS property when set
+- **Padding-bottom tracking**: Highlights Dawn's ratio trick (`--ratio-percent`)
+- **Object-fit for images**: Shows contain/cover settings
+- Color-coded layout tags (cyan=layout, purple=position, orange=warning)
+
 ## [v01.00.11] - 2025-12-02
 
 ### Fixed

@@ -448,6 +448,32 @@
   font-size: 11px;
 }
 
+/* Layout tags */
+.section-debug-modal__layout-tag {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 10px;
+  color: hsl(180 60% 65%);
+  background-color: hsla(180 60% 50% / 0.12);
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-right: 4px;
+}
+
+.section-debug-modal__layout-tag--position {
+  color: hsl(280 60% 70%);
+  background-color: hsla(280 60% 50% / 0.12);
+}
+
+.section-debug-modal__layout-tag--highlight {
+  color: hsl(142 71% 60%);
+  background-color: hsla(142 71% 45% / 0.15);
+}
+
+.section-debug-modal__layout-tag--warning {
+  color: hsl(35 90% 60%);
+  background-color: hsla(35 90% 50% / 0.15);
+}
+
 /* Scrollbar styling */
 .section-debug-modal__body::-webkit-scrollbar {
   width: 8px;

@@ -181,6 +181,19 @@
 
           // Only include if it has meaningful styling
           if (textColor !== 'transparent' || bgColor !== 'transparent') {
+            // Get layout properties
+            const display = styles.display;
+            const position = styles.position;
+            const width = styles.width;
+            const height = styles.height;
+            const aspectRatio = styles.aspectRatio;
+            const objectFit = el.tagName === 'IMG' ? styles.objectFit : null;
+            const paddingBottom = styles.paddingBottom;
+
+            // Check for CSS variable in inline style
+            const inlineStyle = el.getAttribute('style') || '';
+            const ratioVar = inlineStyle.match(/--ratio-percent:\s*([^;]+)/);
+
             components.push({
               element: el.tagName.toLowerCase(),
               selector: getElementSelector(el),
@@ -192,7 +205,16 @@
               borderColor: borderColor !== 'transparent' ? borderColor : null,
               fileHint: guessFileLocation(className, sectionType),
               fontSize: styles.fontSize,
-              fontWeight: styles.fontWeight
+              fontWeight: styles.fontWeight,
+              // Layout properties
+              display: display,
+              position: position !== 'static' ? position : null,
+              width: width,
+              height: height,
+              aspectRatio: aspectRatio !== 'auto' ? aspectRatio : null,
+              objectFit: objectFit !== 'fill' ? objectFit : null,
+              paddingBottom: paddingBottom !== '0px' ? paddingBottom : null,
+              ratioVar: ratioVar ? ratioVar[1].trim() : null
             });
           }
         });
@@ -366,6 +388,41 @@
             <span class="section-debug-modal__component-label">Font:</span>
             <span class="section-debug-modal__component-value">${comp.fontSize} / ${comp.fontWeight}</span>
           </div>
+          <div class="section-debug-modal__component-row section-debug-modal__component-row--layout">
+            <span class="section-debug-modal__component-label">Layout:</span>
+            <span class="section-debug-modal__component-value">
+              <code class="section-debug-modal__layout-tag">${comp.display}</code>
+              ${comp.position ? `<code class="section-debug-modal__layout-tag section-debug-modal__layout-tag--position">${comp.position}</code>` : ''}
+            </span>
+          </div>
+          <div class="section-debug-modal__component-row">
+            <span class="section-debug-modal__component-label">Size:</span>
+            <span class="section-debug-modal__component-value">${comp.width} × ${comp.height}</span>
+          </div>
+          ${comp.aspectRatio ? `
+            <div class="section-debug-modal__component-row">
+              <span class="section-debug-modal__component-label">Aspect Ratio:</span>
+              <span class="section-debug-modal__component-value"><code class="section-debug-modal__layout-tag section-debug-modal__layout-tag--highlight">${comp.aspectRatio}</code></span>
+            </div>
+          ` : ''}
+          ${comp.paddingBottom ? `
+            <div class="section-debug-modal__component-row">
+              <span class="section-debug-modal__component-label">Padding-Bottom:</span>
+              <span class="section-debug-modal__component-value"><code class="section-debug-modal__layout-tag section-debug-modal__layout-tag--warning">${comp.paddingBottom}</code></span>
+            </div>
+          ` : ''}
+          ${comp.ratioVar ? `
+            <div class="section-debug-modal__component-row">
+              <span class="section-debug-modal__component-label">--ratio-percent:</span>
+              <span class="section-debug-modal__component-value"><code class="section-debug-modal__layout-tag section-debug-modal__layout-tag--warning">${comp.ratioVar}</code></span>
+            </div>
+          ` : ''}
+          ${comp.objectFit ? `
+            <div class="section-debug-modal__component-row">
+              <span class="section-debug-modal__component-label">Object-Fit:</span>
+              <span class="section-debug-modal__component-value"><code class="section-debug-modal__layout-tag">${comp.objectFit}</code></span>
+            </div>
+          ` : ''}
           <div class="section-debug-modal__component-row">
             <span class="section-debug-modal__component-label">File:</span>
             <code class="section-debug-modal__component-value section-debug-modal__file-hint">${comp.fileHint || 'unknown'}</code>
@@ -437,6 +494,12 @@
       text += `   Background: ${comp.bgColor}\n`;
       if (comp.borderColor) text += `   Border: ${comp.borderColor}\n`;
       text += `   Font: ${comp.fontSize} / ${comp.fontWeight}\n`;
+      text += `   Layout: ${comp.display}${comp.position ? ` (${comp.position})` : ''}\n`;
+      text += `   Size: ${comp.width} × ${comp.height}\n`;
+      if (comp.aspectRatio) text += `   Aspect-Ratio: ${comp.aspectRatio}\n`;
+      if (comp.paddingBottom) text += `   Padding-Bottom: ${comp.paddingBottom}\n`;
+      if (comp.ratioVar) text += `   --ratio-percent: ${comp.ratioVar}\n`;
+      if (comp.objectFit) text += `   Object-Fit: ${comp.objectFit}\n`;
       text += `   File: ${comp.fileHint}\n`;
       text += '\n';
     });
