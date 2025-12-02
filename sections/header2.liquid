@@ -733,6 +733,14 @@
   [data-theme="dark"] .header2__actions svg path {
     fill: var(--color-text-primary, #f1f5f9) !important;
   }
+
+  /* PNG icons need filter to change color in dark mode */
+  [data-theme="dark"] .header2__signin-icon img,
+  [data-theme="dark"] .header2__cart-icon img,
+  [data-theme="dark"] img.header2__signin-icon,
+  [data-theme="dark"] img.header2__cart-icon {
+    filter: brightness(0) invert(1) !important;
+  }
 </style>
 
 {%- style -%}
@@ -1178,65 +1186,6 @@
       });
     }
 
-    // === FIX: Force icon colors based on theme (JS override since CSS isn't working) ===
-    function updateHeaderIconColors() {
-      const theme = document.documentElement.getAttribute('data-theme');
-      const iconPaths = document.querySelectorAll('.header2__actions svg path');
-      const lightColor = '#f1f5f9'; // Light color for dark mode
-      const darkColor = '#333333';  // Dark color for light mode
-
-      iconPaths.forEach(path => {
-        // Remove the currentColor attribute and set explicit fill
-        path.removeAttribute('fill');
-        path.style.fill = (theme === 'dark') ? lightColor : darkColor;
-      });
-
-      console.log('[Header2] Updated ' + iconPaths.length + ' icon paths for theme: ' + theme);
-    }
-
-    // Run on load
-    updateHeaderIconColors();
-
-    // Watch for theme changes on <html> element
-    const themeObserver = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'data-theme') {
-          updateHeaderIconColors();
-        }
-      });
-    });
-    themeObserver.observe(document.documentElement, { attributes: true });
-
-    // === DEBUG: Expose icon debug info to window for external debug tools ===
-    window.getIconDebug = function() {
-      const theme = document.documentElement.getAttribute('data-theme');
-      const signinPath = document.querySelector('.header2__signin-icon svg path');
-      const cartPath = document.querySelector('.header2__cart-icon svg path');
-      const action = document.querySelector('.header2__action');
-
-      return {
-        theme: theme,
-        icon_paths_found: document.querySelectorAll('.header2__actions svg path').length,
-        action: action ? {
-          computed_color: getComputedStyle(action).color,
-          computed_fill: getComputedStyle(action).fill
-        } : 'NOT_FOUND',
-        signin_path: signinPath ? {
-          computed_fill: getComputedStyle(signinPath).fill,
-          style_fill: signinPath.style.fill,
-          attr_fill: signinPath.getAttribute('fill')
-        } : 'NOT_FOUND',
-        cart_path: cartPath ? {
-          computed_fill: getComputedStyle(cartPath).fill,
-          style_fill: cartPath.style.fill,
-          attr_fill: cartPath.getAttribute('fill')
-        } : 'NOT_FOUND'
-      };
-    };
-
-    // Auto-log icon debug on load
-    console.log('=== ICON DEBUG ===');
-    console.log(JSON.stringify(window.getIconDebug(), null, 2));
   });
 </script>
 
