@@ -2,6 +2,14 @@
 
 All notable changes to the ASIW Supply Shopify theme are documented in this file.
 
+## [v01.00.18] - 2025-12-02
+
+### Fixed
+- Collection card images now visible - fixed `.card__content` covering images
+- Root cause: `.card__content` inside `.card__inner` had white background
+- Applied `background: transparent` to `.card__inner .card__content`
+- White background now only applies to `.card > .card__content` (outside card__inner)
+
 ## [v01.00.17] - 2025-12-02
 
 ### Enhanced
@@ -175,4 +183,4 @@ Versions follow the format: `vMM.mm.pp`
 - `mm` - Minor version (new features, enhancements)
 - `pp` - Patch version (bug fixes, small improvements)
 
-Current: **v01.00.17**
+Current: **v01.00.18**
