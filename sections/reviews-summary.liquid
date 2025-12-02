@@ -20,8 +20,9 @@
     }
   }
 
+  /* Using semantic tokens from theme-toggle.css */
   .reviews-section {
-    background-color: {{ section.settings.background_color }};
+    background-color: var(--color-bg);
   }
 
   .reviews-stars {
@@ -35,27 +36,27 @@
   .reviews-stars svg {
     width: 24px;
     height: 24px;
-    fill: {{ section.settings.star_color }};
+    fill: var(--color-star-filled);
   }
 
   .reviews-rating {
     font-size: 2rem;
     font-weight: bold;
-    color: {{ section.settings.rating_color }};
+    color: var(--color-text-heading);
     margin-left: 12px;
   }
 
   .reviews-subtitle {
     font-size: 1.125rem;
     font-weight: 600;
-    color: {{ section.settings.subtitle_color }};
+    color: var(--color-text-heading);
     margin-bottom: 8px;
     text-align: center;
   }
 
   .reviews-description {
     font-size: 1rem;
-    color: {{ section.settings.text_color }};
+    color: var(--color-text-secondary);
     text-align: center;
     max-width: 600px;
     margin: 0 auto;
@@ -70,11 +71,11 @@
   }
 
   .reviews-bubble {
-    background: #f5f7fa;
+    background: var(--color-surface-1);
     border-radius: 16px;
     padding: 40px 30px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    border: 1px solid rgba(0, 0, 0, 0.03);
+    box-shadow: 0 2px 8px var(--color-card-shadow);
+    border: 1px solid var(--color-border);
     max-width: 800px;
     margin: 0 auto;
   }
@@ -159,40 +160,14 @@
       "content": "Colors"
     },
     {
+      "type": "paragraph",
+      "content": "Colors are managed by the theme color scheme (see COLOR_SCHEME.md)"
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "default": "#e8eef2",
-      "label": "Background color"
-    },
-    {
-      "type": "color",
-      "id": "star_color",
-      "default": "#ff8c00",
-      "label": "Star color"
-    },
-    {
-      "type": "color",
-      "id": "rating_color",
-      "default": "#2c5282",
-      "label": "Rating number color"
-    },
-    {
-      "type": "color",
-      "id": "subtitle_color",
-      "default": "#2c5282",
-      "label": "Subtitle color"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "default": "#4a5568",
-      "label": "Description text color"
     },
     {
       "type": "header",

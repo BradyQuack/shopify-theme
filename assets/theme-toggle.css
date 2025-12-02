@@ -889,9 +889,9 @@ a:not([class]):not([style]):hover {
   color: var(--color-text-primary) !important;
 }
 
-/* Override all Shopify color scheme backgrounds */
-[data-theme="dark"] [class*="color-scheme"],
-[data-theme="dark"] [class*="color-"] {
+/* Override all Shopify color scheme backgrounds - exclude video banners */
+[data-theme="dark"] [class*="color-scheme"]:not([id^="VideoBanner"] *):not(.section-video-hero *),
+[data-theme="dark"] [class*="color-"]:not([id^="VideoBanner"] *):not(.section-video-hero *) {
   background-color: var(--color-bg) !important;
 }
 
@@ -1149,9 +1149,18 @@ a:not([class]):not([style]):hover {
   background-color: var(--color-primary) !important;
 }
 
-/* Gradient overlays */
-[data-theme="dark"] .gradient {
+/* Gradient overlays - exclude video banners which need transparent overlays */
+[data-theme="dark"] .gradient:not([id^="VideoBanner"] .gradient) {
   background: var(--color-bg) !important;
+}
+
+/* Video Banner - ensure transparent content box */
+[data-theme="dark"] [id^="VideoBanner"] .banner__box,
+[data-theme="dark"] [id^="VideoBanner"] .gradient,
+[data-theme="dark"] .section-video-hero .banner__box,
+[data-theme="dark"] .section-video-hero .gradient {
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 /* ============================================

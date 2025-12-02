@@ -4,7 +4,7 @@
   Font consistency with theme typography
 {% endcomment %}
 
-<section class="premium-brands-{{ section.id }}" aria-labelledby="premium-brands-heading-{{ section.id }}" style="background: {{ section.settings.background_color }}; font-family: inherit;">
+<section class="premium-brands-{{ section.id }}" aria-labelledby="premium-brands-heading-{{ section.id }}" style="background: var(--color-bg); font-family: inherit;">
   <div class="pb{{ section.id }}-container"
        style="max-width: {{ section.settings.max_width }}px; margin: 0 auto; padding-top: {{ section.settings.section_padding_top }}px; padding-bottom: {{ section.settings.section_padding_bottom }}px;">
 
@@ -33,13 +33,14 @@
         font-family: inherit; /* Ensure all elements inherit theme fonts */
       }
 
+      /* Using semantic tokens from theme-toggle.css */
       .pb{{ section.id }}-header{
         text-align:center; margin:0 auto 28px;
-        color: {{ section.settings.body_color | default: 'inherit' }};
+        color: var(--color-text-secondary);
         font-family: inherit;
       }
       .pb{{ section.id }}-title{
-        color: {{ section.settings.heading_color | default: 'inherit' }};
+        color: var(--color-text-heading);
         font-family: var(--font-heading-family, inherit); /* Use theme's heading font */
         font-weight: 800; line-height:1.15; letter-spacing:.01em;
         margin:0 0 8px; font-size:clamp(28px,3.8vw,42px);
@@ -66,22 +67,22 @@
       }
 
       .pb{{ section.id }}-card{
-        background: {{ section.settings.card_background_color }};
+        background: var(--color-surface-1);
         border-radius: {{ section.settings.corner_radius }}px;
         padding: 22px;
-        border: 1px solid {{ section.settings.card_border_color }};
+        border: 1px solid var(--color-border);
         transition: transform .18s ease, box-shadow .18s ease;
         font-family: inherit;
-        {% if shadow == 'sm' %} box-shadow: 0 1px 2px rgba(16,24,40,.06); {% endif %}
-        {% if shadow == 'md' %} box-shadow: 0 4px 12px rgba(16,24,40,.08); {% endif %}
-        {% if shadow == 'lg' %} box-shadow: 0 8px 24px rgba(16,24,40,.10); {% endif %}
+        {% if shadow == 'sm' %} box-shadow: 0 1px 2px var(--color-card-shadow); {% endif %}
+        {% if shadow == 'md' %} box-shadow: 0 4px 12px var(--color-card-shadow); {% endif %}
+        {% if shadow == 'lg' %} box-shadow: 0 8px 24px var(--color-card-shadow); {% endif %}
       }
-      .pb{{ section.id }}-card:focus-within{ outline:2px solid currentColor; outline-offset:2px; }
+      .pb{{ section.id }}-card:focus-within{ outline:2px solid var(--color-primary); outline-offset:2px; }
 
       .pb{{ section.id }}-cardTitle{
         font-family: var(--font-heading-family, inherit); /* Use theme's heading font */
         font-weight:800; font-size:21px; margin:4px 0 14px;
-        color: var(--accent, {{ section.settings.heading_color | default: 'inherit' }});
+        color: var(--accent, var(--color-primary));
       }
 
       /* Row "chips" like the reference (rounded tiles, subtle border, pill on right) */
@@ -92,13 +93,13 @@
         margin-bottom: 12px;
         font-family: var(--font-body-family, inherit); /* Use theme's body font */
         font-size:16px; line-height:1.3;
-        background: {{ section.settings.row_bg_color }};
-        border: 1px solid {{ section.settings.row_border_color }};
+        background: var(--color-surface-alt);
+        border: 1px solid var(--color-border-light);
         border-radius: 10px;
         transition: background .15s ease, border-color .15s ease, transform .15s ease;
       }
       .pb{{ section.id }}-row:last-child{ margin-bottom:0; }
-      .pb{{ section.id }}-row:hover{ background: {{ section.settings.row_bg_hover_color }}; }
+      .pb{{ section.id }}-row:hover{ background: var(--color-surface-hover); }
       .pb{{ section.id }}-brand{ 
         font-family: var(--font-body-family, inherit);
       }
@@ -113,8 +114,8 @@
         padding: 4px 10px; border-radius:999px; font-size:12px; font-weight:600;
         font-family: var(--font-body-family, inherit); /* Use theme's body font */
         letter-spacing:.04em; text-transform:uppercase; white-space:nowrap;
-        background: {{ section.settings.pill_bg_color }}; color: {{ section.settings.pill_text_color }};
-        border: 1px solid {{ section.settings.pill_border_color }};
+        background: var(--color-success-bg); color: var(--color-success-text);
+        border: 1px solid var(--color-success-border);
         flex:0 0 auto;
       }
 
@@ -212,22 +213,10 @@
     { "type": "range", "id": "section_padding_top", "label": "Padding top (px)", "min": 0, "max": 120, "step": 2, "default": 40 },
     { "type": "range", "id": "section_padding_bottom", "label": "Padding bottom (px)", "min": 0, "max": 120, "step": 2, "default": 40 },
 
-    { "type": "color", "id": "background_color", "label": "Background color", "default": "#F8FAFC" },
-    { "type": "color", "id": "card_background_color", "label": "Card background color", "default": "#FFFFFF" },
-    { "type": "color", "id": "card_border_color", "label": "Card border color", "default": "#E6EEF5" },
-
-    { "type": "color", "id": "heading_color", "label": "Heading color" },
-    { "type": "color", "id": "body_color", "label": "Body text color" },
+    { "type": "paragraph", "content": "Colors are managed by the theme color scheme (see COLOR_SCHEME.md)" },
 
     { "type": "text", "id": "pill_text", "label": "Pill text", "default": "WHOLESALE" },
     { "type": "checkbox", "id": "show_pill", "label": "Show pill by default", "default": true },
-    { "type": "color", "id": "pill_bg_color", "label": "Pill background color", "default": "#E7F6EF" },
-    { "type": "color", "id": "pill_text_color", "label": "Pill text color", "default": "#16734E" },
-    { "type": "color", "id": "pill_border_color", "label": "Pill border color", "default": "#CFEBDD" },
-
-    { "type": "color", "id": "row_bg_color", "label": "Row chip background", "default": "#F6FAFF" },
-    { "type": "color", "id": "row_bg_hover_color", "label": "Row chip hover background", "default": "#F1F7FF" },
-    { "type": "color", "id": "row_border_color", "label": "Row chip border", "default": "#EAF2F9" },
 
     { "type": "range", "id": "corner_radius", "label": "Card corner radius (px)", "min": 0, "max": 24, "step": 1, "default": 12 },
     { "type": "select", "id": "shadow_intensity", "label": "Shadow intensity", "default": "sm",
