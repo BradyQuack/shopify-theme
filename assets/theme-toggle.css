@@ -1234,6 +1234,42 @@ a:not([class]):not([style]):hover {
   border-color: var(--color-border) !important;
 }
 
+/* Header2 action icons (Sign In, Cart) - light colored in dark mode */
+[data-theme="dark"] .header2__action {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .header2__action-label {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .header2__signin-icon,
+[data-theme="dark"] .header2__cart-icon,
+[data-theme="dark"] .header2__signin-icon svg,
+[data-theme="dark"] .header2__cart-icon svg {
+  color: var(--color-text-primary) !important;
+  fill: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .header2__signin-icon svg path,
+[data-theme="dark"] .header2__cart-icon svg path {
+  fill: var(--color-text-primary) !important;
+}
+
+/* Search button icon should be white on blue background */
+[data-theme="dark"] .header2__search-button svg,
+[data-theme="dark"] .header2__search-button svg path {
+  fill: var(--color-button-text) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* Store info icon */
+[data-theme="dark"] .header2__store-icon svg,
+[data-theme="dark"] .header2__action-icon {
+  fill: var(--color-text-secondary) !important;
+  color: var(--color-text-secondary) !important;
+}
+
 /* ============================================
    PRODUCT CARD STYLES
    ============================================ */
