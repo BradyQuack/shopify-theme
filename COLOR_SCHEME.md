@@ -45,68 +45,118 @@ This document provides a comprehensive guide to the ASIW Supply Shopify theme co
 | Purpose | CSS Variable | Light Mode | Dark Mode |
 |---------|--------------|------------|-----------|
 | Page background | `--color-bg` | #F0F2F5 | #0C1322 |
-| Card background | `--color-surface` | #FFFFFF | #1E293B |
+| Card background | `--color-surface-1` | #FFFFFF | #1E293B |
 | Primary text | `--color-text-primary` | #1C2B41 | #F0F5FA |
-| Muted text | `--color-text-muted` | #8892A2 | #64748B |
+| Heading text | `--color-text-heading` | #161F30 | #F8FAFC |
+| Muted text | `--color-text-tertiary` | #8892A2 | #6B7A8F |
 | Primary action | `--color-primary` | #005496 | #5BA3F5 |
+| Primary active | `--color-primary-active` | #003052 | #C5DFFB |
 | Success (green) | `--color-success` | #22C55E | #4ADE80 |
 | Error (red) | `--color-error` | #DC2626 | #F87171 |
 | Star rating | `--color-star-filled` | #EAB308 | #EAB308 |
+| Focus ring | `--ring-color` | #005496 | #5BA3F5 |
+| Input border | `--input-border` | #C9CFD8 | #3A4556 |
 
 ### Copy-Paste Patterns
 
 ```css
-/* Standard Card */
+/* Standard Card (using surface elevation) */
 .card {
-  background-color: var(--color-surface);
+  background-color: var(--color-surface-1);
   border: 1px solid var(--color-border);
 }
 
-/* Primary Button */
-.button--primary {
-  background-color: var(--color-primary);
-  color: var(--color-button-text);
+/* Modal / Dropdown (higher elevation) */
+.modal {
+  background-color: var(--color-surface-2);
+  border: 1px solid var(--color-border);
 }
 
-/* Primary Button Hover */
+/* Primary Button with all states */
+.button--primary {
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
 .button--primary:hover {
-  background-color: var(--color-primary-hover);
+  background-color: var(--button-primary-bg-hover);
+}
+.button--primary:active {
+  background-color: var(--button-primary-bg-active);
+}
+.button--primary:disabled {
+  background-color: var(--button-primary-bg-disabled);
+  color: var(--button-primary-text-disabled);
 }
 
 /* Secondary/Outline Button */
 .button--secondary {
-  background-color: transparent;
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  background-color: var(--button-secondary-bg);
+  border-color: var(--button-secondary-border);
+  color: var(--button-secondary-text);
 }
 
-/* Success State */
-.success {
-  color: var(--color-success);
-  border-color: var(--color-success);
+/* Success Alert */
+.alert--success {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-text);
+  border-color: var(--color-success-border);
 }
 
-/* Badge */
-.badge {
-  background-color: var(--color-badge-bg);
-  color: var(--color-badge-text);
+/* Error Alert */
+.alert--error {
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+  border-color: var(--color-error-border);
 }
 
-/* Muted Text */
-.caption {
-  color: var(--color-text-muted);
+/* Focus Ring */
+.input:focus-visible {
+  outline: var(--ring-width) solid var(--ring-color);
+  outline-offset: var(--ring-offset);
 }
 
-/* Footer */
-.footer {
-  background-color: var(--color-footer-bg);
-  color: var(--color-footer-text);
+/* Form Input */
+.input {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--input-text);
+}
+.input::placeholder {
+  color: var(--input-placeholder);
+}
+.input:hover {
+  border-color: var(--input-border-hover);
+}
+.input:focus {
+  border-color: var(--input-border-focus);
 }
 
-/* Dark Mode Card (Opacity-based) */
-[data-theme="dark"] .testimonial__card {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.12);
+/* Table */
+.table th {
+  background-color: var(--table-header-bg);
+}
+.table tr:nth-child(even) {
+  background-color: var(--table-row-stripe);
+}
+.table tr:hover {
+  background-color: var(--table-row-hover);
+}
+
+/* Text Hierarchy */
+h1, h2, h3 { color: var(--color-text-heading); }
+p { color: var(--color-text-primary); }
+.caption { color: var(--color-text-tertiary); }
+.disabled { color: var(--color-text-disabled); }
+
+/* Skeleton Loading */
+.skeleton {
+  background-color: var(--skeleton-base);
+  background-image: linear-gradient(
+    90deg,
+    var(--skeleton-base) 0%,
+    var(--skeleton-shimmer) 50%,
+    var(--skeleton-base) 100%
+  );
 }
 ```
 
@@ -140,6 +190,33 @@ This document provides a comprehensive guide to the ASIW Supply Shopify theme co
 - **Improved readability**: Quote text slightly dimmer than customer names
 - **Visual hierarchy**: Names (brightest) → Quotes → Labels (dimmest)
 - **Semantic meaning**: `--color-text-quote` and `--color-text-label` convey purpose
+
+### Why 5-Level Surface Elevation?
+- **Depth perception**: Creates visual hierarchy without relying on shadows alone
+- **Surface-0**: Page canvas (lowest, blends with background)
+- **Surface-1**: Cards, panels (default content containers)
+- **Surface-2**: Modals, dropdowns (overlays page content)
+- **Surface-3**: Tooltips, popovers (floats above modals)
+- **Surface-4**: Highest priority elements (very rare usage)
+- **Dark mode benefit**: Higher elevations are progressively lighter, creating natural depth
+
+### Why Centralized Opacity Scale?
+- **Consistency**: All opacity values from one source (`--alpha-5` through `--alpha-70`)
+- **Maintainability**: Change opacity values in one place
+- **Semantic usage**: `--alpha-5` for subtle backgrounds, `--alpha-50` for modal backdrops
+- **Dark mode patterns**: Enables consistent white-overlay approach for cards
+
+### Why Focus Ring System?
+- **Accessibility**: Clear focus indicators for keyboard navigation
+- **Customizable**: `--ring-width`, `--ring-offset`, `--ring-color` tokens
+- **Theme-aware**: Blue ring adapts to light/dark mode
+- **Consistent**: Same focus treatment across all interactive elements
+
+### Why Component-Specific Tokens?
+- **Encapsulation**: Inputs, tables, buttons have their own token sets
+- **Flexibility**: Can adjust component colors without affecting global tokens
+- **State management**: All states (hover, focus, disabled) pre-defined
+- **Future-proofing**: Easy to add new components with consistent patterns
 
 ---
 
@@ -210,22 +287,31 @@ Base colors are raw HSL values, theme-agnostic, defined in `:root`.
 
 Semantic tokens map to different base colors depending on theme.
 
-#### Background Hierarchy
+#### Surface Elevation System (5 Levels)
 
 | Token | Light Mode | Dark Mode | Usage |
 |-------|------------|-----------|-------|
-| `--color-bg` | #F0F2F5 | #0C1322 | Page background |
-| `--color-surface` | #FFFFFF | #1E293B | Cards, modals |
+| `--color-bg` | #F0F2F5 | #0C1322 | Page background (canvas) |
+| `--color-surface-0` | #F0F2F5 | #0C1322 | Same as bg, for flush sections |
+| `--color-surface-1` | #FFFFFF | #1E293B | Cards, panels (default) |
+| `--color-surface-2` | #FFFFFF | #313B49 | Modals, dropdowns |
+| `--color-surface-3` | #FFFFFF | #3E4A5C | Tooltips, popovers |
+| `--color-surface-4` | #FFFFFF | #4A5668 | Highest elevation |
+| `--color-surface` | #FFFFFF | #1E293B | Alias: Default surface |
 | `--color-surface-alt` | #E8ECF0 | #313B49 | Alternate surfaces |
 | `--color-surface-hover` | #F8F9FA | #3A4556 | Hover state |
+| `--color-overlay` | rgba(12,19,34,0.5) | rgba(12,19,34,0.7) | Modal backdrops |
 
-#### Text Hierarchy
+#### Text Hierarchy (5 Levels)
 
 | Token | Light Mode | Dark Mode | Usage |
 |-------|------------|-----------|-------|
-| `--color-text-primary` | #1C2B41 | #F0F5FA | Headings, names |
-| `--color-text-secondary` | #67748A | #94A3B8 | Body text |
-| `--color-text-muted` | #8892A2 | #64748B | Captions, labels |
+| `--color-text-heading` | #161F30 | #F8FAFC | H1-H3: Strongest |
+| `--color-text-primary` | #1C2B41 | #F0F5FA | Body text: Primary |
+| `--color-text-secondary` | #67748A | #94A3B8 | Supporting text |
+| `--color-text-tertiary` | #8892A2 | #6B7A8F | Captions, hints |
+| `--color-text-disabled` | #A8B0BC | #4B5567 | Inactive elements |
+| `--color-text-muted` | #8892A2 | #64748B | Alias: Muted text |
 | `--color-text-inverse` | #FFFFFF | #0C1322 | Text on colored bg |
 | `--color-text-quote` | #1C2B41 | #B8C4D4 | Quote text (dimmer in dark) |
 | `--color-text-label` | #67748A | #6B7A8F | Labels, locations |
@@ -238,15 +324,59 @@ Semantic tokens map to different base colors depending on theme.
 | `--color-border-light` | #E8ECF0 | #4A5568 | Subtle borders |
 | `--color-border-dark` | #C0C7D0 | #1E293B | Emphasis borders |
 
-#### Brand Colors
+#### Brand Colors (with Interactive States)
 
 | Token | Light Mode | Dark Mode | Usage |
 |-------|------------|-----------|-------|
 | `--color-primary` | #005496 | #5BA3F5 | Buttons, links |
 | `--color-primary-hover` | #003E70 | #93C5F8 | Hover states |
+| `--color-primary-active` | #003052 | #C5DFFB | Pressed/active state |
 | `--color-primary-light` | #E6F2FF | #1A3A5C | Light tint |
+| `--color-secondary` | #2B7DE9 | #8B9FD6 | Secondary actions |
+| `--color-secondary-hover` | #0A5FC2 | #A8B8E4 | Secondary hover |
+| `--color-secondary-active` | #005496 | #C5CFEF | Secondary active |
 | `--color-accent` | #DD6727 | #F28C38 | Accent highlights |
 | `--color-accent-hover` | #9F4E14 | #F5A54D | Accent hover |
+| `--color-accent-active` | #6F3A10 | #F8C08A | Accent active |
+
+#### Feedback Colors (Full System)
+
+| Token | Light Mode | Dark Mode | Usage |
+|-------|------------|-----------|-------|
+| **Success** ||||
+| `--color-success` | #22C55E | #4ADE80 | Success icon/text |
+| `--color-success-hover` | #16A34A | #86EFAC | Success hover |
+| `--color-success-bg` | #F0FDF4 | #1A2E1A | Alert background |
+| `--color-success-text` | #166534 | #86EFAC | Alert text |
+| `--color-success-border` | #86EFAC | #2E5A2E | Alert border |
+| **Warning** ||||
+| `--color-warning` | #F59E0B | #FACC15 | Warning icon/text |
+| `--color-warning-hover` | #D97706 | #FDE047 | Warning hover |
+| `--color-warning-bg` | #FFFBEB | #2E2A1A | Alert background |
+| `--color-warning-text` | #92400E | #FDE047 | Alert text |
+| `--color-warning-border` | #FCD34D | #5A4A2E | Alert border |
+| **Error** ||||
+| `--color-error` | #DC2626 | #F87171 | Error icon/text |
+| `--color-error-hover` | #B91C1C | #FCA5A5 | Error hover |
+| `--color-error-bg` | #FEF2F2 | #2E1A1A | Alert background |
+| `--color-error-text` | #991B1B | #FCA5A5 | Alert text |
+| `--color-error-border` | #FCA5A5 | #5A2E2E | Alert border |
+| **Info** ||||
+| `--color-info` | #2B7DE9 | #5BA3F5 | Info icon/text |
+| `--color-info-hover` | #0A5FC2 | #93C5F8 | Info hover |
+| `--color-info-bg` | #E6F2FF | #1A3A5C | Alert background |
+| `--color-info-text` | #003E70 | #93C5F8 | Alert text |
+| `--color-info-border` | #C5DFFB | #3A5A8C | Alert border |
+
+#### Focus Ring System
+
+| Token | Light Mode | Dark Mode | Usage |
+|-------|------------|-----------|-------|
+| `--ring-color` | #005496 | #5BA3F5 | Focus outline color |
+| `--ring-color-alpha` | rgba(0,84,150,0.3) | rgba(91,163,245,0.3) | Focus glow |
+| `--ring-width` | 2px | 2px | Outline thickness |
+| `--ring-offset` | 2px | 2px | Gap from element |
+| `--ring-offset-color` | #FFFFFF | #0C1322 | Gap fill color |
 
 #### Footer Tokens (Branded)
 
@@ -266,9 +396,74 @@ Semantic tokens map to different base colors depending on theme.
 | `--card-border-opacity` | 1 (solid) | 0.12 (12%) | Card border |
 | `--card-hover-opacity` | 1 (solid) | 0.08 (8%) | Card hover state |
 
+#### Component Tokens: Inputs
+
+| Token | Light Mode | Dark Mode | Usage |
+|-------|------------|-----------|-------|
+| `--input-bg` | #FFFFFF | #1E293B | Input background |
+| `--input-bg-disabled` | #F0F2F5 | #161D2B | Disabled state |
+| `--input-border` | #C9CFD8 | #3A4556 | Default border |
+| `--input-border-hover` | #A8B0BC | #4A5568 | Hover border |
+| `--input-border-focus` | #005496 | #5BA3F5 | Focus border |
+| `--input-placeholder` | #8892A2 | #6B7A8F | Placeholder text |
+| `--input-text` | #1C2B41 | #F0F5FA | Input text |
+
+#### Component Tokens: Tables
+
+| Token | Light Mode | Dark Mode | Usage |
+|-------|------------|-----------|-------|
+| `--table-header-bg` | #F0F2F5 | #1E293B | Header background |
+| `--table-row-hover` | #F8F9FA | #2A3444 | Row hover |
+| `--table-row-stripe` | #FAFBFC | #1A2333 | Alternating rows |
+| `--table-border` | #E8ECF0 | #3A4556 | Table borders |
+
+#### Component Tokens: Buttons
+
+| Token | Light Mode | Dark Mode | Usage |
+|-------|------------|-----------|-------|
+| `--button-primary-bg` | #005496 | #5BA3F5 | Primary background |
+| `--button-primary-bg-hover` | #003E70 | #93C5F8 | Primary hover |
+| `--button-primary-bg-active` | #003052 | #C5DFFB | Primary active |
+| `--button-primary-text` | #FFFFFF | #0C1322 | Primary text |
+| `--button-primary-bg-disabled` | #C9CFD8 | #4A5568 | Disabled bg |
+| `--button-primary-text-disabled` | #8892A2 | #6B7A8F | Disabled text |
+| `--button-secondary-bg` | transparent | transparent | Outline bg |
+| `--button-secondary-border` | #005496 | #5BA3F5 | Outline border |
+| `--button-secondary-text` | #005496 | #5BA3F5 | Outline text |
+
+#### Component Tokens: Skeleton/Loading
+
+| Token | Light Mode | Dark Mode | Usage |
+|-------|------------|-----------|-------|
+| `--skeleton-base` | #E8ECF0 | #2A3444 | Base color |
+| `--skeleton-shimmer` | #F0F2F5 | #3A4556 | Shimmer highlight |
+
 ---
 
 ## Opacity Variants
+
+### Centralized Opacity Scale (CSS Tokens)
+
+All opacity values are defined as tokens in `:root` for consistency:
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--alpha-5` | 0.05 | Subtle backgrounds, card backgrounds |
+| `--alpha-8` | 0.08 | Hover states, interactive feedback |
+| `--alpha-10` | 0.10 | Light overlays, toggle containers |
+| `--alpha-12` | 0.12 | Borders, separators |
+| `--alpha-15` | 0.15 | Medium overlays, footer toggle |
+| `--alpha-20` | 0.20 | Strong overlays |
+| `--alpha-30` | 0.30 | Heavy overlays, focus ring glow |
+| `--alpha-50` | 0.50 | Modal backdrops |
+| `--alpha-70` | 0.70 | Dark overlays |
+
+**Usage Example**:
+```css
+/* Use with hsla() for consistent opacity */
+background-color: hsla(var(--base-blue-400) / var(--alpha-15));
+border-color: rgba(255, 255, 255, var(--alpha-12));
+```
 
 ### White Opacity Scale (Dark Mode Overlays)
 
@@ -293,7 +488,7 @@ Used for creating subtle separation on dark backgrounds:
 |---------|-------|
 | 10% | Subtle highlights |
 | 20% | Badge backgrounds |
-| 30% | Focus ring shadow |
+| 30% | Focus ring shadow (`--ring-color-alpha`) |
 | 50% | Focus ring color |
 
 ---
@@ -606,6 +801,15 @@ Only use when overriding Shopify's built-in color schemes or inline styles from 
 
 ---
 
-**Document Version**: 1.0
+**Document Version**: 2.0
 **Last Updated**: December 2024
 **Maintained By**: ASIW Supply Development Team
+
+### Version 2.0 Changes
+- Added 5-level surface elevation system (`--color-surface-0` through `--color-surface-4`)
+- Added 5-level text hierarchy (`--color-text-heading` through `--color-text-disabled`)
+- Added interactive state tokens (active states for primary, secondary, accent)
+- Added centralized opacity scale (`--alpha-5` through `--alpha-70`)
+- Added complete feedback color system (success/warning/error/info with bg/text/border variants)
+- Added focus ring token system (`--ring-color`, `--ring-width`, `--ring-offset`)
+- Added component-specific tokens (inputs, tables, buttons, skeleton)

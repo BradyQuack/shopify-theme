@@ -78,6 +78,17 @@
   /* ---- Muted Background (Toggle container) ---- */
   --base-muted-light: 216 15% 94%;    /* Light mode toggle bg */
   --base-muted-dark: 215 16% 28%;     /* Dark mode toggle bg */
+
+  /* ---- Opacity Scale (Centralized) ---- */
+  --alpha-5: 0.05;                    /* Subtle backgrounds */
+  --alpha-8: 0.08;                    /* Hover states */
+  --alpha-10: 0.10;                   /* Light overlays */
+  --alpha-12: 0.12;                   /* Borders */
+  --alpha-15: 0.15;                   /* Medium overlays */
+  --alpha-20: 0.20;                   /* Strong overlays */
+  --alpha-30: 0.30;                   /* Heavy overlays */
+  --alpha-50: 0.50;                   /* Modal backdrops */
+  --alpha-70: 0.70;                   /* Dark overlays */
 }
 
 /* ============================================
@@ -86,17 +97,25 @@
    ============================================ */
 :root,
 [data-theme="light"] {
-  /* ---- Background Hierarchy ---- */
-  --color-bg: hsl(var(--base-gray-100));              /* Page background */
-  --color-surface: hsl(var(--base-gray-50));          /* Cards, modals */
+  /* ---- Surface Elevation System (5 Levels) ---- */
+  --color-bg: hsl(var(--base-gray-100));              /* Level 0: Page canvas */
+  --color-surface-0: hsl(var(--base-gray-100));       /* Level 0: Same as bg */
+  --color-surface-1: hsl(var(--base-gray-50));        /* Level 1: Cards, panels */
+  --color-surface-2: hsl(0 0% 100%);                  /* Level 2: Modals, dropdowns */
+  --color-surface-3: hsl(0 0% 100%);                  /* Level 3: Tooltips, popovers */
+  --color-surface-4: hsl(0 0% 100%);                  /* Level 4: Highest elevation */
+  --color-surface: hsl(var(--base-gray-50));          /* Alias: Default surface */
   --color-surface-alt: hsl(214 14% 92%);              /* Alternate surfaces */
   --color-surface-hover: hsl(214 14% 97%);            /* Hover state */
-  --color-overlay: hsla(222 47% 9% / 0.5);            /* Modal overlays */
+  --color-overlay: hsla(222 47% 9% / var(--alpha-50)); /* Modal overlays */
 
-  /* ---- Text Hierarchy ---- */
-  --color-text-primary: hsl(220 20% 12%);             /* Primary text - near black */
-  --color-text-secondary: hsl(215 14% 47%);           /* Secondary text */
-  --color-text-muted: hsl(214 12% 58%);               /* Muted/disabled text */
+  /* ---- Text Hierarchy (5 Levels) ---- */
+  --color-text-heading: hsl(220 25% 10%);             /* H1-H3: Strongest */
+  --color-text-primary: hsl(220 20% 12%);             /* Body text: Primary */
+  --color-text-secondary: hsl(215 14% 47%);           /* Supporting text */
+  --color-text-tertiary: hsl(214 12% 58%);            /* Captions, hints */
+  --color-text-disabled: hsl(214 10% 70%);            /* Inactive elements */
+  --color-text-muted: hsl(214 12% 58%);               /* Alias: Muted text */
   --color-text-inverse: hsl(var(--base-gray-50));     /* Text on dark backgrounds */
 
   /* ---- Border Hierarchy ---- */
@@ -108,34 +127,60 @@
   /* Primary: Darker, muted blue - avoids clashing with light bg */
   --color-primary: hsl(var(--base-blue-700));         /* #005496 equivalent */
   --color-primary-hover: hsl(var(--base-blue-800));   /* Darker on hover */
+  --color-primary-active: hsl(var(--base-blue-900));  /* Pressed state */
   --color-primary-light: hsl(var(--base-blue-100));   /* Light tint */
 
   /* Secondary: Slightly lighter blue */
   --color-secondary: hsl(var(--base-blue-500));
   --color-secondary-hover: hsl(var(--base-blue-600));
+  --color-secondary-active: hsl(var(--base-blue-700));
   --color-secondary-light: hsl(var(--base-blue-100));
 
   /* Accent: Muted orange for light mode */
   --color-accent: hsl(var(--base-orange-700));        /* #DD6727 equivalent */
   --color-accent-hover: hsl(var(--base-orange-800));
+  --color-accent-active: hsl(var(--base-orange-900));
   --color-accent-light: hsl(var(--base-orange-100));
 
-  /* ---- Semantic Status Colors ---- */
+  /* ---- Feedback Colors (Full System) ---- */
+  /* Success */
   --color-success: hsl(var(--base-success-light));
   --color-success-hover: hsl(142 71% 38%);
   --color-success-light: hsl(142 76% 95%);
+  --color-success-bg: hsl(142 76% 95%);
+  --color-success-text: hsl(142 71% 30%);
+  --color-success-border: hsl(142 50% 70%);
 
+  /* Warning */
   --color-warning: hsl(var(--base-warning-light));
   --color-warning-hover: hsl(32 95% 44%);
   --color-warning-light: hsl(48 100% 95%);
+  --color-warning-bg: hsl(48 100% 95%);
+  --color-warning-text: hsl(32 95% 30%);
+  --color-warning-border: hsl(38 70% 70%);
 
+  /* Error */
   --color-error: hsl(var(--base-error-light));
   --color-error-hover: hsl(0 72% 43%);
   --color-error-light: hsl(0 86% 96%);
+  --color-error-bg: hsl(0 86% 96%);
+  --color-error-text: hsl(0 72% 40%);
+  --color-error-border: hsl(0 60% 80%);
 
+  /* Info */
   --color-info: hsl(var(--base-blue-500));
   --color-info-hover: hsl(var(--base-blue-600));
   --color-info-light: hsl(var(--base-blue-100));
+  --color-info-bg: hsl(var(--base-blue-100));
+  --color-info-text: hsl(var(--base-blue-800));
+  --color-info-border: hsl(var(--base-blue-200));
+
+  /* ---- Focus Ring System ---- */
+  --ring-color: hsl(var(--base-blue-700));
+  --ring-color-alpha: hsla(var(--base-blue-700) / var(--alpha-30));
+  --ring-width: 2px;
+  --ring-offset: 2px;
+  --ring-offset-color: hsl(var(--base-gray-50));
 
   /* ---- Card Tokens ---- */
   --color-card-bg: hsl(var(--base-gray-50));
@@ -221,6 +266,39 @@
   --toggle-hover-text: hsl(220 20% 2%);            /* Near-black on hover */
   --toggle-hover-bg: hsl(216 15% 88%);             /* Light gray bg on hover */
   --toggle-container-bg: hsl(var(--base-muted-light));
+
+  /* ---- Component Tokens: Inputs ---- */
+  --input-bg: hsl(var(--base-gray-50));
+  --input-bg-disabled: hsl(var(--base-gray-100));
+  --input-border: hsl(214 14% 82%);
+  --input-border-hover: hsl(214 14% 70%);
+  --input-border-focus: hsl(var(--base-blue-700));
+  --input-placeholder: hsl(214 12% 58%);
+  --input-text: hsl(220 20% 12%);
+
+  /* ---- Component Tokens: Tables ---- */
+  --table-header-bg: hsl(214 14% 95%);
+  --table-row-hover: hsl(214 14% 97%);
+  --table-row-stripe: hsl(214 14% 98%);
+  --table-border: hsl(214 14% 90%);
+
+  /* ---- Component Tokens: Buttons ---- */
+  --button-primary-bg: var(--color-primary);
+  --button-primary-bg-hover: var(--color-primary-hover);
+  --button-primary-bg-active: var(--color-primary-active);
+  --button-primary-text: hsl(var(--base-gray-50));
+  --button-primary-bg-disabled: hsl(214 14% 82%);
+  --button-primary-text-disabled: hsl(214 10% 60%);
+
+  --button-secondary-bg: transparent;
+  --button-secondary-border: var(--color-primary);
+  --button-secondary-text: var(--color-primary);
+  --button-secondary-bg-hover: var(--color-primary);
+  --button-secondary-text-hover: hsl(var(--base-gray-50));
+
+  /* ---- Component Tokens: Skeleton/Loading ---- */
+  --skeleton-base: hsl(214 14% 90%);
+  --skeleton-shimmer: hsl(214 14% 95%);
 }
 
 /* ============================================
@@ -228,19 +306,27 @@
    Brighter, more vibrant colors for dark backgrounds
    ============================================ */
 [data-theme="dark"] {
-  /* ---- Background Hierarchy ---- */
+  /* ---- Surface Elevation System (5 Levels) ---- */
   /* Deep navy-blue (not pure black) - avoids harshness */
-  --color-bg: hsl(var(--base-gray-950));              /* #0F172A - Page background */
-  --color-surface: hsl(var(--base-gray-800));         /* #1E293B - Elevated cards */
+  --color-bg: hsl(var(--base-gray-950));              /* Level 0: Page canvas */
+  --color-surface-0: hsl(var(--base-gray-950));       /* Level 0: Same as bg */
+  --color-surface-1: hsl(var(--base-gray-800));       /* Level 1: Cards, panels */
+  --color-surface-2: hsl(var(--base-gray-700));       /* Level 2: Modals, dropdowns */
+  --color-surface-3: hsl(215 20% 26%);                /* Level 3: Tooltips, popovers */
+  --color-surface-4: hsl(215 20% 30%);                /* Level 4: Highest elevation */
+  --color-surface: hsl(var(--base-gray-800));         /* Alias: Default surface */
   --color-surface-alt: hsl(var(--base-gray-700));     /* Alternate surfaces */
   --color-surface-hover: hsl(215 20% 28%);            /* Hover state */
-  --color-overlay: hsla(222 47% 9% / 0.7);            /* Modal overlays */
+  --color-overlay: hsla(222 47% 9% / var(--alpha-70)); /* Modal overlays */
 
-  /* ---- Text Hierarchy ---- */
+  /* ---- Text Hierarchy (5 Levels) ---- */
   /* Off-white text - softer than pure white to reduce eye strain */
-  --color-text-primary: hsl(210 20% 95%);             /* Near white */
-  --color-text-secondary: hsl(215 18% 65%);           /* Secondary text */
-  --color-text-muted: hsl(215 16% 47%);               /* Muted/disabled text */
+  --color-text-heading: hsl(210 25% 98%);             /* H1-H3: Brightest */
+  --color-text-primary: hsl(210 20% 95%);             /* Body text: Primary */
+  --color-text-secondary: hsl(215 18% 65%);           /* Supporting text */
+  --color-text-tertiary: hsl(215 16% 55%);            /* Captions, hints */
+  --color-text-disabled: hsl(215 14% 40%);            /* Inactive elements */
+  --color-text-muted: hsl(215 16% 47%);               /* Alias: Muted text */
   --color-text-inverse: hsl(var(--base-gray-950));    /* Text on light backgrounds */
 
   /* ---- Border Hierarchy ---- */
@@ -252,34 +338,60 @@
   /* Primary: Brighter, more vibrant blue - pops against dark bg */
   --color-primary: hsl(var(--base-blue-400));         /* #60A5FA - Vibrant */
   --color-primary-hover: hsl(var(--base-blue-300));   /* Lighter on hover */
+  --color-primary-active: hsl(var(--base-blue-200));  /* Pressed state */
   --color-primary-light: hsl(210 50% 25%);            /* Dark tint */
 
   /* Secondary: Lighter indigo-blue */
   --color-secondary: hsl(235 82% 72%);                /* Indigo */
   --color-secondary-hover: hsl(235 82% 82%);
+  --color-secondary-active: hsl(235 82% 88%);
   --color-secondary-light: hsl(230 30% 25%);
 
   /* Accent: Brighter, more saturated orange for dark mode */
   --color-accent: hsl(var(--base-orange-500));        /* #F28C38 - Vibrant */
   --color-accent-hover: hsl(var(--base-orange-400));  /* Lighter on hover */
+  --color-accent-active: hsl(var(--base-orange-300)); /* Pressed state */
   --color-accent-light: hsl(24 40% 20%);              /* Dark tint */
 
-  /* ---- Semantic Status Colors (Brighter for dark mode) ---- */
+  /* ---- Feedback Colors (Full System) ---- */
+  /* Success */
   --color-success: hsl(var(--base-success-dark));
   --color-success-hover: hsl(142 69% 70%);
   --color-success-light: hsl(145 35% 18%);
+  --color-success-bg: hsl(145 35% 18%);
+  --color-success-text: hsl(142 69% 65%);
+  --color-success-border: hsl(142 40% 35%);
 
+  /* Warning */
   --color-warning: hsl(var(--base-warning-dark));
   --color-warning-hover: hsl(48 96% 65%);
   --color-warning-light: hsl(45 50% 18%);
+  --color-warning-bg: hsl(45 50% 18%);
+  --color-warning-text: hsl(45 93% 58%);
+  --color-warning-border: hsl(38 50% 35%);
 
+  /* Error */
   --color-error: hsl(var(--base-error-dark));
   --color-error-hover: hsl(0 91% 80%);
   --color-error-light: hsl(0 40% 18%);
+  --color-error-bg: hsl(0 40% 18%);
+  --color-error-text: hsl(0 91% 71%);
+  --color-error-border: hsl(0 50% 35%);
 
+  /* Info */
   --color-info: hsl(var(--base-blue-400));
   --color-info-hover: hsl(var(--base-blue-300));
   --color-info-light: hsl(210 50% 25%);
+  --color-info-bg: hsl(210 50% 25%);
+  --color-info-text: hsl(var(--base-blue-300));
+  --color-info-border: hsl(210 40% 40%);
+
+  /* ---- Focus Ring System ---- */
+  --ring-color: hsl(var(--base-blue-400));
+  --ring-color-alpha: hsla(var(--base-blue-400) / var(--alpha-30));
+  --ring-width: 2px;
+  --ring-offset: 2px;
+  --ring-offset-color: hsl(var(--base-gray-950));
 
   /* ---- Card Tokens ---- */
   --color-card-bg: hsl(var(--base-gray-800));
@@ -365,6 +477,39 @@
   --toggle-hover-text: hsl(210 20% 95%);           /* Off-white on hover */
   --toggle-hover-bg: hsl(215 20% 35%);             /* Dark slate bg on hover */
   --toggle-container-bg: hsl(var(--base-muted-dark));
+
+  /* ---- Component Tokens: Inputs ---- */
+  --input-bg: hsl(var(--base-gray-800));
+  --input-bg-disabled: hsl(var(--base-gray-900));
+  --input-border: hsl(215 20% 28%);
+  --input-border-hover: hsl(215 20% 38%);
+  --input-border-focus: hsl(var(--base-blue-400));
+  --input-placeholder: hsl(215 16% 55%);
+  --input-text: hsl(210 20% 95%);
+
+  /* ---- Component Tokens: Tables ---- */
+  --table-header-bg: hsl(var(--base-gray-800));
+  --table-row-hover: hsl(215 20% 22%);
+  --table-row-stripe: hsl(215 20% 18%);
+  --table-border: hsl(215 20% 28%);
+
+  /* ---- Component Tokens: Buttons ---- */
+  --button-primary-bg: var(--color-primary);
+  --button-primary-bg-hover: var(--color-primary-hover);
+  --button-primary-bg-active: var(--color-primary-active);
+  --button-primary-text: hsl(var(--base-gray-950));
+  --button-primary-bg-disabled: hsl(215 20% 35%);
+  --button-primary-text-disabled: hsl(215 16% 55%);
+
+  --button-secondary-bg: transparent;
+  --button-secondary-border: var(--color-primary);
+  --button-secondary-text: var(--color-primary);
+  --button-secondary-bg-hover: var(--color-primary);
+  --button-secondary-text-hover: hsl(var(--base-gray-950));
+
+  /* ---- Component Tokens: Skeleton/Loading ---- */
+  --skeleton-base: hsl(215 20% 22%);
+  --skeleton-shimmer: hsl(215 20% 28%);
 }
 
 /* ============================================
