@@ -716,6 +716,23 @@
       background-color: {{ section.settings.recommendation_hover_color | default: '#f0f8ff' }};
     }
   }
+
+  /* Dark mode: Light icons for Sign In and Cart */
+  [data-theme="dark"] .header2__action {
+    color: var(--color-text-primary, #f1f5f9) !important;
+  }
+
+  [data-theme="dark"] .header2__signin-icon,
+  [data-theme="dark"] .header2__cart-icon,
+  [data-theme="dark"] .header2__signin-wrapper,
+  [data-theme="dark"] .header2__cart-wrapper {
+    color: var(--color-text-primary, #f1f5f9) !important;
+  }
+
+  /* Force SVG path fills in dark mode - needed because paths use fill="currentColor" */
+  [data-theme="dark"] .header2__actions svg path {
+    fill: var(--color-text-primary, #f1f5f9) !important;
+  }
 </style>
 
 {%- style -%}

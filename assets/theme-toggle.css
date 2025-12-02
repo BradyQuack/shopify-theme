@@ -1235,25 +1235,40 @@ a:not([class]):not([style]):hover {
 }
 
 /* Header2 action icons (Sign In, Cart) - light colored in dark mode */
-[data-theme="dark"] .header2__action {
+/* The SVGs use fill="currentColor" so we need to set the color property */
+[data-theme="dark"] .header2__action,
+[data-theme="dark"] .header2__actions a {
   color: var(--color-text-primary) !important;
 }
 
-[data-theme="dark"] .header2__action-label {
-  color: var(--color-text-primary) !important;
-}
-
+[data-theme="dark"] .header2__signin-wrapper,
+[data-theme="dark"] .header2__cart-wrapper,
 [data-theme="dark"] .header2__signin-icon,
-[data-theme="dark"] .header2__cart-icon,
-[data-theme="dark"] .header2__signin-icon svg,
-[data-theme="dark"] .header2__cart-icon svg {
+[data-theme="dark"] .header2__cart-icon {
   color: var(--color-text-primary) !important;
+}
+
+/* Force SVG fill for icons that use currentColor */
+[data-theme="dark"] .header2__signin-icon svg,
+[data-theme="dark"] .header2__cart-icon svg,
+[data-theme="dark"] .header2__signin-icon .icon,
+[data-theme="dark"] .header2__cart-icon .icon {
+  color: var(--color-text-primary) !important;
+}
+
+/* Direct path fill override for stubborn SVGs */
+[data-theme="dark"] .header2__signin-icon svg path,
+[data-theme="dark"] .header2__cart-icon svg path,
+[data-theme="dark"] .header2__actions svg path {
   fill: var(--color-text-primary) !important;
 }
 
-[data-theme="dark"] .header2__signin-icon svg path,
-[data-theme="dark"] .header2__cart-icon svg path {
-  fill: var(--color-text-primary) !important;
+/* Fallback: Use explicit light color for header action icons in dark mode */
+[data-theme="dark"] .header2__actions .icon,
+[data-theme="dark"] .header2__actions .icon path,
+[data-theme="dark"] .header2__actions svg.icon-account path,
+[data-theme="dark"] .header2__actions svg.icon-cart path {
+  fill: hsl(210 20% 95%) !important;
 }
 
 /* Search button icon should be white on blue background */
