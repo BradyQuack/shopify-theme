@@ -2,6 +2,13 @@
 
 All notable changes to the ASIW Supply Shopify theme are documented in this file.
 
+## [v01.00.15] - 2025-12-02
+
+### Fixed
+- Collection filters now work properly
+- Added missing `id="product-grid"` to product grid container when products exist
+- Root cause: `facets.js` expects `#product-grid` element but it only existed for empty collections
+
 ## [v01.00.14] - 2025-12-02
 
 ### Fixed
@@ -154,4 +161,4 @@ Versions follow the format: `vMM.mm.pp`
 - `mm` - Minor version (new features, enhancements)
 - `pp` - Patch version (bug fixes, small improvements)
 
-Current: **v01.00.14**
+Current: **v01.00.15**
