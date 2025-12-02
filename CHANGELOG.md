@@ -2,6 +2,14 @@
 
 All notable changes to the ASIW Supply Shopify theme are documented in this file.
 
+## [v01.00.11] - 2025-12-02
+
+### Fixed
+- Improved collection card consistency with CSS aspect-ratio property
+- Override Dawn's padding-based ratio trick for reliable square cards
+- Images use object-fit: contain with gray background for uniform display
+- Consistent card heading font size (14px) and spacing
+
 ## [v01.00.10] - 2025-12-02
 
 ### Fixed
