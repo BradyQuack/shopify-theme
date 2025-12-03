@@ -590,12 +590,12 @@ div.testimonial__text.rte p,
 }
 
 .testimonial__quote-icon {
-  color: var(--color-border) !important;
+  color: var(--color-text-primary) !important;
 }
 
 .testimonial__service-type {
-  background-color: var(--color-surface-alt) !important;
-  color: var(--color-primary) !important;
+  background-color: var(--color-primary) !important;
+  color: #ffffff !important;
 }
 
 .testimonial__star {
@@ -1602,7 +1602,7 @@ a:not([class]):not([style]):hover {
 }
 
 [data-theme="dark"] .testimonial__quote-icon {
-  color: var(--color-quote) !important;
+  color: var(--color-text-primary) !important;
 }
 
 /* Testimonial quote text - slightly dimmer than name for hierarchy */
