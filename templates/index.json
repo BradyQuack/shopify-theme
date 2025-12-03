@@ -412,13 +412,12 @@
         },
         "description_title_rgGkRJ": {
           "type": "description_title",
-          "disabled": true,
           "settings": {
-            "title_text": "<strong>Proudly Supplying Premium Brands</strong>",
+            "title_text": "Our Brands",
             "heading_size": "h2",
-            "title_text_color": "#000000",
-            "title_padding_top": 20,
-            "title_padding_bottom": 0
+            "title_text_color": "#181D25",
+            "title_padding_top": 0,
+            "title_padding_bottom": 20
           }
         },
         "description_body_XhNnMW": {
