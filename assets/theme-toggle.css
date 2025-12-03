@@ -679,6 +679,12 @@ a.button.button--primary:hover {
   box-shadow: none !important;
 }
 
+/* Content Block Section - heading should match testimonial heading */
+.content-block__heading,
+h2.content-block__heading {
+  color: var(--color-text-heading) !important;
+}
+
 .features-bar__title,
 h3.features-bar__title {
   color: var(--color-text-primary) !important;
