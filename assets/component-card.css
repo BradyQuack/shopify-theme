@@ -601,7 +601,7 @@
 .custom-price-line {
   display: flex;
   align-items: baseline;
-  gap: 0.5rem;
+  justify-content: space-between;
   margin-bottom: 0.25rem;
 }
 
@@ -619,7 +619,6 @@
   color: var(--color-compare-price, rgba(var(--color-foreground), 0.6));
   text-decoration: line-through;
   font-weight: normal;
-  margin-left: 0.8rem;
   align-self: center;
 }
 
