@@ -401,6 +401,7 @@
       "blocks": {
         "title_pill_fXtKTB": {
           "type": "title_pill",
+          "disabled": true,
           "settings": {
             "pill_text": "Our Brands",
             "pill_bg_color": "#007bff",
@@ -422,6 +423,7 @@
         },
         "description_body_XhNnMW": {
           "type": "description_body",
+          "disabled": true,
           "settings": {
             "body_text": "<p>Proudly Supplying Premium Brands</p>",
             "body_text_color": "#718096",
@@ -682,7 +684,7 @@
         "container_width": "page-width",
         "color_scheme": "scheme-1",
         "background_color": "#f8f9fa",
-        "show_badge": true,
+        "show_badge": false,
         "badge_text": "Customer Reviews",
         "badge_bg_color": "#007bff",
         "badge_text_color": "#ffffff",
@@ -690,7 +692,7 @@
         "heading_color": "#1a2332",
         "heading_size": 36,
         "heading_weight": "700",
-        "description": "Don't just take our word for it. Here's what our satisfied customers have to say about our products.",
+        "description": "",
         "description_color": "#666666",
         "description_size": 16,
         "star_color": "#fbbf24",
