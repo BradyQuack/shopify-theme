@@ -394,7 +394,7 @@
           "settings": {
             "title_text": "Our Brands",
             "heading_size": "h2",
-            "title_padding_top": 0,
+            "title_padding_top": 40,
             "title_padding_bottom": 20
           }
         },
