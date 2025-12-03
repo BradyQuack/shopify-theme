@@ -21,22 +21,29 @@
 
   /**
    * Get the user's theme preference
-   * Priority: localStorage > system preference > default (light)
+   * Priority: dark mode setting > localStorage > default (light)
    */
   function getThemePreference() {
+    // If dark mode is disabled, always return light
+    if (!isDarkModeEnabled()) {
+      return THEME_LIGHT;
+    }
+
     // Check localStorage first
     const storedTheme = localStorage.getItem(STORAGE_KEY);
     if (storedTheme) {
       return storedTheme;
     }
 
-    // Check system preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return THEME_DARK;
-    }
-
-    // Default to light
+    // Default to light mode for new visitors
     return THEME_LIGHT;
+  }
+
+  /**
+   * Check if dark mode is enabled in theme settings
+   */
+  function isDarkModeEnabled() {
+    return document.documentElement.getAttribute('data-dark-mode-enabled') === 'true';
   }
 
   /**
@@ -47,6 +54,11 @@
   function setTheme(theme, withTransition = true) {
     const html = document.documentElement;
     const isReady = html.classList.contains('theme-ready');
+
+    // If dark mode is disabled, always force light
+    if (!isDarkModeEnabled() && theme === THEME_DARK) {
+      theme = THEME_LIGHT;
+    }
 
     // If theme is ready and transition requested, do smooth transition
     if (isReady && withTransition) {
@@ -169,25 +181,6 @@
       }
     });
 
-    // Listen for system theme changes
-    if (window.matchMedia) {
-      const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-      // Use addEventListener with fallback for older browsers
-      const handleChange = function(e) {
-        // Only auto-switch if user hasn't manually set a preference
-        if (!localStorage.getItem(STORAGE_KEY)) {
-          setTheme(e.matches ? THEME_DARK : THEME_LIGHT, true);
-        }
-      };
-
-      if (darkModeQuery.addEventListener) {
-        darkModeQuery.addEventListener('change', handleChange);
-      } else if (darkModeQuery.addListener) {
-        // Fallback for older Safari
-        darkModeQuery.addListener(handleChange);
-      }
-    }
   }
 
   // Initialize on DOM ready

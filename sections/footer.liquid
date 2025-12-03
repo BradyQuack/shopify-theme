@@ -39,7 +39,7 @@
 {%- endstyle -%}
 
 <footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
-  {%- if section.settings.show_theme_toggle -%}
+  {%- if settings.enable_dark_mode and section.settings.show_theme_toggle -%}
     <div class="footer__theme-toggle-section page-width">
       <div class="theme-toggle" role="group" aria-label="Theme toggle">
         <button
@@ -363,7 +363,7 @@
             {%- endfor -%}
           </ul>
         {%- endif -%}
-        <small class="copyright__content theme-version" style="opacity: 0.5; font-family: monospace;">v01.00.20</small>
+        <small class="copyright__content theme-version" style="opacity: 0.5; font-family: monospace;">v01.00.25</small>
       </div>
     </div>
   </div>
