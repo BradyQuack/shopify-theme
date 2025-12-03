@@ -674,8 +674,9 @@ a.button.button--primary:hover {
 /* Features Bar (formerly Feature Highlights / feature-highlights) */
 .features-bar__item,
 .features-bar__item {
-  background-color: var(--color-surface) !important;
-  border-color: var(--color-border) !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .features-bar__title,
@@ -1364,8 +1365,9 @@ a:not([class]):not([style]):hover {
 }
 
 [data-theme="dark"] .features-bar__item {
-  background-color: var(--color-card-bg) !important;
-  border-color: var(--color-border) !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* Features bar icon tiles need darker gradient for white icon visibility */
