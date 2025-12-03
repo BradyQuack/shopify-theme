@@ -51,7 +51,7 @@
         "enable_language_selector": true,
         "payment_enable": true,
         "show_policy": true,
-        "show_theme_toggle": true,
+        "show_theme_toggle": false,
         "show_style_debug": false,
         "show_section_debug": true,
         "margin_top": 0,
