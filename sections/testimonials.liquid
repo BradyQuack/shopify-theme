@@ -80,27 +80,25 @@
 
               <!-- Customer Info -->
               <div class="testimonial__customer-info">
+                {% if block.settings.customer_name != blank %}
+                  <div class="testimonial__customer-name">
+                    {{ block.settings.customer_name }}
+                  </div>
+                {% endif %}
 
-                <div class="testimonial__customer-details">
-                  {% if block.settings.customer_name != blank %}
-                    <div class="testimonial__customer-name">
-                      {{ block.settings.customer_name }}
-                    </div>
-                  {% endif %}
-
+                <div class="testimonial__customer-row">
                   {% if block.settings.customer_location != blank %}
                     <div class="testimonial__customer-location">
                       {{ block.settings.customer_location }}
                     </div>
                   {% endif %}
+
+                  {% if block.settings.service_type != blank %}
+                    <div class="testimonial__service-type">
+                      {{ block.settings.service_type }}
+                    </div>
+                  {% endif %}
                 </div>
-
-                {% if block.settings.service_type != blank %}
-                  <div class="testimonial__service-type">
-                    {{ block.settings.service_type }}
-                  </div>
-                {% endif %}
-
               </div>
 
             </div>
@@ -268,25 +266,29 @@
 
   .testimonial__customer-info {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 16px;
-  }
-
-  .testimonial__customer-details {
-    flex: 1;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .testimonial__customer-name {
     font-size: 16px;
-    margin-bottom: 4px;
     font-weight: var(--testimonial-name-weight);
     color: var(--color-text-primary);
   }
 
+  .testimonial__customer-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
   .testimonial__customer-location {
-    font-size: 13px;
-    color: var(--color-text-label);
+    font-size: 12px;
+    color: var(--color-text-muted);
+    padding: 4px 10px;
+    background-color: var(--color-surface-2);
+    border-radius: 12px;
   }
 
   .testimonial__service-type {
