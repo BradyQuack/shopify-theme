@@ -43,7 +43,7 @@
     {%- endif -%}
     {%- if block.type == 'features_highlight' -%}
       #block-{{ block.id }} .features-highlight__item {
-        background-color: var(--color-surface-1);
+        background-color: transparent;
       }
       
       #block-{{ block.id }} .features-highlight__grid {
@@ -112,6 +112,14 @@
 
   .content-block__heading {
     word-break: break-word;
+    /* Using semantic tokens from theme-toggle.css */
+    margin: 0 0 16px 0;
+    font-family: var(--font-heading-family);
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--color-text-heading);
+    text-align: center;
   }
 
   .content-block__heading * {
@@ -174,19 +182,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Using semantic tokens from theme-toggle.css */
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    padding: 2px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
     overflow: hidden;
-    box-shadow: 0 2px 4px var(--color-card-shadow);
+    box-shadow: none;
     transition: all 0.3s ease;
     aspect-ratio: 1;
   }
 
   .features-highlight__item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: none;
   }
 
   .features-highlight__item.show-outlines {

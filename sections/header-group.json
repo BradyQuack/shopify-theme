@@ -60,20 +60,6 @@
     "header2_WRTrXp": {
       "type": "header2",
       "blocks": {
-        "promo_link_BfYbcm": {
-          "type": "promo_link",
-          "settings": {
-            "text": "support@asiwsupply.com",
-            "link": ""
-          }
-        },
-        "promo_link_KNeeER": {
-          "type": "promo_link",
-          "settings": {
-            "text": "(772) 302-9572",
-            "link": ""
-          }
-        },
         "nav_item_3fMEa8": {
           "type": "nav_item",
           "settings": {
@@ -206,8 +192,6 @@
         }
       },
       "block_order": [
-        "promo_link_BfYbcm",
-        "promo_link_KNeeER",
         "nav_item_3fMEa8",
         "nav_item_kbChHY",
         "nav_item_e46ACM",

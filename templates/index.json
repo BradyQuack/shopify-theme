@@ -16,16 +16,14 @@
           "type": "heading",
           "settings": {
             "heading": "Parts You Need, Service You Trust",
-            "heading_size": "h1",
-            "heading_color": "#ffffff"
+            "heading_size": "h1"
           }
         },
         "text_DhVPhV": {
           "type": "text",
           "settings": {
             "text": "Supplying contractors, farms, and municipalities with proven irrigation solutions at wholesale prices. Built for performance and backed by expertise.",
-            "text_style": "body",
-            "text_color": "#e6e6e6"
+            "text_style": "body"
           }
         },
         "buttons_dfTm6P": {
@@ -48,7 +46,6 @@
       "name": "Home Video Hero 2",
       "settings": {
         "video": "shopify://files/videos/PromoVideoCut.mp4",
-        "overlay_color": "#000000",
         "overlay_opacity": 50,
         "video_height": "large",
         "desktop_content_position": "middle-left",
@@ -210,7 +207,6 @@
         "show_column3_mobile": false,
         "container_width": 1500,
         "view_all_text": "View All",
-        "background_color": "#f5f7fa",
         "padding_top": 20,
         "padding_bottom": 20
       }
@@ -323,12 +319,6 @@
         "heading": "",
         "subheading": "",
         "max_width": 1160,
-        "background_color": "#f5f7fa",
-        "heading_color": "#111827",
-        "text_color": "#64748b",
-        "accent_blue_start": "#1976d2",
-        "accent_blue_end": "#1e88e5",
-        "item_bg_color": "#f5f7fa",
         "icon_bg_radius": 14,
         "icon_size": 24,
         "columns_desktop": "4",
@@ -355,16 +345,6 @@
         "button_icon": "",
         "button_target_blank": false,
         "button_aria_label": "",
-        "background_color": "#1d6ae5",
-        "enable_gradient": false,
-        "gradient_color": "#1a4a5c",
-        "overlay_color": "rgba(0,0,0,0.1)",
-        "text_color": "#ffffff",
-        "title_color": "",
-        "button_bg_color": "#4caf50",
-        "button_text_color": "#ffffff",
-        "button_hover_bg": "#45a049",
-        "button_border_color": "rgba(0,0,0,0)",
         "title_font_family": "inherit",
         "title_font_size": 20,
         "title_font_weight": "600",
@@ -401,9 +381,9 @@
       "blocks": {
         "title_pill_fXtKTB": {
           "type": "title_pill",
+          "disabled": true,
           "settings": {
             "pill_text": "Our Brands",
-            "pill_bg_color": "#007bff",
             "pill_font_size": 16,
             "pill_padding_top": 0,
             "pill_padding_bottom": 20
@@ -411,20 +391,18 @@
         },
         "description_title_rgGkRJ": {
           "type": "description_title",
-          "disabled": true,
           "settings": {
-            "title_text": "<strong>Proudly Supplying Premium Brands</strong>",
+            "title_text": "Our Brands",
             "heading_size": "h2",
-            "title_text_color": "#000000",
-            "title_padding_top": 20,
-            "title_padding_bottom": 0
+            "title_padding_top": 40,
+            "title_padding_bottom": 20
           }
         },
         "description_body_XhNnMW": {
           "type": "description_body",
+          "disabled": true,
           "settings": {
             "body_text": "<p>Proudly Supplying Premium Brands</p>",
-            "body_text_color": "#718096",
             "body_padding_top": 20,
             "body_padding_bottom": 0
           }
@@ -434,7 +412,6 @@
           "settings": {
             "show_outlines": false,
             "container_width": 80,
-            "container_bg_color": "#fdfdfd",
             "mobile_columns": 3,
             "desktop_columns": 6,
             "feature_image_1": "shopify://shop_images/goulds_logo_900x900_d8a2d2f3-84cd-4547-9e14-117d55342972.png",
@@ -482,16 +459,6 @@
         "button_icon": "",
         "button_target_blank": false,
         "button_aria_label": "",
-        "background_color": "#1d6ae5",
-        "enable_gradient": false,
-        "gradient_color": "#1a4a5c",
-        "overlay_color": "rgba(0,0,0,0.1)",
-        "text_color": "#ffffff",
-        "title_color": "",
-        "button_bg_color": "#4caf50",
-        "button_text_color": "#ffffff",
-        "button_hover_bg": "#45a049",
-        "button_border_color": "rgba(0,0,0,0)",
         "title_font_family": "inherit",
         "title_font_size": 20,
         "title_font_weight": "600",
@@ -681,31 +648,16 @@
       "settings": {
         "container_width": "page-width",
         "color_scheme": "scheme-1",
-        "background_color": "#f8f9fa",
-        "show_badge": true,
+        "show_badge": false,
         "badge_text": "Customer Reviews",
-        "badge_bg_color": "#007bff",
-        "badge_text_color": "#ffffff",
-        "heading": "",
-        "heading_color": "#1a2332",
+        "heading": "Customer Reviews",
         "heading_size": 36,
         "heading_weight": "700",
-        "description": "Don't just take our word for it. Here's what our satisfied customers have to say about our products.",
-        "description_color": "#666666",
+        "description": "",
         "description_size": 16,
-        "star_color": "#fbbf24",
         "quote_icon": "\"",
-        "quote_icon_color": "#e5e7eb",
         "review_text_size": 15,
-        "review_text_color": "#333333",
         "name_weight": "600",
-        "name_color": "#1a2332",
-        "location_color": "#666666",
-        "service_badge_bg": "#e3f2fd",
-        "service_badge_color": "#1976d2",
-        "button_bg_color": "#007bff",
-        "button_text_color": "#ffffff",
-        "dot_color": "#007bff",
         "padding_top": 20,
         "padding_bottom": 20
       }
@@ -720,11 +672,6 @@
         "subtitle": "Average Rating from 500+ Reviews",
         "description": "Join hundreds of satisfied customers who trust ASIW for their product and wholesale needs",
         "color_scheme": "scheme-1",
-        "background_color": "#f5f7fa",
-        "star_color": "#ffa500",
-        "rating_color": "#2c3e50",
-        "subtitle_color": "#2c3e50",
-        "text_color": "#555555",
         "padding_top": 0,
         "padding_bottom": 80
       }

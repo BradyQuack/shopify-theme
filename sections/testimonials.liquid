@@ -80,27 +80,25 @@
 
               <!-- Customer Info -->
               <div class="testimonial__customer-info">
+                {% if block.settings.customer_name != blank %}
+                  <div class="testimonial__customer-name">
+                    {{ block.settings.customer_name }}
+                  </div>
+                {% endif %}
 
-                <div class="testimonial__customer-details">
-                  {% if block.settings.customer_name != blank %}
-                    <div class="testimonial__customer-name">
-                      {{ block.settings.customer_name }}
-                    </div>
-                  {% endif %}
-
+                <div class="testimonial__customer-row">
                   {% if block.settings.customer_location != blank %}
                     <div class="testimonial__customer-location">
                       {{ block.settings.customer_location }}
                     </div>
                   {% endif %}
+
+                  {% if block.settings.service_type != blank %}
+                    <div class="testimonial__service-type">
+                      {{ block.settings.service_type }}
+                    </div>
+                  {% endif %}
                 </div>
-
-                {% if block.settings.service_type != blank %}
-                  <div class="testimonial__service-type">
-                    {{ block.settings.service_type }}
-                  </div>
-                {% endif %}
-
               </div>
 
             </div>
@@ -181,7 +179,7 @@
   }
 
   .testimonial__heading {
-    margin: 0 0 16px 0;
+    margin: 40px 0 16px 0;
     font-family: var(--font-heading-family);
     line-height: 1.3;
     font-size: var(--testimonial-heading-size);
@@ -246,7 +244,7 @@
     right: 24px;
     font-size: 24px;
     opacity: 0.3;
-    color: var(--color-border);
+    color: var(--color-text-primary);
   }
 
   .testimonial__text {
@@ -268,25 +266,26 @@
 
   .testimonial__customer-info {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 16px;
-  }
-
-  .testimonial__customer-details {
-    flex: 1;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .testimonial__customer-name {
     font-size: 16px;
-    margin-bottom: 4px;
     font-weight: var(--testimonial-name-weight);
     color: var(--color-text-primary);
   }
 
+  .testimonial__customer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
   .testimonial__customer-location {
     font-size: 13px;
-    color: var(--color-text-label);
+    color: var(--color-text-muted);
   }
 
   .testimonial__service-type {
@@ -296,9 +295,9 @@
     font-weight: 600;
     white-space: nowrap;
     text-align: center;
-    background-color: var(--color-primary-light);
-    color: var(--color-primary);
-    border: 1px solid var(--color-primary);
+    background-color: var(--color-primary);
+    color: #ffffff;
+    border: none;
   }
 
   /* Navigation & Dots - Hidden on Desktop */

@@ -336,16 +336,13 @@
         const response = await fetch(API_ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: request, history: conversationHistory })
+          body: JSON.stringify({ action: 'translate', inputText: request })
         });
 
         if (!response.ok) throw new Error(`API error: ${response.status}`);
 
         const data = await response.json();
-        const result = data.response || data.content || data.message || JSON.stringify(data);
-
-        conversationHistory.push({ role: 'user', content: request });
-        conversationHistory.push({ role: 'assistant', content: result });
+        const result = data.translation || data.response || data.content || data.message || JSON.stringify(data);
 
         currentTranslation = { title: request, instructions: result };
         showResult(result);
