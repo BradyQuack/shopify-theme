@@ -270,7 +270,7 @@
 
     let conversationHistory = [];
     let currentTranslation = { title: '', instructions: '' };
-    let breakdowns = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    let breakdowns = [];
     let currentFilter = 'all';
     let editingId = null;
 
@@ -278,6 +278,23 @@
     if (!API_ENDPOINT) {
       configNotice.style.display = 'flex';
     }
+
+    // Load breakdowns from API on init
+    async function loadBreakdowns() {
+      if (!API_ENDPOINT) return;
+      try {
+        const response = await fetch(API_ENDPOINT + '?action=getBreakdowns');
+        if (response.ok) {
+          const data = await response.json();
+          breakdowns = data.breakdowns || [];
+          updateCount();
+          renderBreakdowns();
+        }
+      } catch (err) {
+        console.error('Failed to load breakdowns:', err);
+      }
+    }
+    loadBreakdowns();
 
     // Tab switching
     document.querySelectorAll('.breakdowns-tabs__btn').forEach(btn => {
@@ -384,7 +401,7 @@
     });
 
     // Save breakdown button
-    saveBtn.addEventListener('click', () => {
+    saveBtn.addEventListener('click', async () => {
       if (!currentTranslation.title || !currentTranslation.instructions) return;
 
       const breakdown = {
@@ -395,27 +412,37 @@
         createdAt: new Date().toISOString()
       };
 
-      breakdowns.unshift(breakdown);
-      saveBreakdowns();
-      renderBreakdowns();
+      // Save to API
+      try {
+        await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'saveBreakdown', breakdown })
+        });
+        breakdowns.unshift(breakdown);
+        updateCount();
+        renderBreakdowns();
 
-      // Show success feedback
-      saveBtn.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-        Saved!
-      `;
-      setTimeout(() => {
+        // Show success feedback
         saveBtn.innerHTML = `
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-            <polyline points="17 21 17 13 7 13 7 21"></polyline>
-            <polyline points="7 3 7 8 15 8"></polyline>
+            <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
-          Save to Breakdowns
+          Saved!
         `;
-      }, 2000);
+        setTimeout(() => {
+          saveBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+            Save to Breakdowns
+          `;
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to save breakdown:', err);
+      }
     });
 
     // Enter key to submit
@@ -432,13 +459,22 @@
     document.getElementById('edit-cancel').addEventListener('click', closeEditModal);
     document.querySelector('.breakdowns-modal__backdrop').addEventListener('click', closeEditModal);
 
-    document.getElementById('edit-save').addEventListener('click', () => {
+    document.getElementById('edit-save').addEventListener('click', async () => {
       if (editingId === null) return;
       const idx = breakdowns.findIndex(b => b.id === editingId);
       if (idx !== -1) {
         breakdowns[idx].title = editTitle.value;
         breakdowns[idx].instructions = editInstructions.value;
-        saveBreakdowns();
+        try {
+          await fetch(API_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'updateBreakdown', breakdown: breakdowns[idx] })
+          });
+        } catch (err) {
+          console.error('Failed to update breakdown:', err);
+        }
+        updateCount();
         renderBreakdowns();
       }
       closeEditModal();
@@ -500,9 +536,30 @@
       saveBtn.style.display = 'none';
     }
 
-    function saveBreakdowns() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(breakdowns));
-      updateCount();
+    async function saveBreakdownToAPI(breakdown) {
+      if (!API_ENDPOINT) return;
+      try {
+        await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'updateBreakdown', breakdown })
+        });
+      } catch (err) {
+        console.error('Failed to save breakdown:', err);
+      }
+    }
+
+    async function deleteBreakdownFromAPI(id) {
+      if (!API_ENDPOINT) return;
+      try {
+        await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'deleteBreakdown', id })
+        });
+      } catch (err) {
+        console.error('Failed to delete breakdown:', err);
+      }
     }
 
     function updateCount() {
@@ -580,11 +637,12 @@
         });
 
         // Complete action
-        item.querySelector('.breakdown-item__action--complete').addEventListener('click', () => {
+        item.querySelector('.breakdown-item__action--complete').addEventListener('click', async () => {
           const idx = breakdowns.findIndex(b => b.id === id);
           if (idx !== -1) {
             breakdowns[idx].completed = !breakdowns[idx].completed;
-            saveBreakdowns();
+            await saveBreakdownToAPI(breakdowns[idx]);
+            updateCount();
             renderBreakdowns();
           }
         });
@@ -595,10 +653,11 @@
         });
 
         // Delete action
-        item.querySelector('.breakdown-item__action--delete').addEventListener('click', () => {
+        item.querySelector('.breakdown-item__action--delete').addEventListener('click', async () => {
           if (confirm('Are you sure you want to delete this breakdown?')) {
+            await deleteBreakdownFromAPI(id);
             breakdowns = breakdowns.filter(b => b.id !== id);
-            saveBreakdowns();
+            updateCount();
             renderBreakdowns();
           }
         });
