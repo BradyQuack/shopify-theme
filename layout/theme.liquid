@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="js" lang="{{ request.locale.iso_code }}">
+<html class="js" lang="{{ request.locale.iso_code }}" data-dark-mode-enabled="{{ settings.enable_dark_mode }}">
   <head>
     <meta charset="utf-8">
 
@@ -11,11 +11,18 @@
     {%- endcomment -%}
     <script>
       (function() {
+        var darkModeEnabled = {{ settings.enable_dark_mode | json }};
         var STORAGE_KEY = 'theme-preference';
-        var theme = localStorage.getItem(STORAGE_KEY);
-        if (!theme) {
-          // Default to light mode for new visitors
+        var theme;
+        if (!darkModeEnabled) {
+          // Dark mode disabled - always use light
           theme = 'light';
+        } else {
+          theme = localStorage.getItem(STORAGE_KEY);
+          if (!theme) {
+            // Default to light mode for new visitors
+            theme = 'light';
+          }
         }
         document.documentElement.setAttribute('data-theme', theme);
       })();

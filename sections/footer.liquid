@@ -39,7 +39,7 @@
 {%- endstyle -%}
 
 <footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
-  {%- if section.settings.show_theme_toggle -%}
+  {%- if settings.enable_dark_mode and section.settings.show_theme_toggle -%}
     <div class="footer__theme-toggle-section page-width">
       <div class="theme-toggle" role="group" aria-label="Theme toggle">
         <button

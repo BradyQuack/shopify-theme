@@ -21,9 +21,14 @@
 
   /**
    * Get the user's theme preference
-   * Priority: localStorage > default (light)
+   * Priority: dark mode setting > localStorage > default (light)
    */
   function getThemePreference() {
+    // If dark mode is disabled, always return light
+    if (!isDarkModeEnabled()) {
+      return THEME_LIGHT;
+    }
+
     // Check localStorage first
     const storedTheme = localStorage.getItem(STORAGE_KEY);
     if (storedTheme) {
@@ -35,6 +40,13 @@
   }
 
   /**
+   * Check if dark mode is enabled in theme settings
+   */
+  function isDarkModeEnabled() {
+    return document.documentElement.getAttribute('data-dark-mode-enabled') === 'true';
+  }
+
+  /**
    * Apply theme to the document
    * @param {string} theme - 'light' or 'dark'
    * @param {boolean} withTransition - whether to show transition effect
@@ -42,6 +54,11 @@
   function setTheme(theme, withTransition = true) {
     const html = document.documentElement;
     const isReady = html.classList.contains('theme-ready');
+
+    // If dark mode is disabled, always force light
+    if (!isDarkModeEnabled() && theme === THEME_DARK) {
+      theme = THEME_LIGHT;
+    }
 
     // If theme is ready and transition requested, do smooth transition
     if (isReady && withTransition) {
