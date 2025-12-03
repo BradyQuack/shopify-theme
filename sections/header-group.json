@@ -60,6 +60,157 @@
     "header2_WRTrXp": {
       "type": "header2",
       "blocks": {
+        "nav_item_T3ULn6": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Tools & Accessories",
+            "link": "",
+            "show_icon": false,
+            "show_in_navbar": false,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_MRLhNY": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Glue & Primer",
+            "link": "",
+            "show_icon": false,
+            "show_in_navbar": false,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_9MfKPc": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Fertigation & Chemical Injection",
+            "link": "",
+            "show_icon": false,
+            "show_in_navbar": false,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_MTmLnH": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Kits",
+            "link": "",
+            "show_icon": false,
+            "show_in_navbar": false,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_BaCTRd": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Sprinklers",
+            "link": "",
+            "show_icon": false,
+            "show_in_navbar": false,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_aKLjn8": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Flow Meters",
+            "link": "",
+            "show_icon": false,
+            "show_in_navbar": false,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_Caqfq4": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Tubing",
+            "link": "",
+            "show_icon": false,
+            "show_in_navbar": false,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_hpjj8e": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Drip Irrigation",
+            "link": "",
+            "show_icon": false,
+            "show_in_navbar": false,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_6NVeG8": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Automation",
+            "link": "",
+            "show_icon": false,
+            "show_in_navbar": false,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_tH4xB6": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Pumps",
+            "link": "shopify://collections/pumps",
+            "show_icon": false,
+            "show_in_navbar": false,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_pKiUV6": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Pipe",
+            "link": "shopify://collections/pump-parts",
+            "show_icon": false,
+            "show_in_navbar": false,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_nNB3QA": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Fittings",
+            "link": "shopify://collections/custom-pvc-pipe",
+            "show_icon": false,
+            "show_in_navbar": false,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_7XUDQb": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Valves",
+            "link": "",
+            "show_icon": false,
+            "show_in_navbar": false,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_9wULAV": {
+          "type": "nav_item",
+          "settings": {
+            "text": "Filters",
+            "link": "",
+            "show_icon": false,
+            "show_in_navbar": false,
+            "show_in_dropdown": true
+          }
+        },
+        "nav_item_XUXbyX": {
+          "type": "nav_item",
+          "disabled": true,
+          "settings": {
+            "text": "Berkeley Parts",
+            "link": "shopify://collections/berkeley-replacement-parts",
+            "show_icon": false,
+            "show_in_navbar": false,
+            "show_in_dropdown": true
+          }
+        },
         "nav_item_3fMEa8": {
           "type": "nav_item",
           "settings": {
@@ -99,113 +250,28 @@
             "show_in_navbar": true,
             "show_in_dropdown": false
           }
-        },
-        "nav_item_tH4xB6": {
-          "type": "nav_item",
-          "settings": {
-            "text": "Pumps",
-            "link": "shopify://collections/pumps",
-            "show_icon": false,
-            "show_in_navbar": false,
-            "show_in_dropdown": true
-          }
-        },
-        "nav_item_pKiUV6": {
-          "type": "nav_item",
-          "settings": {
-            "text": "Pump Parts",
-            "link": "shopify://collections/pump-parts",
-            "show_icon": false,
-            "show_in_navbar": false,
-            "show_in_dropdown": true
-          }
-        },
-        "nav_item_nNB3QA": {
-          "type": "nav_item",
-          "settings": {
-            "text": "PVC Pipe",
-            "link": "shopify://collections/custom-pvc-pipe",
-            "show_icon": false,
-            "show_in_navbar": false,
-            "show_in_dropdown": true
-          }
-        },
-        "nav_item_7XUDQb": {
-          "type": "nav_item",
-          "disabled": true,
-          "settings": {
-            "text": "Valves",
-            "link": "",
-            "show_icon": false,
-            "show_in_navbar": true,
-            "show_in_dropdown": true
-          }
-        },
-        "nav_item_9wULAV": {
-          "type": "nav_item",
-          "disabled": true,
-          "settings": {
-            "text": "Filters",
-            "link": "",
-            "show_icon": false,
-            "show_in_navbar": true,
-            "show_in_dropdown": true
-          }
-        },
-        "nav_item_XUXbyX": {
-          "type": "nav_item",
-          "settings": {
-            "text": "Berkeley Parts",
-            "link": "shopify://collections/berkeley-replacement-parts",
-            "show_icon": false,
-            "show_in_navbar": false,
-            "show_in_dropdown": true
-          }
-        },
-        "recommendation_gkFc88": {
-          "type": "recommendation",
-          "settings": {
-            "text": "Centrifugal Pumps",
-            "link": "shopify://collections/centrifugal-pumps"
-          }
-        },
-        "recommendation_iHMGT9": {
-          "type": "recommendation",
-          "settings": {
-            "text": "Shallow Well Pumps",
-            "link": "shopify://collections/shallow-well-pumps"
-          }
-        },
-        "recommendation_FMCfrQ": {
-          "type": "recommendation",
-          "settings": {
-            "text": "Replacement Parts",
-            "link": "shopify://collections/pump-parts"
-          }
-        },
-        "recommendation_hjxBag": {
-          "type": "recommendation",
-          "settings": {
-            "text": "1-1/2 Custom PVC",
-            "link": "shopify://products/1-1-2-schedule-40-pvc-pipe-custom-length"
-          }
         }
       },
       "block_order": [
-        "nav_item_3fMEa8",
-        "nav_item_kbChHY",
-        "nav_item_e46ACM",
-        "nav_item_itbf9J",
+        "nav_item_T3ULn6",
+        "nav_item_MRLhNY",
+        "nav_item_9MfKPc",
+        "nav_item_MTmLnH",
+        "nav_item_BaCTRd",
+        "nav_item_aKLjn8",
+        "nav_item_Caqfq4",
+        "nav_item_hpjj8e",
+        "nav_item_6NVeG8",
         "nav_item_tH4xB6",
         "nav_item_pKiUV6",
         "nav_item_nNB3QA",
         "nav_item_7XUDQb",
         "nav_item_9wULAV",
         "nav_item_XUXbyX",
-        "recommendation_gkFc88",
-        "recommendation_iHMGT9",
-        "recommendation_FMCfrQ",
-        "recommendation_hjxBag"
+        "nav_item_3fMEa8",
+        "nav_item_kbChHY",
+        "nav_item_e46ACM",
+        "nav_item_itbf9J"
       ],
       "name": "Header2",
       "settings": {
