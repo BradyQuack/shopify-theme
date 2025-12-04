@@ -602,6 +602,7 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+  gap: 1rem;
   margin-bottom: 0.25rem;
 }
 
@@ -879,6 +880,7 @@
   flex-direction: row;
   align-items: baseline;
   justify-content: space-between;
+  gap: 1rem;
   margin-bottom: 0;
 }
 
@@ -914,6 +916,7 @@
   flex-direction: row;
   align-items: baseline;
   justify-content: space-between;
+  gap: 1rem;
   margin-bottom: 0;
 }
 
