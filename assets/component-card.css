@@ -1132,26 +1132,3 @@
   display: none !important;
 }
 
-/* ============================================
-   WIDER PRODUCT CARDS
-   ============================================ */
-
-@media screen and (min-width: 990px) {
-  /* Make 5-col display as 4-col width */
-  .product-grid.grid--5-col-desktop .grid__item {
-    width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
-    max-width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
-  }
-
-  /* Make 4-col display as 3-col width */
-  .product-grid.grid--4-col-desktop .grid__item {
-    width: calc(33.33% - var(--grid-desktop-horizontal-spacing) * 2 / 3);
-    max-width: calc(33.33% - var(--grid-desktop-horizontal-spacing) * 2 / 3);
-  }
-
-  /* Make 3-col slightly wider */
-  .product-grid.grid--3-col-desktop .grid__item {
-    width: calc(40% - var(--grid-desktop-horizontal-spacing) * 1 / 2);
-    max-width: calc(40% - var(--grid-desktop-horizontal-spacing) * 1 / 2);
-  }
-}
