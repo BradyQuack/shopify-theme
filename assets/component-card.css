@@ -135,7 +135,7 @@
 }
 
 .card__information {
-  padding: 0.2rem 0;
+  padding: 0;
 }
 
 .card:not(.ratio) > .card__content {
@@ -595,7 +595,7 @@
 
 /* Custom Product Card Styles */
 .custom-price-wrapper {
-  margin: 0.5rem 0;
+  margin: 0.15rem 0;
 }
 
 .custom-price-line {
@@ -634,7 +634,7 @@
   font-weight: normal;
   line-height: 1.4;
   margin-top: 0.25rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.15rem;
 }
 
 .custom-product-title a {
