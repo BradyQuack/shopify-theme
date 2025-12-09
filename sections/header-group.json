@@ -84,7 +84,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Fittings",
-            "link": "shopify://collections/fittings",
+            "link": "shopify://collections/fittings2",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
