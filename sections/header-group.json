@@ -74,7 +74,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Pipe",
-            "link": "shopify://collections/pump-parts",
+            "link": "shopify://collections/pipe",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
@@ -84,7 +84,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Fittings",
-            "link": "shopify://collections/custom-pvc-pipe",
+            "link": "shopify://collections/fittings",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
@@ -94,7 +94,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Valves",
-            "link": "",
+            "link": "shopify://collections/valves",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
@@ -104,7 +104,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Filters",
-            "link": "",
+            "link": "shopify://collections/filters",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
@@ -114,7 +114,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Automation",
-            "link": "",
+            "link": "shopify://collections/automation",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
@@ -124,7 +124,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Tubing",
-            "link": "",
+            "link": "shopify://collections/tubing",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
@@ -134,7 +134,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Sprinklers",
-            "link": "",
+            "link": "shopify://collections/sprinklers",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
@@ -144,7 +144,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Drip Irrigation",
-            "link": "",
+            "link": "shopify://collections/drip-irrigation",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
@@ -154,7 +154,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Fertigation & Chemical Injection",
-            "link": "",
+            "link": "shopify://collections/fertigation-chemical-injection",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
@@ -164,7 +164,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Kits",
-            "link": "",
+            "link": "shopify://collections/kits",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
@@ -174,7 +174,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Flow Meters",
-            "link": "",
+            "link": "shopify://collections/flow-meters",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
@@ -184,7 +184,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Glue & Primer",
-            "link": "",
+            "link": "shopify://collections/glue-primer",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
@@ -194,7 +194,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Tools & Accessories",
-            "link": "",
+            "link": "shopify://collections/tools-accessories",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
