@@ -64,7 +64,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Pumps",
-            "link": "shopify://collections/pumps",
+            "link": "shopify://collections/pumps-engines",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
