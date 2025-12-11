@@ -114,7 +114,7 @@
           "type": "nav_item",
           "settings": {
             "text": "Automation",
-            "link": "shopify://collections/automation",
+            "link": "shopify://collections/automation-controllers",
             "show_icon": false,
             "show_in_navbar": false,
             "show_in_dropdown": true
