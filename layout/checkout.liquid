@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0">
+    {{ checkout_html_tag }}
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+  </head>
+  <body>
+    {{ skip_to_content_link }}
+
+    <header class="banner" role="banner">
+      <div class="wrap">
+        <a href="https://asiwsupply.com" class="logo-link">
+          {{ checkout_logo }}
+        </a>
+      </div>
+    </header>
+
+    {{ order_summary_toggle }}
+
+    <div class="content" role="main">
+      <div class="wrap">
+        <div class="main">
+          <header class="main__header">
+            {{ breadcrumb }}
+            {{ alternative_payment_methods }}
+          </header>
+          <div class="main__content">
+            {{ content_for_layout }}
+          </div>
+          <footer class="main__footer">
+            {{ content_for_footer }}
+          </footer>
+        </div>
+        <aside class="sidebar" role="complementary">
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    {{ tracking_code }}
+  </body>
+</html>
