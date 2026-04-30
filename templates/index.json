@@ -47,7 +47,7 @@
       "settings": {
         "video": "shopify://files/videos/PromoVideoCut.mp4",
         "overlay_opacity": 50,
-        "video_height": "large",
+        "video_height": "medium",
         "desktop_content_position": "middle-left",
         "desktop_content_alignment": "left",
         "show_text_box": false,
