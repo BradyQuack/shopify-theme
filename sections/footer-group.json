@@ -53,7 +53,7 @@
         "show_policy": true,
         "show_theme_toggle": false,
         "show_style_debug": false,
-        "show_section_debug": true,
+        "show_section_debug": false,
         "margin_top": 0,
         "padding_top": 36,
         "padding_bottom": 36
