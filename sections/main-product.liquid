@@ -42,24 +42,6 @@
       }
     }
 
-    {% if section.settings.enable_debug_mode %}
-    /* DEBUG MODE - Visible outlines */
-    .amazon-grid { outline: 3px solid red; }
-    .amazon-thumbnails { outline: 3px solid blue; }
-    .amazon-center-content { outline: 3px solid green; }
-    .amazon-product-info-column { outline: 3px solid purple; }
-    .amazon-sidebar { outline: 3px solid orange; }
-    .amazon-main-image { outline: 2px solid cyan; }
-    .debug-label { display: block !important; }
-    .debug-overlay { display: block !important; }
-    .divider-debug { display: none; }
-    {% else %}
-    /* DEBUG MODE OFF - Hide all debug elements */
-    .debug-label { display: none !important; }
-    .debug-overlay { display: none !important; }
-    .divider-debug { display: none !important; }
-    {% endif %}
-
     /* Layout Variables */
     :root {
       --color-background: {{ section.settings.color_scheme.settings.background }};
@@ -91,11 +73,6 @@
       gap: 30px;
       align-items: start;
       overflow: visible;
-      {% if section.settings.enable_debug_mode %}
-      outline: 10px solid red;
-      min-height: 2000px;
-      background: rgba(255, 0, 0, 0.05);
-      {% endif %}
     }
 
     /* Column 1: Thumbnails (now horizontal below main image) */
@@ -105,10 +82,6 @@
       gap: 8px;
       justify-content: flex-start;
       flex-wrap: wrap;
-      {% if section.settings.enable_debug_mode %}
-      outline: 5px solid blue;
-      background: rgba(0, 0, 255, 0.1);
-      {% endif %}
     }
 
     .amazon-thumbnail {
@@ -677,29 +650,6 @@
     .amazon-info-value.no-link:hover {
       text-decoration: none;
     }
-
-    /* Debug Styles */
-    .debug-label {
-      background: yellow;
-      padding: 5px;
-      font-size: 10px;
-      font-weight: bold;
-      display: none;
-    }
-
-    .debug-overlay {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background: red;
-      color: white;
-      padding: 10px;
-      z-index: 9999;
-      max-width: 300px;
-      font-size: 12px;
-      border-radius: 4px;
-      display: none;
-    }
   </style>
 
   {%- style -%}
@@ -731,27 +681,8 @@
   {%- endif -%}
 
   <div class="amazon-grid">
-    <!-- Debug Overlay -->
-    <div class="debug-overlay">
-      <strong>DEBUG OVERLAY:</strong><br>
-      Grid is rendering!<br>
-      Total blocks: {{ section.blocks.size }}<br>
-      Section ID: {{ section.id }}<br>
-      Debug Mode: {{ section.settings.enable_debug_mode }}
-    </div>
-
     <!-- Column 1: Main Image + Thumbnails Below -->
     <div class="amazon-center-content">
-      <div class="debug-label">COLUMN 1 - MAIN IMAGE + THUMBNAILS</div>
-      {% if section.settings.enable_debug_mode %}
-      <div style="background: lime; color: black; padding: 10px; font-weight: bold; margin-bottom: 10px; border: 3px solid black;">
-        🔧 COL 1 STICKY DEBUG:<br>
-        Position: sticky !important<br>
-        Top: 20px !important<br>
-        Z-index: 10<br>
-        Height: fit-content
-      </div>
-      {% endif %}
       <div class="amazon-main-image" id="MainImage-{{ section.id }}">
         {%- if product.featured_media -%}
           <img src="{{ product.featured_media | image_url: width: 800 }}" alt="{{ product.featured_media.alt | escape }}" id="MainImageSrc-{{ section.id }}" data-full-src="{{ product.featured_media | image_url }}" style="cursor: pointer;">
@@ -760,12 +691,6 @@
       
       <!-- Thumbnails Below Main Image -->
       <div class="amazon-thumbnails" style="margin-top: 15px;">
-        <div class="debug-label">THUMBNAILS (HORIZONTAL)</div>
-        {% if section.settings.enable_debug_mode %}
-        <div style="background: blue; color: white; padding: 5px; font-size: 10px; font-weight: bold; width: 100%; text-align: center;">
-          📍 THUMBNAILS HORIZONTAL
-        </div>
-        {% endif %}
         {%- for media in product.media limit: 8 -%}
           <div class="amazon-thumbnail{% if forloop.first %} active{% endif %}" data-media-id="{{ media.id }}">
             {%- if media.media_type == 'image' -%}
@@ -786,13 +711,6 @@
 
     <!-- Column 2: Product Info -->
     <div class="amazon-product-info-column">
-      <div class="debug-label">COLUMN 3 - PRODUCT INFO</div>
-      {% if section.settings.enable_debug_mode %}
-      <div style="background: purple; color: white; padding: 5px; font-size: 10px; font-weight: bold;">
-        📜 COL 3 (NOT STICKY)<br>
-        This column scrolls normally
-      </div>
-      {% endif %}
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           
@@ -860,14 +778,6 @@
 
           {%- when 'divider' -%}
             <div {{ block.shopify_attributes }}>
-              {% if section.settings.enable_debug_mode %}
-              <div style="background: pink; padding: 10px; border: 3px solid red; margin-bottom: 10px;">
-                <strong style="color: red;">🔴 DIVIDER BLOCK FOUND!</strong><br>
-                Color: {{ block.settings.divider_color | default: "NOT SET" }}<br>
-                Thickness: {{ block.settings.divider_thickness | default: "NOT SET" }}px<br>
-                <strong style="color: red;">↓ Divider line should appear below ↓</strong>
-              </div>
-              {% endif %}
               <div style="width: 100%; background-color: {{ block.settings.divider_color | default: '#000000' }}; height: {{ block.settings.divider_thickness | default: 1 }}px; margin: 15px 0; display: block;"></div>
             </div>
 
@@ -898,7 +808,6 @@
 
     <!-- Column 3: Sidebar -->
     <div class="amazon-sidebar">
-      <div class="debug-label">COLUMN 3 - BUY BUTTONS</div>
       {%- assign product_form_id = 'product-form-' | append: section.id -%}
       
       {%- for block in section.blocks -%}
@@ -2082,13 +1991,6 @@
       "id": "color_scheme",
       "label": "Color Scheme",
       "info": "Select a color scheme to apply to this section"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_debug_mode",
-      "label": "🔧 Enable Debug Mode",
-      "default": false,
-      "info": "Shows colored outlines and labels for development. Turn OFF for production."
     },
     {
       "type": "header",
