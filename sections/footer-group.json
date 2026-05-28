@@ -34,12 +34,20 @@
             "heading": "Company",
             "menu": "footer-company"
           }
+        },
+        "text_contact_9637": {
+          "type": "text",
+          "settings": {
+            "heading": "Contact",
+            "subtext": "<p><a href=\"/blogs/news\" title=\"Blog\">Blog</a></p><p>Direct: <a href=\"tel:+17724099637\">(772) 409-9637</a></p><p>Email: <a href=\"mailto:support@asiwsupply.com\">support@asiwsupply.com</a></p>"
+          }
         }
       },
       "block_order": [
         "link_list_xPXcyM",
         "link_list_k6dNrU",
-        "link_list_6eAcFW"
+        "link_list_6eAcFW",
+        "text_contact_9637"
       ],
       "settings": {
         "color_scheme": "scheme-2",
