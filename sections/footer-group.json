@@ -35,15 +35,11 @@
             "menu": "footer-company"
           }
         },
-        "contact_9637": {
-          "type": "contact",
+        "link_list_hrFK84": {
+          "type": "link_list",
           "settings": {
             "heading": "Contact",
-            "blog_label": "Blog",
-            "blog_url": "/blogs/news",
-            "direct_phone": "(386) 318-3774",
-            "counter_phone": "(772) 409-9637",
-            "email": "support@asiwsupply.com"
+            "menu": "footer-contact"
           }
         }
       },
@@ -51,7 +47,7 @@
         "link_list_xPXcyM",
         "link_list_k6dNrU",
         "link_list_6eAcFW",
-        "contact_9637"
+        "link_list_hrFK84"
       ],
       "settings": {
         "color_scheme": "scheme-2",
