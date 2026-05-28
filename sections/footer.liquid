@@ -115,7 +115,7 @@
           >
             {%- for block in section.blocks -%}
               <div
-                class="footer-block grid__item{% if block.type == 'link_list' %} footer-block--menu{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                class="footer-block grid__item{% if block.type == 'link_list' or block.type == 'contact' %} footer-block--menu{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
                 {{ block.shopify_attributes }}
                 {% if settings.animations_reveal_on_scroll %}
                   data-cascade
@@ -148,6 +148,51 @@
                         {%- endfor -%}
                       </ul>
                     {%- endif -%}
+                  {%- when 'contact' -%}
+                    <ul class="footer-block__details-content list-unstyled">
+                      {%- if block.settings.blog_url != blank -%}
+                        <li>
+                          <a
+                            href="{{ block.settings.blog_url }}"
+                            class="link link--text list-menu__item list-menu__item--link"
+                          >
+                            {{ block.settings.blog_label | escape }}
+                          </a>
+                        </li>
+                      {%- endif -%}
+                      {%- if block.settings.direct_phone != blank -%}
+                        {%- assign direct_tel = block.settings.direct_phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' | remove: '.' -%}
+                        <li>
+                          <a
+                            href="tel:{{ direct_tel }}"
+                            class="link link--text list-menu__item list-menu__item--link"
+                          >
+                            Direct Phone: {{ block.settings.direct_phone | escape }}
+                          </a>
+                        </li>
+                      {%- endif -%}
+                      {%- if block.settings.counter_phone != blank -%}
+                        {%- assign counter_tel = block.settings.counter_phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' | remove: '.' -%}
+                        <li>
+                          <a
+                            href="tel:{{ counter_tel }}"
+                            class="link link--text list-menu__item list-menu__item--link"
+                          >
+                            Counter Phone: {{ block.settings.counter_phone | escape }}
+                          </a>
+                        </li>
+                      {%- endif -%}
+                      {%- if block.settings.email != blank -%}
+                        <li>
+                          <a
+                            href="mailto:{{ block.settings.email }}"
+                            class="link link--text list-menu__item list-menu__item--link"
+                          >
+                            {{ block.settings.email | escape }}
+                          </a>
+                        </li>
+                      {%- endif -%}
+                    </ul>
                   {%- when 'brand_information' -%}
                     <div class="footer-block__brand-info">
                       {%- if settings.brand_image != blank -%}
@@ -437,6 +482,44 @@
           "id": "subtext",
           "default": "t:sections.footer.blocks.text.settings.subtext.default",
           "label": "t:sections.footer.blocks.text.settings.subtext.label"
+        }
+      ]
+    },
+    {
+      "type": "contact",
+      "name": "Contact",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Contact",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "blog_label",
+          "default": "Blog",
+          "label": "Blog link label"
+        },
+        {
+          "type": "url",
+          "id": "blog_url",
+          "label": "Blog link"
+        },
+        {
+          "type": "text",
+          "id": "direct_phone",
+          "label": "Direct phone"
+        },
+        {
+          "type": "text",
+          "id": "counter_phone",
+          "label": "Counter phone"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email"
         }
       ]
     },
