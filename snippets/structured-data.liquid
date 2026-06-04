@@ -1,0 +1,47 @@
+{%- comment -%}
+  Site-wide JSON-LD structured data.
+
+  Renders Organization schema on every page and adds WebSite schema (with a
+  search action) on the homepage. Improves SEO rich results and AI/GEO
+  discoverability. Product/article pages emit their own schema in their
+  respective sections.
+{%- endcomment -%}
+
+{%- liquid
+  assign site_url = request.origin | default: shop.url
+  assign org_description = shop.description | default: page_description
+  if settings.logo != blank
+    assign logo_url = settings.logo | image_url: width: 512
+    assign logo_url = logo_url | prepend: 'https:'
+  endif
+-%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": {{ shop.name | json }},
+  "url": {{ site_url | json }}{% if org_description != blank %},
+  "description": {{ org_description | strip_html | json }}{% endif %}{% if logo_url %},
+  "logo": {{ logo_url | json }}{% endif %}
+}
+</script>
+
+{%- if request.page_type == 'index' -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": {{ shop.name | json }},
+    "url": {{ site_url | json }},
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "{{ site_url }}/search?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+{%- endif -%}

@@ -30,6 +30,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <link rel="canonical" href="{{ canonical_url }}">
 
     {%- if settings.favicon != blank -%}
@@ -40,11 +41,20 @@
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
 
+    {%- liquid
+      # The homepage SEO title set in admin is only "ASIW" (too short for SERPs).
+      # Fall back to a descriptive title on the homepage so the <title> lands in
+      # the recommended 30-60 character range. Override in admin to customise.
+      assign seo_title = page_title
+      if request.page_type == 'index' and page_title.size < 15
+        assign seo_title = 'Irrigation Pumps, Parts & PVC at Wholesale Prices'
+      endif
+    -%}
     <title>
-      {{ page_title }}
+      {{ seo_title }}
       {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
       {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- unless seo_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
     {% if page_description %}
@@ -52,6 +62,8 @@
     {% endif %}
 
     {% render 'meta-tags' %}
+
+    {% render 'structured-data' %}
 
     <script src="{{ 'theme-toggle.js' | asset_url }}"></script>
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>

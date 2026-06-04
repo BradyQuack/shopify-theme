@@ -52,12 +52,20 @@
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'heading' -%}
-            <h2
+            {%- liquid
+              # Use a semantic <h1> when the editor selects the h1 size so the
+              # hero acts as the page's primary heading (Core SEO: single H1).
+              assign heading_tag = 'h2'
+              if block.settings.heading_size == 'h1'
+                assign heading_tag = 'h1'
+              endif
+            -%}
+            <{{ heading_tag }}
               class="banner__heading inline-richtext {{ block.settings.heading_size }}"
               {{ block.shopify_attributes }}
             >
               {{ block.settings.heading }}
-            </h2>
+            </{{ heading_tag }}>
           {%- when 'text' -%}
             <div class="banner__text rte {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
               <p>{{ block.settings.text }}</p>

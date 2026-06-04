@@ -237,10 +237,14 @@
                     <span class="product-card__badge">Save {{ savings_percentage }}%</span>
                   {% endif %}
                   {% if product.featured_image %}
-                    <img src="{{ product.featured_image | image_url: width: 240 }}" 
+                    {%- comment -%} First deal image is the likely LCP element above the fold {%- endcomment -%}
+                    <img src="{{ product.featured_image | image_url: width: 240 }}"
                          alt="{{ product.featured_image.alt | escape }}"
                          class="product-card__image"
-                         loading="lazy">
+                         width="{{ product.featured_image.width }}"
+                         height="{{ product.featured_image.height }}"
+                         loading="eager"
+                         fetchpriority="high">
                   {% else %}
                     {{ 'product-1' | placeholder_svg_tag: 'product-card__image' }}
                   {% endif %}
@@ -296,9 +300,11 @@
                     <span class="product-card__badge">Save {{ savings_percentage }}%</span>
                   {% endif %}
                   {% if product.featured_image %}
-                    <img src="{{ product.featured_image | image_url: width: 240 }}" 
+                    <img src="{{ product.featured_image | image_url: width: 240 }}"
                          alt="{{ product.featured_image.alt | escape }}"
                          class="product-card__image"
+                         width="{{ product.featured_image.width }}"
+                         height="{{ product.featured_image.height }}"
                          loading="lazy">
                   {% else %}
                     {{ 'product-1' | placeholder_svg_tag: 'product-card__image' }}
@@ -355,9 +361,11 @@
                     <span class="product-card__badge">Save {{ savings_percentage }}%</span>
                   {% endif %}
                   {% if product.featured_image %}
-                    <img src="{{ product.featured_image | image_url: width: 240 }}" 
+                    <img src="{{ product.featured_image | image_url: width: 240 }}"
                          alt="{{ product.featured_image.alt | escape }}"
                          class="product-card__image"
+                         width="{{ product.featured_image.width }}"
+                         height="{{ product.featured_image.height }}"
                          loading="lazy">
                   {% else %}
                     {{ 'product-1' | placeholder_svg_tag: 'product-card__image' }}
