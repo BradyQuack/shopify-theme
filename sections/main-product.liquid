@@ -994,7 +994,8 @@
                   </button>
                 {%- endform -%}
                 
-                <button type="button" class="amazon-buy-now">
+                <button type="button" class="amazon-buy-now" data-buy-now
+                  {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
                   Buy Now
                 </button>
               </div>
@@ -1310,6 +1311,50 @@
       });
     };
 
+    // Buy Now: add the current variant to the cart and go straight to checkout
+    const initBuyNow = () => {
+      const section = document.querySelector(`#MainProduct-${sectionId}`);
+      if (!section) return;
+      const buyNowBtn = section.querySelector('[data-buy-now]');
+      if (!buyNowBtn) return;
+
+      buyNowBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const variantInput = section.querySelector('input[name="id"]');
+        const variantId = variantInput ? variantInput.value : null;
+        if (!variantId) {
+          console.error('[Buy Now] No variant ID found');
+          return;
+        }
+
+        buyNowBtn.disabled = true;
+        const originalText = buyNowBtn.textContent;
+        buyNowBtn.textContent = 'Processing...';
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: variantId, quantity: 1 })
+        })
+          .then(response => {
+            if (!response.ok) throw new Error('Add to cart failed');
+            return response.json();
+          })
+          .then(() => {
+            window.location.href = '/checkout';
+          })
+          .catch(error => {
+            console.error('[Buy Now] Error:', error);
+            buyNowBtn.textContent = 'Error - Try Again';
+            setTimeout(() => {
+              buyNowBtn.textContent = originalText;
+              buyNowBtn.disabled = false;
+            }, 2000);
+          });
+      });
+    };
+
     // Initialize
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => {
@@ -1317,12 +1362,14 @@
         initImageLightbox();
         initThumbnails();
         initVariantSelection();
+        initBuyNow();
       });
     } else {
       initShippingTimer();
       initImageLightbox();
       initThumbnails();
       initVariantSelection();
+      initBuyNow();
     }
   })();
   </script>
