@@ -1318,6 +1318,23 @@
       const buyNowBtn = section.querySelector('[data-buy-now]');
       if (!buyNowBtn) return;
 
+      // Remember the pristine state so we can restore it if the page is
+      // returned from the back/forward cache mid-checkout.
+      const initialLabel = buyNowBtn.textContent.trim();
+      const initiallyDisabled = buyNowBtn.disabled;
+
+      const resetBuyNow = () => {
+        buyNowBtn.textContent = initialLabel;
+        buyNowBtn.disabled = initiallyDisabled;
+      };
+
+      // When the user clicks Buy Now we redirect to /checkout. Hitting the
+      // back button restores this page from bfcache with the button still
+      // showing "Processing...". pageshow fires on that restore, so reset it.
+      window.addEventListener('pageshow', function (e) {
+        if (e.persisted) resetBuyNow();
+      });
+
       buyNowBtn.addEventListener('click', function (e) {
         e.preventDefault();
 
@@ -1329,7 +1346,6 @@
         }
 
         buyNowBtn.disabled = true;
-        const originalText = buyNowBtn.textContent;
         buyNowBtn.textContent = 'Processing...';
 
         fetch('/cart/add.js', {
@@ -1347,10 +1363,7 @@
           .catch(error => {
             console.error('[Buy Now] Error:', error);
             buyNowBtn.textContent = 'Error - Try Again';
-            setTimeout(() => {
-              buyNowBtn.textContent = originalText;
-              buyNowBtn.disabled = false;
-            }, 2000);
+            setTimeout(resetBuyNow, 2000);
           });
       });
     };

@@ -777,6 +777,15 @@
           }, 2000);
         });
       });
+
+      // Restore the button if the page is returned from the back/forward
+      // cache after redirecting to checkout (otherwise it stays "Processing...").
+      window.addEventListener('pageshow', function (e) {
+        if (e.persisted) {
+          buyNowBtn.textContent = '{{ section.settings.buy_now_text }}';
+          buyNowBtn.disabled = false;
+        }
+      });
     }
 
     function updatePriceDisplay(variantPrice, variantComparePrice, variantAvailable) {
