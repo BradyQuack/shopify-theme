@@ -8,7 +8,9 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign site_url = request.origin | default: shop.url
+  # Always emit the store's canonical/primary domain so JSON-LD URLs stay
+  # consistent with the canonical tag, even when reached via shop.* or www.*
+  assign site_url = shop.url | default: request.origin
   assign org_description = shop.description | default: page_description
   if settings.logo != blank
     assign logo_url = settings.logo | image_url: width: 512
