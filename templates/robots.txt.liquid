@@ -1,22 +1,16 @@
-User-agent: *
-# Block Shopify system pages
-Disallow: /admin/
-Disallow: /cart
-Disallow: /checkout
-Disallow: /orders
-Disallow: /account
-Disallow: /carts
-Disallow: /shopify/
-Disallow: /tools/
-
-# Allow important pages
-Allow: /policies/refund-policy
-Allow: /policies/shipping-policy
-Allow: /policies/privacy-policy
-Allow: /collections/
-Allow: /products/
-Allow: /blogs/
-Allow: /pages/
-
-# Sitemap reference
-Sitemap: https://asiwsupply.com/sitemap.xml
+{% comment %}
+  Emit Shopify's maintained default robots rules. This restores the full
+  default protections (multi-tag collection URLs, theme-preview URLs, app
+  proxy, search, feeds, system pages, etc.) and auto-includes the sitemap on
+  the store's primary domain. Shopify keeps these rules up to date — do not
+  hardcode a partial list, which silently drops protections over time.
+{% endcomment %}
+{% for group in robots.default_groups -%}
+  {{ group.user_agent }}
+  {% for rule in group.rules -%}
+    {{ rule }}
+  {% endfor -%}
+  {%- if group.sitemap != blank %}
+  {{ group.sitemap }}
+  {%- endif %}
+{% endfor %}

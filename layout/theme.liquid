@@ -33,6 +33,11 @@
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <link rel="canonical" href="{{ canonical_url }}">
 
+    {%- comment -%} Keep thin/duplicate search & cart pages out of the index {%- endcomment -%}
+    {%- if request.page_type == 'search' or request.page_type == 'cart' -%}
+      <meta name="robots" content="noindex,follow">
+    {%- endif -%}
+
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
