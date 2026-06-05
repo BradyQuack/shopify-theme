@@ -418,9 +418,15 @@
           </div>
 
         {%- when 'title' -%}
-          <h1 class="mobile-product-title" {{ block.shopify_attributes }}>
+          {%- comment -%}
+            Rendered as <h2> (not <h1>) because the desktop main-product section
+            already provides the page's single <h1>. Both sections render in the
+            DOM (responsive show/hide via CSS), so keeping this an <h1> would
+            produce two H1s on the page.
+          {%- endcomment -%}
+          <h2 class="mobile-product-title" {{ block.shopify_attributes }}>
             {{ product.title | escape }}
-          </h1>
+          </h2>
 
         {%- when 'badge' -%}
           {%- if block.settings.badge_text != blank -%}
