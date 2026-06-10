@@ -8,10 +8,11 @@
     iterated, so blogs are selected via blocks instead.
   - Shopify's {% paginate %} works on a single blog's articles, not a merged
     list, so this section caps output via the "Maximum posts" setting.
-  - Articles are merged by building "timestamp|blog-handle/article-handle"
+  - Articles are merged by building "timestamp|blog-handle|article-handle"
     keys, string-sorting them (unix timestamps are fixed-width, so string
     order == numeric order), then resolving each through the documented
-    articles['blog-handle/article-handle'] lookup.
+    articles['blog-handle/article-handle'] lookup. Note that article.handle
+    is itself already prefixed with the blog handle.
 {% endcomment %}
 
 {{ 'component-article-card.css' | asset_url | stylesheet_tag }}
@@ -51,8 +52,11 @@
     endif
     assign seen_blogs = seen_blogs | append: hub_blog.handle | append: ','
     for article in hub_blog.articles
+      # article.handle is already prefixed with the blog handle
+      # (e.g. "news/my-article"), which is the exact key format the
+      # global articles[] lookup expects.
       assign ts = article.published_at | date: '%s'
-      assign sort_keys = sort_keys | append: ts | append: '|' | append: hub_blog.handle | append: '/' | append: article.handle | append: ','
+      assign sort_keys = sort_keys | append: ts | append: '|' | append: hub_blog.handle | append: '|' | append: article.handle | append: ','
     endfor
   endfor
   assign article_keys = sort_keys | split: ',' | sort | reverse
@@ -77,8 +81,15 @@
       >
         {%- for key in article_keys limit: section.settings.posts_limit -%}
           {%- liquid
-            assign article_handle = key | split: '|' | last
-            assign article = articles[article_handle]
+            # key = "timestamp|blog-handle|article-handle". Try the article
+            # handle as-is first (it is normally already "blog/article"),
+            # then fall back to prefixing the blog handle.
+            assign key_parts = key | split: '|'
+            assign article = articles[key_parts.last]
+            if article == blank
+              assign prefixed_handle = key_parts[1] | append: '/' | append: key_parts.last
+              assign article = articles[prefixed_handle]
+            endif
           -%}
           {%- if article and article != empty -%}
             <li
