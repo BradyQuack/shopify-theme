@@ -2,6 +2,31 @@
   "sections": {
     "main": {
       "type": "blog-hub",
+      "blocks": {
+        "blog_news": {
+          "type": "blog",
+          "settings": {
+            "blog": "news"
+          }
+        },
+        "blog_guides": {
+          "type": "blog",
+          "settings": {
+            "blog": "irrigation-industrial-supply-guides"
+          }
+        },
+        "blog_pump_sizing": {
+          "type": "blog",
+          "settings": {
+            "blog": "how-to-size-a-water-pump-correctly-for-irrigation-systems"
+          }
+        }
+      },
+      "block_order": [
+        "blog_news",
+        "blog_guides",
+        "blog_pump_sizing"
+      ],
       "settings": {
         "heading": "From the Blog",
         "posts_limit": 30,

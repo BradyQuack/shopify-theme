@@ -1,11 +1,17 @@
 {% comment %}
-  Blog hub — previews of articles aggregated across ALL blogs (or one chosen
-  blog), newest first. Reuses the shared 'article-card' snippet so previews
-  match the rest of the theme.
+  Blog hub — previews of articles aggregated across multiple blogs, newest
+  first. Add one "Blog" block per blog to include. Reuses the shared
+  'article-card' snippet so previews match the rest of the theme.
 
-  Note: Shopify's {% paginate %} works on a single blog's articles, not on a
-  merged array, so this section limits the number of posts shown via the
-  "Maximum posts" setting rather than paginating.
+  Implementation notes:
+  - The global `blogs` drop is lookup-only (blogs['handle']) and cannot be
+    iterated, so blogs are selected via blocks instead.
+  - Shopify's {% paginate %} works on a single blog's articles, not a merged
+    list, so this section caps output via the "Maximum posts" setting.
+  - Articles are merged by building "timestamp|blog-handle/article-handle"
+    keys, string-sorting them (unix timestamps are fixed-width, so string
+    order == numeric order), then resolving each through the documented
+    articles['blog-handle/article-handle'] lookup.
 {% endcomment %}
 
 {{ 'component-article-card.css' | asset_url | stylesheet_tag }}
@@ -32,16 +38,24 @@
 {%- endstyle -%}
 
 {%- liquid
-  # Build the article list: a single chosen blog, or all blogs merged.
-  assign hub_articles = '' | split: ''
-  if section.settings.blog != blank
-    assign hub_articles = blogs[section.settings.blog].articles
-  else
-    for blog in blogs
-      assign hub_articles = hub_articles | concat: blog.articles
+  # Merge articles from every blog block into sortable keys, newest first.
+  assign sort_keys = ''
+  assign seen_blogs = ''
+  for block in section.blocks
+    assign hub_blog = block.settings.blog
+    if hub_blog == blank
+      continue
+    endif
+    if seen_blogs contains hub_blog.handle
+      continue
+    endif
+    assign seen_blogs = seen_blogs | append: hub_blog.handle | append: ','
+    for article in hub_blog.articles
+      assign ts = article.published_at | date: '%s'
+      assign sort_keys = sort_keys | append: ts | append: '|' | append: hub_blog.handle | append: '/' | append: article.handle | append: ','
     endfor
-  endif
-  assign hub_articles = hub_articles | sort: 'published_at' | reverse
+  endfor
+  assign article_keys = sort_keys | split: ',' | sort | reverse
 -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
@@ -56,30 +70,36 @@
       <div class="blog-hub__intro rte">{{ section.settings.intro }}</div>
     {%- endif -%}
 
-    {%- if hub_articles.size > 0 -%}
+    {%- if article_keys.size > 0 -%}
       <ul
         class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
         role="list"
       >
-        {%- for article in hub_articles limit: section.settings.posts_limit -%}
-          <li
-            class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-            {% if settings.animations_reveal_on_scroll %}
-              data-cascade
-              style="--animation-order: {{ forloop.index }};"
-            {% endif %}
-          >
-            {%- render 'article-card',
-              article: article,
-              media_height: section.settings.image_height,
-              media_aspect_ratio: article.image.aspect_ratio,
-              show_image: section.settings.show_image,
-              show_date: section.settings.show_date,
-              show_author: section.settings.show_author,
-              show_excerpt: section.settings.show_excerpt,
-              show_badge: false
-            -%}
-          </li>
+        {%- for key in article_keys limit: section.settings.posts_limit -%}
+          {%- liquid
+            assign article_handle = key | split: '|' | last
+            assign article = articles[article_handle]
+          -%}
+          {%- if article and article != empty -%}
+            <li
+              class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+              {% if settings.animations_reveal_on_scroll %}
+                data-cascade
+                style="--animation-order: {{ forloop.index }};"
+              {% endif %}
+            >
+              {%- render 'article-card',
+                article: article,
+                media_height: section.settings.image_height,
+                media_aspect_ratio: article.image.aspect_ratio,
+                show_image: section.settings.show_image,
+                show_date: section.settings.show_date,
+                show_author: section.settings.show_author,
+                show_excerpt: section.settings.show_excerpt,
+                show_badge: false
+              -%}
+            </li>
+          {%- endif -%}
         {%- endfor -%}
       </ul>
     {%- else -%}
@@ -104,12 +124,6 @@
       "type": "richtext",
       "id": "intro",
       "label": "Intro text"
-    },
-    {
-      "type": "blog",
-      "id": "blog",
-      "label": "Blog",
-      "info": "Leave empty to show articles from ALL blogs."
     },
     {
       "type": "range",
@@ -214,9 +228,28 @@
       "default": 48
     }
   ],
+  "blocks": [
+    {
+      "type": "blog",
+      "name": "Blog",
+      "settings": [
+        {
+          "type": "blog",
+          "id": "blog",
+          "label": "Blog"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
   "presets": [
     {
-      "name": "Blog hub"
+      "name": "Blog hub",
+      "blocks": [
+        {
+          "type": "blog"
+        }
+      ]
     }
   ]
 }
