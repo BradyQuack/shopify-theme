@@ -1101,7 +1101,7 @@
             {%- endif -%}
             {%- for desc_part in desc_sections offset: 1 -%}
               {%- assign desc_pair = desc_part | split: '</h3>' -%}
-              <details class="amazon-collapsible-tab"{% if forloop.first %} open{% endif %}>
+              <details class="amazon-collapsible-tab">
                 <summary class="amazon-collapsible-heading">{{ desc_pair | first | strip_html | strip }}</summary>
                 <div class="amazon-collapsible-content">{{ desc_pair | last }}</div>
               </details>
