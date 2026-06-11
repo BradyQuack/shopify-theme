@@ -36,6 +36,51 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  /* --- Footer menu accordions (collapsible on mobile, expanded on desktop) --- */
+  .footer-block__collapsible > summary { list-style: none; }
+  .footer-block__collapsible > summary::-webkit-details-marker { display: none; }
+
+  @media screen and (max-width: 749px) {
+    /* Stack the menus in one clean, left-aligned column instead of a cramped 2-col grid */
+    .footer__blocks-wrapper .footer-block--menu {
+      width: 100%;
+      max-width: 100%;
+      text-align: left;
+      border-top: 1px solid rgba(var(--color-foreground), 0.12);
+      margin: 0;
+    }
+    .footer__blocks-wrapper .footer-block--menu:first-child { border-top: 0; }
+
+    .footer-block--menu .footer-block__heading--collapsible {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      padding: 1.4rem 0;
+      margin: 0;
+    }
+    .footer-block--menu .footer-block__heading--collapsible::after {
+      content: '+';
+      font-size: 2.2rem;
+      font-weight: 400;
+      line-height: 1;
+    }
+    .footer-block--menu .footer-block__collapsible[open] > .footer-block__heading--collapsible::after {
+      content: '\2212';
+    }
+
+    .footer-block--menu .footer-block__details-content {
+      margin: 0 0 1.4rem;
+      text-align: left;
+    }
+    .footer-block--menu .footer-block__details-content li { text-align: left; }
+  }
+
+  @media screen and (min-width: 750px) {
+    /* On desktop the menus are always expanded and the heading is not interactive */
+    .footer-block__collapsible > summary { cursor: default; pointer-events: none; }
+  }
 {%- endstyle -%}
 
 <footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
@@ -114,16 +159,26 @@
             {% endif %}
           >
             {%- for block in section.blocks -%}
+              {%- assign footer_block_is_menu = false -%}
+              {%- if block.type == 'link_list' or block.type == 'contact' -%}
+                {%- assign footer_block_is_menu = true -%}
+              {%- endif -%}
               <div
-                class="footer-block grid__item{% if block.type == 'link_list' or block.type == 'contact' %} footer-block--menu{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                class="footer-block grid__item{% if footer_block_is_menu %} footer-block--menu{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
                 {{ block.shopify_attributes }}
                 {% if settings.animations_reveal_on_scroll %}
                   data-cascade
                   style="--animation-order: {{ forloop.index }};"
                 {% endif %}
               >
+                {%- comment -%} Menu blocks become collapsible accordions on mobile (expanded on desktop). {%- endcomment -%}
+                {%- if footer_block_is_menu -%}<details class="footer-block__collapsible" open>{%- endif -%}
                 {%- if block.settings.heading != blank -%}
-                  <h2 class="footer-block__heading inline-richtext">{{- block.settings.heading -}}</h2>
+                  {%- if footer_block_is_menu -%}
+                    <summary class="footer-block__heading footer-block__heading--collapsible inline-richtext">{{- block.settings.heading -}}</summary>
+                  {%- else -%}
+                    <h2 class="footer-block__heading inline-richtext">{{- block.settings.heading -}}</h2>
+                  {%- endif -%}
                 {%- endif -%}
 
                 {%- case block.type -%}
@@ -246,6 +301,7 @@
                       {%- endif -%}
                     </div>
                 {%- endcase -%}
+                {%- if footer_block_is_menu -%}</details>{%- endif -%}
               </div>
             {%- endfor -%}
           </div>
@@ -424,6 +480,24 @@
   {%- endif -%}
 
 </footer>
+
+<script>
+  (function () {
+    var collapseQuery = window.matchMedia('(max-width: 749px)');
+    function syncFooterMenus() {
+      var menus = document.querySelectorAll('.footer-block__collapsible');
+      for (var i = 0; i < menus.length; i++) {
+        menus[i].open = !collapseQuery.matches;
+      }
+    }
+    syncFooterMenus();
+    if (collapseQuery.addEventListener) {
+      collapseQuery.addEventListener('change', syncFooterMenus);
+    } else if (collapseQuery.addListener) {
+      collapseQuery.addListener(syncFooterMenus);
+    }
+  })();
+</script>
 
 {% schema %}
 {
