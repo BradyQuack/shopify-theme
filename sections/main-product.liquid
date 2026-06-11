@@ -93,6 +93,10 @@
     @media screen and (max-width: 989px) {
       .amazon-product-info-column .amazon-description { display: none; }
       .amazon-description--mobile { display: block; margin-top: 20px; }
+      .amazon-description--mobile .amazon-desc-intro { margin-bottom: 12px; }
+      /* Keep wide spec tables inside the dropdowns from overflowing the screen */
+      .amazon-description--mobile .amazon-collapsible-content { overflow-x: auto; }
+      .amazon-description--mobile .amazon-collapsible-content table { width: 100%; border-collapse: collapse; }
     }
     {%- endif -%}
 
@@ -1088,7 +1092,24 @@
       {%- comment -%} Mobile-only: description appears below the buy section (price/quantity/buttons). On desktop it stays in the middle column. {%- endcomment -%}
       {%- if section.settings.enable_responsive and product.description != blank -%}
         <div class="amazon-description amazon-description--mobile">
-          {{ product.description }}
+          {%- assign desc_sections = product.description | split: '<h3>' -%}
+          {%- if desc_sections.size > 1 -%}
+            {%- comment -%} Description has <h3> headings: turn each section into a collapsible dropdown. {%- endcomment -%}
+            {%- assign desc_intro = desc_sections | first | strip -%}
+            {%- if desc_intro != blank -%}
+              <div class="amazon-desc-intro">{{ desc_intro }}</div>
+            {%- endif -%}
+            {%- for desc_part in desc_sections offset: 1 -%}
+              {%- assign desc_pair = desc_part | split: '</h3>' -%}
+              <details class="amazon-collapsible-tab"{% if forloop.first %} open{% endif %}>
+                <summary class="amazon-collapsible-heading">{{ desc_pair | first | strip_html | strip }}</summary>
+                <div class="amazon-collapsible-content">{{ desc_pair | last }}</div>
+              </details>
+            {%- endfor -%}
+          {%- else -%}
+            {%- comment -%} No headings to split on: show the description as-is. {%- endcomment -%}
+            {{ product.description }}
+          {%- endif -%}
         </div>
       {%- endif -%}
     </div>
