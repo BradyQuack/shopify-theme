@@ -1,6 +1,6 @@
 <product-info
   id="MainProduct-{{ section.id }}"
-  class="product-amazon-layout section-{{ section.id }}-padding desktop-only-section"
+  class="product-amazon-layout section-{{ section.id }}-padding{% unless section.settings.enable_responsive %} desktop-only-section{% endunless %}"
   data-section="{{ section.id }}"
   data-product-id="{{ product.id }}"
   data-update-url="true"
@@ -67,12 +67,29 @@
       position: relative;
     }
 
+    /* Mobile-first: single column. The 3-column desktop grid is restored at
+       >=990px below. Non-responsive templates only render this section at
+       >=990px (desktop-only gate), so they always get the 3-column layout. */
     .amazon-grid {
       display: grid;
-      grid-template-columns: {{ section.settings.column_2_width }}% {{ section.settings.column_3_width }}% {{ section.settings.column_4_width }}%;
-      gap: 30px;
+      grid-template-columns: 1fr;
+      gap: 24px;
       align-items: start;
       overflow: visible;
+    }
+
+    @media screen and (min-width: 990px) {
+      .amazon-grid {
+        grid-template-columns: {{ section.settings.column_2_width }}% {{ section.settings.column_3_width }}% {{ section.settings.column_4_width }}%;
+        gap: 30px;
+      }
+    }
+
+    /* Tighter container padding on small screens */
+    @media screen and (max-width: 749px) {
+      .product-amazon-container {
+        padding: 12px;
+      }
     }
 
     /* Column 1: Thumbnails (now horizontal below main image) */
@@ -2029,7 +2046,14 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "⚠️ This section only displays on desktop (screens 990px and wider). It will be hidden on mobile and tablet devices."
+      "content": "Enable 'Responsive layout' below to use this section as the single product layout at all screen sizes. When off, it only displays on desktop (≥990px) and the separate mobile product sections handle smaller screens."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_responsive",
+      "label": "Responsive layout (mobile + desktop)",
+      "default": false,
+      "info": "When on, this section renders at every screen size and you can remove the separate Mobile Product sections from the template."
     },
     {
       "type": "header",
