@@ -345,7 +345,9 @@
       color: #565959;
     }
 
-    @media screen and (max-width: 749px) {
+    /* Show on phones AND tablets up to 989px; the desktop main-product
+       section takes over at >=990px. Closes the old 750-989px dead zone. */
+    @media screen and (max-width: 989px) {
       .mobile-product-section {
         display: block;
       }

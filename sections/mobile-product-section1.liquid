@@ -2,8 +2,9 @@
   {{ 'mobile-section-1.css' | asset_url | stylesheet_tag }}
 
   {%- style -%}
-    /* Hide section on desktop by default */
-    @media screen and (min-width: 750px) {
+    /* Hide on desktop (>=990px); the desktop main-product section takes over
+       at that width. Covers phones AND tablets up to 989px so there is no gap. */
+    @media screen and (min-width: 990px) {
       .mobile-section-1 {
         display: none;
       }
