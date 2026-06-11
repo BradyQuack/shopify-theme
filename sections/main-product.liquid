@@ -1157,22 +1157,53 @@
     </div>
   </div>
 
-  <script>
-  (function() {
-    const sectionId = '{{ section.id }}';
-    
+  <script type="application/json" id="ProductMediaData-{{ section.id }}">{{ product.media | json }}</script>
+
+{% javascript %}
+(function () {
+  // Quote Page Redirect (referenced from inline onclick handlers in the markup)
+  window.redirectToQuote = function (quoteUrl, productTitle, productId, productUrl, variantId) {
+    if (!quoteUrl) {
+      console.error('Quote page URL not configured');
+      alert('Quote page URL not configured. Please contact support.');
+      return;
+    }
+
+    // Build URL with parameters
+    const params = new URLSearchParams({
+      product: productTitle,
+      product_id: productId,
+      product_url: productUrl,
+      variant_id: variantId
+    });
+
+    // Redirect to quote page with parameters
+    window.location.href = `${quoteUrl}?${params.toString()}`;
+  };
+
+  function initProductSection(root) {
+    const sectionId = root.dataset.section;
+    if (!sectionId) return;
+
+    // Product media is rendered into a JSON <script> tag to keep this file Liquid-free.
+    let productMedia = [];
+    const mediaEl = document.getElementById('ProductMediaData-' + sectionId);
+    if (mediaEl) {
+      try { productMedia = JSON.parse(mediaEl.textContent); } catch (e) { productMedia = []; }
+    }
+
     // Shipping Timer Countdown to 3pm ET
     const initShippingTimer = () => {
       const timerContainer = document.querySelector(`#shipping-timer-${sectionId}`);
       const countdownEl = document.querySelector(`#countdown-${sectionId}`);
       if (!timerContainer || !countdownEl) return;
-      
+
       const updateCountdown = () => {
         // Get current time in ET
         const now = new Date();
         const etTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
         const currentHour = etTime.getHours();
-        
+
         // Only show timer between 1am (1) and 3pm (15) ET
         if (currentHour < 1 || currentHour >= 15) {
           timerContainer.style.display = 'none';
@@ -1180,99 +1211,70 @@
         } else {
           timerContainer.style.display = 'block';
         }
-        
+
         // Set target to 3pm ET today
         const target = new Date(etTime);
         target.setHours(15, 0, 0, 0); // 3pm ET
-        
+
         // Calculate time difference
         const diff = target - etTime;
-        
+
         if (diff <= 0) {
           countdownEl.textContent = '0h 0m 0s';
           timerContainer.style.display = 'none';
           return;
         }
-        
+
         const hours = Math.floor(diff / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-        
+
         countdownEl.textContent = `${hours}h ${minutes}m ${seconds}s`;
       };
-      
+
       // Update immediately and then every second
       updateCountdown();
       setInterval(updateCountdown, 1000);
     };
-    
-    // Quote Page Redirect Function
-    window.redirectToQuote = function(quoteUrl, productTitle, productId, productUrl, variantId) {
-      if (!quoteUrl) {
-        console.error('Quote page URL not configured');
-        alert('Quote page URL not configured. Please contact support.');
-        return;
-      }
-      
-      // Build URL with parameters
-      const params = new URLSearchParams({
-        product: productTitle,
-        product_id: productId,
-        product_url: productUrl,
-        variant_id: variantId
-      });
-      
-      // Redirect to quote page with parameters
-      window.location.href = `${quoteUrl}?${params.toString()}`;
-    };
-    
+
     // Image Lightbox Setup
     const initImageLightbox = () => {
       const mainImage = document.querySelector(`#MainImageSrc-${sectionId}`);
       const lightbox = document.querySelector(`#imageLightbox-${sectionId}`);
       const lightboxImage = document.querySelector(`#lightboxImage-${sectionId}`);
       const closeBtn = document.querySelector(`#closeLightboxBtn-${sectionId}`);
-      
-      console.log('[Lightbox] Elements found:', {
-        mainImage: !!mainImage,
-        lightbox: !!lightbox
-      });
-      
+
       const openLightbox = () => {
-        console.log('[Lightbox] Opening...');
         if (mainImage && lightbox && lightboxImage) {
           const fullImageSrc = mainImage.dataset.fullSrc || mainImage.src;
-          console.log('[Lightbox] Image src:', fullImageSrc);
           lightboxImage.src = fullImageSrc;
           lightboxImage.alt = mainImage.alt;
           lightbox.classList.add('active');
           document.body.style.overflow = 'hidden';
         }
       };
-      
+
       const closeLightbox = () => {
-        console.log('[Lightbox] Closing...');
         if (lightbox) {
           lightbox.classList.remove('active');
           document.body.style.overflow = '';
         }
       };
-      
+
       // Click image to open lightbox
       if (mainImage) {
         mainImage.addEventListener('click', () => {
-          console.log('[Lightbox] Image clicked');
           openLightbox();
         });
       }
-      
+
       if (closeBtn) {
         closeBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           closeLightbox();
         });
       }
-      
+
       if (lightbox) {
         lightbox.addEventListener('click', (e) => {
           if (e.target === lightbox) {
@@ -1280,7 +1282,7 @@
           }
         });
       }
-      
+
       // ESC key to close
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && lightbox && lightbox.classList.contains('active')) {
@@ -1288,17 +1290,17 @@
         }
       });
     };
-    
+
     // Thumbnail Gallery Handler
     const initThumbnails = () => {
-      document.querySelectorAll('.amazon-thumbnail').forEach(thumb => {
-        thumb.addEventListener('click', function() {
-          document.querySelectorAll('.amazon-thumbnail').forEach(t => t.classList.remove('active'));
+      root.querySelectorAll('.amazon-thumbnail').forEach(thumb => {
+        thumb.addEventListener('click', function () {
+          root.querySelectorAll('.amazon-thumbnail').forEach(t => t.classList.remove('active'));
           this.classList.add('active');
-          
+
           const mediaId = this.dataset.mediaId;
-          const media = {{ product.media | json }}.find(m => m.id == mediaId);
-          
+          const media = productMedia.find(m => m.id == mediaId);
+
           if (media && media.src) {
             const mainImage = document.querySelector(`#MainImage-${sectionId} img`);
             if (mainImage) {
@@ -1316,26 +1318,24 @@
 
     // Price Display Update Handler
     const updatePriceDisplay = (variantPrice, variantComparePrice, variantAvailable) => {
-      console.log('[Price Update]', { variantPrice, variantComparePrice, variantAvailable });
-      
       const priceWhole = Math.floor(variantPrice / 100);
       const priceDecimal = (variantPrice % 100).toString().padStart(2, '0');
-      
+
       // Update all price blocks
       document.querySelectorAll(`[data-price-block-${sectionId}]`).forEach(priceBlock => {
         const priceWholeEl = priceBlock.querySelector('[data-price-whole]');
         const priceDecimalEl = priceBlock.querySelector('[data-price-decimal]');
         const discountBadgeEl = priceBlock.querySelector('[data-discount-badge]');
         const comparePriceEl = priceBlock.querySelector('[data-compare-price]');
-        
+
         if (priceWholeEl) priceWholeEl.textContent = priceWhole;
         if (priceDecimalEl) priceDecimalEl.textContent = priceDecimal;
-        
+
         // Handle discount display
         if (variantComparePrice && parseInt(variantComparePrice) > variantPrice) {
           const discountPercent = Math.round(((parseInt(variantComparePrice) - variantPrice) * 100) / parseInt(variantComparePrice));
           const compareFormatted = `${Math.floor(parseInt(variantComparePrice) / 100)}.${(parseInt(variantComparePrice) % 100).toString().padStart(2, '0')}`;
-          
+
           if (discountBadgeEl) {
             discountBadgeEl.textContent = `-${discountPercent}%`;
             discountBadgeEl.style.display = 'inline-block';
@@ -1349,16 +1349,16 @@
           if (comparePriceEl) comparePriceEl.style.display = 'none';
         }
       });
-      
+
       // Update stock status
       const stockStatusEl = document.querySelector(`#stock-status-${sectionId}`);
       if (stockStatusEl) {
         const isAvailable = variantAvailable === 'true' || variantAvailable === true;
         stockStatusEl.innerHTML = `<div class="amazon-stock" style="color: ${isAvailable ? '#007600' : '#B12704'};">${isAvailable ? 'In Stock' : 'Out of Stock'}</div>`;
       }
-      
+
       // Update cart buttons
-      document.querySelectorAll('.amazon-add-to-cart').forEach(btn => {
+      root.querySelectorAll('.amazon-add-to-cart').forEach(btn => {
         const isAvailable = variantAvailable === 'true' || variantAvailable === true;
         btn.disabled = !isAvailable;
         btn.textContent = isAvailable ? 'Add to Cart' : 'Sold Out';
@@ -1367,33 +1367,33 @@
 
     // Variant Selection Handler
     const initVariantSelection = () => {
-      document.querySelectorAll('.amazon-variant-btn, .amazon-color-swatch').forEach(btn => {
-        btn.addEventListener('click', function(e) {
+      root.querySelectorAll('.amazon-variant-btn, .amazon-color-swatch').forEach(btn => {
+        btn.addEventListener('click', function (e) {
           e.preventDefault();
           e.stopPropagation();
-          
+
           // Update UI
           const parent = this.closest('.amazon-variant-picker > div');
           parent.querySelectorAll('.amazon-variant-btn, .amazon-color-swatch').forEach(b => b.classList.remove('selected'));
           this.classList.add('selected');
-          
+
           // Get variant data
           const { variantId, variantPrice, variantComparePrice, variantAvailable } = this.dataset;
-          
+
           if (variantId && variantPrice) {
             // Update price
             updatePriceDisplay(parseInt(variantPrice), variantComparePrice, variantAvailable);
-            
+
             // Update forms
             document.querySelectorAll(`#MainProduct-${sectionId} input[name="id"]`).forEach(input => {
               input.value = variantId;
             });
-            
+
             // Update URL
             const url = new URL(window.location.href);
             url.searchParams.set('variant', variantId);
             window.history.replaceState({}, '', url);
-            
+
             // Dispatch change event
             const event = new Event('change', { bubbles: true });
             document.querySelector(`#MainProduct-${sectionId} input[name="id"]`)?.dispatchEvent(event);
@@ -1459,24 +1459,24 @@
       });
     };
 
-    // Initialize
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        initShippingTimer();
-        initImageLightbox();
-        initThumbnails();
-        initVariantSelection();
-        initBuyNow();
-      });
-    } else {
-      initShippingTimer();
-      initImageLightbox();
-      initThumbnails();
-      initVariantSelection();
-      initBuyNow();
-    }
-  })();
-  </script>
+    initShippingTimer();
+    initImageLightbox();
+    initThumbnails();
+    initVariantSelection();
+    initBuyNow();
+  }
+
+  const initAll = () => {
+    document.querySelectorAll('.product-amazon-layout[data-section]').forEach(initProductSection);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    initAll();
+  }
+})();
+{% endjavascript %}
 
   {%- liquid
     if product.selected_or_first_available_variant.featured_media
