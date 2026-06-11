@@ -103,10 +103,11 @@ the bespoke "Amazon-style" design and the custom blocks (sales_count,
 social_proof, shipping_info, RFQ-for-$1, etc.) the store relies on. Rejected
 unless you want a visual reset.
 
-**Recommendation: Option A**, implemented by **evolving `main-product` into the
+**Decision: Option A**, implemented by **evolving `main-product` into the
 responsive section** (it already owns the richest block system and the
 structured data), folding in the mobile gallery and buy-box behaviors, then
-retiring the three mobile sections.
+retiring `mobile-product-section1/2` (section 3 stays as a separate responsive
+section). See §13 for the full set of resolved decisions.
 
 ---
 
@@ -215,18 +216,34 @@ gallery/zoom, reviews carousel, no horizontal scroll, tap targets ≥44px.
 
 ---
 
-## 13. Open decisions (need your input before coding)
+## 13. Decisions (resolved)
 
-1. **Design direction for the unified PDP:** keep the **desktop Amazon-style**
-   look and make it responsive down to mobile, keep the **current mobile**
-   look and scale it up, or a **fresh responsive** design? (Drives most of the
-   CSS effort.)
-2. **Build approach:** evolve `main-product` (recommended) vs. new
-   `product-main.liquid` vs. adopt stock Dawn (Option C).
-3. **Reviews (section 3):** fold into the unified section, or keep as a separate
-   responsive section reused by all templates?
-4. **Gallery:** reuse Dawn's responsive `product-media-gallery`, or preserve the
-   bespoke Amazon thumbnail gallery exactly?
+These were confirmed and now drive implementation:
+
+1. **Design direction:** **Fresh responsive design.** A newly-designed
+   responsive PDP layout/structure — not a literal scale of the current desktop
+   or mobile look — with mobile-first breakpoints (single column ≤749px,
+   two-column media/info ≥750px, refined ≥990px).
+2. **Build approach:** **Evolve `main-product`.** Refactor the existing section
+   in place so we keep its 18-block schema, merchant settings, and the
+   single-source product JSON-LD. Mobile-only blocks worth keeping
+   (`social_proof`, `logo_and_reviews`) get added to its schema.
+3. **Reviews (section 3):** **Keep as a separate section**, made fully
+   responsive and reused by all product templates. Lowest entanglement; it
+   already renders at all widths.
+4. **Gallery:** **Preserve the bespoke Amazon thumbnail gallery**, refactored to
+   be responsive (thumbnails + main image on desktop, swipeable single-column on
+   mobile) — one gallery instead of the current desktop + mobile pair.
+
+### Resulting implementation shape
+- `main-product` becomes the single responsive PDP: remove the
+  `.desktop-only-section` ≥990px gate, replace the fixed desktop layout with a
+  fresh mobile-first responsive grid, fold in the buy-box and gallery behaviors.
+- One consolidated **Amazon-style gallery** (responsive), one variant/price/cart
+  JS controller (reuse `product-form.js`; delete `mobile-product-section2` JS).
+- `mobile-product-section3` (reviews) is refactored to a standalone responsive
+  section and kept; `mobile-product-section1` and `mobile-product-section2` are
+  retired after migration.
 
 ---
 
