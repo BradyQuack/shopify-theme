@@ -42,6 +42,52 @@
   {%- endif -%}
 
   <style>
+    /* Per-section dynamic values (theme settings). The static bulk of the
+       styles lives in the stylesheet block below, which Shopify bundles into
+       a single cached file instead of re-sending it inline on every product
+       page. */
+    :root {
+      --color-background: {{ section.settings.color_scheme.settings.background }};
+      --color-foreground: {{ section.settings.color_scheme.settings.text }};
+      --color-accent: {{ section.settings.color_scheme.settings.button }};
+      --color-accent-text: {{ section.settings.color_scheme.settings.button_label }};
+      --amazon-section-max-width: {{ section.settings.section_max_width }}px;
+      --amazon-grid-columns: {{ section.settings.column_2_width }}% {{ section.settings.column_3_width }}% {{ section.settings.column_4_width }}%;
+      --amazon-col3-gap: {{ section.settings.column_3_spacing }}px;
+    }
+
+    {%- if section.settings.enable_responsive -%}
+    /* On mobile/tablet the columns stack, so move the description below the
+       buy section (price/quantity/buttons). On desktop it stays in the middle
+       column where it renders by default. */
+    .amazon-description--mobile { display: none; }
+    @media screen and (max-width: 989px) {
+      .amazon-product-info-column .amazon-description { display: none; }
+      .amazon-description--mobile { display: block; margin-top: 20px; }
+      .amazon-description--mobile .amazon-desc-intro { margin-bottom: 12px; }
+      /* Keep wide spec tables inside the dropdowns from overflowing the screen */
+      .amazon-description--mobile .amazon-collapsible-content { overflow-x: auto; }
+      .amazon-description--mobile .amazon-collapsible-content table { width: 100%; border-collapse: collapse; }
+    }
+    {%- endif -%}
+
+    {% for block in section.blocks %}
+      {% if block.type == 'text' %}
+        #shopify-block-{{ block.id }} .amazon-vendor-logo {
+          width: {{ block.settings.logo_size }}px;
+          height: {{ block.settings.logo_size }}px;
+          min-width: {{ block.settings.logo_size }}px;
+          min-height: {{ block.settings.logo_size }}px;
+          max-width: {{ block.settings.logo_size }}px;
+          max-height: {{ block.settings.logo_size }}px;
+          padding: {{ block.settings.logo_padding }}px;
+        }
+      {% endif %}
+    {% endfor %}
+
+  </style>
+
+{% stylesheet %}
     /* DESKTOP ONLY - Hide on mobile and tablet */
     @media screen and (max-width: 989px) {
       .desktop-only-section {
@@ -57,12 +103,6 @@
     }
 
     /* Layout Variables */
-    :root {
-      --color-background: {{ section.settings.color_scheme.settings.background }};
-      --color-foreground: {{ section.settings.color_scheme.settings.text }};
-      --color-accent: {{ section.settings.color_scheme.settings.button }};
-      --color-accent-text: {{ section.settings.color_scheme.settings.button_label }};
-    }
 
     /* Main Layout */
     .product-amazon-full-width {
@@ -71,7 +111,7 @@
     }
     
     .product-amazon-container {
-      max-width: {{ section.settings.section_max_width }}px;
+      max-width: var(--amazon-section-max-width);
       margin: 0 auto;
       padding: 20px;
       position: relative;
@@ -94,25 +134,11 @@
 
     @media screen and (min-width: 990px) {
       .amazon-grid {
-        grid-template-columns: {{ section.settings.column_2_width }}% {{ section.settings.column_3_width }}% {{ section.settings.column_4_width }}%;
+        grid-template-columns: var(--amazon-grid-columns);
         gap: 30px;
       }
     }
 
-    {%- if section.settings.enable_responsive -%}
-    /* On mobile/tablet the columns stack, so move the description below the
-       buy section (price/quantity/buttons). On desktop it stays in the middle
-       column where it renders by default. */
-    .amazon-description--mobile { display: none; }
-    @media screen and (max-width: 989px) {
-      .amazon-product-info-column .amazon-description { display: none; }
-      .amazon-description--mobile { display: block; margin-top: 20px; }
-      .amazon-description--mobile .amazon-desc-intro { margin-bottom: 12px; }
-      /* Keep wide spec tables inside the dropdowns from overflowing the screen */
-      .amazon-description--mobile .amazon-collapsible-content { overflow-x: auto; }
-      .amazon-description--mobile .amazon-collapsible-content table { width: 100%; border-collapse: collapse; }
-    }
-    {%- endif -%}
 
     /* Tighter container padding on small screens */
     @media screen and (max-width: 749px) {
@@ -242,7 +268,7 @@
     .amazon-product-info-column {
       display: flex;
       flex-direction: column;
-      gap: {{ section.settings.column_3_spacing }}px;
+      gap: var(--amazon-col3-gap);
     }
 
     .amazon-product-title {
@@ -317,19 +343,6 @@
       text-decoration: underline;
     }
 
-    {% for block in section.blocks %}
-      {% if block.type == 'text' %}
-        #shopify-block-{{ block.id }} .amazon-vendor-logo {
-          width: {{ block.settings.logo_size }}px;
-          height: {{ block.settings.logo_size }}px;
-          min-width: {{ block.settings.logo_size }}px;
-          min-height: {{ block.settings.logo_size }}px;
-          max-width: {{ block.settings.logo_size }}px;
-          max-height: {{ block.settings.logo_size }}px;
-          padding: {{ block.settings.logo_padding }}px;
-        }
-      {% endif %}
-    {% endfor %}
 
     /* Rating */
     .amazon-rating {
@@ -697,7 +710,7 @@
     .amazon-info-value.no-link:hover {
       text-decoration: none;
     }
-  </style>
+{% endstylesheet %}
 
   {%- style -%}
     #MainProduct-{{ section.id }} {
