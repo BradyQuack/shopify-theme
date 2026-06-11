@@ -85,6 +85,17 @@
       }
     }
 
+    {%- if section.settings.enable_responsive -%}
+    /* On mobile/tablet the columns stack, so move the description below the
+       buy section (price/quantity/buttons). On desktop it stays in the middle
+       column where it renders by default. */
+    .amazon-description--mobile { display: none; }
+    @media screen and (max-width: 989px) {
+      .amazon-product-info-column .amazon-description { display: none; }
+      .amazon-description--mobile { display: block; margin-top: 20px; }
+    }
+    {%- endif -%}
+
     /* Tighter container padding on small screens */
     @media screen and (max-width: 749px) {
       .product-amazon-container {
@@ -1073,6 +1084,13 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
+
+      {%- comment -%} Mobile-only: description appears below the buy section (price/quantity/buttons). On desktop it stays in the middle column. {%- endcomment -%}
+      {%- if section.settings.enable_responsive and product.description != blank -%}
+        <div class="amazon-description amazon-description--mobile">
+          {{ product.description }}
+        </div>
+      {%- endif -%}
     </div>
   </div>
 
