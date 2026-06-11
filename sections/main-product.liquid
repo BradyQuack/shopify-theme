@@ -1,3 +1,17 @@
+{%- if product.featured_media.media_type == 'image' -%}
+  <link
+    rel="preload"
+    as="image"
+    href="{{ product.featured_media | image_url: width: 800 }}"
+    imagesrcset="{{ product.featured_media | image_url: width: 400 }} 400w,
+                 {{ product.featured_media | image_url: width: 600 }} 600w,
+                 {{ product.featured_media | image_url: width: 800 }} 800w,
+                 {{ product.featured_media | image_url: width: 1000 }} 1000w,
+                 {{ product.featured_media | image_url: width: 1200 }} 1200w,
+                 {{ product.featured_media | image_url: width: 1500 }} 1500w"
+    imagesizes="(min-width: 990px) 40vw, 100vw"
+    fetchpriority="high">
+{%- endif -%}
 <product-info
   id="MainProduct-{{ section.id }}"
   class="product-amazon-layout section-{{ section.id }}-padding{% unless section.settings.enable_responsive %} desktop-only-section{% endunless %}"
@@ -164,6 +178,7 @@
 
     .amazon-main-image img {
       max-width: 100%;
+      height: auto;
       max-height: 600px;
       object-fit: contain;
     }
@@ -717,7 +732,23 @@
     <div class="amazon-center-content">
       <div class="amazon-main-image" id="MainImage-{{ section.id }}">
         {%- if product.featured_media -%}
-          <img src="{{ product.featured_media | image_url: width: 800 }}" alt="{{ product.featured_media.alt | escape }}" id="MainImageSrc-{{ section.id }}" data-full-src="{{ product.featured_media | image_url }}" style="cursor: pointer;">
+          {%- assign main_preview = product.featured_media.preview_image -%}
+          <img
+            src="{{ product.featured_media | image_url: width: 800 }}"
+            srcset="{{ product.featured_media | image_url: width: 400 }} 400w,
+                    {{ product.featured_media | image_url: width: 600 }} 600w,
+                    {{ product.featured_media | image_url: width: 800 }} 800w,
+                    {{ product.featured_media | image_url: width: 1000 }} 1000w,
+                    {{ product.featured_media | image_url: width: 1200 }} 1200w,
+                    {{ product.featured_media | image_url: width: 1500 }} 1500w"
+            sizes="(min-width: 990px) 40vw, 100vw"
+            {% if main_preview.width %}width="{{ main_preview.width }}" height="{{ main_preview.height }}"{% endif %}
+            alt="{{ product.featured_media.alt | escape }}"
+            id="MainImageSrc-{{ section.id }}"
+            data-full-src="{{ product.featured_media | image_url }}"
+            fetchpriority="high"
+            decoding="async"
+            style="cursor: pointer;">
         {%- endif -%}
       </div>
       
@@ -726,9 +757,9 @@
         {%- for media in product.media limit: 8 -%}
           <div class="amazon-thumbnail{% if forloop.first %} active{% endif %}" data-media-id="{{ media.id }}">
             {%- if media.media_type == 'image' -%}
-              <img src="{{ media | image_url: width: 60 }}" alt="{{ media.alt | escape }}">
+              <img src="{{ media | image_url: width: 120 }}" alt="{{ media.alt | escape }}" width="60" height="60" loading="lazy" decoding="async">
             {%- elsif media.media_type == 'video' or media.media_type == 'external_video' -%}
-              <img src="{{ media.preview_image | image_url: width: 60 }}" alt="{{ media.alt | escape }}">
+              <img src="{{ media.preview_image | image_url: width: 120 }}" alt="{{ media.alt | escape }}" width="60" height="60" loading="lazy" decoding="async">
             {%- endif -%}
           </div>
         {%- endfor -%}
@@ -931,7 +962,7 @@
                                data-variant-compare-price="{{ variant_for_value.compare_at_price }}"
                                data-variant-available="{{ variant_for_value.available }}">
                             {%- if variant_for_value.featured_image -%}
-                              <img src="{{ variant_for_value.featured_image | image_url: width: 40 }}" alt="{{ value | escape }}">
+                              <img src="{{ variant_for_value.featured_image | image_url: width: 80 }}" alt="{{ value | escape }}" width="40" height="40" loading="lazy" decoding="async">
                             {%- else -%}
                               <div style="width: 100%; height: 100%; background: {{ value | downcase }};"></div>
                             {%- endif -%}
@@ -1271,6 +1302,10 @@
           if (media && media.src) {
             const mainImage = document.querySelector(`#MainImage-${sectionId} img`);
             if (mainImage) {
+              // The main image uses a responsive srcset; srcset takes precedence
+              // over src, so clear it before swapping or the image won't change.
+              mainImage.removeAttribute('srcset');
+              mainImage.removeAttribute('sizes');
               mainImage.src = media.src.replace(/\.(jpg|png|jpeg)/g, '_800x.$1');
               mainImage.alt = media.alt || '';
             }
