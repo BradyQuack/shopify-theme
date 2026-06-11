@@ -1,7 +1,16 @@
 # Mobile Phase 1 — Product Page Consolidation (Design Doc)
 
-Status: **Draft for review** · Owner: theme · Branch: `claude/optimistic-cori-1356g`
+Status: **Implemented on branch** (preview-verified; pending publish to `main`) · Owner: theme · Branch: `claude/optimistic-cori-1356g`
 Related: Phase 0 hotfix `f63995a` (closed the 750–989px dead zone as a stopgap)
+
+> **Completion note:** All five product templates (`product.amazon`,
+> `product.json`, `product.amazon-pumps`, `product.amazon-pump-parts`,
+> `product.rfq`) now render the single responsive `main-product` section
+> (reviews carousel `mobile-product-section3` retained; `related-products`
+> retained). `mobile-product-section1` and `mobile-product-section2` were
+> retired (deleted). Additional mobile polish shipped on the responsive PDP:
+> description moved below the buy box and converted to collapsible accordions;
+> footer menus converted to mobile accordions. Migration steps in §11 are done.
 
 ---
 
@@ -187,15 +196,15 @@ no drift.
 
 ## 11. Migration plan (incremental, reversible)
 
-1. **Build** the responsive unified section on the branch *without* deleting the
+1. ✅ **Build** the responsive unified section on the branch *without* deleting the
    mobile sections (parallel-run capability for rollback).
-2. **Pilot** on one template — `product.amazon.json` — wired to the unified
+2. ✅ **Pilot** on one template — `product.amazon.json` — wired to the unified
    section only. QA against §7 + §12 across the breakpoint matrix.
-3. **Roll out** to `product.amazon-pumps`, `product.amazon-pump-parts`,
+3. ✅ **Roll out** to `product.amazon-pumps`, `product.amazon-pump-parts`,
    `product.rfq`, and fix `product.json` (gains a working mobile PDP for free).
-4. **Retire** `mobile-product-section1/2/3` once all templates are migrated and
-   verified; remove their now-dead CSS/JS.
-5. Keep each step as its own commit on the feature branch for easy rollback.
+4. ✅ **Retire** `mobile-product-section1/2` once all templates are migrated and
+   verified; removed their dangling asset references. (`section3` reviews kept.)
+5. ✅ Each step kept as its own commit on the feature branch for easy rollback.
 
 ---
 
