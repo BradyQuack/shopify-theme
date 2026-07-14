@@ -1,0 +1,264 @@
+.content-block {
+  margin-top: 0;
+}
+
+.content-block__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-block__wrapper--left {
+  justify-content: flex-start;
+}
+
+.content-block__wrapper--right {
+  justify-content: flex-end;
+}
+
+.content-block__blocks {
+  max-width: 80rem;
+  width: 100%;
+}
+
+.content-block__blocks.left {
+  text-align: left;
+}
+
+.content-block__blocks.center {
+  text-align: center;
+}
+
+.content-block__blocks.right {
+  text-align: right;
+}
+
+.content-block__pill {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.content-block__pill .pill-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  /* Using semantic tokens from theme-toggle.css */
+  background-color: var(--color-primary);
+  color: var(--color-button-text);
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.content-block__heading {
+  word-break: break-word;
+  /* Using semantic tokens from theme-toggle.css */
+  margin: 0 0 16px 0;
+  font-family: var(--font-heading-family);
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-text-heading);
+  text-align: center;
+}
+
+.content-block__heading * {
+  color: inherit !important;
+}
+
+.custom-section__description {
+  /* Using semantic tokens from theme-toggle.css */
+  color: var(--color-text-secondary);
+  font-style: normal;
+}
+
+.custom-section__description * {
+  color: inherit !important;
+}
+
+.custom-section__description p {
+  margin: 0;
+}
+
+.features-highlight-wrapper {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  display: flex;
+  justify-content: center;
+}
+
+.features-highlight {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.features-highlight__container {
+  width: 100%;
+}
+
+.features-highlight__container.show-outlines {
+  outline: 3px solid red;
+}
+
+.features-highlight__grid.show-outlines {
+  outline: 3px solid blue;
+}
+
+.features-highlight__grid {
+  display: grid;
+  gap: 3rem 2rem;
+  align-items: center;
+  justify-items: center;
+  max-width: 100%;
+}
+
+.features-highlight__item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: none;
+  transition: all 0.3s ease;
+  aspect-ratio: 1;
+}
+
+.features-highlight__item:hover {
+  transform: translateY(-2px);
+  box-shadow: none;
+}
+
+.features-highlight__item.show-outlines {
+  outline: 3px solid green;
+}
+
+.features-highlight__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.features-highlight__image.show-outlines {
+  outline: 3px solid orange;
+}
+
+.three-way-video-wrapper {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  display: flex;
+  justify-content: center;
+}
+
+.three-way-video {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  width: 90%;
+  max-width: 90vw;
+  position: relative;
+}
+
+.three-way-video__main-video {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+.three-way-video__main-video::before {
+  content: '';
+  display: block;
+  padding-top: 56.25%;
+}
+
+.three-way-video__main-video video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 0;
+}
+
+.three-way-video__main-video .placeholder-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.three-way-video__video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.three-way-video__images-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.three-way-video__image {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+.three-way-video__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 749px) {
+  .three-way-video-wrapper {
+    width: 100%;
+    position: static;
+    left: auto;
+    right: auto;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .three-way-video {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .three-way-video__main-video,
+  .three-way-video__images-container {
+    min-height: 300px;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .content-block__heading {
+    font-size: 2.8rem;
+  }
+  
+  .content-block__pill .pill-text {
+    font-size: 12px;
+    padding: 6px 14px;
+  }
+}

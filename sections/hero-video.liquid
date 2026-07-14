@@ -1,3 +1,5 @@
+{{ 'section-hero-video.css' | asset_url | stylesheet_tag }}
+
 {%- style -%}
   /* Video overlay uses design setting for opacity control */
   #VideoBanner-{{ section.id }} .banner__overlay {
@@ -22,7 +24,7 @@
 
 <div
   id="VideoBanner-{{ section.id }}"
-  class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.video_height }}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+  class="banner video-banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.video_height }}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
 >
   {%- if section.settings.video != blank -%}
     {%- assign poster_url = section.settings.video.preview_image | image_url: width: 1920 -%}
@@ -112,171 +114,6 @@
   </div>
 </div>
 
-<style>
-  #VideoBanner-{{ section.id }} {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__media {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  #VideoBanner-{{ section.id }}::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: transparent;
-    z-index: 0;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 2rem;
-    box-sizing: border-box;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__box {
-    padding: 4rem 2rem;
-    max-width: 80rem;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__heading {
-    margin-bottom: 1.5rem;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__text {
-    margin-bottom: 2rem;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__buttons {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  #VideoBanner-{{ section.id }}.banner--small {
-    min-height: 40vh;
-  }
-
-  #VideoBanner-{{ section.id }}.banner--medium {
-    min-height: 60vh;
-  }
-
-  #VideoBanner-{{ section.id }}.banner--large {
-    min-height: 80vh;
-  }
-
-  /* Content positioning */
-  #VideoBanner-{{ section.id }} .banner__content--top-left {
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__content--top-center {
-    align-items: flex-start;
-    justify-content: center;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__content--top-right {
-    align-items: flex-start;
-    justify-content: flex-end;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__content--middle-left {
-    align-items: center;
-    justify-content: flex-start;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__content--middle-center {
-    align-items: center;
-    justify-content: center;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__content--middle-right {
-    align-items: center;
-    justify-content: flex-end;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__content--bottom-left {
-    align-items: flex-end;
-    justify-content: flex-start;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__content--bottom-center {
-    align-items: flex-end;
-    justify-content: center;
-  }
-
-  #VideoBanner-{{ section.id }} .banner__content--bottom-right {
-    align-items: flex-end;
-    justify-content: flex-end;
-  }
-
-  @media screen and (max-width: 749px) {
-    #VideoBanner-{{ section.id }}.banner--small {
-      min-height: 30vh;
-    }
-
-    #VideoBanner-{{ section.id }}.banner--medium {
-      min-height: 50vh;
-    }
-
-    #VideoBanner-{{ section.id }}.banner--large {
-      min-height: 70vh;
-    }
-
-    #VideoBanner-{{ section.id }} .banner__box {
-      padding: 2rem 1.5rem;
-    }
-
-    #VideoBanner-{{ section.id }} .banner__heading {
-      margin-bottom: 1rem;
-    }
-
-    #VideoBanner-{{ section.id }} .banner__text {
-      margin-bottom: 1.5rem;
-    }
-  }
-</style>
 
 {% schema %}
 {
