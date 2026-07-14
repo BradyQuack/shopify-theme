@@ -387,11 +387,13 @@
                         {%- assign feature_image = block.settings[image_key] -%}
                         {%- if feature_image != blank -%}
                           <div class="features-highlight__item{% if block.settings.show_outlines %} show-outlines{% endif %}">
-                            <img 
-                              src="{{ feature_image | image_url: width: 400 }}" 
-                              loading="lazy" 
+                            <img
+                              src="{{ feature_image | image_url: width: 400 }}"
+                              loading="lazy"
                               class="features-highlight__image{% if block.settings.show_outlines %} show-outlines{% endif %}"
-                              alt="{{ feature_image.alt | escape }}"
+                              alt="{{ feature_image.alt | default: 'Brand logo' | escape }}"
+                              width="400"
+                              height="{{ 400 | divided_by: feature_image.aspect_ratio | round }}"
                             >
                           </div>
                         {%- endif -%}
