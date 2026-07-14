@@ -9,6 +9,47 @@
 {%- if section.settings.show_style_debug -%}
   {{ 'style-debug.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'style-debug.js' | asset_url }}" defer></script>
+  {%- comment -%}
+    Page data for the style debug tool. Lives here (not theme.liquid) so the
+    ~1.5KB inline script only ships when the debug tool is enabled.
+  {%- endcomment -%}
+  <script>
+    window.ShopifyDebug = {
+      template: {
+        name: {{ template.name | json }},
+        suffix: {{ template.suffix | json }},
+        directory: {{ template.directory | json }},
+        full: {{ template | json }}
+      },
+      page: {
+        title: {{ page_title | json }},
+        url: {{ request.path | json }},
+        host: {{ request.host | json }}
+      },
+      request: {
+        pageType: {{ request.page_type | json }},
+        locale: {{ request.locale.iso_code | json }}
+      },
+      {%- if product -%}
+      product: {
+        title: {{ product.title | json }},
+        handle: {{ product.handle | json }},
+        type: {{ product.type | json }},
+        vendor: {{ product.vendor | json }}
+      },
+      {%- endif -%}
+      {%- if collection -%}
+      collection: {
+        title: {{ collection.title | json }},
+        handle: {{ collection.handle | json }}
+      },
+      {%- endif -%}
+      sections: Array.prototype.map.call(
+        document.querySelectorAll('.shopify-section'),
+        function (el) { return el.id.replace('shopify-section-', ''); }
+      )
+    };
+  </script>
 {%- endif -%}
 
 {%- if section.settings.show_section_debug -%}
@@ -80,6 +121,17 @@
   @media screen and (min-width: 750px) {
     /* On desktop the menus are always expanded and the heading is not interactive */
     .footer-block__collapsible > summary { cursor: default; pointer-events: none; }
+  }
+
+  .footer__address {
+    font-style: normal;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 1.5rem;
+    row-gap: 0.4rem;
+    margin-bottom: 0.8rem;
+    font-size: 1.2rem;
   }
 {%- endstyle -%}
 
@@ -447,6 +499,17 @@
     </div>
     <div class="footer__content-bottom-wrapper page-width footer__content-bottom-wrapper--center">
       <div class="footer__copyright caption">
+        {%- if section.settings.store_address != blank or section.settings.store_phone != blank -%}
+          <address class="footer__address">
+            {%- if section.settings.store_address != blank -%}
+              <span class="copyright__content">{{ section.settings.store_address | escape }}</span>
+            {%- endif -%}
+            {%- if section.settings.store_phone != blank -%}
+              {%- assign phone_digits = section.settings.store_phone | remove: '(' | remove: ')' | remove: '-' | remove: ' ' | remove: '.' -%}
+              <a class="copyright__content" href="tel:+1{{ phone_digits }}">{{ section.settings.store_phone | escape }}</a>
+            {%- endif -%}
+          </address>
+        {%- endif -%}
         <small class="copyright__content"
           >&copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url -}}
         </small>
@@ -707,6 +770,23 @@
       "default": true,
       "label": "t:sections.footer.settings.show_policy.label",
       "info": "t:sections.footer.settings.show_policy.info"
+    },
+    {
+      "type": "header",
+      "content": "Business info"
+    },
+    {
+      "type": "text",
+      "id": "store_address",
+      "label": "Physical address",
+      "default": "16050 Orange Ave, Fort Pierce, FL 34945",
+      "info": "Shown above the copyright line. Helps local SEO and trust signals."
+    },
+    {
+      "type": "text",
+      "id": "store_phone",
+      "label": "Phone number",
+      "default": "(772) 468-0888"
     },
     {
       "type": "header",

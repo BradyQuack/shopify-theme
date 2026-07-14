@@ -25,7 +25,21 @@
   "name": {{ shop.name | json }},
   "url": {{ site_url | json }}{% if org_description != blank %},
   "description": {{ org_description | strip_html | json }}{% endif %}{% if logo_url %},
-  "logo": {{ logo_url | json }}{% endif %}
+  "logo": {{ logo_url | json }}{% endif %},
+  "telephone": "+1-772-468-0888",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "16050 Orange Ave",
+    "addressLocality": "Fort Pierce",
+    "addressRegion": "FL",
+    "postalCode": "34945",
+    "addressCountry": "US"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+1-772-468-0888",
+    "contactType": "sales"
+  }
 }
 </script>
 

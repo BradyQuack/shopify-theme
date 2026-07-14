@@ -59,6 +59,8 @@
         "enable_language_selector": true,
         "payment_enable": true,
         "show_policy": true,
+        "store_address": "16050 Orange Ave, Fort Pierce, FL 34945",
+        "store_phone": "(772) 468-0888",
         "show_theme_toggle": false,
         "show_style_debug": false,
         "show_section_debug": false,
