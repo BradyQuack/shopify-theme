@@ -198,9 +198,9 @@
       "settings": {
         "column1_title": "Water Pumps",
         "column1_link": "",
-        "column2_title": "Pump Parts",
+        "column2_title": "Repair & Replacement Parts",
         "column2_link": "",
-        "column3_title": "Custom Length PVC",
+        "column3_title": "Custom-Cut PVC Pipe",
         "column3_link": "",
         "show_column1_mobile": true,
         "show_column2_mobile": false,
@@ -268,8 +268,8 @@
             "icon_png": "shopify://shop_images/medal_white.png",
             "icon_png_alt": "",
             "icon_bg_custom": "",
-            "title": "Exclusive Wholesale Discounts",
-            "description": "Get access to premium savings on bulk orders",
+            "title": "Volume Discounts",
+            "description": "Premium savings on bulk and repeat orders",
             "link_label": "",
             "link_url": "",
             "aria_label": "",
@@ -337,7 +337,7 @@
       "type": "cta-banner",
       "name": "Wholesale Pricing Banner",
       "settings": {
-        "title": "Wholesale Pricing Available for Contractors & Businesses — Unlock Exclusive Discounts.",
+        "title": "Contractor & Business Accounts — Unlock Bulk Pricing and Exclusive Discounts.",
         "subtitle": "",
         "title_icon": "",
         "button_text": "Get Wholesale Access",
@@ -451,7 +451,7 @@
       "type": "cta-banner",
       "name": "Wholesale Pricing Banner",
       "settings": {
-        "title": "Find replacement parts for over 100+ Berkeley Pumps",
+        "title": "Replacement parts for 100+ Berkeley models",
         "subtitle": "",
         "title_icon": "",
         "button_text": "Berkeley Replacement Parts",
@@ -589,7 +589,7 @@
           "type": "review",
           "settings": {
             "rating": 5,
-            "review_text": "Professional and dependable. The Goulds J10 pump we ordered was delivered quickly and exactly as described. Installation was smooth, and it handles daily demand without an issue. ASIW Supply is my go-to for pumps.",
+            "review_text": "Professional and dependable. The Goulds J10 pump we ordered was delivered quickly and exactly as described. Installation was smooth, and it handles daily demand without an issue. ASIW Supply is my go-to for water equipment.",
             "customer_name": "Michael Chen",
             "customer_location": "Westside Farms",
             "service_type": "Goulds J-10"
@@ -619,7 +619,7 @@
           "type": "review",
           "settings": {
             "rating": 5,
-            "review_text": "ASIW Supply is fantastic. Their Goulds J15 pump came packaged securely, with clear documentation, and the support team answered all our technical questions. Our system has never run better.",
+            "review_text": "ASIW Supply is fantastic. Our Goulds J15 arrived packaged securely, with clear documentation, and the support team answered all our technical questions. Our system has never run better.",
             "customer_name": "Jessica Miller",
             "customer_location": "Landscaping",
             "service_type": "Goulds J-15"
@@ -675,11 +675,106 @@
         "padding_top": 0,
         "padding_bottom": 80
       }
+    },
+    "home_intro_seo1": {
+      "type": "content-block",
+      "blocks": {
+        "intro_title_seo1": {
+          "type": "description_title",
+          "settings": {
+            "title_text": "Irrigation & Water System Equipment, Straight from the Source",
+            "heading_size": "h2",
+            "title_padding_top": 24,
+            "title_padding_bottom": 12
+          }
+        },
+        "intro_body_seo1": {
+          "type": "description_body",
+          "settings": {
+            "body_text": "<p>ASIW Supply is an authorized distributor of pumping equipment, drip and turf irrigation, and pipe for contractors, growers, golf courses, and municipalities across the United States. From our warehouse in Fort Pierce, Florida, we stock Goulds and Berkeley pumping systems, Netafim and Rain Bird irrigation, Charlotte Pipe and Lesso PVC, and genuine OEM repair components — ready to ship nationwide.</p><p>Whether you're replacing a single impeller or outfitting an entire grove, our team helps you size the right equipment the first time and backs it with bulk pricing for trade accounts. Call us at (772) 468-0888 or <a href=\"/pages/wholesale\">apply for a wholesale account</a>.</p>",
+            "body_padding_top": 0,
+            "body_padding_bottom": 24
+          }
+        }
+      },
+      "block_order": [
+        "intro_title_seo1",
+        "intro_body_seo1"
+      ],
+      "name": "Homepage Intro",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": false,
+        "padding_top": 8,
+        "padding_bottom": 8
+      }
+    },
+    "faq_seo1": {
+      "type": "faq",
+      "blocks": {
+        "faq_q1": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer wholesale pricing?",
+            "answer": "<p>Yes. Contractors, farms, municipalities, and other businesses can apply for a trade account to unlock bulk pricing on pumps, irrigation, and pipe. <a href=\"/pages/wholesale\">Apply for wholesale access here</a>.</p>",
+            "open_by_default": false
+          }
+        },
+        "faq_q2": {
+          "type": "question",
+          "settings": {
+            "question": "Which brands do you carry?",
+            "answer": "<p>We're an authorized distributor for Goulds, Berkeley, Pentair Sta-Rite, Netafim, Rain Bird, Hunter, Charlotte Pipe, Lesso, Dura, Bermad, and Evoqua, among others. Because we buy direct, every product is genuine and factory-warrantied.</p>",
+            "open_by_default": false
+          }
+        },
+        "faq_q3": {
+          "type": "question",
+          "settings": {
+            "question": "Can you cut PVC pipe to custom lengths?",
+            "answer": "<p>Yes — we cut Schedule 40 PVC to your exact specifications in diameters from 1-1/2\" to 4\", so you pay for exactly what you need and save on freight.</p>",
+            "open_by_default": false
+          }
+        },
+        "faq_q4": {
+          "type": "question",
+          "settings": {
+            "question": "How do I find the right replacement part for my pump?",
+            "answer": "<p>Start with the model number on your pump's nameplate — we stock repair kits, impellers, casings, and seals for more than 100 Berkeley models plus the full Goulds J, JS, and GT series. Not sure what you need? Call (772) 468-0888 and we'll identify it with you.</p>",
+            "open_by_default": false
+          }
+        },
+        "faq_q5": {
+          "type": "question",
+          "settings": {
+            "question": "Where do you ship, and how fast?",
+            "answer": "<p>We ship nationwide from Fort Pierce, Florida. In-stock equipment and parts ship fast — contact us at (772) 468-0888 for delivery timelines on your order.</p>",
+            "open_by_default": false
+          }
+        }
+      },
+      "block_order": [
+        "faq_q1",
+        "faq_q2",
+        "faq_q3",
+        "faq_q4",
+        "faq_q5"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 48
+      }
     }
   },
   "order": [
     "home_video_hero2_EDKM6A",
     "product_highlights_nY6mri",
+    "home_intro_seo1",
     "custom_section_aChJ3c",
     "feature_highlights_mMq9wi",
     "banner1_8wY8Ft",
@@ -687,6 +782,7 @@
     "banner1_9VebfT",
     "custom2_7XUC8B",
     "customerreview_jDbTcx",
+    "faq_seo1",
     "richcustom2_tqRnBA"
   ]
 }
