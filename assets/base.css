@@ -3633,3 +3633,2111 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+
+
+/* ============================================
+   LIGHT / DARK MODE COLOR SCHEME
+   Two-Tier Token System Architecture
+   ============================================
+
+   TIER 1: Base Variables (Raw HSL Colors)
+   - Defined in :root for global access
+   - Named by color family (e.g., --base-blue, --base-orange)
+
+   TIER 2: Semantic Tokens (Purpose-Driven)
+   - Mapped per theme (light/dark)
+   - Named by function (e.g., --color-primary, --color-bg)
+
+   Primary Color Strategy:
+   - Light Mode: Darker, muted blue (204° 100% 29%)
+   - Dark Mode: Brighter, vibrant blue (213° 94% 68%)
+   - Same visual impact in both contexts
+
+   Section Naming Convention:
+   - hero-video, content-block, testimonials
+   - product-grid, features-bar, cta-banner
+
+   ============================================ */
+
+/* ============================================
+   TIER 1: BASE COLOR VARIABLES (HSL)
+   Raw color definitions - theme agnostic
+   ============================================ */
+:root {
+  /* ---- Blue Family ---- */
+  --base-blue-900: 204 100% 18%;   /* Darkest */
+  --base-blue-800: 204 100% 24%;
+  --base-blue-700: 204 100% 29%;   /* Primary light mode */
+  --base-blue-600: 210 90% 40%;
+  --base-blue-500: 213 90% 52%;
+  --base-blue-400: 213 94% 68%;    /* Primary dark mode */
+  --base-blue-300: 213 94% 78%;
+  --base-blue-200: 214 95% 88%;
+  --base-blue-100: 214 100% 95%;   /* Lightest */
+
+  /* ---- Orange/Accent Family ---- */
+  --base-orange-900: 24 75% 25%;
+  --base-orange-800: 24 78% 35%;
+  --base-orange-700: 24 72% 51%;   /* Accent light mode */
+  --base-orange-600: 27 87% 54%;
+  --base-orange-500: 27 96% 61%;   /* Accent dark mode */
+  --base-orange-400: 32 95% 68%;
+  --base-orange-300: 35 100% 78%;
+  --base-orange-200: 38 100% 88%;
+  --base-orange-100: 40 100% 95%;
+
+  /* ---- Gray Family (Cool, Blue Undertone) ---- */
+  --base-gray-950: 222 47% 9%;     /* Darkest - dark mode bg */
+  --base-gray-900: 217 33% 13%;
+  --base-gray-800: 217 24% 17%;    /* Dark mode surface */
+  --base-gray-700: 215 20% 24%;
+  --base-gray-600: 215 16% 35%;
+  --base-gray-500: 215 14% 47%;
+  --base-gray-400: 214 12% 58%;
+  --base-gray-300: 213 12% 70%;
+  --base-gray-200: 214 14% 82%;
+  --base-gray-100: 216 20% 96%;    /* Light mode bg */
+  --base-gray-50: 0 0% 100%;       /* Pure white */
+
+  /* ---- Semantic Base Colors ---- */
+  --base-success-light: 142 71% 45%;
+  --base-success-dark: 142 69% 58%;
+  --base-warning-light: 38 92% 50%;
+  --base-warning-dark: 45 93% 58%;
+  --base-error-light: 0 72% 51%;
+  --base-error-dark: 0 91% 71%;
+  --base-star: 45 93% 55%;
+
+  /* ---- Ice Blue Accent (Consistent across both modes) ---- */
+  --base-ice-blue: 213 94% 68%;       /* #5BA3F5 - Toggle active state */
+  --base-ice-blue-hover: 213 94% 58%; /* Darker for hover */
+
+  /* ---- Muted Background (Toggle container) ---- */
+  --base-muted-light: 216 15% 94%;    /* Light mode toggle bg */
+  --base-muted-dark: 215 16% 28%;     /* Dark mode toggle bg */
+
+  /* ---- Opacity Scale (Centralized) ---- */
+  --alpha-5: 0.05;                    /* Subtle backgrounds */
+  --alpha-8: 0.08;                    /* Hover states */
+  --alpha-10: 0.10;                   /* Light overlays */
+  --alpha-12: 0.12;                   /* Borders */
+  --alpha-15: 0.15;                   /* Medium overlays */
+  --alpha-20: 0.20;                   /* Strong overlays */
+  --alpha-30: 0.30;                   /* Heavy overlays */
+  --alpha-50: 0.50;                   /* Modal backdrops */
+  --alpha-70: 0.70;                   /* Dark overlays */
+}
+
+/* ============================================
+   TIER 2: SEMANTIC TOKENS - LIGHT MODE
+   Purpose-driven color mappings
+   ============================================ */
+:root,
+[data-theme="light"] {
+  /* ---- Surface Elevation System (5 Levels) ---- */
+  --color-bg: hsl(var(--base-gray-100));              /* Level 0: Page canvas */
+  --color-surface-0: hsl(var(--base-gray-100));       /* Level 0: Same as bg */
+  --color-surface-1: hsl(var(--base-gray-50));        /* Level 1: Cards, panels */
+  --color-surface-2: hsl(0 0% 100%);                  /* Level 2: Modals, dropdowns */
+  --color-surface-3: hsl(0 0% 100%);                  /* Level 3: Tooltips, popovers */
+  --color-surface-4: hsl(0 0% 100%);                  /* Level 4: Highest elevation */
+  --color-surface: hsl(var(--base-gray-50));          /* Alias: Default surface */
+  --color-surface-alt: hsl(214 14% 92%);              /* Alternate surfaces */
+  --color-surface-hover: hsl(214 14% 97%);            /* Hover state */
+  --color-overlay: hsla(222 47% 9% / var(--alpha-50)); /* Modal overlays */
+
+  /* ---- Text Hierarchy (5 Levels) ---- */
+  --color-text-heading: hsl(220 25% 10%);             /* H1-H3: Strongest */
+  --color-text-primary: hsl(220 20% 12%);             /* Body text: Primary */
+  --color-text-secondary: hsl(215 14% 47%);           /* Supporting text */
+  --color-text-tertiary: hsl(214 12% 58%);            /* Captions, hints */
+  --color-text-disabled: hsl(214 10% 70%);            /* Inactive elements */
+  --color-text-muted: hsl(214 12% 58%);               /* Alias: Muted text */
+  --color-text-inverse: hsl(var(--base-gray-50));     /* Text on dark backgrounds */
+
+  /* ---- Border Hierarchy ---- */
+  --color-border: hsl(214 14% 86%);                   /* Default borders */
+  --color-border-light: hsl(214 14% 92%);             /* Subtle borders */
+  --color-border-dark: hsl(214 14% 78%);              /* Emphasized borders */
+
+  /* ---- Brand Colors (Adapted for Light Mode) ---- */
+  /* Primary: Darker, muted blue - avoids clashing with light bg */
+  --color-primary: hsl(var(--base-blue-700));         /* #005496 equivalent */
+  --color-primary-hover: hsl(var(--base-blue-800));   /* Darker on hover */
+  --color-primary-active: hsl(var(--base-blue-900));  /* Pressed state */
+  --color-primary-light: hsl(var(--base-blue-100));   /* Light tint */
+
+  /* Secondary: Slightly lighter blue */
+  --color-secondary: hsl(var(--base-blue-500));
+  --color-secondary-hover: hsl(var(--base-blue-600));
+  --color-secondary-active: hsl(var(--base-blue-700));
+  --color-secondary-light: hsl(var(--base-blue-100));
+
+  /* Accent: Muted orange for light mode */
+  --color-accent: hsl(var(--base-orange-700));        /* #DD6727 equivalent */
+  --color-accent-hover: hsl(var(--base-orange-800));
+  --color-accent-active: hsl(var(--base-orange-900));
+  --color-accent-light: hsl(var(--base-orange-100));
+
+  /* ---- Feedback Colors (Full System) ---- */
+  /* Success */
+  --color-success: hsl(var(--base-success-light));
+  --color-success-hover: hsl(142 71% 38%);
+  --color-success-light: hsl(142 76% 95%);
+  --color-success-bg: hsl(142 76% 95%);
+  --color-success-text: hsl(142 71% 30%);
+  --color-success-border: hsl(142 50% 70%);
+
+  /* Warning */
+  --color-warning: hsl(var(--base-warning-light));
+  --color-warning-hover: hsl(32 95% 44%);
+  --color-warning-light: hsl(48 100% 95%);
+  --color-warning-bg: hsl(48 100% 95%);
+  --color-warning-text: hsl(32 95% 30%);
+  --color-warning-border: hsl(38 70% 70%);
+
+  /* Error */
+  --color-error: hsl(var(--base-error-light));
+  --color-error-hover: hsl(0 72% 43%);
+  --color-error-light: hsl(0 86% 96%);
+  --color-error-bg: hsl(0 86% 96%);
+  --color-error-text: hsl(0 72% 40%);
+  --color-error-border: hsl(0 60% 80%);
+
+  /* Info */
+  --color-info: hsl(var(--base-blue-500));
+  --color-info-hover: hsl(var(--base-blue-600));
+  --color-info-light: hsl(var(--base-blue-100));
+  --color-info-bg: hsl(var(--base-blue-100));
+  --color-info-text: hsl(var(--base-blue-800));
+  --color-info-border: hsl(var(--base-blue-200));
+
+  /* ---- Focus Ring System ---- */
+  --ring-color: hsl(var(--base-blue-700));
+  --ring-color-alpha: hsla(var(--base-blue-700) / var(--alpha-30));
+  --ring-width: 2px;
+  --ring-offset: 2px;
+  --ring-offset-color: hsl(var(--base-gray-50));
+
+  /* ---- Card Tokens ---- */
+  --color-card-bg: hsl(var(--base-gray-50));
+  --color-card-hover: hsl(214 14% 98%);
+  --color-card-separator: hsl(214 14% 86%);
+  --color-card-shadow: hsla(222 47% 9% / 0.08);
+
+  /* ---- Product Display ---- */
+  --color-product-title: hsl(220 20% 12%);
+  --color-sku: hsl(215 14% 47%);
+  --color-compare-price: hsl(214 12% 58%);
+  --color-sale-price: hsl(var(--base-error-light));
+
+  /* ---- Interactive Elements ---- */
+  --color-button-text: hsl(var(--base-gray-50));
+  --color-button-disabled: hsl(214 12% 58%);
+
+  --color-icon: hsl(215 14% 47%);
+  --color-icon-hover: hsl(var(--base-blue-700));
+  --color-icon-muted: hsl(214 12% 58%);
+
+  /* ---- Badge/Tag Tokens ---- */
+  --color-badge-bg: hsl(var(--base-blue-700));
+  --color-badge-text: hsl(var(--base-gray-50));
+  --color-badge-secondary-bg: hsl(214 14% 92%);
+  --color-badge-secondary-text: hsl(var(--base-blue-700));
+
+  /* ---- Decorative Elements ---- */
+  --color-star-filled: hsl(var(--base-star));
+  --color-star-unfilled: hsl(214 14% 86%);
+
+  --color-quote: hsl(214 14% 86%);
+  --color-quote-text: hsl(215 14% 47%);
+
+  /* ---- Navigation ---- */
+  --color-nav-bg: hsl(var(--base-blue-700));
+  --color-nav-text: hsl(var(--base-gray-50));
+  --color-nav-hover: hsl(var(--base-blue-800));
+  --color-dot-active: hsl(var(--base-blue-700));
+  --color-dot-inactive: hsla(var(--base-blue-700) / 0.3);
+
+  /* ---- Banner/CTA ---- */
+  --color-banner-bg: hsl(var(--base-blue-700));
+  --color-banner-text: hsl(var(--base-gray-50));
+  --color-banner-button-bg: hsl(var(--base-success-light));
+  --color-banner-button-hover: hsl(142 71% 38%);
+
+  /* ---- Section Backgrounds ---- */
+  --color-section-light: hsl(var(--base-gray-100));
+  --color-section-alt: hsl(var(--base-gray-50));
+
+  /* ---- Footer (Branded Blue) ---- */
+  --color-footer-bg: hsl(var(--base-blue-700));        /* #005496 */
+  --color-footer-surface: hsl(var(--base-blue-700));   /* Same as bg */
+  --color-footer-border: hsla(0 0% 100% / 0.2);        /* White 20% */
+  --color-footer-text: hsl(0 0% 100%);                 /* White */
+  --color-footer-text-heading: hsl(0 0% 100%);         /* White */
+
+  /* ---- Card Opacity Tokens (Light Mode) ---- */
+  --card-bg-opacity: 1;                                /* Solid in light mode */
+  --card-border-opacity: 1;
+  --card-hover-opacity: 1;
+
+  /* ---- Text Hierarchy (Light Mode) ---- */
+  --color-text-quote: hsl(220 20% 12%);                /* Same as primary in light */
+  --color-text-label: hsl(215 14% 47%);                /* Same as secondary */
+
+  /* ---- Links ---- */
+  --color-link: hsl(var(--base-blue-700));
+  --color-link-hover: hsl(var(--base-blue-800));
+  --color-link-visited: hsl(var(--base-blue-600));
+
+  /* ---- Focus States ---- */
+  --color-focus-ring: hsla(var(--base-blue-700) / 0.5);
+  --color-focus-outline: hsl(var(--base-blue-700));
+
+  /* ---- Toggle Specific (Light Mode) ---- */
+  /* Ice Blue active state - consistent across both modes */
+  --toggle-active-bg: hsl(var(--base-ice-blue));
+  --toggle-active-text: hsl(0 0% 100%);            /* Pure white */
+  --toggle-inactive-bg: transparent;
+  --toggle-inactive-text: hsl(216 8% 46%);         /* Muted gray */
+  --toggle-hover-text: hsl(220 20% 2%);            /* Near-black on hover */
+  --toggle-hover-bg: hsl(216 15% 88%);             /* Light gray bg on hover */
+  --toggle-container-bg: hsl(var(--base-muted-light));
+
+  /* ---- Component Tokens: Inputs ---- */
+  --input-bg: hsl(var(--base-gray-50));
+  --input-bg-disabled: hsl(var(--base-gray-100));
+  --input-border: hsl(214 14% 82%);
+  --input-border-hover: hsl(214 14% 70%);
+  --input-border-focus: hsl(var(--base-blue-700));
+  --input-placeholder: hsl(214 12% 58%);
+  --input-text: hsl(220 20% 12%);
+
+  /* ---- Component Tokens: Tables ---- */
+  --table-header-bg: hsl(214 14% 95%);
+  --table-row-hover: hsl(214 14% 97%);
+  --table-row-stripe: hsl(214 14% 98%);
+  --table-border: hsl(214 14% 90%);
+
+  /* ---- Component Tokens: Buttons ---- */
+  --button-primary-bg: var(--color-primary);
+  --button-primary-bg-hover: var(--color-primary-hover);
+  --button-primary-bg-active: var(--color-primary-active);
+  --button-primary-text: hsl(var(--base-gray-50));
+  --button-primary-bg-disabled: hsl(214 14% 82%);
+  --button-primary-text-disabled: hsl(214 10% 60%);
+
+  --button-secondary-bg: transparent;
+  --button-secondary-border: var(--color-primary);
+  --button-secondary-text: var(--color-primary);
+  --button-secondary-bg-hover: var(--color-primary);
+  --button-secondary-text-hover: hsl(var(--base-gray-50));
+
+  /* ---- Component Tokens: Skeleton/Loading ---- */
+  --skeleton-base: hsl(214 14% 90%);
+  --skeleton-shimmer: hsl(214 14% 95%);
+}
+
+/* ============================================
+   TIER 2: SEMANTIC TOKENS - DARK MODE
+   Brighter, more vibrant colors for dark backgrounds
+   ============================================ */
+[data-theme="dark"] {
+  /* ---- Surface Elevation System (5 Levels) ---- */
+  /* Deep navy-blue (not pure black) - avoids harshness */
+  --color-bg: hsl(var(--base-gray-950));              /* Level 0: Page canvas */
+  --color-surface-0: hsl(var(--base-gray-950));       /* Level 0: Same as bg */
+  --color-surface-1: hsl(var(--base-gray-800));       /* Level 1: Cards, panels */
+  --color-surface-2: hsl(var(--base-gray-700));       /* Level 2: Modals, dropdowns */
+  --color-surface-3: hsl(215 20% 26%);                /* Level 3: Tooltips, popovers */
+  --color-surface-4: hsl(215 20% 30%);                /* Level 4: Highest elevation */
+  --color-surface: hsl(var(--base-gray-800));         /* Alias: Default surface */
+  --color-surface-alt: hsl(var(--base-gray-700));     /* Alternate surfaces */
+  --color-surface-hover: hsl(215 20% 28%);            /* Hover state */
+  --color-overlay: hsla(222 47% 9% / var(--alpha-70)); /* Modal overlays */
+
+  /* ---- Text Hierarchy (5 Levels) ---- */
+  /* Off-white text - softer than pure white to reduce eye strain */
+  --color-text-heading: hsl(210 25% 98%);             /* H1-H3: Brightest */
+  --color-text-primary: hsl(210 20% 95%);             /* Body text: Primary */
+  --color-text-secondary: hsl(215 18% 65%);           /* Supporting text */
+  --color-text-tertiary: hsl(215 16% 55%);            /* Captions, hints */
+  --color-text-disabled: hsl(215 14% 40%);            /* Inactive elements */
+  --color-text-muted: hsl(215 16% 47%);               /* Alias: Muted text */
+  --color-text-inverse: hsl(var(--base-gray-950));    /* Text on light backgrounds */
+
+  /* ---- Border Hierarchy ---- */
+  --color-border: hsl(215 20% 28%);                   /* Default borders */
+  --color-border-light: hsl(215 19% 35%);             /* Subtle borders */
+  --color-border-dark: hsl(var(--base-gray-800));     /* Emphasized borders */
+
+  /* ---- Brand Colors (Adapted for Dark Mode) ---- */
+  /* Primary: Brighter, more vibrant blue - pops against dark bg */
+  --color-primary: hsl(var(--base-blue-400));         /* #60A5FA - Vibrant */
+  --color-primary-hover: hsl(var(--base-blue-300));   /* Lighter on hover */
+  --color-primary-active: hsl(var(--base-blue-200));  /* Pressed state */
+  --color-primary-light: hsl(210 50% 25%);            /* Dark tint */
+
+  /* Secondary: Lighter indigo-blue */
+  --color-secondary: hsl(235 82% 72%);                /* Indigo */
+  --color-secondary-hover: hsl(235 82% 82%);
+  --color-secondary-active: hsl(235 82% 88%);
+  --color-secondary-light: hsl(230 30% 25%);
+
+  /* Accent: Brighter, more saturated orange for dark mode */
+  --color-accent: hsl(var(--base-orange-500));        /* #F28C38 - Vibrant */
+  --color-accent-hover: hsl(var(--base-orange-400));  /* Lighter on hover */
+  --color-accent-active: hsl(var(--base-orange-300)); /* Pressed state */
+  --color-accent-light: hsl(24 40% 20%);              /* Dark tint */
+
+  /* ---- Feedback Colors (Full System) ---- */
+  /* Success */
+  --color-success: hsl(var(--base-success-dark));
+  --color-success-hover: hsl(142 69% 70%);
+  --color-success-light: hsl(145 35% 18%);
+  --color-success-bg: hsl(145 35% 18%);
+  --color-success-text: hsl(142 69% 65%);
+  --color-success-border: hsl(142 40% 35%);
+
+  /* Warning */
+  --color-warning: hsl(var(--base-warning-dark));
+  --color-warning-hover: hsl(48 96% 65%);
+  --color-warning-light: hsl(45 50% 18%);
+  --color-warning-bg: hsl(45 50% 18%);
+  --color-warning-text: hsl(45 93% 58%);
+  --color-warning-border: hsl(38 50% 35%);
+
+  /* Error */
+  --color-error: hsl(var(--base-error-dark));
+  --color-error-hover: hsl(0 91% 80%);
+  --color-error-light: hsl(0 40% 18%);
+  --color-error-bg: hsl(0 40% 18%);
+  --color-error-text: hsl(0 91% 71%);
+  --color-error-border: hsl(0 50% 35%);
+
+  /* Info */
+  --color-info: hsl(var(--base-blue-400));
+  --color-info-hover: hsl(var(--base-blue-300));
+  --color-info-light: hsl(210 50% 25%);
+  --color-info-bg: hsl(210 50% 25%);
+  --color-info-text: hsl(var(--base-blue-300));
+  --color-info-border: hsl(210 40% 40%);
+
+  /* ---- Focus Ring System ---- */
+  --ring-color: hsl(var(--base-blue-400));
+  --ring-color-alpha: hsla(var(--base-blue-400) / var(--alpha-30));
+  --ring-width: 2px;
+  --ring-offset: 2px;
+  --ring-offset-color: hsl(var(--base-gray-950));
+
+  /* ---- Card Tokens ---- */
+  --color-card-bg: hsl(var(--base-gray-800));
+  --color-card-hover: hsl(var(--base-gray-700));
+  --color-card-separator: hsl(215 20% 28%);
+  --color-card-shadow: hsla(222 47% 5% / 0.4);
+
+  /* ---- Product Display ---- */
+  --color-product-title: hsl(210 20% 95%);
+  --color-sku: hsl(215 18% 65%);
+  --color-compare-price: hsl(215 16% 47%);
+  --color-sale-price: hsl(var(--base-error-dark));
+
+  /* ---- Interactive Elements ---- */
+  --color-button-text: hsl(var(--base-gray-50));
+  --color-button-disabled: hsl(215 19% 35%);
+
+  --color-icon: hsl(215 18% 65%);
+  --color-icon-hover: hsl(var(--base-blue-400));
+  --color-icon-muted: hsl(215 16% 47%);
+
+  /* ---- Badge/Tag Tokens ---- */
+  --color-badge-bg: hsl(var(--base-blue-400));
+  --color-badge-text: hsl(var(--base-gray-950));
+  --color-badge-secondary-bg: hsl(215 20% 28%);
+  --color-badge-secondary-text: hsl(var(--base-blue-400));
+
+  /* ---- Decorative Elements ---- */
+  --color-star-filled: hsl(var(--base-star));
+  --color-star-unfilled: hsl(215 19% 35%);
+
+  --color-quote: hsl(215 19% 35%);
+  --color-quote-text: hsl(215 18% 65%);
+
+  /* ---- Navigation ---- */
+  --color-nav-bg: hsl(var(--base-blue-400));
+  --color-nav-text: hsl(var(--base-gray-950));
+  --color-nav-hover: hsl(var(--base-blue-300));
+  --color-dot-active: hsl(var(--base-blue-400));
+  --color-dot-inactive: hsla(var(--base-blue-400) / 0.3);
+
+  /* ---- Banner/CTA ---- */
+  --color-banner-bg: hsl(210 50% 25%);
+
+  /* ---- Footer (Dark Blue - matches main surface) ---- */
+  --color-footer-bg: hsl(217 24% 17%);               /* #212936 - matches dark surface */
+  --color-footer-surface: hsl(217 24% 17%);          /* Same as bg */
+  --color-footer-border: hsl(215 25% 27%);           /* Subtle borders */
+  --color-footer-text: hsl(210 20% 85%);             /* Light text */
+  --color-footer-text-heading: hsl(210 20% 95%);     /* Bright headings */
+
+  /* ---- Card Opacity Tokens ---- */
+  --card-bg-opacity: 0.05;                           /* 5% white overlay */
+  --card-border-opacity: 0.12;                       /* 12% border */
+  --card-hover-opacity: 0.08;                        /* 8% on hover */
+
+  /* ---- Text Hierarchy (Improved Distinction) ---- */
+  --color-text-quote: hsl(215 15% 78%);              /* Slightly dimmer than name */
+  --color-text-label: hsl(215 20% 55%);              /* Labels, locations */
+  --color-banner-text: hsl(210 20% 95%);
+  --color-banner-button-bg: hsl(var(--base-success-dark));
+  --color-banner-button-hover: hsl(142 69% 70%);
+
+  /* ---- Section Backgrounds ---- */
+  --color-section-light: hsl(var(--base-gray-800));
+  --color-section-alt: hsl(var(--base-gray-950));
+
+  /* ---- Links ---- */
+  --color-link: hsl(var(--base-blue-400));
+  --color-link-hover: hsl(var(--base-blue-300));
+  --color-link-visited: hsl(235 82% 75%);
+
+  /* ---- Focus States ---- */
+  --color-focus-ring: hsla(var(--base-blue-400) / 0.5);
+  --color-focus-outline: hsl(var(--base-blue-400));
+
+  /* ---- Toggle Specific (Dark Mode) ---- */
+  /* Ice Blue active state - SAME as light mode for brand consistency */
+  --toggle-active-bg: hsl(var(--base-ice-blue));
+  --toggle-active-text: hsl(210 20% 95%);          /* Off-white */
+  --toggle-inactive-bg: transparent;
+  --toggle-inactive-text: hsl(218 11% 65%);        /* Light gray */
+  --toggle-hover-text: hsl(210 20% 95%);           /* Off-white on hover */
+  --toggle-hover-bg: hsl(215 20% 35%);             /* Dark slate bg on hover */
+  --toggle-container-bg: hsl(var(--base-muted-dark));
+
+  /* ---- Component Tokens: Inputs ---- */
+  --input-bg: hsl(var(--base-gray-800));
+  --input-bg-disabled: hsl(var(--base-gray-900));
+  --input-border: hsl(215 20% 28%);
+  --input-border-hover: hsl(215 20% 38%);
+  --input-border-focus: hsl(var(--base-blue-400));
+  --input-placeholder: hsl(215 16% 55%);
+  --input-text: hsl(210 20% 95%);
+
+  /* ---- Component Tokens: Tables ---- */
+  --table-header-bg: hsl(var(--base-gray-800));
+  --table-row-hover: hsl(215 20% 22%);
+  --table-row-stripe: hsl(215 20% 18%);
+  --table-border: hsl(215 20% 28%);
+
+  /* ---- Component Tokens: Buttons ---- */
+  --button-primary-bg: var(--color-primary);
+  --button-primary-bg-hover: var(--color-primary-hover);
+  --button-primary-bg-active: var(--color-primary-active);
+  --button-primary-text: hsl(var(--base-gray-950));
+  --button-primary-bg-disabled: hsl(215 20% 35%);
+  --button-primary-text-disabled: hsl(215 16% 55%);
+
+  --button-secondary-bg: transparent;
+  --button-secondary-border: var(--color-primary);
+  --button-secondary-text: var(--color-primary);
+  --button-secondary-bg-hover: var(--color-primary);
+  --button-secondary-text-hover: hsl(var(--base-gray-950));
+
+  /* ---- Component Tokens: Skeleton/Loading ---- */
+  --skeleton-base: hsl(215 20% 22%);
+  --skeleton-shimmer: hsl(215 20% 28%);
+}
+
+/* ============================================
+   FORCED THEME CONSISTENCY (BOTH MODES)
+   Override saved schema values to ensure theme unity
+
+   Note: Homepage sections (features-bar, cta-banner, testimonials,
+   product-grid, content-block) now use semantic tokens directly.
+   These overrides serve as backup coverage for edge cases and
+   Shopify's built-in color scheme classes.
+   ============================================ */
+
+/* Promo Bar - Force primary color */
+.promo-bar {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+.promo-bar a,
+.promo-bar__links a {
+  color: var(--color-button-text) !important;
+}
+
+/* Search Button */
+.header2__search-button {
+  background-color: var(--color-primary) !important;
+}
+
+.header2__search-button:hover {
+  background-color: var(--color-primary-hover) !important;
+}
+
+/* Navigation Links */
+.header2__nav-link,
+.header2__mobile-nav-link {
+  color: var(--color-text-primary) !important;
+}
+
+.header2__nav-link--shop-all,
+.header2__mobile-nav-link--shop-all {
+  background-color: var(--color-surface-alt) !important;
+  color: var(--color-text-primary) !important;
+}
+
+/* Store Info */
+.header2__store-info,
+.header2__store-icon,
+.header2__store-details {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Testimonials (formerly Customer Reviews / customerreview) */
+.testimonial__heading {
+  color: var(--color-text-primary) !important;
+}
+
+.testimonial__description {
+  color: var(--color-text-secondary) !important;
+}
+
+.testimonial__text,
+.testimonial__text blockquote,
+blockquote.testimonial__text,
+.testimonial__text.rte,
+.testimonial__text.rte p,
+div.testimonial__text.rte,
+div.testimonial__text.rte p,
+[class*="testimonial__text"] p {
+  color: var(--color-text-primary) !important;
+}
+
+.testimonial__customer-name {
+  color: var(--color-text-primary) !important;
+}
+
+.testimonial__customer-location {
+  color: var(--color-text-muted) !important;
+}
+
+.testimonial__quote-icon {
+  color: var(--color-text-primary) !important;
+}
+
+.testimonial__service-type {
+  background-color: var(--color-primary) !important;
+  color: #ffffff !important;
+}
+
+.testimonial__star {
+  color: var(--color-star-unfilled) !important;
+}
+
+.testimonial__star--filled {
+  color: var(--color-star-filled) !important;
+}
+
+/* Pill/Badge Text - Force white text on primary background */
+.pill-text,
+span.pill-text,
+[class*="pill-text"],
+.testimonial__pill .pill-text {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* Product Cards */
+.product-card__stars {
+  color: var(--color-star-filled) !important;
+}
+
+.product-card__compare-price {
+  color: var(--color-text-muted) !important;
+}
+
+.product-card__image {
+  background-color: var(--color-surface-alt) !important;
+}
+
+.product-card__name {
+  color: var(--color-link) !important;
+}
+
+/* Banners */
+.banner__heading {
+  color: var(--color-text-primary) !important;
+}
+
+.banner__text,
+.banner__text p {
+  color: var(--color-text-secondary) !important;
+}
+
+.banner-button {
+  background-color: var(--color-success) !important;
+  color: var(--color-button-text) !important;
+}
+
+.banner-button:hover {
+  background-color: var(--color-success-hover) !important;
+}
+
+/* CTA Banner (formerly Wholesale Pricing Banner / banner1) */
+.wholesale-banner-template--25620003651873__banner1_8wY8Ft,
+.wholesale-banner-template--25620003651873__banner1_9VebfT,
+[class*="wholesale-banner"],
+[class*="cta-banner"] {
+  background-color: var(--color-primary) !important;
+}
+
+/* Primary Buttons */
+.button--primary,
+a.button.button--primary {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+.button--primary:hover,
+a.button.button--primary:hover {
+  background-color: var(--color-primary-hover) !important;
+}
+
+/* Features Bar (formerly Feature Highlights / feature-highlights) */
+.features-bar__item,
+.features-bar__item {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Content Block Section - heading should match testimonial heading */
+.content-block__heading,
+h2.content-block__heading {
+  color: var(--color-text-heading) !important;
+}
+
+.features-bar__title,
+h3.features-bar__title {
+  color: var(--color-text-primary) !important;
+}
+
+.features-bar__desc,
+p.features-bar__desc {
+  color: var(--color-text-muted) !important;
+}
+
+/* Premium Brands Section - only target specific elements */
+.premium-brands h2 {
+  color: var(--color-text-primary) !important;
+}
+
+/* Brand Spotlight Section - only target specific elements */
+.brand-spotlight__title {
+  color: var(--color-text-primary) !important;
+}
+
+/* Video Hero Section - White text for overlay on video */
+.video-hero__text-block,
+.video-hero__brand,
+.video-hero__headline,
+.video-hero__body {
+  color: #FFFFFF !important;
+}
+
+.video-hero h1,
+.video-hero h2,
+.video-hero p {
+  color: #FFFFFF !important;
+}
+
+/* Home Video Hero / Video Banner - White text for video overlays */
+.home-video-hero__text-block,
+.home-video-hero__brand,
+.home-video-hero__headline,
+.home-video-hero__body,
+.home-video-hero h1,
+.home-video-hero h2,
+.home-video-hero p {
+  color: #FFFFFF !important;
+}
+
+/* Video Banner sections - override general banner rules for video contexts */
+[id^="VideoBanner"] .banner__heading,
+[id^="VideoBanner"] .banner__text,
+[id^="VideoBanner"] .banner__text p,
+[class*="video-banner"] .banner__heading,
+[class*="video-banner"] .banner__text,
+.section-video-hero .banner__heading,
+.section-video-hero .banner__text {
+  color: #FFFFFF !important;
+}
+
+/* Video Banner buttons - blue background with white text */
+[id^="VideoBanner"] .button--primary,
+[id^="VideoBanner"] .button.button--primary,
+[id^="VideoBanner"] .button--secondary,
+[id^="VideoBanner"] .button.button--secondary,
+[id^="VideoBanner"] .button {
+  background-color: var(--color-primary) !important;
+  color: var(--color-text-inverse) !important;
+  border-color: var(--color-primary) !important;
+}
+
+[id^="VideoBanner"] .button--primary:hover,
+[id^="VideoBanner"] .button.button--primary:hover,
+[id^="VideoBanner"] .button--secondary:hover,
+[id^="VideoBanner"] .button.button--secondary:hover,
+[id^="VideoBanner"] .button:hover {
+  background-color: var(--color-primary-hover) !important;
+  border-color: var(--color-primary-hover) !important;
+  color: var(--color-text-inverse) !important;
+}
+
+/* Footer - Branded background (uses tokens) */
+.footer {
+  background-color: var(--color-footer-bg) !important;
+  color: var(--color-footer-text) !important;
+  padding: 1.5rem !important;
+  padding-top: 1.5rem !important;
+}
+
+.footer a,
+.footer p,
+.footer span,
+.footer h2,
+.footer h3,
+.footer h4,
+.footer li,
+.footer__copyright,
+.footer-block__heading,
+.footer small {
+  color: var(--color-footer-text) !important;
+  text-decoration: none !important;
+}
+
+.footer a:hover {
+  color: var(--color-footer-text) !important;
+  opacity: 0.8;
+  text-decoration: none !important;
+}
+
+.footer__theme-toggle-section {
+  background-color: var(--color-footer-surface) !important;
+}
+
+.footer__theme-toggle-section .theme-toggle {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.footer__theme-toggle-section .theme-toggle__btn[aria-pressed="false"] {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.footer__theme-toggle-section .theme-toggle__btn[aria-pressed="false"]:hover {
+  color: rgba(255, 255, 255, 1) !important;
+}
+
+/* RTE Content */
+.rte,
+.rte p {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Default browser link color override */
+a:not([class]):not([style]) {
+  color: var(--color-link) !important;
+}
+
+a:not([class]):not([style]):hover {
+  color: var(--color-link-hover) !important;
+}
+
+/* Footer background - force branded color for all color schemes */
+.footer.color-scheme-2,
+.footer[class*="color-scheme"] {
+  background-color: var(--color-footer-bg) !important;
+  color: var(--color-footer-text) !important;
+}
+
+/* Ensure white text on non-white/colored backgrounds */
+.promo-bar,
+.promo-bar *,
+[class*="wholesale-banner"],
+[class*="wholesale-banner"] * {
+  color: var(--color-button-text) !important;
+}
+
+/* Customer Reviews badge - use theme color */
+.testimonial__badge {
+  background-color: var(--color-badge-bg) !important;
+  color: var(--color-badge-text) !important;
+}
+
+/* Generic text overrides for common non-theme colors */
+[style*="color: #007BFF"],
+[style*="color:#007BFF"],
+[style*="color: #1976D2"],
+[style*="color:#1976D2"] {
+  color: var(--color-primary) !important;
+}
+
+[style*="background-color: #007BFF"],
+[style*="background:#007BFF"],
+[style*="background-color: #1976D2"],
+[style*="background:#1976D2"] {
+  background-color: var(--color-primary) !important;
+}
+
+[style*="color: #333333"],
+[style*="color:#333333"],
+[style*="color: #1A2332"],
+[style*="color:#1A2332"] {
+  color: var(--color-text-primary) !important;
+}
+
+[style*="color: #666666"],
+[style*="color:#666666"],
+[style*="color: #718096"],
+[style*="color:#718096"] {
+  color: var(--color-text-secondary) !important;
+}
+
+[style*="background-color: #E3F2FD"],
+[style*="background:#E3F2FD"] {
+  background-color: var(--color-surface-alt) !important;
+}
+
+/* ============================================
+   APPLY THEME COLORS TO ELEMENTS
+   ============================================ */
+
+/* Override Shopify's color scheme variables in dark mode */
+[data-theme="dark"] {
+  --color-background: 15, 23, 42 !important;
+  --color-foreground: 241, 245, 249 !important;
+  --gradient-background: #0F172A !important;
+}
+
+/* Body and main backgrounds */
+[data-theme="dark"] body,
+[data-theme="dark"] .shopify-section,
+[data-theme="dark"] .footer {
+  background-color: var(--color-bg) !important;
+  color: var(--color-text-primary) !important;
+}
+
+/* Video banner sections need transparent background */
+[data-theme="dark"] .shopify-section:has([id^="VideoBanner"]) {
+  background-color: transparent !important;
+}
+
+/* Override all Shopify color scheme backgrounds - exclude video banners */
+[data-theme="dark"] [class*="color-scheme"]:not([id^="VideoBanner"] *):not(.section-video-hero *),
+[data-theme="dark"] [class*="color-"]:not([id^="VideoBanner"] *):not(.section-video-hero *) {
+  background-color: var(--color-bg) !important;
+}
+
+/* Surface elements (cards, modals, etc.) */
+[data-theme="dark"] .card,
+[data-theme="dark"] .card__content,
+[data-theme="dark"] .card-wrapper,
+[data-theme="dark"] .product-card-wrapper,
+[data-theme="dark"] .card__inner,
+[data-theme="dark"] .card--card,
+[data-theme="dark"] .card--standard {
+  background-color: var(--color-card-bg) !important;
+  background: var(--color-card-bg) !important;
+}
+
+/* Text colors - with !important */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6,
+[data-theme="dark"] .h1,
+[data-theme="dark"] .h2,
+[data-theme="dark"] .h3,
+[data-theme="dark"] .h4,
+[data-theme="dark"] .h5,
+[data-theme="dark"] .h6 {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] p,
+[data-theme="dark"] span,
+[data-theme="dark"] a,
+[data-theme="dark"] li {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Product card specific - PRICES */
+[data-theme="dark"] .custom-price--bold,
+[data-theme="dark"] .custom-price-line span,
+[data-theme="dark"] .price,
+[data-theme="dark"] .price-item,
+[data-theme="dark"] .price-item--regular,
+[data-theme="dark"] .price-item--sale,
+[data-theme="dark"] .price__regular,
+[data-theme="dark"] .price__sale {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .custom-price--compare,
+[data-theme="dark"] .price-item--compare,
+[data-theme="dark"] .price__compare {
+  color: var(--color-compare-price) !important;
+}
+
+/* Product titles */
+[data-theme="dark"] .custom-product-title,
+[data-theme="dark"] .custom-product-title a,
+[data-theme="dark"] .card__heading,
+[data-theme="dark"] .card__heading a,
+[data-theme="dark"] .card-information__text,
+[data-theme="dark"] .card-information__text a {
+  color: var(--color-product-title) !important;
+}
+
+/* SKU and variant info */
+[data-theme="dark"] .card__sku,
+[data-theme="dark"] .card__variant-count,
+[data-theme="dark"] .card__sku-variants,
+[data-theme="dark"] .card__separator {
+  color: var(--color-sku) !important;
+}
+
+/* Borders */
+[data-theme="dark"] .card,
+[data-theme="dark"] .card__inner,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  border-color: var(--color-border) !important;
+}
+
+/* Buttons - Primary */
+[data-theme="dark"] .button--primary,
+[data-theme="dark"] .shopify-payment-button button {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+[data-theme="dark"] .button--primary:hover,
+[data-theme="dark"] .shopify-payment-button button:hover {
+  background-color: var(--color-primary-hover) !important;
+}
+
+/* Buttons - Secondary / Quick Add */
+[data-theme="dark"] .button--secondary,
+[data-theme="dark"] .quick-add__submit {
+  background-color: transparent !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary) !important;
+}
+
+[data-theme="dark"] .button--secondary:hover,
+[data-theme="dark"] .quick-add__submit:hover {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* RFQ Button */
+[data-theme="dark"] .button--rfq {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* Header */
+[data-theme="dark"] .header,
+[data-theme="dark"] .section-header,
+[data-theme="dark"] .header-wrapper {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .header a,
+[data-theme="dark"] .header__menu-item,
+[data-theme="dark"] .header__icon {
+  color: var(--color-text-primary) !important;
+}
+
+/* Footer - Dark Blue background for entire section */
+[data-theme="dark"] .footer,
+[data-theme="dark"] .shopify-section-group-footer-group,
+[data-theme="dark"] [class*="shopify-section-footer"],
+[data-theme="dark"] .footer.gradient,
+[data-theme="dark"] .footer[class*="color-scheme"] {
+  background-color: var(--color-footer-bg) !important;
+  background: var(--color-footer-bg) !important;
+}
+
+[data-theme="dark"] .footer h2,
+[data-theme="dark"] .footer h3,
+[data-theme="dark"] .footer h4,
+[data-theme="dark"] .footer-block__heading {
+  color: var(--color-footer-text-heading) !important;
+}
+
+[data-theme="dark"] .footer a,
+[data-theme="dark"] .footer p,
+[data-theme="dark"] .footer span,
+[data-theme="dark"] .footer li,
+[data-theme="dark"] .footer__copyright,
+[data-theme="dark"] .footer small {
+  color: var(--color-footer-text) !important;
+}
+
+[data-theme="dark"] .footer a:hover {
+  color: var(--color-primary) !important;
+}
+
+/* Footer content sections - subtle branded separation */
+[data-theme="dark"] .footer__content-top {
+  background-color: transparent !important;
+}
+
+[data-theme="dark"] .footer__content-bottom {
+  background-color: transparent !important;
+  border-top: 1px solid var(--color-footer-border) !important;
+}
+
+[data-theme="dark"] .footer-block {
+  background-color: transparent !important;
+}
+
+/* Footer theme toggle section - dark mode */
+[data-theme="dark"] .footer__theme-toggle-section {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+[data-theme="dark"] .footer__theme-toggle-section .theme-toggle {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: var(--color-footer-border) !important;
+}
+
+[data-theme="dark"] .footer__theme-toggle-section .theme-toggle__btn[aria-pressed="false"] {
+  color: var(--color-footer-text) !important;
+}
+
+[data-theme="dark"] .footer__theme-toggle-section .theme-toggle__btn[aria-pressed="false"]:hover {
+  color: var(--color-footer-text-heading) !important;
+}
+
+/* Form inputs */
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] .field__input {
+  background-color: var(--color-surface) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Menu drawer */
+[data-theme="dark"] .menu-drawer,
+[data-theme="dark"] .menu-drawer__inner-container {
+  background-color: var(--color-surface) !important;
+}
+
+/* Cart drawer */
+[data-theme="dark"] .cart-drawer,
+[data-theme="dark"] .cart-notification {
+  background-color: var(--color-surface) !important;
+}
+
+/* Savings badge stays green */
+[data-theme="dark"] .custom-savings-badge {
+  color: var(--color-success) !important;
+}
+
+/* Sale badges */
+[data-theme="dark"] .badge {
+  background-color: var(--color-success) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* Icons and SVGs */
+[data-theme="dark"] .icon,
+[data-theme="dark"] svg:not(.theme-toggle__btn svg) {
+  fill: var(--color-icon) !important;
+  stroke: var(--color-icon) !important;
+}
+
+/* Collection/Product grid */
+[data-theme="dark"] .collection,
+[data-theme="dark"] .main-collection-product-grid,
+[data-theme="dark"] .collection-hero,
+[data-theme="dark"] .template-collection {
+  background-color: var(--color-bg) !important;
+}
+
+/* Page backgrounds */
+[data-theme="dark"] main,
+[data-theme="dark"] #MainContent,
+[data-theme="dark"] .main-content {
+  background-color: var(--color-bg) !important;
+}
+
+/* Multicolumn / Featured collections */
+[data-theme="dark"] .multicolumn,
+[data-theme="dark"] .featured-collection {
+  background-color: var(--color-bg) !important;
+}
+
+/* Announcement bar - keep brand color */
+[data-theme="dark"] .announcement-bar {
+  background-color: var(--color-primary) !important;
+}
+
+/* Gradient overlays - exclude video banners which need transparent overlays */
+[data-theme="dark"] .gradient:not([id^="VideoBanner"] .gradient) {
+  background: var(--color-bg) !important;
+}
+
+/* Video Banner - ensure transparent content box */
+[data-theme="dark"] [id^="VideoBanner"] .banner__box,
+[data-theme="dark"] [id^="VideoBanner"] .gradient,
+[data-theme="dark"] .section-video-hero .banner__box,
+[data-theme="dark"] .section-video-hero .gradient {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* ============================================
+   PROMO BAR / ANNOUNCEMENT STYLES
+   ============================================ */
+
+[data-theme="dark"] .promo-bar {
+  background-color: var(--color-primary-light) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .promo-bar a,
+[data-theme="dark"] .promo-bar__links a {
+  color: var(--color-primary) !important;
+}
+
+/* ============================================
+   HEADER2 STYLES (Custom Header)
+   ============================================ */
+
+/* Override header2 CSS custom properties for dark mode */
+[data-theme="dark"] .header2-section {
+  --header2-promo-bg: hsl(var(--base-blue-600));
+  --header2-promo-text: hsl(210 20% 95%);
+  --header2-header-bg: var(--color-surface);
+  --header2-nav-bg: var(--color-surface);
+  --header2-nav-hover: var(--color-surface-alt);
+  --header2-nav-text-hover: var(--color-primary);
+  --header2-shop-all-bg: var(--color-surface-alt);
+  --header2-shop-all-text: var(--color-text-primary);
+  --header2-shop-all-hover: var(--color-primary-light);
+  --header2-search-border: var(--color-border);
+  --header2-search-btn: var(--color-primary);
+  --header2-search-btn-hover: hsl(var(--base-blue-500));
+  --header2-accent: var(--color-primary);
+  --header2-recommendation-hover: var(--color-primary-light);
+}
+
+[data-theme="dark"] .header2-section,
+[data-theme="dark"] .header2__container,
+[data-theme="dark"] .header2,
+[data-theme="dark"] .header2__main,
+[data-theme="dark"] .header2__nav {
+  background-color: var(--color-surface) !important;
+}
+
+[data-theme="dark"] .header2__nav-link--shop-all,
+[data-theme="dark"] .header2__mobile-nav-link--shop-all {
+  background-color: var(--color-surface-alt) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .header2__mobile-nav-item {
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .header2__mobile-nav-item,
+[data-theme="dark"] .header2__mobile-nav-link {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .header2__nav-link,
+[data-theme="dark"] .header2__mobile-nav-link {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .header2__nav-link:hover,
+[data-theme="dark"] .header2__mobile-nav-link:hover {
+  color: var(--color-primary) !important;
+}
+
+[data-theme="dark"] .header2__store-info,
+[data-theme="dark"] .header2__store-details {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .header2__search-button {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+[data-theme="dark"] .header2__mobile-menu-header {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* Header2 action icons (Sign In, Cart) - light colored in dark mode */
+/* The SVGs use fill="currentColor" so we need to set the color property */
+[data-theme="dark"] .header2__action,
+[data-theme="dark"] .header2__actions a {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .header2__signin-wrapper,
+[data-theme="dark"] .header2__cart-wrapper,
+[data-theme="dark"] .header2__signin-icon,
+[data-theme="dark"] .header2__cart-icon {
+  color: var(--color-text-primary) !important;
+}
+
+/* Force SVG fill for icons that use currentColor */
+[data-theme="dark"] .header2__signin-icon svg,
+[data-theme="dark"] .header2__cart-icon svg,
+[data-theme="dark"] .header2__signin-icon .icon,
+[data-theme="dark"] .header2__cart-icon .icon {
+  color: var(--color-text-primary) !important;
+}
+
+/* Direct path fill override for stubborn SVGs */
+[data-theme="dark"] .header2__signin-icon svg path,
+[data-theme="dark"] .header2__cart-icon svg path,
+[data-theme="dark"] .header2__actions svg path {
+  fill: var(--color-text-primary) !important;
+}
+
+/* Fallback: Use explicit light color for header action icons in dark mode */
+[data-theme="dark"] .header2__actions .icon,
+[data-theme="dark"] .header2__actions .icon path,
+[data-theme="dark"] .header2__actions svg.icon-account path,
+[data-theme="dark"] .header2__actions svg.icon-cart path {
+  fill: hsl(210 20% 95%) !important;
+}
+
+/* Search button icon should be white on blue background */
+[data-theme="dark"] .header2__search-button svg,
+[data-theme="dark"] .header2__search-button svg path {
+  fill: var(--color-button-text) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* Store info icon */
+[data-theme="dark"] .header2__store-icon svg,
+[data-theme="dark"] .header2__action-icon {
+  fill: var(--color-text-secondary) !important;
+  color: var(--color-text-secondary) !important;
+}
+
+/* ============================================
+   PRODUCT CARD STYLES
+   ============================================ */
+
+[data-theme="dark"] .product-card,
+[data-theme="dark"] .product-card__inner {
+  background-color: var(--color-card-bg) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .product-card__image {
+  background-color: var(--color-surface-alt) !important;
+}
+
+[data-theme="dark"] .product-card__name,
+[data-theme="dark"] .product-card__name a {
+  color: var(--color-product-title) !important;
+}
+
+[data-theme="dark"] .product-card__price {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .product-card__compare-price {
+  color: var(--color-compare-price) !important;
+}
+
+[data-theme="dark"] .product-card__stars {
+  color: var(--color-star-filled) !important;
+}
+
+[data-theme="dark"] .product-card__reviews {
+  color: var(--color-primary) !important;
+}
+
+[data-theme="dark"] .product-card__badge {
+  background-color: var(--color-success) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* ============================================
+   SIGNATURE/FEATURE HIGHLIGHTS
+   ============================================ */
+
+[data-theme="dark"] .features-bar__title,
+[data-theme="dark"] h3.features-bar__title {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .features-bar__desc,
+[data-theme="dark"] p.features-bar__desc {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .features-bar__item {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Features bar icon tiles need darker gradient for white icon visibility */
+[data-theme="dark"] .features-bar__icon {
+  /* Use darker blue shades so white PNG icons remain visible */
+  background: linear-gradient(180deg, hsl(var(--base-blue-700)), hsl(var(--base-blue-900))) !important;
+}
+
+/* Ensure PNG icons within features-bar stay white (no filters) */
+[data-theme="dark"] .features-bar__icon img {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+[data-theme="dark"] .product-highlights,
+[data-theme="dark"] .product-grid__container {
+  background-color: var(--color-bg) !important;
+}
+
+[data-theme="dark"] .product-grid__column {
+  background-color: var(--color-card-bg) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .product-grid__title {
+  color: var(--color-text-primary) !important;
+}
+
+/* Features Icons Grid - Override CSS custom properties */
+[data-theme="dark"] .features-icons-grid,
+[data-theme="dark"] [class*="features-icons-grid"] {
+  --sig-bg: var(--color-bg) !important;
+  --sig-head: var(--color-text-heading) !important;
+  --sig-text: var(--color-text-secondary) !important;
+  --sig-blue-start: hsl(var(--base-blue-600)) !important;
+  --sig-blue-end: hsl(var(--base-blue-700)) !important;
+  background-color: var(--color-bg) !important;
+}
+
+[data-theme="dark"] .sig-heading {
+  color: var(--color-text-heading) !important;
+}
+
+[data-theme="dark"] .sig-title {
+  color: var(--color-text-heading) !important;
+}
+
+[data-theme="dark"] .sig-subheading,
+[data-theme="dark"] .sig-desc {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .sig-link {
+  color: var(--color-text-heading) !important;
+}
+
+[data-theme="dark"] .sig-icon {
+  background: linear-gradient(180deg, hsl(var(--base-blue-600)), hsl(var(--base-blue-700))) !important;
+}
+
+/* ============================================
+   SKIP TO CONTENT LINK
+   ============================================ */
+
+[data-theme="dark"] .skip-to-content-link,
+[data-theme="dark"] a.skip-to-content-link {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+/* ============================================
+   WHOLESALE BANNER STYLES
+   ============================================ */
+
+[data-theme="dark"] .wholesale-banner-section,
+[data-theme="dark"] [class*="wholesale-banner-section"],
+[data-theme="dark"] [class*="wholesale-banner-template"] {
+  background-color: var(--color-primary) !important;
+}
+
+[data-theme="dark"] [class*="wholesale-banner"] {
+  background-color: var(--color-primary) !important;
+  background: var(--color-primary) !important;
+  color: var(--color-banner-text) !important;
+}
+
+[data-theme="dark"] .banner-title {
+  color: var(--color-banner-text) !important;
+}
+
+[data-theme="dark"] .banner-subtitle {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .banner-button {
+  background-color: var(--color-banner-button-bg) !important;
+  color: var(--color-text-inverse) !important;
+}
+
+[data-theme="dark"] .banner-button:hover {
+  background-color: var(--color-banner-button-hover) !important;
+}
+
+/* ============================================
+   WHOLESALE APPLY FORM
+   Override inline style CSS custom properties
+   ============================================ */
+
+[data-theme="dark"] [class*="wh-apply-"] {
+  --wa-bg: var(--color-bg) !important;
+  --wa-head: var(--color-text-heading) !important;
+  --wa-body: var(--color-text-primary) !important;
+  --wa-card-bg: var(--color-card-bg) !important;
+  --wa-card-border: var(--color-border) !important;
+  --wa-btn-bg: var(--color-primary) !important;
+  --wa-btn-bg-hover: hsl(var(--base-blue-500)) !important;
+  --wa-btn-text: var(--color-button-text) !important;
+}
+
+[data-theme="dark"] [class*="wa"][class*="-input"] {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] [class*="wa"][class*="-input"]::placeholder {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] [class*="wa"][class*="-input"]:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px hsla(var(--base-blue-400) / 0.3) !important;
+}
+
+/* ============================================
+   CONTACT FORM
+   Override CSS custom properties for dark mode
+   ============================================ */
+
+[data-theme="dark"] .contact,
+[data-theme="dark"] [class*="section-contact"] {
+  --contact-surface: var(--color-card-bg);
+  --contact-surface-alt: var(--color-surface-alt);
+  --contact-text: var(--color-text-primary);
+  --contact-text-secondary: var(--color-text-secondary);
+  --contact-border: var(--color-border);
+  --contact-border-light: var(--color-border);
+  --contact-link: var(--color-link);
+  --contact-link-hover: var(--color-link-hover);
+  --contact-input-bg: var(--color-surface);
+  --contact-input-text: var(--color-text-primary);
+  --contact-input-border: var(--color-border);
+  --contact-focus-ring: hsla(var(--base-blue-400) / 0.3);
+}
+
+[data-theme="dark"] .contact-form-container {
+  background-color: var(--color-card-bg) !important;
+  border-color: var(--color-border) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .quote-product-info {
+  background-color: var(--color-surface-alt) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .quote-search-input {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .quote-search-results {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ============================================
+   CUSTOMER REVIEWS SECTION
+   Aggressive overrides for inline style variables
+   ============================================ */
+
+[data-theme="dark"] .customer-reviews,
+[data-theme="dark"] .testimonial,
+[data-theme="dark"] [class*="testimonial"] {
+  background-color: var(--color-bg) !important;
+  /* Override inline CSS custom properties */
+  --testimonial-text-color: var(--color-text-primary) !important;
+  --testimonial-name-color: var(--color-text-primary) !important;
+  --testimonial-service-color: var(--color-text-primary) !important;
+  --testimonial-description-color: var(--color-text-secondary) !important;
+  --testimonial-location-color: var(--color-text-muted) !important;
+  --testimonial-quote-color: var(--color-quote) !important;
+}
+
+[data-theme="dark"] .testimonial__badge {
+  background-color: var(--color-badge-bg) !important;
+  color: var(--color-badge-text) !important;
+}
+
+[data-theme="dark"] .testimonial__heading,
+[data-theme="dark"] .testimonial .testimonial__heading,
+[data-theme="dark"] [class*="testimonial"] h2 {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .testimonial__description,
+[data-theme="dark"] .testimonial .testimonial__description {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .testimonial__card {
+  /* Use surface-2 for more contrast against section bg (24% vs 9% lightness) */
+  background-color: var(--color-surface-2) !important;
+  border: 1px solid var(--color-border-light) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+[data-theme="dark"] .testimonial__card:hover {
+  background-color: var(--color-surface-3) !important;
+  border-color: var(--color-border-light) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35) !important;
+}
+
+[data-theme="dark"] .testimonial__star {
+  color: var(--color-star-unfilled) !important;
+}
+
+[data-theme="dark"] .testimonial__star--filled {
+  color: var(--color-star-filled) !important;
+}
+
+[data-theme="dark"] .testimonial__quote-icon {
+  color: var(--color-text-primary) !important;
+}
+
+/* Testimonial quote text - slightly dimmer than name for hierarchy */
+[data-theme="dark"] .testimonial__text,
+[data-theme="dark"] .testimonial__text.rte,
+[data-theme="dark"] .testimonial__text.rte p,
+[data-theme="dark"] .testimonial__text p,
+[data-theme="dark"] .testimonial .testimonial__text,
+[data-theme="dark"] .testimonial .testimonial__text p,
+[data-theme="dark"] [class*="testimonial"] .testimonial__text,
+[data-theme="dark"] [class*="testimonial"] .testimonial__text p,
+[data-theme="dark"] .testimonial__card .testimonial__text,
+[data-theme="dark"] .testimonial__card .testimonial__text p,
+[data-theme="dark"] .testimonial__text[style],
+[data-theme="dark"] .testimonial__text p[style],
+[data-theme="dark"] blockquote.testimonial__text,
+[data-theme="dark"] .testimonial__text blockquote {
+  color: var(--color-text-quote) !important;  /* Slightly dimmer than name */
+}
+
+/* Customer name - aggressive override */
+[data-theme="dark"] .testimonial__customer-name,
+[data-theme="dark"] .testimonial .testimonial__customer-name,
+[data-theme="dark"] .testimonial__card .testimonial__customer-name,
+[data-theme="dark"] [class*="testimonial"] .testimonial__customer-name,
+[data-theme="dark"] .testimonial__customer-name[style] {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .testimonial__customer-location {
+  color: var(--color-text-label) !important;  /* Distinct label color */
+}
+
+/* Customer info container - seamless with card background */
+[data-theme="dark"] .testimonial__customer-info {
+  background-color: transparent !important;
+  border: none !important;
+  border-top: none !important;
+}
+
+/* Service type / industry badge - branded appearance */
+[data-theme="dark"] .testimonial__service-type,
+[data-theme="dark"] .testimonial .testimonial__service-type,
+[data-theme="dark"] .testimonial__card .testimonial__service-type,
+[data-theme="dark"] [class*="testimonial"] .testimonial__service-type,
+[data-theme="dark"] .testimonial__service-type[style] {
+  background-color: hsla(var(--base-blue-400) / 0.15) !important;  /* Subtle blue tint */
+  color: hsl(var(--base-blue-300)) !important;  /* Light blue text */
+  border: 1px solid hsla(var(--base-blue-400) / 0.25) !important;
+}
+
+[data-theme="dark"] .testimonial__nav-btn {
+  background-color: var(--color-nav-bg) !important;
+  color: var(--color-nav-text) !important;
+}
+
+[data-theme="dark"] .testimonial__nav-btn:hover {
+  background-color: var(--color-nav-hover) !important;
+}
+
+[data-theme="dark"] .testimonial__dot {
+  background-color: var(--color-dot-inactive) !important;
+}
+
+[data-theme="dark"] .testimonial__dot--active {
+  background-color: var(--color-dot-active) !important;
+}
+
+/* ============================================
+   BANNER SECTION STYLES
+   ============================================ */
+
+/* General banner backgrounds - video banners override below */
+[data-theme="dark"] .banner,
+[data-theme="dark"] .banner__box,
+[data-theme="dark"] .banner__content {
+  background-color: var(--color-surface) !important;
+}
+
+/* Video banners need fully transparent backgrounds to show video */
+[data-theme="dark"] [id^="VideoBanner"],
+[data-theme="dark"] [id^="VideoBanner"] .banner,
+[data-theme="dark"] [id^="VideoBanner"] .banner__box,
+[data-theme="dark"] [id^="VideoBanner"] .banner__content,
+[data-theme="dark"] [id^="VideoBanner"] .gradient {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+[data-theme="dark"] .banner__box,
+[data-theme="dark"] .banner__box *,
+[data-theme="dark"] .banner__buttons,
+[data-theme="dark"] .banner__buttons * {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .banner__heading {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .banner__text,
+[data-theme="dark"] .banner__text p {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Video banner text stays white for contrast on video */
+[data-theme="dark"] [id^="VideoBanner"] .banner__heading,
+[data-theme="dark"] [id^="VideoBanner"] .banner__text,
+[data-theme="dark"] [id^="VideoBanner"] .banner__text p {
+  color: #FFFFFF !important;
+}
+
+/* Banner icon-text block - dark mode overrides */
+[data-theme="dark"] .banner__icon-text {
+  --icon-text-bg: hsl(var(--base-blue-700));
+  --icon-text-color: hsl(210 20% 95%);
+  --icon-text-icon-color: hsl(210 20% 95%);
+}
+
+/* ============================================
+   PILL/TAG STYLES
+   ============================================ */
+
+[data-theme="dark"] .pill-text,
+[data-theme="dark"] .tag,
+[data-theme="dark"] .label {
+  background-color: var(--color-badge-bg) !important;
+  color: var(--color-badge-text) !important;
+}
+
+/* ============================================
+   GENERAL LINK OVERRIDES
+   ============================================ */
+
+[data-theme="dark"] a:not(.button):not(.banner-button):not([class*="nav"]) {
+  color: var(--color-link) !important;
+}
+
+[data-theme="dark"] a:not(.button):not(.banner-button):not([class*="nav"]):hover {
+  color: var(--color-link-hover) !important;
+}
+
+/* ============================================
+   RICH TEXT EDITOR CONTENT
+   ============================================ */
+
+[data-theme="dark"] .rte,
+[data-theme="dark"] .rte p,
+[data-theme="dark"] .rte li {
+  color: var(--color-text-secondary) !important;
+}
+
+[data-theme="dark"] .rte h1,
+[data-theme="dark"] .rte h2,
+[data-theme="dark"] .rte h3,
+[data-theme="dark"] .rte h4 {
+  color: var(--color-text-primary) !important;
+}
+
+/* ============================================
+   BLOCKQUOTES
+   ============================================ */
+
+[data-theme="dark"] blockquote {
+  border-color: var(--color-border) !important;
+  color: var(--color-quote-text) !important;
+}
+
+/* Testimonial blockquote - no borders for seamless card interior */
+[data-theme="dark"] .testimonial__card blockquote,
+[data-theme="dark"] blockquote.testimonial__text {
+  border: none !important;
+  background-color: transparent !important;
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+
+[data-theme="dark"] table,
+[data-theme="dark"] th,
+[data-theme="dark"] td {
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] th {
+  background-color: var(--color-surface-alt) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] td {
+  color: var(--color-text-secondary) !important;
+}
+
+/* ============================================
+   DROPDOWN/SELECT MENUS
+   ============================================ */
+
+[data-theme="dark"] .disclosure__list,
+[data-theme="dark"] .select__select,
+[data-theme="dark"] .dropdown__menu {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .disclosure__link,
+[data-theme="dark"] .dropdown__item {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .disclosure__link:hover,
+[data-theme="dark"] .dropdown__item:hover {
+  background-color: var(--color-surface-hover) !important;
+}
+
+/* ============================================
+   PAGINATION
+   ============================================ */
+
+[data-theme="dark"] .pagination__item {
+  color: var(--color-text-secondary) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .pagination__item--current {
+  background-color: var(--color-primary) !important;
+  color: var(--color-button-text) !important;
+}
+
+[data-theme="dark"] .pagination__item:hover:not(.pagination__item--current) {
+  background-color: var(--color-surface-hover) !important;
+}
+
+/* ============================================
+   MODAL/POPUP OVERLAYS
+   ============================================ */
+
+[data-theme="dark"] .modal,
+[data-theme="dark"] .popup,
+[data-theme="dark"] .modal__content {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ============================================
+   ACCORDION STYLES
+   ============================================ */
+
+[data-theme="dark"] .accordion,
+[data-theme="dark"] .accordion__content {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .accordion__title {
+  color: var(--color-text-primary) !important;
+}
+
+/* ============================================
+   SLIDER/CAROUSEL STYLES
+   ============================================ */
+
+[data-theme="dark"] .slider-button,
+[data-theme="dark"] .carousel-button {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-icon) !important;
+}
+
+[data-theme="dark"] .slider-button:hover,
+[data-theme="dark"] .carousel-button:hover {
+  background-color: var(--color-surface-hover) !important;
+  color: var(--color-icon-hover) !important;
+}
+
+/* ============================================
+   SEARCH RESULTS
+   ============================================ */
+
+[data-theme="dark"] .predictive-search,
+[data-theme="dark"] .predictive-search__results {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .predictive-search__item {
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .predictive-search__item:hover {
+  background-color: var(--color-surface-hover) !important;
+}
+
+/* ============================================
+   LOADING STATES
+   ============================================ */
+
+[data-theme="dark"] .loading-overlay,
+[data-theme="dark"] .skeleton {
+  background-color: var(--color-surface-alt) !important;
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+
+[data-theme="dark"] ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* ============================================
+   THEME TOGGLE BUTTON STYLES
+   Segmented control (pill toggle) UI pattern
+
+   Design: Ice Blue (#5BA3F5) active state in BOTH modes
+   for brand consistency across themes.
+   ============================================ */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  user-select: none;
+  background-color: var(--toggle-container-bg);
+  border-radius: 8px;                              /* rounded-lg = 0.5rem */
+  overflow: hidden;
+}
+
+.theme-toggle__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: var(--toggle-inactive-bg);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--toggle-inactive-text);
+  /* 300ms ease-in-out transition for all properties */
+  transition: all 300ms ease-in-out;
+  position: relative;
+}
+
+.theme-toggle__btn svg {
+  width: 16px;                                     /* h-4 w-4 = 16px */
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+/* Active state - Ice Blue with shadow for depth */
+.theme-toggle__btn[aria-pressed="true"] {
+  background-color: var(--toggle-active-bg);
+  color: var(--toggle-active-text);
+  font-weight: 600;
+  box-shadow: 0 1px 3px hsla(var(--base-ice-blue) / 0.3);
+}
+
+/* Inactive button styling */
+.theme-toggle__btn[aria-pressed="false"] {
+  color: var(--toggle-inactive-text);
+  background-color: transparent;                   /* Explicitly transparent */
+}
+
+/* Hover state - text/icon color change only, no background */
+.theme-toggle__btn[aria-pressed="false"]:hover {
+  color: var(--toggle-hover-text);
+  background-color: transparent;
+}
+
+/* Focus state - accessibility */
+.theme-toggle__btn:focus {
+  outline: none;
+}
+
+.theme-toggle__btn:focus-visible {
+  outline: 2px solid hsl(var(--base-ice-blue));
+  outline-offset: 2px;
+}
+
+/* Dark mode container adjustment */
+[data-theme="dark"] .theme-toggle {
+  background-color: var(--toggle-container-bg);
+}
+
+/* Footer top section placement - centered */
+.footer__theme-toggle-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 3rem;
+  box-sizing: border-box;
+}
+
+/* ============================================
+   TRANSITION SYSTEM
+   Prevents flash on initial load, enables smooth
+   transitions after theme is ready.
+   Similar to React next-themes pattern.
+   ============================================ */
+
+/* Disable ALL transitions on initial page load to prevent FOUC */
+html:not(.theme-ready) *,
+html:not(.theme-ready) *::before,
+html:not(.theme-ready) *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* After theme is ready, enable smooth color transitions */
+html.theme-ready *,
+html.theme-ready *::before,
+html.theme-ready *::after {
+  transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Exclude elements that shouldn't transition (performance) */
+html.theme-ready img,
+html.theme-ready video,
+html.theme-ready iframe,
+html.theme-ready canvas,
+html.theme-ready svg path,
+html.theme-ready .no-transition {
+  transition: none !important;
+}
+
+/* Theme transition overlay (optional - for smooth fade effect) */
+.theme-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  background-color: var(--color-bg, #F5F7FA);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 150ms ease-out, visibility 150ms ease-out;
+}
+
+.theme-transition-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Fade out animation for transition overlay */
+@keyframes theme-fade-out {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.theme-transition-overlay.fade-out {
+  animation: theme-fade-out 200ms ease-out forwards;
+}
+
+/* ============================================
+   THEME-SPECIFIC META ADJUSTMENTS
+   ============================================ */
+
+/* Light mode - ensure proper contrast */
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* Dark mode - ensure proper contrast */
+[data-theme="dark"] {
+  color-scheme: dark;
+}
