@@ -1,0 +1,632 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "ls_hero": {
+      "type": "wholesale-hero",
+      "blocks": {
+        "h1": {
+          "type": "heading",
+          "settings": {
+            "heading": "Built for Landscape Contractors",
+            "heading_size": "h0"
+          }
+        },
+        "h2": {
+          "type": "heading",
+          "settings": {
+            "heading": "Irrigation, Pipe & Pumps — Priced for the Trade",
+            "heading_size": "h1"
+          }
+        },
+        "t1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>One supplier for the whole install: rotors and spray heads, Schedule 40 PVC cut to your lengths, fittings by the case, valves, controllers, and the pump to drive it all. Stocked in Fort Pierce and shipped nationwide to your yard or job site.</p>"
+          }
+        },
+        "f1": {
+          "type": "three_features",
+          "settings": {
+            "feature1_text1": "✓",
+            "feature1_text2": "Authorized distributor pricing",
+            "feature2_text1": "✓",
+            "feature2_text2": "Job-lot & case quantities",
+            "feature3_text1": "✓",
+            "feature3_text2": "Custom-cut PVC to spec"
+          }
+        },
+        "b1": {
+          "type": "button",
+          "settings": {
+            "button_label": "Apply for Contractor Pricing",
+            "button_link": "#wh-apply",
+            "button_style_secondary": false,
+            "button_label_2": "Browse the Catalog",
+            "button_link_2": "/collections/all",
+            "button_style_secondary_2": true,
+            "buttons_inline": true
+          }
+        }
+      },
+      "block_order": [
+        "h1",
+        "h2",
+        "t1",
+        "f1",
+        "b1"
+      ],
+      "name": "Landscaping Hero",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-4",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "ls_icons": {
+      "type": "features-icons",
+      "blocks": {
+        "i1": {
+          "type": "feature",
+          "settings": {
+            "icon_png": "shopify://shop_images/security_white.png",
+            "icon_png_alt": "Shield icon",
+            "icon_bg_custom": "",
+            "title": "Authorized Distributor",
+            "description": "Genuine, factory-warrantied product — never gray market",
+            "link_label": "",
+            "link_url": "",
+            "aria_label": "",
+            "icon_only": false
+          }
+        },
+        "i2": {
+          "type": "feature",
+          "settings": {
+            "icon_png": "shopify://shop_images/medal_white.png",
+            "icon_png_alt": "Medal icon",
+            "icon_bg_custom": "",
+            "title": "Trade Pricing",
+            "description": "Volume discounts that protect the margin on your bid",
+            "link_label": "",
+            "link_url": "",
+            "aria_label": "",
+            "icon_only": false
+          }
+        },
+        "i3": {
+          "type": "feature",
+          "settings": {
+            "icon_png": "shopify://shop_images/24-7_white.png",
+            "icon_png_alt": "Support icon",
+            "icon_bg_custom": "",
+            "title": "Takeoff Support",
+            "description": "We help size zones, pipe runs, and pump capacity",
+            "link_label": "",
+            "link_url": "",
+            "aria_label": "",
+            "icon_only": false
+          }
+        },
+        "i4": {
+          "type": "feature",
+          "settings": {
+            "icon_png": "shopify://shop_images/delivery_white.png",
+            "icon_png_alt": "Delivery truck icon",
+            "icon_bg_custom": "",
+            "title": "Shipped Nationwide",
+            "description": "Out of our Fort Pierce, FL warehouse to your yard or site",
+            "link_label": "",
+            "link_url": "",
+            "aria_label": "",
+            "icon_only": false
+          }
+        }
+      },
+      "block_order": [
+        "i1",
+        "i2",
+        "i3",
+        "i4"
+      ],
+      "name": "Landscaping Value Bar",
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "max_width": 1160,
+        "background_color": "#ffffff",
+        "heading_color": "#111827",
+        "text_color": "#64748b",
+        "accent_blue_start": "#1976d2",
+        "accent_blue_end": "#1e88e5",
+        "icon_bg_radius": 14,
+        "icon_size": 24,
+        "columns_desktop": "4",
+        "columns_tablet": "2",
+        "columns_mobile": "2",
+        "gap_desktop": 28,
+        "gap_mobile": 16,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "align": "center",
+        "show_dividers": false
+      }
+    },
+    "ls_intro": {
+      "type": "content-block",
+      "blocks": {
+        "ti": {
+          "type": "description_title",
+          "settings": {
+            "title_text": "Keep Crews Installing, Not Driving",
+            "heading_size": "h2",
+            "title_padding_top": 24,
+            "title_padding_bottom": 12
+          }
+        },
+        "bi": {
+          "type": "description_body",
+          "settings": {
+            "body_text": "<p>Every hour a crew spends chasing a fitting at three different counters is an hour that isn't billable. ASIW Supply consolidates the landscape install into one order — heads, rotors, valves, controllers, Schedule 40 PVC, fittings, and the pump that feeds the system — from brands your crews already trust: Hunter, Rain Bird, Toro, Netafim, Charlotte Pipe, Lesso, Goulds, and Berkeley.</p><p>We work the way contractors work. Tell us what the plan calls for and we'll build the takeoff, cut pipe to your lengths, and stage the order so it lands complete. Whether you're irrigating a new subdivision, retrofitting a commercial property, or maintaining an HOA portfolio, you get one point of contact and pricing that holds up when you bid the job.</p>",
+            "body_padding_top": 0,
+            "body_padding_bottom": 24
+          }
+        }
+      },
+      "block_order": [
+        "ti",
+        "bi"
+      ],
+      "name": "Landscaping Intro",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": false,
+        "padding_top": 16,
+        "padding_bottom": 8
+      }
+    },
+    "ls_brands": {
+      "type": "brands-grid",
+      "blocks": {
+        "c1": {
+          "type": "category_card",
+          "settings": {
+            "title": "Sprinklers, Rotors & Drip",
+            "accent_color": "#2e8b57",
+            "brand_1_label": "Hunter Industries",
+            "brand_1_url": "",
+            "brand_1_show_pill": true,
+            "brand_2_label": "Rain Bird",
+            "brand_2_url": "",
+            "brand_2_show_pill": true,
+            "brand_3_label": "Toro",
+            "brand_3_url": "",
+            "brand_3_show_pill": true,
+            "brand_4_label": "Netafim",
+            "brand_4_url": "",
+            "brand_4_show_pill": true,
+            "brand_5_label": "Irritec",
+            "brand_5_url": "",
+            "brand_5_show_pill": true,
+            "brand_6_label": "Hydro-Rain",
+            "brand_6_url": "",
+            "brand_6_show_pill": true,
+            "brand_7_label": "Weathermatic",
+            "brand_7_url": "",
+            "brand_7_show_pill": true,
+            "brand_8_label": "Salco",
+            "brand_8_url": "",
+            "brand_8_show_pill": true,
+            "brand_9_label": "Orbit",
+            "brand_9_url": "",
+            "brand_9_show_pill": true,
+            "brand_10_label": "",
+            "brand_10_url": "",
+            "brand_10_show_pill": false,
+            "brand_11_label": "",
+            "brand_11_url": "",
+            "brand_11_show_pill": false,
+            "brand_12_label": "",
+            "brand_12_url": "",
+            "brand_12_show_pill": false,
+            "card_note": "Spray bodies, gear-drive rotors, nozzles, drip line and emitters."
+          }
+        },
+        "c2": {
+          "type": "category_card",
+          "settings": {
+            "title": "PVC Pipe & Fittings",
+            "accent_color": "#2e8b57",
+            "brand_1_label": "Charlotte Pipe",
+            "brand_1_url": "",
+            "brand_1_show_pill": true,
+            "brand_2_label": "Lesso",
+            "brand_2_url": "",
+            "brand_2_show_pill": true,
+            "brand_3_label": "Dura",
+            "brand_3_url": "",
+            "brand_3_show_pill": true,
+            "brand_4_label": "Schedule 40",
+            "brand_4_url": "",
+            "brand_4_show_pill": true,
+            "brand_5_label": "Schedule 80",
+            "brand_5_url": "",
+            "brand_5_show_pill": true,
+            "brand_6_label": "Custom-Cut Lengths",
+            "brand_6_url": "",
+            "brand_6_show_pill": true,
+            "brand_7_label": "Slip & Thread Fittings",
+            "brand_7_url": "",
+            "brand_7_show_pill": true,
+            "brand_8_label": "Solvent Cement & Primer",
+            "brand_8_url": "",
+            "brand_8_show_pill": true,
+            "brand_9_label": "",
+            "brand_9_url": "",
+            "brand_9_show_pill": false,
+            "brand_10_label": "",
+            "brand_10_url": "",
+            "brand_10_show_pill": false,
+            "brand_11_label": "",
+            "brand_11_url": "",
+            "brand_11_show_pill": false,
+            "brand_12_label": "",
+            "brand_12_url": "",
+            "brand_12_show_pill": false,
+            "card_note": "Cut to spec from 1-1/2\" to 4\" — less field waste, fewer joints."
+          }
+        },
+        "c3": {
+          "type": "category_card",
+          "settings": {
+            "title": "Pumps & Boosters",
+            "accent_color": "#2e8b57",
+            "brand_1_label": "Goulds Water Technology",
+            "brand_1_url": "",
+            "brand_1_show_pill": true,
+            "brand_2_label": "Berkeley Pumps",
+            "brand_2_url": "",
+            "brand_2_show_pill": true,
+            "brand_3_label": "Franklin Electric",
+            "brand_3_url": "",
+            "brand_3_show_pill": true,
+            "brand_4_label": "Sta-Rite Pumps",
+            "brand_4_url": "",
+            "brand_4_show_pill": true,
+            "brand_5_label": "Grundfos Pumps",
+            "brand_5_url": "",
+            "brand_5_show_pill": true,
+            "brand_6_label": "Myers Pumps",
+            "brand_6_url": "",
+            "brand_6_show_pill": true,
+            "brand_7_label": "Zoeller Pumps",
+            "brand_7_url": "",
+            "brand_7_show_pill": true,
+            "brand_8_label": "Liberty Pumps",
+            "brand_8_url": "",
+            "brand_8_show_pill": true,
+            "brand_9_label": "Cornell Pumps",
+            "brand_9_url": "",
+            "brand_9_show_pill": true,
+            "brand_10_label": "",
+            "brand_10_url": "",
+            "brand_10_show_pill": false,
+            "brand_11_label": "",
+            "brand_11_url": "",
+            "brand_11_show_pill": false,
+            "brand_12_label": "",
+            "brand_12_url": "",
+            "brand_12_show_pill": false,
+            "card_note": "Plus repair kits, impellers, casings and seals to keep systems running."
+          }
+        },
+        "c4": {
+          "type": "category_card",
+          "settings": {
+            "title": "Controllers, Valves & Filters",
+            "accent_color": "#2e8b57",
+            "brand_1_label": "Hunter Industries",
+            "brand_1_url": "",
+            "brand_1_show_pill": true,
+            "brand_2_label": "Rain Bird",
+            "brand_2_url": "",
+            "brand_2_show_pill": true,
+            "brand_3_label": "Rachio",
+            "brand_3_url": "",
+            "brand_3_show_pill": true,
+            "brand_4_label": "Weathermatic",
+            "brand_4_url": "",
+            "brand_4_show_pill": true,
+            "brand_5_label": "Calsense",
+            "brand_5_url": "",
+            "brand_5_show_pill": true,
+            "brand_6_label": "Bermad",
+            "brand_6_url": "",
+            "brand_6_show_pill": true,
+            "brand_7_label": "Amiad",
+            "brand_7_url": "",
+            "brand_7_show_pill": true,
+            "brand_8_label": "Netafim",
+            "brand_8_url": "",
+            "brand_8_show_pill": true,
+            "brand_9_label": "Toro",
+            "brand_9_url": "",
+            "brand_9_show_pill": true,
+            "brand_10_label": "",
+            "brand_10_url": "",
+            "brand_10_show_pill": false,
+            "brand_11_label": "",
+            "brand_11_url": "",
+            "brand_11_show_pill": false,
+            "brand_12_label": "",
+            "brand_12_url": "",
+            "brand_12_show_pill": false,
+            "card_note": "Smart controllers, master valves, backflow support and filtration."
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
+      "name": "Landscaping Categories",
+      "settings": {
+        "heading": "Everything the Install Calls For",
+        "subheading": "Four categories, one purchase order. Approved trade accounts get contractor pricing across every line we carry.",
+        "max_width": 1200,
+        "section_padding_top": 40,
+        "section_padding_bottom": 40,
+        "pill_text": "TRADE",
+        "show_pill": true,
+        "corner_radius": 12,
+        "shadow_intensity": "sm",
+        "gap_desktop": 24,
+        "gap_mobile": 12,
+        "footer_note": "Don't see a line you run? Ask us — we source beyond what's listed here."
+      }
+    },
+    "ls_why": {
+      "type": "why-choose-us",
+      "blocks": {
+        "w1": {
+          "type": "feature_card",
+          "settings": {
+            "title": "Fewer supply runs, more billable hours",
+            "badge_text": "Crew Efficiency",
+            "body": "Heads, pipe, fittings, valves and pumps ship together on one order, so your foreman isn't burning a morning driving between counters.",
+            "icon_image": "shopify://shop_images/omnichannel_white.png",
+            "icon_circle_bg_override": "",
+            "icon_circle_size_override": 80,
+            "icon_png_max_width_override": 44,
+            "icon_png_max_height_override": 44,
+            "cta_label": "",
+            "cta_url": "",
+            "cta_style": "link"
+          }
+        },
+        "w2": {
+          "type": "feature_card",
+          "settings": {
+            "title": "Custom-cut PVC saves crew hours",
+            "badge_text": "Labor Saver",
+            "body": "We cut Schedule 40 to your lengths, from 1-1/2\" to 4\". Less field cutting, less scrap on the trailer, fewer glued joints to fail later.",
+            "icon_image": "shopify://shop_images/trend_white.png",
+            "icon_circle_bg_override": "",
+            "icon_circle_size_override": 80,
+            "icon_png_max_width_override": 41,
+            "icon_png_max_height_override": 32,
+            "cta_label": "",
+            "cta_url": "",
+            "cta_style": "link"
+          }
+        },
+        "w3": {
+          "type": "feature_card",
+          "settings": {
+            "title": "Bid the job with pricing that holds",
+            "badge_text": "Margin Protection",
+            "body": "Trade accounts get volume pricing plus takeoff help before you quote — so the number you hand the client is the number you actually pay.",
+            "icon_image": "shopify://shop_images/24-7_white.png",
+            "icon_circle_bg_override": "",
+            "icon_circle_size_override": 80,
+            "icon_png_max_width_override": 38,
+            "icon_png_max_height_override": 38,
+            "cta_label": "",
+            "cta_url": "",
+            "cta_style": "link"
+          }
+        }
+      },
+      "block_order": [
+        "w1",
+        "w2",
+        "w3"
+      ],
+      "name": "How ASIW Helps Landscapers",
+      "settings": {
+        "heading": "Built Around How Landscape Businesses Actually Run",
+        "subheading": "Three things that decide whether an irrigation job makes money: crew time, material waste, and the price you locked in when you bid.",
+        "max_width": 1200,
+        "padding_top": 48,
+        "padding_bottom": 56,
+        "background_color": "#ffffff",
+        "heading_color": "#2b2c2d",
+        "body_color": "#2b2c2d",
+        "card_bg": "#ffffff",
+        "card_border": "#e6eef5",
+        "card_radius": 12,
+        "shadow_intensity": "md",
+        "gap_desktop": 24,
+        "gap_mobile": 14,
+        "icon_circle_bg": "#2e8b57",
+        "icon_circle_size": 80,
+        "icon_png_max_width": 32,
+        "icon_png_max_height": 32,
+        "icon_shadow": true,
+        "pill_text_color": "#154c2e",
+        "pill_bg_color": "#e7f6ef",
+        "pill_border_color": "#cfebdd",
+        "pill_uppercase": false,
+        "centered": true,
+        "footnote": ""
+      }
+    },
+    "ls_cta": {
+      "type": "cta-banner",
+      "name": "Landscaping Quote Banner",
+      "settings": {
+        "title": "Big install this season? Send us the plan and we'll build the takeoff.",
+        "subtitle": "",
+        "title_icon": "",
+        "button_text": "Request a Quote",
+        "button_link": "/pages/request-to-quote",
+        "button_icon": "",
+        "button_target_blank": false,
+        "button_aria_label": "Request a landscaping quote",
+        "title_font_family": "inherit",
+        "title_font_size": 20,
+        "title_font_weight": "600",
+        "subtitle_font_size": 14,
+        "subtitle_font_weight": "400",
+        "button_font_size": 14,
+        "button_font_weight": "600",
+        "button_text_transform": "none",
+        "button_letter_spacing": 0,
+        "container_width": 1200,
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "padding_horizontal": 20,
+        "button_padding_vertical": 12,
+        "button_padding_horizontal": 24,
+        "button_border_radius": 15,
+        "button_border_width": 0,
+        "button_shadow": true,
+        "mobile_padding_vertical": 16,
+        "mobile_padding_horizontal": 16,
+        "mobile_title_font_size": 16,
+        "mobile_subtitle_font_size": 12,
+        "mobile_button_font_size": 12,
+        "mobile_button_padding_vertical": 10,
+        "mobile_button_padding_horizontal": 20,
+        "enable_sticky": false,
+        "enable_animation": true,
+        "custom_id": "",
+        "custom_css": ""
+      }
+    },
+    "ls_faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer contractor pricing for landscaping companies?",
+            "answer": "<p>Yes. Landscape contractors, irrigation installers, and maintenance companies can apply for a trade account to get volume pricing across sprinklers, PVC pipe and fittings, controllers, valves, and pumps. Apply using the form on this page.</p>",
+            "open_by_default": false
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Can you cut PVC pipe to the lengths on my plan?",
+            "answer": "<p>We cut Schedule 40 PVC to your specifications in diameters from 1-1/2\" to 4\". Send us the cut list with your order and it ships ready to install — no field cutting, less scrap, fewer glued joints.</p>",
+            "open_by_default": false
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "Which irrigation brands do you stock?",
+            "answer": "<p>We're an authorized distributor for Hunter, Rain Bird, Toro, Netafim, Weathermatic, and Bermad on the irrigation side, Charlotte Pipe, Lesso, and Dura for pipe and fittings, and Goulds, Berkeley, Sta-Rite, Franklin Electric, and Grundfos for pumps. Everything is genuine and factory-warrantied.</p>",
+            "open_by_default": false
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "Can you help size a pump or lay out zones before I bid?",
+            "answer": "<p>Yes — that's what our team is here for. Send the plan, the water source details, and the coverage you need, and we'll help size pump capacity, zone counts, and pipe runs so your bid is based on real numbers. Call (772) 468-0888.</p>",
+            "open_by_default": false
+          }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "question": "Do you supply repair and replacement parts too?",
+            "answer": "<p>We do. Along with new installs we stock repair kits, impellers, casings, and seals for more than 100 Berkeley pump models and the full Goulds J, JS, and GT series — so a service call doesn't turn into a full replacement.</p>",
+            "open_by_default": false
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5"
+      ],
+      "name": "Landscaping FAQ",
+      "settings": {
+        "heading": "Landscape Contractor FAQs",
+        "color_scheme": "scheme-1",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "ls_form": {
+      "type": "wholesale-form",
+      "name": "Landscaping Apply Form",
+      "settings": {
+        "page_heading": "Apply for Landscape Contractor Pricing",
+        "page_subheading": "Tell us about your business and we'll set up your trade account and get you pricing.",
+        "max_width": 1200,
+        "padding_top": 56,
+        "padding_bottom": 72,
+        "background_color": "#f5f7fa",
+        "heading_color": "#2b2c2d",
+        "body_color": "#2b2c2d",
+        "card_heading": "Get Started Today",
+        "card_bg": "#ffffff",
+        "card_border": "#e6eef5",
+        "card_radius": 14,
+        "shadow_intensity": "md",
+        "label_name": "Point of Contact",
+        "ph_name": "Enter your point of contact",
+        "label_business": "Business Name",
+        "ph_business": "Enter your landscaping business name",
+        "label_email": "Business Email",
+        "ph_email": "Enter your business email",
+        "button_label": "Submit Application",
+        "button_bg": "#1163ff",
+        "button_bg_hover": "#0a56e6",
+        "button_text": "#ffffff",
+        "fine_print": "By submitting this form, you agree to be contacted about contractor pricing and account setup.",
+        "tag_submission": "landscaping-apply"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "ls_hero",
+    "ls_icons",
+    "ls_intro",
+    "ls_brands",
+    "ls_why",
+    "ls_cta",
+    "ls_faq",
+    "ls_form"
+  ]
+}
