@@ -134,12 +134,20 @@
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'heading' -%}
-            <h2
+            {%- liquid
+              # Landing pages that disable the page's main section have no other
+              # H1, so the banner heading can be promoted to the page's H1.
+              assign heading_tag = 'h2'
+              if block.settings.use_as_h1
+                assign heading_tag = 'h1'
+              endif
+            -%}
+            <{{ heading_tag }}
               class="banner__heading inline-richtext {{ block.settings.heading_size }}"
               {{ block.shopify_attributes }}
             >
               {{ block.settings.heading }}
-            </h2>
+            </{{ heading_tag }}>
           {%- when 'text' -%}
             <div class="banner__text rte {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
               <p>{{ block.settings.text }}</p>
@@ -515,6 +523,13 @@
           ],
           "default": "h1",
           "label": "t:sections.all.heading_size.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_as_h1",
+          "default": false,
+          "label": "Use as page heading (H1)",
+          "info": "Enable on landing pages where this banner is the main heading. Only one H1 per page."
         }
       ]
     },

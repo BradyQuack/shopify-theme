@@ -9,67 +9,86 @@
       }
     },
     "ls_hero": {
-      "type": "wholesale-hero",
+      "type": "banner-image-hero",
       "blocks": {
         "h1": {
           "type": "heading",
           "settings": {
             "heading": "Built for Landscape Contractors",
-            "heading_size": "h0"
-          }
-        },
-        "h2": {
-          "type": "heading",
-          "settings": {
-            "heading": "Irrigation, Pipe & Pumps — Priced for the Trade",
-            "heading_size": "h1"
+            "heading_size": "h0",
+            "use_as_h1": true
           }
         },
         "t1": {
           "type": "text",
           "settings": {
-            "text": "<p>One supplier for the whole install: rotors and spray heads, Schedule 40 PVC cut to your lengths, fittings by the case, valves, controllers, and the pump to drive it all. Stocked in Fort Pierce and shipped nationwide to your yard or job site.</p>"
-          }
-        },
-        "f1": {
-          "type": "three_features",
-          "settings": {
-            "feature1_text1": "✓",
-            "feature1_text2": "Authorized distributor pricing",
-            "feature2_text1": "✓",
-            "feature2_text2": "Job-lot & case quantities",
-            "feature3_text1": "✓",
-            "feature3_text2": "Custom-cut PVC to spec"
+            "text": "Irrigation, pipe, fittings and pumps — priced for the trade and stocked for the season. One supplier for the whole install.",
+            "text_style": "body"
           }
         },
         "b1": {
-          "type": "button",
+          "type": "buttons",
           "settings": {
-            "button_label": "Apply for Contractor Pricing",
-            "button_link": "#wh-apply",
-            "button_style_secondary": false,
+            "button_label_1": "Apply for Contractor Pricing",
+            "button_link_1": "#wh-apply",
+            "button_style_secondary_1": false,
             "button_label_2": "Browse the Catalog",
             "button_link_2": "/collections/all",
-            "button_style_secondary_2": true,
-            "buttons_inline": true
+            "button_style_secondary_2": true
+          }
+        },
+        "d1": {
+          "type": "divider",
+          "settings": {
+            "divider_style": "solid",
+            "divider_width": 100,
+            "divider_thickness": 1,
+            "divider_color": "#ffffff",
+            "divider_spacing": 18
+          }
+        },
+        "ic1": {
+          "type": "icon_text",
+          "settings": {
+            "columns": 3,
+            "icon_size": "medium",
+            "icon_color": "#ffffff",
+            "text_color": "#ffffff",
+            "background_color": "rgba(0,0,0,0)",
+            "padding": 0,
+            "icon_1": "award",
+            "text_1": "Authorized distributor",
+            "icon_2": "check",
+            "text_2": "Job-lot quantities",
+            "icon_3": "refresh",
+            "text_3": "Cut-to-spec PVC",
+            "icon_4": "truck",
+            "text_4": ""
           }
         }
       },
       "block_order": [
         "h1",
-        "h2",
         "t1",
-        "f1",
-        "b1"
+        "b1",
+        "d1",
+        "ic1"
       ],
       "name": "Landscaping Hero",
       "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "scheme-4",
-        "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 52
+        "image": "",
+        "image_2": "",
+        "image_overlay_opacity": 60,
+        "overlay_color": "#12301f",
+        "image_height": "large",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-left",
+        "desktop_content_alignment": "left",
+        "show_text_box": false,
+        "color_scheme": "scheme-2",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "left",
+        "show_text_below": false
       }
     },
     "ls_icons": {
