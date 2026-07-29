@@ -148,6 +148,11 @@
         "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
         "disabled": false,
         "settings": {
+          "greeting_message": "",
+          "show_featured_products": true,
+          "featured_products": [],
+          "background_color": "#CF610D",
+          "font_color": "#F7F8F8",
           "button_color": "#005496",
           "secondary_color": "#ffffff",
           "ternary_color": "#6a6a6a",
@@ -155,7 +160,9 @@
           "button_text": "chat_with_us",
           "button_horizontal_position": "bottom_right",
           "button_vertical_position": "lowest",
-          "greeting_message": ""
+          "agent_inherit_fonts": true,
+          "agent_font": "system_ui_n4",
+          "agent_border_radius": 10
         }
       }
     },
